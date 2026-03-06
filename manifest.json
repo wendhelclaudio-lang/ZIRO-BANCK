@@ -1,0 +1,15 @@
+{
+  "name": "Gêneses Fóton",
+  "short_name": "MeuCaixa",
+  "start_url": "/geneses/",
+  "display": "standalone",
+  "background_color": "#0a192f",
+  "theme_color": "#0a192f",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2092/2092663.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
