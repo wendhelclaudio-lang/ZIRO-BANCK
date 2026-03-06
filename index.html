@@ -80,7 +80,6 @@
         .lock-input { width: 100%; background: var(--input-bg); border: 2px solid transparent; padding: 16px 16px 16px 45px; border-radius: 16px; color: var(--text); font-size: 0.95rem; transition: all 0.3s; font-family: 'Ubuntu', sans-serif; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); }
         .lock-input::placeholder { color: var(--text-muted); opacity: 0.7; }
         .lock-input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 4px rgba(0, 242, 255, 0.1); }
-        .input-group:focus-within i { color: var(--accent); }
         
         .lock-input.password { letter-spacing: 3px; font-weight: bold; }
         .lock-input.password::placeholder { letter-spacing: normal; font-weight: normal; }
@@ -161,29 +160,26 @@
         .sub-btn.active { background: var(--hover-bg); border-color: var(--accent); color: var(--accent); }
 
         .date-group-header { font-size: 0.7rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin: 20px 0 10px 5px; border-bottom: 1px solid var(--border); padding-bottom: 5px; }
-        .transaction-item { background: var(--card); padding: 16px; border-radius: 18px; margin-bottom: 12px; display: flex; align-items: center; gap: 14px; border: 1px solid var(--border); box-shadow: 0 2px 8px rgba(0,0,0,0.02); cursor: pointer; transition: transform 0.1s;}
+        
+        /* NOVO DESIGN DO ITEM DE TRANSAÇÃO (Como pedido nas imagens 2 e 3) */
+        .transaction-item { background: var(--card); padding: 16px; border-radius: 18px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; width: 100%; border: 1px solid var(--border); box-shadow: 0 2px 8px rgba(0,0,0,0.02); cursor: pointer; transition: transform 0.1s;}
         .transaction-item:active { transform: scale(0.98); }
+        .item-left { display: flex; align-items: center; gap: 14px; flex: 1; overflow: hidden; }
         .icon-box { width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; background: var(--bg); min-width: 44px; border: 1px solid var(--border); font-size: 1.05rem; }
-        .details { flex: 1; overflow: hidden; }
-        .details strong { display: block; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text); margin-bottom: 3px;}
-        .details span { font-size: 0.7rem; color: var(--text-muted); font-weight: 500; display: block;}
+        .details { flex: 1; overflow: hidden; text-align: left; }
+        .details strong { display: block; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text); margin-bottom: 3px;}
+        .details span { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
         
-        /* BADGES DE STATUS */
-        .status-badge { display: inline-block; padding: 3px 8px; border-radius: 8px; font-size: 0.6rem; font-weight: 800; letter-spacing: 0.5px; margin-top: 5px; }
-        .badge-pago { background: rgba(16, 185, 129, 0.1); color: var(--success); border: 1px solid var(--success); }
-        .badge-pendente { background: rgba(245, 158, 11, 0.1); color: var(--warning); border: 1px solid var(--warning); }
-        .badge-atrasado { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid var(--danger); }
-        
-        .btn-ver-comp { display: inline-block; background: rgba(0, 242, 255, 0.1); color: var(--accent); border: 1px solid var(--accent); padding: 4px 10px; border-radius: 8px; font-size: 0.65rem; margin-top: 6px; cursor: pointer; font-weight: 800; text-transform: uppercase; }
-        
-        .amount { text-align: right; min-width: 90px; }
-        .amount strong { display: block; font-size: 0.95rem; color: var(--text); margin-bottom: 3px;}
+        .amount-section { text-align: right; min-width: 90px; padding-left: 10px; display: flex; flex-direction: column; align-items: flex-end; }
+        .amount-section strong { display: block; font-size: 0.95rem; color: var(--text); margin-bottom: 3px;}
+        .amount-section .status-text { font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;}
 
         /* BARRAS INFERIORES E BOTÕES */
         .bottom-charts { padding: 22px; background: var(--card); border-top: 1px solid var(--border); margin-bottom: 100px; border-radius: 24px 24px 0 0; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); }
+        
         .meta-panel { margin-bottom: 15px; }
-        .meta-label { display: flex; justify-content: space-between; font-size: 0.7rem; margin-bottom: 8px; color: var(--text); }
-        .meta-track { background: var(--bg); height: 8px; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
+        .meta-label { display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 8px; color: var(--text); }
+        .meta-track { background: var(--bg); height: 10px; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
         .meta-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--success)); transition: width 1s cubic-bezier(0.17, 0.67, 0.83, 0.67); }
 
         .action-buttons { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
@@ -214,7 +210,7 @@
         .resumo-item { font-size: 0.7rem; color: var(--text-muted); }
         .resumo-item strong { color: var(--text); display: block; font-size: 0.85rem; margin-top: 2px;}
 
-        /* Container protegido para gráficos (impede que fiquem crescendo) */
+        /* Container protegido para gráficos (impede que fiquem crescendo infinitamente) */
         .grafico-container { background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 15px; margin-bottom: 25px; position: relative; height: 250px; width: 100%; }
         
         .btn-toggle-meses { flex: 1; padding: 10px; background: var(--input-bg); border: 1px solid var(--border); border-radius: 10px; color: var(--text-muted); font-weight: 800; font-size: 0.75rem; cursor: pointer; }
@@ -325,7 +321,7 @@
                 <div><i class="fa-solid fa-camera" style="color: var(--accent)"></i> <span>Alterar Foto</span></div>
             </div>
             <div class="menu-item" onclick="abrirModalMeta()">
-                <div><i class="fa-solid fa-bullseye" style="color: var(--success)"></i> <span>Definir Meta de Progresso</span></div>
+                <div><i class="fa-solid fa-bullseye" style="color: var(--success)"></i> <span>Definir Meta / Objetivo</span></div>
             </div>
 
             <div class="menu-group-title">Ajustes & Segurança</div>
@@ -404,12 +400,14 @@
 
     <section class="bottom-charts">
         
-        <div class="meta-panel hidden" id="metaPanelInfo" style="border-top: none; padding-top: 0;">
+        <div class="meta-panel hidden" id="metaPanelInfo" style="border-top: none; padding-top: 0; background: var(--card); padding: 20px; border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px;">
             <div class="meta-label">
-                <span><span id="lblTipoMetaApp">Meta</span>: <strong id="metaValorDisplay">R$ 0,00</strong></span>
-                <span id="metaProgressoDisplay" style="color: var(--success); font-weight: bold;">0%</span>
+                <span style="font-size: 0.85rem; font-weight: bold;"><span id="lblTipoMetaApp">Meta</span></span>
+                <span id="metaProgressoDisplay" style="color: var(--success); font-weight: bold; font-size: 0.9rem;">0%</span>
             </div>
-            <div class="meta-track"><div class="meta-fill" id="metaFillBar"></div></div>
+            <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 12px;">Objetivo: <strong id="metaValorDisplay" style="color: var(--text);">R$ 0,00</strong></div>
+            <div class="meta-track" style="height: 12px; background: var(--input-bg);"><div class="meta-fill" id="metaFillBar" style="border-radius: 10px;"></div></div>
+            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 8px; text-align: right; font-weight: bold;" id="metaFaltaDisplay">Falta: R$ 0,00</div>
         </div>
 
         <div class="action-buttons">
@@ -440,6 +438,7 @@
             <option value="Variavel">Gasto Variável</option>
             <option value="Divida">Dívida / Boleto</option>
             <option value="Reserva">Patrimônio</option>
+            <option value="Meta">🎯 Meta / Objetivo</option>
         </select>
 
         <span class="label-mini">Categoria</span>
@@ -656,7 +655,6 @@
                 document.getElementById('viewCadastro').classList.remove('hidden');
                 document.getElementById('viewLogin').classList.add('hidden');
                 document.getElementById('viewRecuperar').classList.add('hidden');
-                document.getElementById('statusSeguranca').innerText = "CONFIGURANDO...";
             } else if(!sessionStorage.getItem('isLoggedIn')) {
                 // Usuário Existente, mas deslogado
                 document.getElementById('lock-screen').classList.remove('hidden');
@@ -675,14 +673,9 @@
                     av.style.backgroundImage = "none";
                     av.innerText = appConfig.nome.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
                 }
-                
-                document.getElementById('statusSeguranca').innerText = "ATIVADA";
-                document.getElementById('statusSeguranca').style.color = "var(--success)";
             } else {
                 // Logado
                 document.getElementById('lock-screen').classList.add('hidden');
-                document.getElementById('statusSeguranca').innerText = "ATIVADA";
-                document.getElementById('statusSeguranca').style.color = "var(--success)";
             }
         }
 
@@ -698,7 +691,7 @@
             appConfig.senhaHash = senha;
             
             sessionStorage.setItem('isLoggedIn', 'true');
-            salvarConfig();
+            salvarConfig(); // Isso já chama o renderizar
             
             document.getElementById('lock-screen').style.opacity = '0';
             setTimeout(() => { document.getElementById('lock-screen').classList.add('hidden'); }, 500);
@@ -713,6 +706,8 @@
                 setTimeout(() => {
                     document.getElementById('lock-screen').classList.add('hidden');
                     document.getElementById('inputSenha').value = "";
+                    carregarConfig();
+                    renderizar();
                 }, 500);
                 showToast(`Acesso Liberado!`, "success");
             } else {
@@ -790,7 +785,7 @@
         }
 
         function carregarConfig() {
-            if(!appConfig.nome) return; // Espera o cadastro
+            if(!appConfig.nome) return;
 
             document.getElementById('headerUserName').innerText = appConfig.nome;
             document.getElementById('sidebarUserName').innerText = appConfig.nome;
@@ -873,17 +868,21 @@
         }
 
         function salvarMeta() {
-            let val = document.getElementById('valorMetaInput').value;
-            if(val && !isNaN(val) && parseFloat(val) > 0) {
-                appConfig.metaMensal = parseFloat(val);
-                appConfig.tipoMeta = document.getElementById('tipoMeta').value;
-                appConfig.periodoMeta = document.getElementById('periodoMeta').value;
-                appConfig.descMeta = document.getElementById('descMetaInput').value;
-                salvarConfig();
-                closeAll();
-                showToast("Meta definida com sucesso!", "success");
-            } else {
-                showToast("Informe um valor válido.", "error");
+            try {
+                let val = document.getElementById('valorMetaInput').value;
+                if(val && !isNaN(val) && parseFloat(val) > 0) {
+                    appConfig.metaMensal = parseFloat(val);
+                    appConfig.tipoMeta = document.getElementById('tipoMeta').value;
+                    appConfig.periodoMeta = document.getElementById('periodoMeta').value;
+                    appConfig.descMeta = document.getElementById('descMetaInput').value;
+                    salvarConfig(); // Já chama o renderizar internamente
+                    closeAll();
+                    showToast("Meta definida com sucesso!", "success");
+                } else {
+                    showToast("Informe um valor válido.", "error");
+                }
+            } catch(e) {
+                console.error(e);
             }
         }
         
@@ -917,7 +916,8 @@
             "Fixo": ["🏠 Aluguel", "⚡ Energia", "🌐 Internet", "🎬 Streamings", "🏫 Mensalidade"],
             "Variavel": ["🛒 Mercado", "🍕 Alimentação", "⛽ Combustível", "🚗 Transporte", "💊 Saúde", "🐾 Pets"],
             "Divida": ["🏢 Financiamento", "💳 Cartão", "🤝 Empréstimo", "🧾 Boleto"],
-            "Reserva": ["🏦 Investimentos", "📦 Caixinha", "🛡️ Reserva Emergência", "🪙 Cripto"]
+            "Reserva": ["🏦 Investimentos", "📦 Caixinha", "🛡️ Reserva Emergência", "🪙 Cripto"],
+            "Meta": ["🎯 Aporte em Meta", "🏦 Resgate de Meta"]
         };
         
         function mudarMes(delta) { dataVisualizacao.setMonth(dataVisualizacao.getMonth() + delta); renderizar(); }
@@ -1021,7 +1021,7 @@
             const prefixoMes = `${dataVisualizacao.getFullYear()}-${String(dataVisualizacao.getMonth() + 1).padStart(2, '0')}`;
             const corpo = document.getElementById('tabelaCorpo'); corpo.innerHTML = '';
             
-            let sRec=0, sGas=0, sDiv=0, sRes=0;
+            let sRec=0, sGas=0, sDiv=0, sRes=0, sMeta=0;
             const ordenados = [...registros].sort((a, b) => new Date(b.data) - new Date(a.data));
             const registrosDoMes = ordenados.filter(r => r.data.startsWith(prefixoMes));
             
@@ -1038,6 +1038,7 @@
                 if(r.tipo === 'Receita') { if(isPago) sRec += vT; } 
                 else if(r.tipo === 'Divida') { sDiv += falta; } 
                 else if(r.tipo === 'Reserva') { sRes += vT; } 
+                else if(r.tipo === 'Meta') { if(isPago) sMeta += vT; } 
                 else { sGas += vP; }
 
                 let exibir = (filtroAtual === "Tudo") || (filtroAtual === r.tipo) || (filtroAtual === "Gasto" && (r.tipo === "Fixo" || r.tipo === "Variavel"));
@@ -1049,7 +1050,6 @@
                 if(exibir) {
                     let dataFormatada = r.data.split('-').reverse().join('/');
                     
-                    // Formatar o nome do grupo (Hoje, Ontem, ou a Data)
                     let hoje = new Date();
                     let ontem = new Date(hoje); ontem.setDate(ontem.getDate() - 1);
                     let targetDate = new Date(r.data + "T12:00:00");
@@ -1059,11 +1059,11 @@
                     else if(targetDate.toDateString() === ontem.toDateString()) groupName = "Ontem";
 
                     if(!agrupados[groupName]) agrupados[groupName] = [];
-                    agrupados[groupName].push({ ...r, realIdx: idxO, isPago });
+                    agrupados[groupName].push({ ...r, realIdx: idxO, isPago, vT });
                 }
             });
 
-            // RENDERIZAR AGRUPADO
+            // RENDERIZAR AGRUPADO COM NOVO LAYOUT DA IMAGEM 3
             if(Object.keys(agrupados).length === 0) {
                 corpo.innerHTML = `<div style="text-align:center; padding:40px; color:var(--text-muted); font-size:0.85rem;">Nenhuma operação encontrada</div>`;
             } else {
@@ -1075,34 +1075,36 @@
                         let color = r.tipo === 'Receita' ? 'var(--success)' : (r.tipo === 'Divida' ? 'var(--danger)' : (r.tipo === 'Reserva' ? 'var(--reserve)' : 'var(--warning)'));
                         let extraInfo = r.forma ? ` • ${r.forma}` : '';
                         
-                        let statusClass = r.isPago ? 'badge-pago' : 'badge-pendente';
-                        let statusText = r.isPago ? (r.tipo === 'Receita' ? 'Recebido' : 'Liquidado') : 'Pendente';
+                        let statusColor = r.isPago ? (r.tipo === 'Receita' ? 'var(--success)' : 'var(--text-muted)') : 'var(--danger)';
+                        let statusText = r.isPago ? (r.tipo === 'Receita' ? 'RECEBIDO' : 'LIQUIDADO') : 'PENDENTE';
                         
-                        // Verificar se está atrasado
-                        if(!r.isPago && r.tipo !== 'Receita' && r.tipo !== 'Reserva') {
-                            let hoje = new Date(); hoje.setHours(0,0,0,0);
-                            let opDate = new Date(r.data + "T12:00:00"); opDate.setHours(0,0,0,0);
-                            if(opDate < hoje) { statusClass = 'badge-atrasado'; statusText = 'Atrasado'; }
+                        if (r.tipo === 'Meta') {
+                            icon = 'fa-bullseye';
+                            color = 'var(--accent)';
+                            statusText = r.isPago ? 'ALCANÇADO' : 'PENDENTE';
+                            statusColor = r.isPago ? 'var(--accent)' : 'var(--danger)';
                         }
-
-                        let badgeHtml = `<span class="status-badge ${statusClass}">${statusText}</span>`;
                         
                         let recAction = '';
                         if(r.comprovante) {
-                            recAction = `<br><button onclick="event.stopPropagation(); viewComprovante(${r.realIdx})" class="btn-ver-comp"><i class="fa-solid fa-receipt"></i> Ver Anexo</button>`;
+                            recAction = `<span onclick="event.stopPropagation(); viewComprovante(${r.realIdx})" class="btn-ver-comp"><i class="fa-solid fa-receipt"></i> ANEXO</span>`;
                         }
 
                         corpo.innerHTML += `
                         <div class="transaction-item" onclick="openModal(${r.realIdx})">
-                            <div class="icon-box" style="color:${color};"><i class="fa-solid ${icon}"></i></div>
-                            <div class="details">
-                                <strong>${r.desc}</strong>
-                                <span>${r.categoria || r.tipo}${extraInfo}</span>
-                                ${badgeHtml}
-                                ${recAction}
+                            <div class="item-left">
+                                <div class="icon-box" style="color:${color}; border: 1px solid var(--border); min-width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: var(--bg); font-size: 1rem;">
+                                    <i class="fa-solid ${icon}"></i>
+                                </div>
+                                <div class="details">
+                                    <strong>${r.desc}</strong>
+                                    <span>${r.data.split('-').reverse().join('/')} • ${r.tipo}${extraInfo}</span>
+                                    ${recAction}
+                                </div>
                             </div>
-                            <div class="amount">
-                                <strong>${ocultarBits(r.valor)}</strong>
+                            <div class="amount-section">
+                                <strong>${ocultarBits(r.vT)}</strong>
+                                <span class="status-text" style="color: ${statusColor};">${statusText}</span>
                             </div>
                         </div>`;
                     });
@@ -1112,11 +1114,11 @@
             document.getElementById('totalReceitas').innerText = ocultarBits(sRec);
             document.getElementById('totalGastos').innerText = ocultarBits(sGas);
             document.getElementById('totalDividas').innerText = ocultarBits(sDiv);
-            document.getElementById('totalReserva').innerText = ocultarBits(sRes);
-            document.getElementById('totalSaldo').innerText = ocultarBits(sRec - (sGas + sDiv));
+            document.getElementById('totalReserva').innerText = ocultarBits(sRes + sMeta);
+            document.getElementById('totalSaldo').innerText = ocultarBits(sRec - (sGas + sDiv + sMeta)); // Meta subtrai do saldo livre
             
             const pSaida = sRec > 0 ? Math.min(((sGas + sDiv) / sRec) * 100, 100) : 0;
-            const pRes = sRec > 0 ? Math.min((sRes / sRec) * 100, 100) : 0;
+            const pRes = sRec > 0 ? Math.min(((sRes + sMeta) / sRec) * 100, 100) : 0;
             
             document.getElementById('fillSaida').style.width = pSaida + '%';
             document.getElementById('labelPercSaida').innerText = pSaida.toFixed(1) + '%';
@@ -1124,10 +1126,17 @@
             document.getElementById('labelPercRes').innerText = pRes.toFixed(1) + '%';
             
             if(appConfig.metaMensal > 0) {
-                let baseCalc = appConfig.tipoMeta === 'receita' ? sRec : appConfig.tipoMeta === 'divida' ? (sGas+sDiv) : sRes;
+                // A barra preenche conforme os lançamentos batem com o tipo escolhido
+                let baseCalc = sMeta; 
+                if(appConfig.tipoMeta === 'receita') baseCalc = sRec;
+                if(appConfig.tipoMeta === 'divida') baseCalc = sGas + sDiv;
+                
                 const progresso = Math.min((baseCalc / appConfig.metaMensal) * 100, 100);
+                const falta = Math.max(appConfig.metaMensal - baseCalc, 0);
+                
                 document.getElementById('metaFillBar').style.width = progresso + '%';
                 document.getElementById('metaProgressoDisplay').innerText = progresso.toFixed(1) + '%';
+                document.getElementById('metaFaltaDisplay').innerText = `Falta: ${formatarMoeda(falta)}`;
             }
 
             verificarNotificacoes();
@@ -1150,7 +1159,6 @@
         
         function closeViewComprovante() {
             document.getElementById('modalViewComprovante').classList.remove('open');
-            // Se o form modal não estiver aberto, esconde o overlay
             if(!document.getElementById('modalForm').classList.contains('open') && !document.getElementById('modalNotificacoes').classList.contains('open')) {
                 document.getElementById('overlay').style.display = 'none';
             }
@@ -1410,7 +1418,6 @@
             
             try {
                 if (file.type === "application/pdf") {
-                    // Lógica para ler texto de PDF usando PDF.js
                     const fileReader = new FileReader();
                     fileReader.onload = async function() {
                         const typedarray = new Uint8Array(this.result);
@@ -1426,7 +1433,6 @@
                     };
                     fileReader.readAsArrayBuffer(file);
                 } else {
-                    // Lógica OCR para imagens (prints) usando Tesseract
                     const { data: { text } } = await Tesseract.recognize(file, 'por', {
                         logger: m => console.log(m)
                     });
@@ -1446,7 +1452,6 @@
             let saidas = 0;
             let listaHtml = "";
             
-            // Regex simples para capturar valores em BRL/US
             const moneyRegex = /(?:R\$|RS|\$)?\s*(\d{1,3}(?:\.\d{3})*,\d{2})/i;
             
             lines.forEach(line => {
