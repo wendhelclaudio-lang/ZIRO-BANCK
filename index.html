@@ -63,7 +63,7 @@
         * { box-sizing: border-box; outline: none; transition: background-color 0.3s, color 0.3s, border-color 0.3s; }
         body { font-family: 'Ubuntu', system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 0; overflow-x: hidden; font-size: 0.95rem; }
 
-        /* TELA DE BLOQUEIO E CADASTRO - MODERNO */
+        /* TELA DE BLOQUEIO / CADASTRO */
         #lock-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(3, 7, 18, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 99999; display: flex; justify-content: center; align-items: center; padding: 20px; transition: opacity 0.5s ease, visibility 0.5s; }
         [data-theme="light"] #lock-screen, [data-theme="santander"] #lock-screen, [data-theme="itau"] #lock-screen, [data-theme="bradesco"] #lock-screen, [data-theme="nubank"] #lock-screen { background: rgba(255, 255, 255, 0.6); }
 
@@ -227,7 +227,7 @@
         .resumo-item { font-size: 0.7rem; color: var(--text-muted); }
         .resumo-item strong { color: var(--text); display: block; font-size: 0.85rem; margin-top: 2px;}
 
-        /* Container protegido para gráficos */
+        /* Container protegido para gráficos (impede que fiquem crescendo infinitamente) */
         .grafico-container { background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 15px; margin-bottom: 25px; position: relative; height: 250px; width: 100%; }
         
         .btn-toggle-meses { flex: 1; padding: 10px; background: var(--input-bg); border: 1px solid var(--border); border-radius: 10px; color: var(--text-muted); font-weight: 800; font-size: 0.75rem; cursor: pointer; }
@@ -236,6 +236,10 @@
         .comprovante-img-preview { width: 100%; max-height: 400px; object-fit: contain; border-radius: 12px; background: var(--bg); border: 1px solid var(--border); }
         .item-notificacao { padding: 12px; border-bottom: 1px solid var(--border); }
         .item-notificacao:last-child { border-bottom: none; }
+        
+        .btn-meta-action { flex: 1; padding: 12px; border-radius: 10px; border: none; font-weight: 800; color: #fff; cursor: pointer; font-size: 0.85rem;}
+        .btn-meta-add { background: var(--success); }
+        .btn-meta-rem { background: var(--danger); }
     </style>
 </head>
 <body>
@@ -469,14 +473,39 @@
                 <span class="label-mini">Instituição / Banco</span>
                 <select id="banco">
                     <option value="">Outros / Nenhum</option>
-                    <option value="Nubank">Nubank</option>
-                    <option value="Itaú">Itaú</option>
-                    <option value="Santander">Santander</option>
-                    <option value="Bradesco">Bradesco</option>
-                    <option value="Banco do Brasil">Banco do Brasil</option>
-                    <option value="Caixa">Caixa Econômica</option>
-                    <option value="Inter">Banco Inter</option>
-                    <option value="C6 Bank">C6 Bank</option>
+                    <optgroup label="Bancos Digitais">
+                        <option value="Nubank">Nubank</option>
+                        <option value="Inter">Banco Inter</option>
+                        <option value="C6 Bank">C6 Bank</option>
+                        <option value="PagBank">PagBank</option>
+                        <option value="PicPay">PicPay</option>
+                        <option value="Neon">Neon</option>
+                        <option value="Next">Next</option>
+                        <option value="Mercado Pago">Mercado Pago</option>
+                        <option value="Banco Pan">Banco Pan</option>
+                        <option value="Will Bank">Will Bank</option>
+                        <option value="Agibank">Agibank</option>
+                        <option value="Sofisa">Sofisa Direto</option>
+                        <option value="Digio">Digio</option>
+                        <option value="Bmg">Banco Bmg</option>
+                        <option value="XP">XP Investimentos</option>
+                        <option value="Rico">Rico</option>
+                        <option value="BS2">Banco BS2</option>
+                    </optgroup>
+                    <optgroup label="Bancos Tradicionais">
+                        <option value="Itaú">Itaú</option>
+                        <option value="Santander">Santander</option>
+                        <option value="Bradesco">Bradesco</option>
+                        <option value="Banco do Brasil">Banco do Brasil</option>
+                        <option value="Caixa">Caixa Econômica</option>
+                        <option value="Safra">Banco Safra</option>
+                        <option value="BTG Pactual">BTG Pactual</option>
+                        <option value="Banco BV">Banco BV</option>
+                        <option value="Sicoob">Sicoob</option>
+                        <option value="Sicredi">Sicredi</option>
+                        <option value="Banrisul">Banrisul</option>
+                        <option value="Banco do Nordeste">Banco do Nordeste</option>
+                    </optgroup>
                 </select>
             </div>
         </div>
@@ -1236,7 +1265,7 @@
                 }
             });
 
-            // RENDERIZAR AGRUPADO COM DATAS LANÇAMENTO X VENCIMENTO
+            // RENDERIZAR AGRUPADO COM DATAS LANÇAMENTO X VENCIMENTO E BANCOS
             if(Object.keys(agrupados).length === 0 && corpo) {
                 corpo.innerHTML = `<div style="text-align:center; padding:40px; color:var(--text-muted); font-size:0.85rem;">Nenhuma operação encontrada</div>`;
             } else if (corpo) {
