@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MeuCaixa - Comando de Ativos</title>
     
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="./manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="icon-192.png">
-    <meta name="theme-color" content="#0a192f">
+    <link rel="apple-touch-icon" href="./icon.svg">
+    <meta name="theme-color" content="#030712">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -283,7 +283,8 @@
                 <div><i class="fa-solid fa-download" style="color: var(--accent)"></i> <span>Exportar Relatório</span></div>
             </div>
             <input type="file" id="fileInput" accept=".csv" style="display: none;" onchange="importarDados(event)">
-            <div class="menu-item" onclick="document.getElementById('fileInput').click()" style="display:none;"> <div><i class="fa-solid fa-file-import"></i> <span>Importar Backup</span></div>
+            <div class="menu-item" onclick="document.getElementById('fileInput').click()" style="display:none;"> 
+                <div><i class="fa-solid fa-file-import"></i> <span>Importar Backup</span></div>
             </div>
             
             <div class="menu-item" onclick="limparMesAtual()">
