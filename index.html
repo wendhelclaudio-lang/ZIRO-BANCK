@@ -63,18 +63,36 @@
         * { box-sizing: border-box; outline: none; transition: background-color 0.3s, color 0.3s, border-color 0.3s; }
         body { font-family: 'Ubuntu', system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 0; overflow-x: hidden; font-size: 0.95rem; }
 
-        /* TELA DE BLOQUEIO / CADASTRO */
-        #lock-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(3, 7, 18, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; transition: opacity 0.5s ease, visibility 0.5s; }
-        [data-theme="light"] #lock-screen, [data-theme="santander"] #lock-screen, [data-theme="itau"] #lock-screen, [data-theme="bradesco"] #lock-screen, [data-theme="nubank"] #lock-screen { background: rgba(255, 255, 255, 0.85); }
-        .lock-avatar { width: 100px; height: 100px; border-radius: 25px; background: linear-gradient(135deg, var(--accent), #0a192f); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: white; margin-bottom: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); background-size: cover; background-position: center;}
-        .lock-title { font-size: 1.5rem; margin-bottom: 5px; color: var(--text); font-weight: 700; text-align: center;}
-        .lock-subtitle { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 30px; text-align: center;}
-        .lock-input { width: 100%; max-width: 300px; background: var(--input-bg); border: 2px solid var(--border); padding: 16px; border-radius: 12px; color: var(--text); font-size: 1.1rem; text-align: center; margin-bottom: 15px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); transition: all 0.3s; }
-        .lock-input.password { letter-spacing: 5px; font-size: 1.3rem; }
-        .lock-input:focus { border-color: var(--accent); box-shadow: 0 0 15px rgba(0, 242, 255, 0.2); }
-        .btn-login { width: 100%; max-width: 300px; background: var(--accent); color: #fff; border: none; padding: 18px; border-radius: 14px; font-weight: 800; font-size: 1.1rem; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.2); margin-bottom: 15px; }
-        .btn-login:active { transform: scale(0.98); }
-        .btn-forgot { background: none; border: none; color: var(--accent); font-family: 'Ubuntu'; font-size: 0.85rem; cursor: pointer; margin-bottom: 20px; font-weight: 600;}
+        /* TELA DE BLOQUEIO E CADASTRO - MODERNO */
+        #lock-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(3, 7, 18, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 99999; display: flex; justify-content: center; align-items: center; padding: 20px; transition: opacity 0.5s ease, visibility 0.5s; }
+        [data-theme="light"] #lock-screen, [data-theme="santander"] #lock-screen, [data-theme="itau"] #lock-screen, [data-theme="bradesco"] #lock-screen, [data-theme="nubank"] #lock-screen { background: rgba(255, 255, 255, 0.6); }
+
+        .login-card { background: var(--card); border: 1px solid var(--border); border-radius: 28px; padding: 40px 30px; width: 100%; max-width: 380px; box-shadow: 0 30px 60px rgba(0,0,0,0.4); display: flex; flex-direction: column; align-items: center; position: relative; text-align: center; }
+        [data-theme="light"] .login-card, [data-theme="santander"] .login-card, [data-theme="nubank"] .login-card { box-shadow: 0 30px 60px rgba(0,0,0,0.1); }
+
+        .lock-avatar { width: 80px; height: 80px; border-radius: 22px; background: linear-gradient(135deg, var(--accent), #0a192f); display: flex; align-items: center; justify-content: center; font-size: 2.2rem; color: white; margin-bottom: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); background-size: cover; background-position: center; font-weight: 800; letter-spacing: 1px; }
+
+        .lock-title { font-size: 1.6rem; margin: 0 0 8px 0; color: var(--text); font-weight: 800; letter-spacing: -0.5px; }
+        .lock-subtitle { font-size: 0.85rem; color: var(--text-muted); margin: 0 0 30px 0; line-height: 1.4; font-weight: 400; }
+
+        .input-group { position: relative; width: 100%; margin-bottom: 16px; text-align: left; }
+        .input-group i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.1rem; transition: color 0.3s; pointer-events: none; }
+        .lock-input { width: 100%; background: var(--input-bg); border: 2px solid transparent; padding: 16px 16px 16px 45px; border-radius: 16px; color: var(--text); font-size: 0.95rem; transition: all 0.3s; font-family: 'Ubuntu', sans-serif; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); }
+        .lock-input::placeholder { color: var(--text-muted); opacity: 0.7; }
+        .lock-input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 4px rgba(0, 242, 255, 0.1); }
+        .input-group:focus-within i { color: var(--accent); }
+        
+        .lock-input.password { letter-spacing: 3px; font-weight: bold; }
+        .lock-input.password::placeholder { letter-spacing: normal; font-weight: normal; }
+
+        .btn-login { width: 100%; background: linear-gradient(135deg, var(--accent), var(--success)); color: #fff; border: none; padding: 16px; border-radius: 16px; font-weight: 800; font-size: 1rem; cursor: pointer; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3); margin-top: 10px; margin-bottom: 20px; transition: transform 0.2s, box-shadow 0.2s; letter-spacing: 0.5px; }
+        .btn-login:active { transform: translateY(2px); box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2); }
+
+        .btn-forgot { background: none; border: none; color: var(--text-muted); font-family: 'Ubuntu'; font-size: 0.85rem; cursor: pointer; font-weight: 600; transition: color 0.2s; padding: 10px; }
+        .btn-forgot:hover, .btn-forgot:active { color: var(--accent); }
+
+        .auth-view { width: 100%; display: flex; flex-direction: column; align-items: center; animation: fadeIn 0.4s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* TOAST NOTIFICATION */
         #toast-container { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 100000; display: flex; flex-direction: column; gap: 10px; pointer-events: none; width: 90%; max-width: 350px;}
@@ -91,7 +109,8 @@
         .user-info span { font-size: 0.65rem; color: var(--text-muted); letter-spacing: 1px; display: block; text-transform: uppercase; margin-bottom: 2px; }
         .user-info strong { font-size: 0.95rem; color: var(--text); letter-spacing: 0.5px;}
 
-        .bell-btn { background:none; border:1px solid var(--border); color:var(--text); padding:8px 10px; border-radius:10px; cursor:pointer; position:relative; display: flex; align-items: center; justify-content: center; height: 38px; width: 38px; }
+        .bell-btn { background:none; border:1px solid var(--border); color:var(--text); padding:8px 10px; border-radius:10px; cursor:pointer; position:relative; display: flex; align-items: center; justify-content: center; height: 38px; width: 38px; transition: background 0.3s; }
+        .bell-btn:active { background: var(--hover-bg); }
         .badge { position:absolute; top:-5px; right:-5px; background:var(--danger); color:white; font-size:0.6rem; font-weight:bold; border-radius:50%; width:18px; height:18px; display:flex; align-items:center; justify-content:center; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
 
         /* MENU LATERAL MELHORADO */
@@ -100,6 +119,7 @@
         .sidebar.open { right: 0; }
         .sidebar-header { margin-bottom: 20px; text-align: center; position: relative; }
         .status-panel { background: rgba(255,255,255,0.03); padding: 16px; border-radius: 16px; margin-bottom: 15px; border: 1px solid var(--border); }
+        [data-theme="light"] .status-panel, [data-theme="bradesco"] .status-panel { background: rgba(0,0,0,0.02); }
         .status-row { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 12px; align-items: center; }
         .status-row:last-child { margin-bottom: 0; }
         .status-label { color: var(--text-muted); }
@@ -141,7 +161,8 @@
         .sub-btn.active { background: var(--hover-bg); border-color: var(--accent); color: var(--accent); }
 
         .date-group-header { font-size: 0.7rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin: 20px 0 10px 5px; border-bottom: 1px solid var(--border); padding-bottom: 5px; }
-        .transaction-item { background: var(--card); padding: 16px; border-radius: 18px; margin-bottom: 12px; display: flex; align-items: center; gap: 14px; border: 1px solid var(--border); box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
+        .transaction-item { background: var(--card); padding: 16px; border-radius: 18px; margin-bottom: 12px; display: flex; align-items: center; gap: 14px; border: 1px solid var(--border); box-shadow: 0 2px 8px rgba(0,0,0,0.02); cursor: pointer; transition: transform 0.1s;}
+        .transaction-item:active { transform: scale(0.98); }
         .icon-box { width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; background: var(--bg); min-width: 44px; border: 1px solid var(--border); font-size: 1.05rem; }
         .details { flex: 1; overflow: hidden; }
         .details strong { display: block; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text); margin-bottom: 3px;}
@@ -193,6 +214,7 @@
         .resumo-item { font-size: 0.7rem; color: var(--text-muted); }
         .resumo-item strong { color: var(--text); display: block; font-size: 0.85rem; margin-top: 2px;}
 
+        /* Container protegido para gráficos (impede que fiquem crescendo) */
         .grafico-container { background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 15px; margin-bottom: 25px; position: relative; height: 250px; width: 100%; }
         
         .btn-toggle-meses { flex: 1; padding: 10px; background: var(--input-bg); border: 1px solid var(--border); border-radius: 10px; color: var(--text-muted); font-weight: 800; font-size: 0.75rem; cursor: pointer; }
@@ -208,31 +230,56 @@
     <div id="toast-container"></div>
 
     <div id="lock-screen" class="hidden">
-        <div class="lock-avatar" id="loginAvatar">MC</div>
-        
-        <div id="viewCadastro" class="hidden" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
-            <h2 class="lock-title">Criar Conta</h2>
-            <p class="lock-subtitle">Bem-vindo(a) ao MeuCaixa</p>
-            <input type="text" id="cadNome" class="lock-input" placeholder="Seu Nome Completo">
-            <input type="email" id="cadEmail" class="lock-input" placeholder="Seu E-mail">
-            <input type="password" id="cadSenha" class="lock-input password" placeholder="Crie uma Senha / PIN" onkeypress="if(event.key === 'Enter') efetuarCadastro()">
-            <button class="btn-confirm" style="max-width: 300px; margin-top: 10px;" onclick="efetuarCadastro()">CADASTRAR E ENTRAR</button>
-        </div>
+        <div class="login-card">
+            <div class="lock-avatar" id="loginAvatar">MC</div>
+            
+            <div id="viewCadastro" class="auth-view hidden">
+                <h2 class="lock-title">Criar Conta</h2>
+                <p class="lock-subtitle">Sua jornada financeira começa aqui.</p>
+                
+                <div class="input-group">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text" id="cadNome" class="lock-input" placeholder="Como devemos te chamar?">
+                </div>
+                
+                <div class="input-group">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" id="cadEmail" class="lock-input" placeholder="Seu melhor e-mail">
+                </div>
+                
+                <div class="input-group">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="cadSenha" class="lock-input password" placeholder="Crie uma senha forte" onkeypress="if(event.key === 'Enter') efetuarCadastro()">
+                </div>
 
-        <div id="viewLogin" class="hidden" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
-            <h2 class="lock-title" id="txtWelcomeBack">Bem-vindo(a) de volta!</h2>
-            <p class="lock-subtitle">Insira sua senha para acessar</p>
-            <input type="password" id="inputSenha" class="lock-input password" placeholder="••••" onkeypress="if(event.key === 'Enter') checkLogin()">
-            <button class="btn-confirm" style="max-width: 300px; margin-top: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);" onclick="checkLogin()">ENTRAR</button>
-            <button class="btn-forgot" onclick="recuperarSenha()">Esqueci minha senha</button>
-        </div>
+                <button class="btn-login" onclick="efetuarCadastro()">CADASTRAR E ENTRAR</button>
+            </div>
 
-        <div id="viewRecuperar" class="hidden" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
-            <h2 class="lock-title">Recuperar Senha</h2>
-            <p class="lock-subtitle">Confirme seu E-mail cadastrado</p>
-            <input type="email" id="recEmail" class="lock-input" placeholder="Seu E-mail">
-            <button class="btn-confirm" style="max-width: 300px; margin-top: 10px;" onclick="enviarCodigoRecuperacao()">RECEBER CÓDIGO</button>
-            <button class="btn-forgot" style="margin-top: 15px;" onclick="mostrarViewLogin()">Voltar ao Login</button>
+            <div id="viewLogin" class="auth-view hidden">
+                <h2 class="lock-title" id="txtWelcomeBack">Bem-vindo(a) de volta!</h2>
+                <p class="lock-subtitle">Que bom ter você de volta. Digite sua senha.</p>
+                
+                <div class="input-group">
+                    <i class="fa-solid fa-key"></i>
+                    <input type="password" id="inputSenha" class="lock-input password" placeholder="Sua senha secreta" onkeypress="if(event.key === 'Enter') checkLogin()">
+                </div>
+
+                <button class="btn-login" onclick="checkLogin()">ENTRAR NO MEUCAIXA</button>
+                <button class="btn-forgot" onclick="recuperarSenha()">Esqueci minha senha</button>
+            </div>
+
+            <div id="viewRecuperar" class="auth-view hidden">
+                <h2 class="lock-title">Recuperar Senha</h2>
+                <p class="lock-subtitle">Não se preocupe, vamos resolver isso.</p>
+                
+                <div class="input-group">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" id="recEmail" class="lock-input" placeholder="Confirme seu e-mail cadastrado">
+                </div>
+
+                <button class="btn-login" onclick="enviarCodigoRecuperacao()">ENVIAR CÓDIGO</button>
+                <button class="btn-forgot" onclick="mostrarViewLogin()"><i class="fa-solid fa-arrow-left"></i> Voltar ao Login</button>
+            </div>
         </div>
     </div>
 
@@ -604,11 +651,14 @@
         // SISTEMA DE CADASTRO, LOGIN E SEGURANÇA
         function checkAppSecurity() {
             if(!appConfig.email || !appConfig.senhaHash) {
+                // Usuário NOVO (Primeira Vez)
                 document.getElementById('lock-screen').classList.remove('hidden');
                 document.getElementById('viewCadastro').classList.remove('hidden');
                 document.getElementById('viewLogin').classList.add('hidden');
                 document.getElementById('viewRecuperar').classList.add('hidden');
+                document.getElementById('statusSeguranca').innerText = "CONFIGURANDO...";
             } else if(!sessionStorage.getItem('isLoggedIn')) {
+                // Usuário Existente, mas deslogado
                 document.getElementById('lock-screen').classList.remove('hidden');
                 document.getElementById('viewLogin').classList.remove('hidden');
                 document.getElementById('viewCadastro').classList.add('hidden');
@@ -616,6 +666,7 @@
                 
                 document.getElementById('txtWelcomeBack').innerText = `Olá, ${appConfig.nome.split(' ')[0]}!`;
                 
+                // Setar avatar no login
                 const av = document.getElementById('loginAvatar');
                 if (appConfig.fotoPerfil) {
                     av.style.backgroundImage = `url(${appConfig.fotoPerfil})`;
@@ -624,8 +675,14 @@
                     av.style.backgroundImage = "none";
                     av.innerText = appConfig.nome.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
                 }
+                
+                document.getElementById('statusSeguranca').innerText = "ATIVADA";
+                document.getElementById('statusSeguranca').style.color = "var(--success)";
             } else {
+                // Logado
                 document.getElementById('lock-screen').classList.add('hidden');
+                document.getElementById('statusSeguranca').innerText = "ATIVADA";
+                document.getElementById('statusSeguranca').style.color = "var(--success)";
             }
         }
 
@@ -733,7 +790,7 @@
         }
 
         function carregarConfig() {
-            if(!appConfig.nome) return;
+            if(!appConfig.nome) return; // Espera o cadastro
 
             document.getElementById('headerUserName').innerText = appConfig.nome;
             document.getElementById('sidebarUserName').innerText = appConfig.nome;
@@ -1093,6 +1150,7 @@
         
         function closeViewComprovante() {
             document.getElementById('modalViewComprovante').classList.remove('open');
+            // Se o form modal não estiver aberto, esconde o overlay
             if(!document.getElementById('modalForm').classList.contains('open') && !document.getElementById('modalNotificacoes').classList.contains('open')) {
                 document.getElementById('overlay').style.display = 'none';
             }
