@@ -6,9 +6,12 @@
     <title>MeuCaixa - Comando de Ativos</title>
     
     <link rel="manifest" href="./manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="./icon.svg">
+    <meta name="apple-mobile-web-app-title" content="MeuCaixa">
+    <link rel="apple-touch-icon" href="./icon-192.png">
     <meta name="theme-color" content="#030712">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -227,7 +230,7 @@
         .resumo-item { font-size: 0.7rem; color: var(--text-muted); }
         .resumo-item strong { color: var(--text); display: block; font-size: 0.85rem; margin-top: 2px;}
 
-        /* Container protegido para gráficos */
+        /* Container protegido para gráficos (impede que fiquem crescendo infinitamente) */
         .grafico-container { background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 15px; margin-bottom: 25px; position: relative; height: 250px; width: 100%; }
         
         .btn-toggle-meses { flex: 1; padding: 10px; background: var(--input-bg); border: 1px solid var(--border); border-radius: 10px; color: var(--text-muted); font-weight: 800; font-size: 0.75rem; cursor: pointer; }
@@ -245,6 +248,14 @@
 <body>
 
     <div id="toast-container"></div>
+
+    <div id="ios-prompt" class="hidden" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--card); border: 2px solid var(--accent); padding: 20px; border-radius: 16px; z-index: 100000; width: 90%; max-width: 350px; box-shadow: 0 10px 40px rgba(0,0,0,0.7); text-align: center;">
+        <h3 style="margin: 0 0 10px 0; color: var(--text); font-size: 1.1rem;"><i class="fa-brands fa-apple" style="margin-right: 5px;"></i> Instalar no iPhone</h3>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px; line-height: 1.5;">
+            O Safari não instala apps automaticamente. Para ter o <b>MeuCaixa</b> no celular e ativar todos os recursos, toque em <i class="fa-solid fa-arrow-up-from-bracket" style="color: var(--accent); margin: 0 4px;"></i> <b>Compartilhar</b> na barra do Safari e selecione <br><br><b>"Adicionar à Tela de Início"</b> <i class="fa-regular fa-square-plus" style="margin: 0 4px;"></i>.
+        </p>
+        <button onclick="document.getElementById('ios-prompt').style.display='none'" style="background: var(--accent); color: #fff; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 800; cursor: pointer; width: 100%;">ENTENDI</button>
+    </div>
 
     <div id="lock-screen" class="hidden">
         <div class="login-card">
@@ -1844,6 +1855,16 @@
             carregarConfig();
             checkAppSecurity(); 
             renderizar(); 
+            
+            // DETECTAR IPHONE E EXIBIR AVISO DE INSTALAÇÃO
+            const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
+            const isStandalone = ('standalone' in window.navigator) && window.navigator.standalone;
+            if (isIos && !isStandalone) {
+                setTimeout(() => {
+                    const prompt = document.getElementById('ios-prompt');
+                    if(prompt) prompt.classList.remove('hidden');
+                }, 2000);
+            }
         };
     </script>
     
