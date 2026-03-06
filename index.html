@@ -5,17 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MeuCaixa - Comando de Ativos</title>
     
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="./manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="icon.svg">
-    <meta name="theme-color" content="#0a192f">
+    <link rel="apple-touch-icon" href="./icon.svg">
+    <meta name="theme-color" content="#030712">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
-    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     
@@ -191,9 +190,12 @@
             border-radius: 14px; 
             padding: 15px; 
             margin-bottom: 25px; 
-            position: relative; /* Obrigatório para o chart não quebrar */
-            height: 250px; 
             width: 100%;
+        }
+        
+        canvas {
+            max-width: 100%;
+            max-height: 100%;
         }
         
         .btn-toggle-meses { flex: 1; padding: 10px; background: var(--input-bg); border: 1px solid var(--border); border-radius: 10px; color: var(--text-muted); font-weight: 800; font-size: 0.75rem; cursor: pointer; }
@@ -474,11 +476,15 @@
         </div>
         <div class="grafico-container">
             <span class="label-mini">Evolução Mensal</span>
-            <canvas id="chartEvolucao"></canvas>
+            <div style="position: relative; height: 220px; width: 100%;">
+                <canvas id="chartEvolucao"></canvas>
+            </div>
         </div>
         <div class="grafico-container">
             <span class="label-mini">Comparativo por Mês</span>
-            <canvas id="chartComparativo"></canvas>
+            <div style="position: relative; height: 220px; width: 100%;">
+                <canvas id="chartComparativo"></canvas>
+            </div>
         </div>
     </div>
 
@@ -527,7 +533,9 @@
         <div id="leitorResult" class="hidden">
             <div class="grafico-container">
                 <span class="label-mini">Resumo do Extrato Lido</span>
-                <canvas id="chartLeitor"></canvas>
+                <div style="position: relative; height: 220px; width: 100%;">
+                    <canvas id="chartLeitor"></canvas>
+                </div>
             </div>
             <h4 style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px;">Operações Encontradas:</h4>
             <div id="leitorLista"></div>
@@ -842,7 +850,6 @@
             const registrosDoMes = ordenados.filter(r => r.data.startsWith(prefixoMes));
             
             registrosDoMes.forEach((r, originalIdxEncontrado) => {
-                // Pra pegar o indice correto no array geral
                 const idxO = registros.indexOf(r);
                 const vT = parseFloat(r.valor) || 0;
                 const vP = parseFloat(r.pago) || 0;
@@ -866,7 +873,6 @@
                     let extraInfo = r.forma ? ` • ${r.forma}` : '';
                     let statusLabel = isPago ? (r.tipo === 'Receita' ? 'RECEBIDO' : 'LIQUIDADO') : 'PENDENTE';
                     
-                    // Botão visual para comprovante anexado
                     let recAction = '';
                     if(r.comprovante) {
                         recAction = `<br><button onclick="event.stopPropagation(); viewComprovante(${idxO})" style="background:rgba(0,242,255,0.1); border:1px solid var(--accent); color:var(--accent); padding:4px 8px; border-radius:6px; cursor:pointer; font-size:0.65rem; font-weight:bold; margin-top:5px; font-family:'Ubuntu';"><i class="fa-solid fa-receipt"></i> Ver Anexo</button>`;
@@ -924,6 +930,7 @@
             document.getElementById('modalViewComprovante').classList.add('open');
             document.getElementById('overlay').style.display = 'block';
         }
+        
         function closeViewComprovante() {
             document.getElementById('modalViewComprovante').classList.remove('open');
             if(!document.getElementById('modalForm').classList.contains('open')) {
@@ -931,7 +938,7 @@
             }
         }
 
-        // UPLOAD BASE64 COMPROVANTE (No modal de Nova Operação)
+        // UPLOAD BASE64 COMPROVANTE
         function handleComprovante(event) {
             const file = event.target.files[0];
             if(!file) {
@@ -1146,7 +1153,6 @@
             container.innerHTML = `<div style="margin-bottom:16px; padding:12px; background:rgba(0,242,255,0.05); border-radius:12px; border:1px solid var(--border);"><strong style="color:var(--accent); font-size:0.85rem;">${lista.length} comprovante(s)</strong><span style="color:var(--text-muted); font-size:0.75rem; margin-left:8px;">nos últimos ${meses} meses</span></div>`;
 
             lista.forEach((r, idx) => {
-                // Find actual index in global array to open the view
                 const realIdx = registros.indexOf(r);
                 container.innerHTML += `
                 <div style="background:var(--bg); padding:14px; border-radius:14px; margin-bottom:10px; border:1px solid var(--border);">
@@ -1178,7 +1184,6 @@
             document.getElementById('leitorResult').classList.add('hidden');
             
             try {
-                // Utilizando a biblioteca Tesseract injetada via script no head
                 const { data: { text } } = await Tesseract.recognize(file, 'por', {
                     logger: m => console.log(m)
                 });
@@ -1197,7 +1202,6 @@
             let saidas = 0;
             let listaHtml = "";
             
-            // Regex simples para capturar valores (ex: R$ 10,00 / 1.500,00)
             const moneyRegex = /(?:R\$|RS|\$)?\s*(\d{1,3}(?:\.\d{3})*,\d{2})/i;
             
             lines.forEach(line => {
@@ -1209,7 +1213,6 @@
                     let tipo = "Gasto";
                     let cor = "var(--danger)";
                     
-                    // Palavras-chave básicas para tentar identificar se é entrada
                     if(lineLower.includes('recebido') || lineLower.includes('entrada') || lineLower.includes('depósito') || lineLower.includes('transferência recebida') || lineLower.includes('rendimento')) {
                         tipo = "Receita";
                         cor = "var(--success)";
@@ -1233,7 +1236,6 @@
             document.getElementById('leitorLista').innerHTML = listaHtml;
             document.getElementById('leitorResult').classList.remove('hidden');
             
-            // Renderizar Gráfico Resumo da IA
             if(chartLeitorInstance) chartLeitorInstance.destroy();
             const ctx = document.getElementById('chartLeitor').getContext('2d');
             let fontColor = getComputedStyle(document.body).getPropertyValue('--text-muted').trim() || '#999';
