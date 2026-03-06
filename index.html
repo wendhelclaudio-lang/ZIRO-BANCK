@@ -63,14 +63,13 @@
         * { box-sizing: border-box; outline: none; transition: background-color 0.3s, color 0.3s, border-color 0.3s; }
         body { font-family: 'Ubuntu', system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 0; overflow-x: hidden; font-size: 0.95rem; }
 
-        /* TELA DE BLOQUEIO E CADASTRO - MODERNO */
+        /* TELA DE BLOQUEIO / CADASTRO */
         #lock-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(3, 7, 18, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 99999; display: flex; justify-content: center; align-items: center; padding: 20px; transition: opacity 0.5s ease, visibility 0.5s; }
         [data-theme="light"] #lock-screen, [data-theme="santander"] #lock-screen, [data-theme="itau"] #lock-screen, [data-theme="bradesco"] #lock-screen, [data-theme="nubank"] #lock-screen { background: rgba(255, 255, 255, 0.6); }
 
         .login-card { background: var(--card); border: 1px solid var(--border); border-radius: 28px; padding: 40px 30px; width: 100%; max-width: 380px; box-shadow: 0 30px 60px rgba(0,0,0,0.4); display: flex; flex-direction: column; align-items: center; position: relative; text-align: center; }
         [data-theme="light"] .login-card, [data-theme="santander"] .login-card, [data-theme="nubank"] .login-card { box-shadow: 0 30px 60px rgba(0,0,0,0.1); }
 
-        /* AVATAR DE LOGIN COM ANIMAÇÃO TECH */
         .lock-avatar { width: 80px; height: 80px; border-radius: 22px; background: linear-gradient(135deg, var(--accent), #0a192f); display: flex; align-items: center; justify-content: center; font-size: 2.2rem; color: white; margin-bottom: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); background-size: cover; background-position: center; font-weight: 800; letter-spacing: 1px; position: relative; }
         .lock-avatar i { font-size: 2.8rem; animation: pulseGlow 2s infinite ease-in-out; }
         
@@ -221,7 +220,7 @@
 
         .bloco-parcelas, .resumo-quitacao, .bloco-comprovante { background: var(--hover-bg); padding: 16px; border-radius: 14px; border: 1px dashed var(--accent); margin-bottom: 16px; }
         .bloco-comprovante { border: 1px solid var(--border); }
-        .resumo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .resumo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 10px; }
         .resumo-item { font-size: 0.7rem; color: var(--text-muted); }
         .resumo-item strong { color: var(--text); display: block; font-size: 0.85rem; margin-top: 2px;}
 
@@ -238,6 +237,9 @@
         .btn-meta-action { flex: 1; padding: 12px; border-radius: 10px; border: none; font-weight: 800; color: #fff; cursor: pointer; font-size: 0.85rem;}
         .btn-meta-add { background: var(--success); }
         .btn-meta-rem { background: var(--danger); }
+        
+        /* Bank Badges para Resumo */
+        .bank-badge { padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; margin-left: 8px; vertical-align: middle; }
     </style>
 </head>
 <body>
@@ -449,7 +451,7 @@
         </div>
         
         <div id="blocoResumoGeral" class="resumo-quitacao hidden">
-            <h4 id="resumoTitulo">Resumo</h4>
+            <h4 id="resumoTitulo">Resumo do Contrato</h4>
             <div id="resumoConteudo" class="resumo-grid"></div>
         </div>
 
@@ -683,6 +685,30 @@
             fotoPerfil: savedConfig.fotoPerfil || null
         };
 
+        // GERAR SOM DE NOTIFICAÇÃO (IPHONE STYLE)
+        function playNotificationSound() {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                const ctx = new AudioContext();
+                const osc = ctx.createOscillator();
+                const gainNode = ctx.createGain();
+                osc.type = 'sine';
+                
+                // Frequências para o "Ding" duplo do iPhone (aprox 1200Hz -> 1500Hz)
+                osc.frequency.setValueAtTime(1200, ctx.currentTime);
+                osc.frequency.setValueAtTime(1500, ctx.currentTime + 0.15);
+                
+                gainNode.gain.setValueAtTime(0, ctx.currentTime);
+                gainNode.gain.linearRampToValueAtTime(0.5, ctx.currentTime + 0.05);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
+                
+                osc.connect(gainNode);
+                gainNode.connect(ctx.destination);
+                osc.start(ctx.currentTime);
+                osc.stop(ctx.currentTime + 0.5);
+            } catch(e) { console.log("Audio not supported or blocked by browser"); }
+        }
+
         // SISTEMA DE TOAST NOTIFICATIONS
         function showToast(message, type = "success") {
             const container = document.getElementById('toast-container');
@@ -708,9 +734,6 @@
                 document.getElementById('viewCadastro')?.classList.remove('hidden');
                 document.getElementById('viewLogin')?.classList.add('hidden');
                 document.getElementById('viewRecuperar')?.classList.add('hidden');
-                
-                const statusSec = document.getElementById('statusSeguranca');
-                if (statusSec) statusSec.innerText = "CONFIGURANDO...";
             } else if(!sessionStorage.getItem('isLoggedIn')) {
                 document.getElementById('lock-screen')?.classList.remove('hidden');
                 document.getElementById('viewLogin')?.classList.remove('hidden');
@@ -720,7 +743,6 @@
                 const welcome = document.getElementById('txtWelcomeBack');
                 if (welcome) welcome.innerText = `Olá, ${(appConfig.nome || 'Usuário').split(' ')[0]}!`;
                 
-                // Setar avatar com icone no login
                 const av = document.getElementById('loginAvatar');
                 if (av) {
                     if (appConfig.fotoPerfil) {
@@ -731,19 +753,8 @@
                         av.innerHTML = '<i class="fa-solid fa-fingerprint"></i>';
                     }
                 }
-                
-                const statusSec = document.getElementById('statusSeguranca');
-                if (statusSec) {
-                    statusSec.innerText = "ATIVADA";
-                    statusSec.style.color = "var(--success)";
-                }
             } else {
                 document.getElementById('lock-screen')?.classList.add('hidden');
-                const statusSec = document.getElementById('statusSeguranca');
-                if (statusSec) {
-                    statusSec.innerText = "ATIVADA";
-                    statusSec.style.color = "var(--success)";
-                }
             }
         }
 
@@ -775,7 +786,14 @@
                 
                 carregarConfig();
                 renderizar();
-                showToast(`Acesso Liberado!`, "success");
+                
+                // Dispara o som de notificação caso existam lembretes (calculados no renderizar)
+                if (sessionStorage.getItem('hasPendingAlert') === 'true') {
+                    playNotificationSound();
+                    showToast("Atenção: Você tem faturas próximas do vencimento!", "warning");
+                } else {
+                    showToast(`Acesso Liberado!`, "success");
+                }
             } else {
                 showToast("Senha Incorreta", "error");
                 if (document.getElementById('inputSenha')) document.getElementById('inputSenha').value = "";
@@ -839,7 +857,7 @@
             document.documentElement.setAttribute('data-theme', tema);
             localStorage.setItem('meucaixa_theme', tema);
             closeAll();
-            renderizar(); // Atualiza cores dos gráficos se estiverem abertos
+            renderizar();
         }
 
         // CONFIGURAÇÕES GERAIS
@@ -1072,9 +1090,23 @@
             renderizar(); 
         }
 
-        // VERIFICAR NOTIFICAÇÕES (VENCIMENTOS)
+        // LÓGICA DE DETECÇÃO DE BANCOS PARA BADGE
+        function getBankBadge(desc) {
+            const d = desc.toLowerCase();
+            if (d.includes('nubank')) return '<span class="bank-badge" style="background:#8A05BE; color:#fff;"><i class="fa-solid fa-building-columns"></i> Nubank</span>';
+            if (d.includes('santander')) return '<span class="bank-badge" style="background:#EC0000; color:#fff;"><i class="fa-solid fa-building-columns"></i> Santander</span>';
+            if (d.includes('bradesco')) return '<span class="bank-badge" style="background:#CC092F; color:#fff;"><i class="fa-solid fa-building-columns"></i> Bradesco</span>';
+            if (d.includes('itau') || d.includes('itaú')) return '<span class="bank-badge" style="background:#EC7000; color:#fff;"><i class="fa-solid fa-building-columns"></i> Itaú</span>';
+            if (d.includes('banco do brasil') || d.includes('bb')) return '<span class="bank-badge" style="background:#F2D300; color:#003DA5;"><i class="fa-solid fa-building-columns"></i> Banco do Brasil</span>';
+            if (d.includes('caixa')) return '<span class="bank-badge" style="background:#005CA9; color:#fff;"><i class="fa-solid fa-building-columns"></i> Caixa</span>';
+            if (d.includes('inter')) return '<span class="bank-badge" style="background:#FF7A00; color:#fff;"><i class="fa-solid fa-building-columns"></i> Inter</span>';
+            if (d.includes('c6')) return '<span class="bank-badge" style="background:#242424; color:#fff;"><i class="fa-solid fa-building-columns"></i> C6 Bank</span>';
+            return '';
+        }
+
+        // VERIFICAR NOTIFICAÇÕES E ALERTAR (Som de Ding do iPhone 3 dias antes ou vencido)
         function verificarNotificacoes() {
-            let pendentesHoje = [];
+            let pendingList = [];
             let hoje = new Date();
             hoje.setHours(0,0,0,0);
 
@@ -1087,8 +1119,12 @@
                     let dataOperacao = new Date(r.data + "T12:00:00");
                     dataOperacao.setHours(0,0,0,0);
                     
-                    if(dataOperacao <= hoje) {
-                        pendentesHoje.push({ ...r, realIdx: idx });
+                    const msPerDay = 1000 * 60 * 60 * 24;
+                    const diffTime = dataOperacao.getTime() - hoje.getTime();
+                    const diffDays = Math.ceil(diffTime / msPerDay);
+                    
+                    if(diffDays <= 3) {
+                        pendingList.push({ ...r, realIdx: idx, diffDays: diffDays });
                     }
                 }
             });
@@ -1097,30 +1133,34 @@
             const listaContainer = document.getElementById('listaNotificacoes');
 
             if (badge && listaContainer) {
-                if(pendentesHoje.length > 0) {
+                if(pendingList.length > 0) {
                     badge.classList.remove('hidden');
-                    badge.innerText = pendentesHoje.length;
+                    badge.innerText = pendingList.length;
                     
                     let html = "";
-                    pendentesHoje.forEach(p => {
-                        let dataOp = new Date(p.data + "T12:00:00");
-                        dataOp.setHours(0,0,0,0);
-                        
-                        let textDate = dataOp < hoje ? `<span class="status-badge badge-atrasado">Atrasado (${p.data.split('-').reverse().join('/')})</span>` : `<span class="status-badge badge-pendente">Vence Hoje</span>`;
-                        
+                    pendingList.forEach(p => {
+                        let statusHtml;
+                        if(p.diffDays < 0) statusHtml = `<span class="status-badge badge-atrasado">Atrasado (${p.data.split('-').reverse().join('/')})</span>`;
+                        else if(p.diffDays === 0) statusHtml = `<span class="status-badge badge-pendente">Vence Hoje</span>`;
+                        else statusHtml = `<span class="status-badge badge-pendente">Vence em ${p.diffDays} dia(s)</span>`;
+
                         html += `
                         <div class="item-notificacao" onclick="openModal(${p.realIdx})" style="cursor:pointer; display:flex; justify-content:space-between; align-items:center;">
                             <div>
                                 <strong style="color:var(--text); font-size:0.85rem; display:block;">${p.desc}</strong>
-                                ${textDate}
+                                ${statusHtml}
                             </div>
                             <strong style="color:var(--danger); font-size:0.85rem;">${formatarMoeda(p.valor - (p.pago || 0))}</strong>
                         </div>`;
                     });
                     listaContainer.innerHTML = html;
+                    
+                    // Alerta de som
+                    sessionStorage.setItem('hasPendingAlert', 'true');
                 } else {
                     badge.classList.add('hidden');
-                    listaContainer.innerHTML = `<div style="padding:20px; text-align:center; color:var(--text-muted); font-size:0.8rem;">Tudo em dia! Nenhuma pendência atrasada.</div>`;
+                    listaContainer.innerHTML = `<div style="padding:20px; text-align:center; color:var(--text-muted); font-size:0.8rem;">Tudo em dia! Nenhuma pendência para os próximos 3 dias.</div>`;
+                    sessionStorage.setItem('hasPendingAlert', 'false');
                 }
             }
         }
@@ -1140,7 +1180,6 @@
             const ordenados = [...registros].sort((a, b) => new Date(b.data) - new Date(a.data));
             const registrosDoMes = ordenados.filter(r => r.data.startsWith(prefixoMes));
             
-            // AGRUPAR POR DATA PARA O HISTÓRICO
             let agrupados = {};
             
             registrosDoMes.forEach((r) => {
@@ -1163,14 +1202,13 @@
 
                 if(exibir) {
                     let dataFormatada = r.data.split('-').reverse().join('/');
-                    
                     let hoje = new Date();
                     let ontem = new Date(hoje); ontem.setDate(ontem.getDate() - 1);
                     let targetDate = new Date(r.data + "T12:00:00");
                     
                     let groupName = dataFormatada;
-                    if(targetDate.toDateString() === hoje.toDateString()) groupName = "HOJE";
-                    else if(targetDate.toDateString() === ontem.toDateString()) groupName = "ONTEM";
+                    if(targetDate.toDateString() === hoje.toDateString()) groupName = "Hoje";
+                    else if(targetDate.toDateString() === ontem.toDateString()) groupName = "Ontem";
 
                     if(!agrupados[groupName]) agrupados[groupName] = [];
                     agrupados[groupName].push({ ...r, realIdx: idxO, isPago, vT });
@@ -1189,8 +1227,15 @@
                         let color = r.tipo === 'Receita' ? 'var(--success)' : (r.tipo === 'Divida' ? 'var(--danger)' : (r.tipo === 'Reserva' ? 'var(--reserve)' : 'var(--warning)'));
                         let extraInfo = r.forma ? ` • ${r.forma}` : '';
                         
-                        let statusColor = r.isPago ? (r.tipo === 'Receita' ? 'var(--success)' : 'var(--success)') : 'var(--danger)';
+                        let statusColor = r.isPago ? (r.tipo === 'Receita' ? 'var(--success)' : 'var(--success)') : 'var(--warning)';
                         let statusText = r.isPago ? (r.tipo === 'Receita' ? 'RECEBIDO' : 'LIQUIDADO') : 'PENDENTE';
+                        
+                        // Status Atrasado
+                        if(!r.isPago && (r.tipo === 'Divida' || r.tipo === 'Fixo' || r.tipo === 'Variavel')) {
+                            let h = new Date(); h.setHours(0,0,0,0);
+                            let o = new Date(r.data + "T12:00:00"); o.setHours(0,0,0,0);
+                            if(o < h) { statusColor = 'var(--danger)'; statusText = 'ATRASADO'; }
+                        }
                         
                         let recAction = '';
                         if(r.comprovante) {
@@ -1203,7 +1248,7 @@
                                 <div class="icon-box" style="color:${color};"><i class="fa-solid ${icon}"></i></div>
                                 <div class="details">
                                     <strong>${r.desc}</strong>
-                                    <span>${r.tipo}${extraInfo}</span>
+                                    <span>${r.categoria || r.tipo}${extraInfo}</span>
                                     ${recAction}
                                 </div>
                             </div>
@@ -1223,15 +1268,14 @@
             if (document.getElementById('totalSaldo')) document.getElementById('totalSaldo').innerText = ocultarBits(sRec - (sGas + sDiv)); 
             
             const pSaida = sRec > 0 ? Math.min(((sGas + sDiv) / sRec) * 100, 100) : 0;
-            const pRes = sRec > 0 ? Math.min((sRes / sRec) * 100, 100) : 0;
+            const pRes = sRec > 0 ? Math.min((sRes) / sRec * 100, 100) : 0;
             
             if (document.getElementById('fillSaida')) document.getElementById('fillSaida').style.width = pSaida + '%';
             if (document.getElementById('labelPercSaida')) document.getElementById('labelPercSaida').innerText = pSaida.toFixed(1) + '%';
             if (document.getElementById('fillRes')) document.getElementById('fillRes').style.width = pRes + '%';
             if (document.getElementById('labelPercRes')) document.getElementById('labelPercRes').innerText = pRes.toFixed(1) + '%';
-            if (document.getElementById('contadorRegistros')) document.getElementById('contadorRegistros').innerText = registros.length;
             
-            // ATUALIZA BARRA DA META NA TELA PRINCIPAL (Lendo da variável global independente)
+            // ATUALIZA BARRA DA META NA TELA PRINCIPAL (Variável global independente)
             if(appConfig.metaMensal > 0) {
                 const acumulado = appConfig.metaAcumulado || 0;
                 const progresso = Math.min((acumulado / appConfig.metaMensal) * 100, 100);
@@ -1312,18 +1356,27 @@
 
                 if (r.tipo === 'Receita') {
                     resumo?.classList.remove('hidden');
-                    if (document.getElementById('resumoTitulo')) document.getElementById('resumoTitulo').innerText = "Resumo Receitas (Mês)";
+                    if (document.getElementById('resumoTitulo')) document.getElementById('resumoTitulo').innerHTML = `Resumo Receitas (Mês) ${getBankBadge(r.desc)}`;
                     const recs = registros.filter(reg => reg.tipo === 'Receita' && reg.data.startsWith(prefixoMes) && reg.pago >= reg.valor);
                     const porForma = (f) => recs.filter(x => x.forma === f).reduce((a,b) => a+b.valor, 0);
                     if (document.getElementById('resumoConteudo')) document.getElementById('resumoConteudo').innerHTML = `<div class="resumo-item">Pix<strong>${ocultarBits(porForma('Pix'))}</strong></div><div class="resumo-item">Dinheiro<strong>${ocultarBits(porForma('Dinheiro'))}</strong></div><div class="resumo-item">Cartão<strong>${ocultarBits(porForma('Cartão'))}</strong></div><div class="resumo-item">Total Recebido<strong>${ocultarBits(recs.reduce((a,b)=>a+b.valor,0))}</strong></div>`;
                 } else if (r.desc.includes('(')) {
                     resumo?.classList.remove('hidden');
-                    if (document.getElementById('resumoTitulo')) document.getElementById('resumoTitulo').innerText = "Resumo do Contrato";
+                    if (document.getElementById('resumoTitulo')) document.getElementById('resumoTitulo').innerHTML = `Resumo do Contrato ${getBankBadge(r.desc)}`;
                     const base = r.desc.split('(')[0].trim();
                     const vinc = registros.filter(reg => reg.desc.startsWith(base));
                     const tV = vinc.reduce((a,c)=>a+c.valor, 0);
                     const tP = vinc.reduce((a,c)=>a+c.pago, 0);
-                    if (document.getElementById('resumoConteudo')) document.getElementById('resumoConteudo').innerHTML = `<div class="resumo-item">Total Contrato<strong>${ocultarBits(tV)}</strong></div><div class="resumo-item">Total Pago<strong>${ocultarBits(tP)}</strong></div><div class="resumo-item">Restante<strong>${ocultarBits(tV-tP)}</strong></div><div class="resumo-item">Faltam<strong>${vinc.filter(x=>x.pago<x.valor).length} parc.</strong></div>`;
+                    const diaVenc = r.data.split('-')[2];
+                    
+                    if (document.getElementById('resumoConteudo')) document.getElementById('resumoConteudo').innerHTML = `
+                        <div class="resumo-item">Total Contrato<strong>${ocultarBits(tV)}</strong></div>
+                        <div class="resumo-item">Total Pago<strong>${ocultarBits(tP)}</strong></div>
+                        <div class="resumo-item">Restante<strong>${ocultarBits(tV-tP)}</strong></div>
+                        <div class="resumo-item">Faltam<strong>${vinc.filter(x=>x.pago<x.valor).length} parc.</strong></div>
+                        <div class="resumo-item">Valor Parcela<strong>${ocultarBits(r.valor)}</strong></div>
+                        <div class="resumo-item">Vencimento<strong>Todo dia ${diaVenc}</strong></div>
+                    `;
                 } else { 
                     resumo?.classList.add('hidden'); 
                 }
@@ -1404,7 +1457,6 @@
             let fontColor = getComputedStyle(document.body).getPropertyValue('--text-muted').trim() || '#999';
             const prefixoMes = `${dataVisualizacao.getFullYear()}-${String(dataVisualizacao.getMonth() + 1).padStart(2, '0')}`;
             
-            // Calculo para categorias de despesas
             let despesasCategoria = {};
             let pagoVal = 0, pendenteVal = 0;
             
