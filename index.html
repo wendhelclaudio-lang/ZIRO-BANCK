@@ -15,8 +15,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
     
     <style>
         /* VARIÁVEIS DE TEMAS */
@@ -60,60 +63,63 @@
         * { box-sizing: border-box; outline: none; transition: background-color 0.3s, color 0.3s, border-color 0.3s; }
         body { font-family: 'Ubuntu', system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 0; overflow-x: hidden; font-size: 0.95rem; }
 
-        /* TELA DE BLOQUEIO */
+        /* TELA DE BLOQUEIO E CADASTRO */
         #lock-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(3, 7, 18, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; transition: opacity 0.5s ease, visibility 0.5s; }
         [data-theme="light"] #lock-screen, [data-theme="santander"] #lock-screen, [data-theme="itau"] #lock-screen, [data-theme="bradesco"] #lock-screen, [data-theme="nubank"] #lock-screen { background: rgba(255, 255, 255, 0.85); }
         .lock-avatar { width: 100px; height: 100px; border-radius: 25px; background: linear-gradient(135deg, var(--accent), #0a192f); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: white; margin-bottom: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); background-size: cover; background-position: center;}
         .lock-title { font-size: 1.5rem; margin-bottom: 5px; color: var(--text); font-weight: 700; text-align: center;}
         .lock-subtitle { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 30px; text-align: center;}
-        .lock-input { width: 100%; max-width: 300px; background: var(--input-bg); border: 2px solid var(--border); padding: 18px; border-radius: 14px; color: var(--text); font-size: 1.2rem; text-align: center; letter-spacing: 5px; margin-bottom: 20px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); transition: all 0.3s; }
+        .lock-input { width: 100%; max-width: 300px; background: var(--input-bg); border: 2px solid var(--border); padding: 16px; border-radius: 12px; color: var(--text); font-size: 1.1rem; text-align: center; margin-bottom: 15px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); transition: all 0.3s; }
+        .lock-input.password { letter-spacing: 5px; font-size: 1.3rem; }
         .lock-input:focus { border-color: var(--accent); box-shadow: 0 0 15px rgba(0, 242, 255, 0.2); }
+        
         .btn-login { width: 100%; max-width: 300px; background: var(--accent); color: #fff; border: none; padding: 18px; border-radius: 14px; font-weight: 800; font-size: 1.1rem; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.2); margin-bottom: 15px; }
         .btn-login:active { transform: scale(0.98); }
         .btn-forgot { background: none; border: none; color: var(--accent); font-family: 'Ubuntu'; font-size: 0.85rem; cursor: pointer; margin-bottom: 20px; font-weight: 600;}
         .btn-google { width: 100%; max-width: 300px; background: var(--card); color: var(--text); border: 1px solid var(--border); padding: 16px; border-radius: 14px; font-weight: 600; display: flex; justify-content: center; align-items: center; gap: 10px; cursor: pointer; font-size: 0.95rem; }
-        .btn-google i { color: #DB4437; font-size: 1.2rem; }
 
         /* TOAST NOTIFICATION */
         #toast-container { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 100000; display: flex; flex-direction: column; gap: 10px; pointer-events: none; width: 90%; max-width: 350px;}
         .toast { background: var(--card); color: var(--text); padding: 16px 20px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 15px; font-weight: 500; font-size: 0.9rem; animation: slideUp 0.3s ease forwards; border-left: 5px solid var(--accent); }
         .toast.success { border-left-color: var(--success); }
         .toast.error { border-left-color: var(--danger); }
+        .toast.warning { border-left-color: var(--warning); }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         /* ESTRUTURA PRINCIPAL */
         header { background: var(--bg); padding: 18px 22px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
         .profile-section { display: flex; align-items: center; gap: 14px; cursor: pointer; }
         .avatar { width: 44px; height: 44px; border-radius: 14px; background: linear-gradient(135deg, var(--accent), #0a192f); display: flex; align-items: center; justify-content: center; font-weight: bold; color: #ffffff; border: 2px solid var(--border); font-size: 1.3rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2); overflow: hidden; background-size: cover; background-position: center; }
-        [data-theme="light"] .avatar { box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .user-info span { font-size: 0.65rem; color: var(--text-muted); letter-spacing: 1px; display: block; text-transform: uppercase; margin-bottom: 2px; }
         .user-info strong { font-size: 0.95rem; color: var(--text); letter-spacing: 0.5px;}
 
+        /* NOTIFICAÇÃO SINO */
+        .bell-btn { background:none; border:1px solid var(--border); color:var(--text); padding:8px 10px; border-radius:10px; cursor:pointer; position:relative; display: flex; align-items: center; justify-content: center; height: 38px; width: 38px; }
+        .badge { position:absolute; top:-5px; right:-5px; background:var(--danger); color:white; font-size:0.6rem; font-weight:bold; border-radius:50%; width:18px; height:18px; display:flex; align-items:center; justify-content:center; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+
+        /* MENU LATERAL MELHORADO */
         .sidebar { position: fixed; top: 0; right: -100%; width: 85%; max-width: 380px; height: 100%; background: var(--card); z-index: 3000; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); padding: 30px 24px; border-left: 1px solid var(--accent); box-shadow: -15px 0 40px rgba(0,0,0,0.7); display: flex; flex-direction: column; overflow-y: auto; }
         [data-theme="light"] .sidebar { box-shadow: -15px 0 40px rgba(0,0,0,0.1); }
         .sidebar.open { right: 0; }
-        .sidebar-header { margin-bottom: 25px; text-align: center; position: relative; }
-        .status-panel { background: rgba(255,255,255,0.03); padding: 16px; border-radius: 16px; margin-bottom: 25px; border: 1px solid var(--border); }
+        .sidebar-header { margin-bottom: 20px; text-align: center; position: relative; }
+        .status-panel { background: rgba(255,255,255,0.03); padding: 16px; border-radius: 16px; margin-bottom: 15px; border: 1px solid var(--border); }
         [data-theme="light"] .status-panel, [data-theme="bradesco"] .status-panel { background: rgba(0,0,0,0.02); }
         .status-row { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 12px; align-items: center; }
         .status-row:last-child { margin-bottom: 0; }
         .status-label { color: var(--text-muted); }
-
-        .meta-panel { margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border); }
-        .meta-label { display: flex; justify-content: space-between; font-size: 0.7rem; margin-bottom: 8px; color: var(--text); }
-        .meta-track { background: var(--bg); height: 8px; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
-        .meta-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--success)); transition: width 1s cubic-bezier(0.17, 0.67, 0.83, 0.67); }
-
-        .sidebar-menu { display: flex; flex-direction: column; gap: 10px; flex: 1; padding-bottom: 20px;}
-        .menu-item { padding: 14px 18px; border-radius: 12px; background: var(--hover-bg); display: flex; align-items: center; justify-content: space-between; gap: 15px; font-size: 0.85rem; cursor: pointer; border: 1px solid transparent; color: var(--text); font-weight: 500;}
+        
+        .menu-group-title { font-size: 0.65rem; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin: 15px 0 8px 10px; font-weight: 800; opacity: 0.9; }
+        .sidebar-menu { display: flex; flex-direction: column; gap: 8px; flex: 1; padding-bottom: 20px;}
+        .menu-item { padding: 12px 16px; border-radius: 12px; background: var(--hover-bg); display: flex; align-items: center; justify-content: space-between; gap: 15px; font-size: 0.85rem; cursor: pointer; border: 1px solid transparent; color: var(--text); font-weight: 500;}
         .menu-item:active { background: var(--border); transform: scale(0.98); }
         .menu-item div { display: flex; align-items: center; gap: 15px; }
         .menu-item i { color: var(--accent); font-size: 1.1rem; width: 25px; text-align: center; }
 
-        .theme-selector { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 10px; margin-top: 5px; display: none; flex-direction: column; gap: 5px; }
+        .theme-selector { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 10px; display: none; flex-direction: column; gap: 5px; }
         .theme-selector.open { display: flex; }
         .theme-btn { padding: 10px; border-radius: 8px; font-size: 0.8rem; cursor: pointer; border: 1px solid var(--border); background: var(--card); color: var(--text); text-align: center; font-weight: bold; }
 
+        /* HEADER INFO E DASHBOARD */
         .month-selector { display: flex; justify-content: space-between; align-items: center; padding: 22px 22px 0; }
         .month-selector button { background: var(--hover-bg); border: 1px solid var(--border); color: var(--text); width: 38px; height: 38px; border-radius: 10px; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .month-selector span { font-size: 0.95rem; font-weight: 800; text-transform: uppercase; color: var(--accent); letter-spacing: 1.2px; }
@@ -133,8 +139,6 @@
         .section-header { display: flex; justify-content: space-between; align-items: center; margin: 20px 0 15px; }
         .section-header h3 { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; margin: 0; letter-spacing: 1px;}
         
-        #btnVoltar { background: rgba(0, 0, 0, 0.05); color: var(--accent); border: 1px solid var(--accent); padding: 6px 12px; border-radius: 8px; font-size: 0.7rem; font-weight: 800; cursor: pointer; }
-
         .submenu-divida { display: flex; gap: 10px; margin-bottom: 18px; }
         .sub-btn { flex: 1; padding: 10px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; font-size: 0.65rem; font-weight: 800; color: var(--text-muted); letter-spacing: 0.5px;}
         .sub-btn.active { background: var(--hover-bg); border-color: var(--accent); color: var(--accent); }
@@ -144,11 +148,13 @@
         .details { flex: 1; overflow: hidden; }
         .details strong { display: block; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text); margin-bottom: 3px;}
         .details span { font-size: 0.7rem; color: var(--text-muted); font-weight: 500; display: block;}
-        .details .btn-ver-comp { display: inline-block; background: rgba(0, 242, 255, 0.1); color: var(--accent); border: 1px solid var(--accent); padding: 3px 8px; border-radius: 6px; font-size: 0.65rem; margin-top: 6px; cursor: pointer; }
+        .details .btn-ver-comp { display: inline-block; background: rgba(0, 242, 255, 0.1); color: var(--accent); border: 1px solid var(--accent); padding: 4px 10px; border-radius: 8px; font-size: 0.65rem; margin-top: 6px; cursor: pointer; font-weight: 800; text-transform: uppercase; }
+        
         .amount { text-align: right; min-width: 90px; }
         .amount strong { display: block; font-size: 0.9rem; color: var(--text); margin-bottom: 3px;}
         .amount .status-debt { font-size: 0.6rem; font-weight: 800; display: block; letter-spacing: 0.5px;}
 
+        /* BARRAS INFERIORES E GRÁFICOS */
         .bottom-charts { padding: 22px; background: var(--card); border-top: 1px solid var(--border); margin-bottom: 100px; border-radius: 24px 24px 0 0; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); }
         .chart-bar-group { margin-bottom: 16px; }
         .chart-label { display: flex; justify-content: space-between; font-size: 0.7rem; margin-bottom: 6px; color: var(--text-muted); font-weight: 500; }
@@ -156,8 +162,9 @@
         .chart-fill { height: 100%; width: 0%; transition: 1s cubic-bezier(0.17, 0.67, 0.83, 0.67); }
         
         .action-buttons { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
-        .action-btn { flex: 1; min-width: 45%; padding: 10px; background: rgba(0,242,255,0.1); border: 1px solid var(--accent); border-radius: 10px; color: var(--accent); font-weight: 800; font-size: 0.7rem; cursor: pointer; display: flex; align-items: center; justify-content: center;}
+        .action-btn { flex: 1; min-width: 45%; padding: 12px 10px; background: rgba(0,242,255,0.1); border: 1px solid var(--accent); border-radius: 10px; color: var(--accent); font-weight: 800; font-size: 0.7rem; cursor: pointer; display: flex; align-items: center; justify-content: center;}
 
+        /* MODAIS */
         .fab { position: fixed; bottom: 30px; right: 22px; width: 60px; height: 60px; border-radius: 20px; background: var(--accent); color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; box-shadow: 0 10px 25px rgba(0,0,0,0.2); border: none; z-index: 1000; cursor: pointer; transition: transform 0.2s; }
         .fab:active { transform: scale(0.95); }
 
@@ -178,30 +185,19 @@
 
         .bloco-parcelas, .resumo-quitacao, .bloco-comprovante { background: var(--hover-bg); padding: 16px; border-radius: 14px; border: 1px dashed var(--accent); margin-bottom: 16px; }
         .bloco-comprovante { border: 1px solid var(--border); }
-        .resumo-quitacao h4 { margin: 0 0 10px 0; font-size: 0.75rem; color: var(--accent); text-transform: uppercase; letter-spacing: 1px;}
         .resumo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .resumo-item { font-size: 0.7rem; color: var(--text-muted); }
         .resumo-item strong { color: var(--text); display: block; font-size: 0.85rem; margin-top: 2px;}
 
-        /* Ajuste Crucial para o Chart.js não crescer infinitamente */
-        .grafico-container { 
-            background: var(--bg); 
-            border: 1px solid var(--border); 
-            border-radius: 14px; 
-            padding: 15px; 
-            margin-bottom: 25px; 
-            width: 100%;
-        }
-        
-        canvas {
-            max-width: 100%;
-            max-height: 100%;
-        }
+        /* Container protegido para gráficos (impede que fiquem crescendo) */
+        .grafico-container { background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 15px; margin-bottom: 25px; position: relative; height: 250px; width: 100%; }
         
         .btn-toggle-meses { flex: 1; padding: 10px; background: var(--input-bg); border: 1px solid var(--border); border-radius: 10px; color: var(--text-muted); font-weight: 800; font-size: 0.75rem; cursor: pointer; }
         .btn-toggle-meses.active { background: rgba(0,242,255,0.1); border-color: var(--accent); color: var(--accent); }
 
         .comprovante-img-preview { width: 100%; max-height: 400px; object-fit: contain; border-radius: 12px; background: var(--bg); border: 1px solid var(--border); }
+        .item-notificacao { padding: 12px; border-bottom: 1px solid var(--border); }
+        .item-notificacao:last-child { border-bottom: none; }
     </style>
 </head>
 <body>
@@ -210,22 +206,31 @@
 
     <div id="lock-screen" class="hidden">
         <div class="lock-avatar" id="loginAvatar">WC</div>
-        <h2 class="lock-title">Bem-vindo(a)</h2>
-        <p class="lock-subtitle" id="loginSubtitle">Insira sua senha para acessar</p>
-        <input type="password" id="inputSenha" class="lock-input" placeholder="••••" inputmode="numeric" onkeypress="if(event.key === 'Enter') checkLogin()">
         
-        <button class="btn-confirm" style="max-width: 300px; margin-top: 0; box-shadow: 0 5px 15px rgba(0,0,0,0.3);" onclick="checkLogin()">ENTRAR</button>
-        <button class="btn-forgot" onclick="recuperarSenha()">Esqueci minha senha</button>
-        
-        <div style="margin: 10px 0 20px 0; width: 100%; max-width: 300px; display: flex; align-items: center; gap: 10px; color: var(--text-muted); font-size: 0.8rem;">
-            <div style="flex: 1; height: 1px; background: var(--border);"></div>
-            OU
-            <div style="flex: 1; height: 1px; background: var(--border);"></div>
+        <div id="viewCadastro" class="hidden" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+            <h2 class="lock-title">Criar Conta</h2>
+            <p class="lock-subtitle">Bem-vindo(a) ao MeuCaixa (Local)</p>
+            <input type="text" id="cadNome" class="lock-input" placeholder="Seu Nome Completo">
+            <input type="email" id="cadEmail" class="lock-input" placeholder="Seu E-mail">
+            <input type="password" id="cadSenha" class="lock-input password" placeholder="Crie uma Senha / PIN" onkeypress="if(event.key === 'Enter') efetuarCadastro()">
+            <button class="btn-confirm" style="max-width: 300px; margin-top: 10px;" onclick="efetuarCadastro()">CADASTRAR E ENTRAR</button>
         </div>
 
-        <button class="btn-google" onclick="simularGoogleLogin()">
-            <i class="fa-brands fa-google"></i> Continuar com Google
-        </button>
+        <div id="viewLogin" class="hidden" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+            <h2 class="lock-title">Bem-vindo(a) de volta!</h2>
+            <p class="lock-subtitle" id="loginSubtitle">Insira sua senha para acessar</p>
+            <input type="password" id="inputSenha" class="lock-input password" placeholder="••••" onkeypress="if(event.key === 'Enter') checkLogin()">
+            <button class="btn-confirm" style="max-width: 300px; margin-top: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);" onclick="checkLogin()">ENTRAR</button>
+            <button class="btn-forgot" onclick="recuperarSenha()">Esqueci minha senha</button>
+        </div>
+
+        <div id="viewRecuperar" class="hidden" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+            <h2 class="lock-title">Recuperar Senha</h2>
+            <p class="lock-subtitle">Confirme seu E-mail cadastrado</p>
+            <input type="email" id="recEmail" class="lock-input" placeholder="Seu E-mail">
+            <button class="btn-confirm" style="max-width: 300px; margin-top: 10px;" onclick="enviarCodigoRecuperacao()">RECEBER CÓDIGO</button>
+            <button class="btn-forgot" style="margin-top: 15px;" onclick="mostrarViewLogin()">Voltar ao Login</button>
+        </div>
     </div>
 
     <header>
@@ -236,18 +241,25 @@
                 <strong id="headerUserName">WENDEL CARNEIRO</strong>
             </div>
         </div>
-        <button onclick="toggleFantasma()" style="background:none; border:1px solid var(--border); color:var(--text); padding:8px 10px; border-radius:10px; cursor:pointer;">
-            <i id="eyeIcon" class="fa-solid fa-eye"></i>
-        </button>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <button class="bell-btn" onclick="abrirNotificacoes()">
+                <i class="fa-solid fa-bell"></i>
+                <span id="badgeNotificacao" class="badge hidden">0</span>
+            </button>
+            <button onclick="toggleFantasma()" style="background:none; border:1px solid var(--border); color:var(--text); padding:8px 10px; border-radius:10px; cursor:pointer;">
+                <i id="eyeIcon" class="fa-solid fa-eye"></i>
+            </button>
+        </div>
     </header>
 
     <div class="sidebar" id="profileSidebar">
         <div style="text-align: right; margin-bottom: 15px;"><i class="fa-solid fa-xmark" style="font-size: 1.4rem; cursor: pointer; color: var(--text-muted);" onclick="toggleSidebar()"></i></div>
+        
         <div class="sidebar-header">
             <div class="avatar" id="sidebarAvatar" style="width: 70px; height: 70px; font-size: 2rem; margin: 0 auto 12px;">WC</div>
             <h2 style="margin:0; font-size: 1.15rem; color: var(--text);" id="sidebarUserName">WENDEL CARNEIRO</h2>
-            <span style="color: var(--accent); font-size: 0.75rem;">Operacional</span>
         </div>
+        
         <div class="status-panel">
             <div class="status-row"><span class="status-label">Conexão</span><strong style="color: var(--success); font-size: 0.75rem;">SEGURO (LOCAL)</strong></div>
             <div class="status-row"><span class="status-label">Usuário</span><strong style="color: var(--text); font-size: 0.75rem;" id="userEmailSidebar">usuario@local</strong></div>
@@ -262,6 +274,7 @@
         </div>
         
         <div class="sidebar-menu">
+            <div class="menu-group-title">Sua Conta</div>
             <div class="menu-item" onclick="mudarNome()">
                 <div><i class="fa-solid fa-user" style="color: var(--accent)"></i> <span>Mudar Nome</span></div>
             </div>
@@ -269,15 +282,14 @@
             <div class="menu-item" onclick="document.getElementById('fotoPerfilInput').click()">
                 <div><i class="fa-solid fa-camera" style="color: var(--accent)"></i> <span>Alterar Foto</span></div>
             </div>
-            
             <div class="menu-item" onclick="abrirModalMeta()">
-                <div><i class="fa-solid fa-bullseye" style="color: var(--success)"></i> <span>Meta de Economia</span></div>
+                <div><i class="fa-solid fa-bullseye" style="color: var(--success)"></i> <span>Definir Meta Mensal</span></div>
             </div>
 
+            <div class="menu-group-title">Ajustes & Segurança</div>
             <div class="menu-item" onclick="configurarSenha()">
                 <div><i class="fa-solid fa-lock" style="color: var(--accent)"></i> <span>Alterar Senha</span></div>
             </div>
-
             <div class="menu-item" onclick="document.getElementById('themeOptions').classList.toggle('open')">
                 <div><i class="fa-solid fa-palette" style="color: var(--accent)"></i> <span>Aparência / Banco</span></div>
                 <i class="fa-solid fa-chevron-down" style="font-size: 0.8rem; width: auto; color: var(--text);"></i>
@@ -290,12 +302,12 @@
                 <div class="theme-btn" onclick="mudarTema('itau')" style="border-left: 4px solid #ec7000; background: #f0f1f3; color: #002959;">Itaú</div>
                 <div class="theme-btn" onclick="mudarTema('bradesco')" style="border-left: 4px solid #cc092f; background: #fff; color: #333;">Bradesco</div>
             </div>
-
             <div class="menu-item" onclick="mudarMoeda()">
                 <div><i class="fa-solid fa-dollar-sign" style="color: var(--warning)"></i> <span>Símbolo da Moeda</span></div>
                 <span id="currentCurrencyDisplay" style="font-size: 0.75rem; color: var(--text-muted); font-weight: bold;">R$</span>
             </div>
             
+            <div class="menu-group-title">Sistema & Dados</div>
             <div class="menu-item" onclick="exportarDados()">
                 <div><i class="fa-solid fa-download" style="color: var(--accent)"></i> <span>Exportar Relatório</span></div>
             </div>
@@ -303,17 +315,15 @@
             <div class="menu-item" onclick="document.getElementById('fileInput').click()" style="display:none;"> 
                 <div><i class="fa-solid fa-file-import"></i> <span>Importar Backup</span></div>
             </div>
-            
             <div class="menu-item" onclick="limparMesAtual()">
                 <div><i class="fa-solid fa-calendar-xmark" style="color: var(--warning);"></i> <span style="color: var(--warning);">Limpar Mês Atual</span></div>
             </div>
-            
             <div class="menu-item" onclick="limparTerminal()">
                 <div><i class="fa-solid fa-trash" style="color: var(--danger);"></i> <span style="color: var(--danger);">Zerar Banco</span></div>
             </div>
 
-            <div class="menu-item" onclick="sairApp()">
-                <div><i class="fa-solid fa-right-from-bracket" style="color: var(--danger);"></i> <span style="color: var(--danger);">Sair</span></div>
+            <div class="menu-item" onclick="sairApp()" style="margin-top: 15px;">
+                <div><i class="fa-solid fa-right-from-bracket" style="color: var(--danger);"></i> <span style="color: var(--danger);">Sair (Logout)</span></div>
             </div>
         </div>
     </div>
@@ -339,7 +349,7 @@
     <main>
         <div class="section-header">
             <h3 id="txtExtrato">Operações</h3>
-            <button id="btnVoltar" class="hidden" onclick="filtrarExtrato('Tudo')"><i class="fa-solid fa-chevron-left"></i> VOLTAR</button>
+            <button id="btnVoltar" class="hidden" onclick="filtrarExtrato('Tudo')" style="background: rgba(0, 0, 0, 0.05); color: var(--accent); border: 1px solid var(--accent); padding: 6px 12px; border-radius: 8px; font-size: 0.7rem; font-weight: 800; cursor: pointer;"><i class="fa-solid fa-chevron-left"></i> VOLTAR</button>
         </div>
         
         <div id="subFiltros" class="submenu-divida hidden">
@@ -433,8 +443,8 @@
             <span class="label-mini"><i class="fa-solid fa-receipt"></i> Comprovante de Pagamento</span>
             <div style="display: flex; gap: 8px;">
                 <input type="file" id="comprovanteInput" accept="image/*,.pdf" style="display: none;" onchange="handleComprovante(event)">
-                <button class="btn-google" style="margin:0; width:100%; max-width:100%; justify-content: flex-start;" onclick="document.getElementById('comprovanteInput').click()" id="btnComprovanteText">
-                    <i class="fa-solid fa-image" style="color: var(--text-muted); font-size: 1rem;"></i> <span id="txtNomeArqComp" style="color: var(--text-muted);">Selecionar arquivo...</span>
+                <button class="btn-google" style="margin:0; width:100%; max-width:100%; justify-content: flex-start; color: var(--text-muted);" onclick="document.getElementById('comprovanteInput').click()" id="btnComprovanteText">
+                    <i class="fa-solid fa-image" style="color: var(--text-muted); font-size: 1rem;"></i> <span id="txtNomeArqComp">Selecionar arquivo...</span>
                 </button>
             </div>
             <input type="hidden" id="comprovanteBase64">
@@ -452,10 +462,10 @@
         </div>
         <span class="label-mini">Tipo de Meta</span>
         <select id="tipoMeta">
-            <option value="economia">Meta de Economia</option>
-            <option value="receita">Meta de Receita</option>
-            <option value="investimento">Meta de Investimento</option>
-            <option value="divida">Meta de Quitação</option>
+            <option value="economia">🎯 Meta de Economia</option>
+            <option value="receita">💰 Meta de Receita</option>
+            <option value="investimento">📈 Meta de Investimento</option>
+            <option value="divida">🛡️ Meta de Quitação</option>
         </select>
         <span class="label-mini">Valor da Meta</span>
         <input type="number" id="valorMetaInput" placeholder="0,00" step="0.01">
@@ -497,13 +507,12 @@
             <button class="btn-toggle-meses active" id="btnRel3m" onclick="renderizarRelatorios(3)">3 MESES</button>
             <button class="btn-toggle-meses" id="btnRel6m" onclick="renderizarRelatorios(6)">6 MESES</button>
         </div>
-        <div id="listaComprovantes">
-            </div>
+        <div id="listaComprovantes"></div>
     </div>
 
     <div class="modal" id="modalViewComprovante">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <h2 style="margin:0; font-size:1.15rem; color: var(--text);">Comprovante</h2>
+            <h2 style="margin:0; font-size:1.15rem; color: var(--text);">Visualizar Anexo</h2>
             <i class="fa-solid fa-xmark" style="font-size:1.4rem; color:var(--text-muted); cursor:pointer;" onclick="closeViewComprovante()"></i>
         </div>
         <div id="comprovanteContent" style="text-align:center;">
@@ -516,30 +525,40 @@
             <i class="fa-solid fa-xmark" style="font-size:1.4rem; color:var(--text-muted); cursor:pointer;" onclick="closeModal()"></i>
         </div>
         <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.4;">
-            Anexe um <b>print de tela</b> do seu extrato bancário (Pix, compras, etc). A IA lerá a imagem e gerará um relatório automático!
+            Anexe um <b>print de tela ou PDF</b> do seu extrato bancário (Pix, compras, etc). A IA lerá o arquivo e gerará um relatório automático!
         </p>
         
-        <input type="file" id="extratoInput" accept="image/*" style="display: none;" onchange="processarExtratoImagem(event)">
+        <input type="file" id="extratoInput" accept="image/*,application/pdf" style="display: none;" onchange="processarExtratoImagem(event)">
         <button class="btn-confirm" onclick="document.getElementById('extratoInput').click()" style="background: var(--success); margin-bottom: 20px;">
-            <i class="fa-solid fa-camera"></i> SELECIONAR IMAGEM DO EXTRATO
+            <i class="fa-solid fa-file-arrow-up"></i> SELECIONAR EXTRATO
         </button>
 
         <div id="leitorLoading" class="hidden" style="text-align:center; padding:20px; color:var(--success);">
             <i class="fa-solid fa-spinner fa-spin" style="font-size: 2rem; margin-bottom:10px;"></i>
-            <p style="font-size: 0.9rem; font-weight: bold;">Analisando dados da imagem com Inteligência Artificial...</p>
-            <p style="font-size: 0.7rem; color: var(--text-muted);">Isso pode demorar alguns segundos dependendo da imagem.</p>
+            <p style="font-size: 0.9rem; font-weight: bold;">Analisando dados com Inteligência Artificial...</p>
+            <p style="font-size: 0.7rem; color: var(--text-muted);">Isso pode demorar alguns segundos.</p>
         </div>
 
         <div id="leitorResult" class="hidden">
-            <div class="grafico-container">
+            <div class="grafico-container" style="height: 300px;">
                 <span class="label-mini">Resumo do Extrato Lido</span>
-                <div style="position: relative; height: 220px; width: 100%;">
+                <div style="position: relative; height: 260px; width: 100%;">
                     <canvas id="chartLeitor"></canvas>
                 </div>
             </div>
             <h4 style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px;">Operações Encontradas:</h4>
             <div id="leitorLista"></div>
         </div>
+    </div>
+
+    <div class="modal modal-small" id="modalNotificacoes">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <h2 style="margin:0; font-size:1.15rem; color: var(--danger);"><i class="fa-solid fa-bell"></i> Pendências</h2>
+            <i class="fa-solid fa-xmark" style="font-size:1.4rem; color:var(--text-muted); cursor:pointer;" onclick="closeModal()"></i>
+        </div>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">Operações que passaram da data e ainda não foram liquidadas.</p>
+        <div id="listaNotificacoes" style="background: var(--bg); border: 1px solid var(--border); border-radius: 12px;">
+            </div>
     </div>
 
     <script>
@@ -549,14 +568,14 @@
         
         let savedConfig = JSON.parse(localStorage.getItem('meucaixa_config')) || {};
         let appConfig = {
-            nome: savedConfig.nome || "WENDEL CARNEIRO",
+            nome: savedConfig.nome || null,
+            email: savedConfig.email || null,
+            senhaHash: savedConfig.senhaHash || null,
             moeda: savedConfig.moeda || "R$",
             metaMensal: parseFloat(savedConfig.metaMensal) || 0,
             tipoMeta: savedConfig.tipoMeta || "economia",
             descMeta: savedConfig.descMeta || "",
-            fotoPerfil: savedConfig.fotoPerfil || null,
-            senhaHash: savedConfig.senhaHash || null,
-            telefoneRec: savedConfig.telefoneRec || null
+            fotoPerfil: savedConfig.fotoPerfil || null
         };
 
         // SISTEMA DE TOAST NOTIFICATIONS
@@ -564,7 +583,9 @@
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
-            let icon = type === 'success' ? '<i class="fa-solid fa-check-circle" style="color: var(--success); font-size: 1.2rem;"></i>' : '<i class="fa-solid fa-triangle-exclamation" style="color: var(--danger); font-size: 1.2rem;"></i>';
+            let icon = type === 'success' ? '<i class="fa-solid fa-check-circle" style="color: var(--success); font-size: 1.2rem;"></i>' : 
+                       type === 'warning' ? '<i class="fa-solid fa-bell" style="color: var(--warning); font-size: 1.2rem;"></i>' :
+                       '<i class="fa-solid fa-triangle-exclamation" style="color: var(--danger); font-size: 1.2rem;"></i>';
             toast.innerHTML = `${icon} <span>${message}</span>`;
             container.appendChild(toast);
             setTimeout(() => {
@@ -575,17 +596,59 @@
             }, 3000);
         }
 
-        // SISTEMA DE LOGIN E SEGURANÇA LOCAL
+        // SISTEMA DE CADASTRO, LOGIN E SEGURANÇA
         function checkAppSecurity() {
-            if(appConfig.senhaHash && !sessionStorage.getItem('isLoggedIn')) {
+            if(!appConfig.email || !appConfig.senhaHash) {
+                // Usuário NOVO (Primeira Vez)
                 document.getElementById('lock-screen').classList.remove('hidden');
+                document.getElementById('viewCadastro').classList.remove('hidden');
+                document.getElementById('viewLogin').classList.add('hidden');
+                document.getElementById('viewRecuperar').classList.add('hidden');
+                document.getElementById('statusSeguranca').innerText = "CONFIGURANDO...";
+            } else if(!sessionStorage.getItem('isLoggedIn')) {
+                // Usuário Existente, mas deslogado
+                document.getElementById('lock-screen').classList.remove('hidden');
+                document.getElementById('viewLogin').classList.remove('hidden');
+                document.getElementById('viewCadastro').classList.add('hidden');
+                document.getElementById('viewRecuperar').classList.add('hidden');
+                
                 document.getElementById('statusSeguranca').innerText = "ATIVADA";
                 document.getElementById('statusSeguranca').style.color = "var(--success)";
+                
+                // Setar avatar no login
+                const av = document.getElementById('loginAvatar');
+                if (appConfig.fotoPerfil) {
+                    av.style.backgroundImage = `url(${appConfig.fotoPerfil})`;
+                    av.innerText = "";
+                } else {
+                    av.style.backgroundImage = "none";
+                    av.innerText = appConfig.nome.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                }
             } else {
+                // Logado
                 document.getElementById('lock-screen').classList.add('hidden');
-                document.getElementById('statusSeguranca').innerText = appConfig.senhaHash ? "ATIVADA" : "DESATIVADA";
-                document.getElementById('statusSeguranca').style.color = appConfig.senhaHash ? "var(--success)" : "var(--warning)";
+                document.getElementById('statusSeguranca').innerText = "ATIVADA";
+                document.getElementById('statusSeguranca').style.color = "var(--success)";
             }
+        }
+
+        function efetuarCadastro() {
+            const nome = document.getElementById('cadNome').value.trim();
+            const email = document.getElementById('cadEmail').value.trim();
+            const senha = document.getElementById('cadSenha').value.trim();
+
+            if(!nome || !email || !senha) return showToast("Preencha todos os campos!", "error");
+
+            appConfig.nome = nome.toUpperCase();
+            appConfig.email = email.toLowerCase();
+            appConfig.senhaHash = senha;
+            
+            sessionStorage.setItem('isLoggedIn', 'true');
+            salvarConfig();
+            
+            document.getElementById('lock-screen').style.opacity = '0';
+            setTimeout(() => { document.getElementById('lock-screen').classList.add('hidden'); }, 500);
+            showToast("Conta criada com sucesso!", "success");
         }
 
         function checkLogin() {
@@ -597,64 +660,58 @@
                     document.getElementById('lock-screen').classList.add('hidden');
                     document.getElementById('inputSenha').value = "";
                 }, 500);
-                showToast("Acesso Liberado", "success");
+                showToast(`Bem-vindo(a) de volta, ${appConfig.nome.split(' ')[0]}!`, "success");
             } else {
                 showToast("Senha Incorreta", "error");
                 document.getElementById('inputSenha').value = "";
             }
         }
 
-        function configurarSenha() {
-            if(appConfig.senhaHash) {
-                if(confirm("Deseja remover a senha atual? O aplicativo ficará desprotegido.")) {
-                    appConfig.senhaHash = null;
-                    appConfig.telefoneRec = null;
-                    sessionStorage.removeItem('isLoggedIn');
-                    salvarConfig();
-                    showToast("Senha Removida", "success");
-                    closeAll();
-                }
-            } else {
-                let novaSenha = prompt("Crie uma senha ou PIN para bloquear o aplicativo:");
+        function recuperarSenha() {
+            document.getElementById('viewLogin').classList.add('hidden');
+            document.getElementById('viewRecuperar').classList.remove('hidden');
+        }
+
+        function mostrarViewLogin() {
+            document.getElementById('viewRecuperar').classList.add('hidden');
+            document.getElementById('viewLogin').classList.remove('hidden');
+        }
+
+        function enviarCodigoRecuperacao() {
+            const email = document.getElementById('recEmail').value.trim().toLowerCase();
+            if(email !== appConfig.email) return showToast("E-mail não confere com o cadastrado.", "error");
+
+            let codigoGerado = Math.floor(100000 + Math.random() * 900000).toString();
+            alert(`[SIMULAÇÃO DE ENVIO PARA O EMAIL]\n\nCódigo de verificação enviado para ${email}:\n\n${codigoGerado}`);
+            
+            let inputCodigo = prompt("Digite o código de 6 dígitos que enviamos para seu e-mail:");
+            if(inputCodigo === codigoGerado) {
+                let novaSenha = prompt("Código correto! Digite sua NOVA senha:");
                 if(novaSenha && novaSenha.trim().length > 0) {
-                    let telefone = prompt("Digite seu celular com DDD (apenas números) para recuperar a senha caso esqueça:");
                     appConfig.senhaHash = novaSenha.trim();
-                    if(telefone) appConfig.telefoneRec = telefone.replace(/\D/g, '');
                     sessionStorage.setItem('isLoggedIn', 'true');
                     salvarConfig();
-                    showToast("Segurança Configurada com Sucesso!", "success");
-                    closeAll();
+                    document.getElementById('lock-screen').style.opacity = '0';
+                    setTimeout(() => { document.getElementById('lock-screen').classList.add('hidden'); }, 500);
+                    showToast("Senha redefinida e Acesso Liberado!", "success");
                 }
+            } else {
+                showToast("Código inválido.", "error");
             }
         }
 
-        function recuperarSenha() {
-            if(!appConfig.telefoneRec) return showToast("Nenhum telefone foi cadastrado para recuperação.", "error");
-            let telConfirm = prompt("Confirme o seu número de celular (com DDD) para receber o SMS:");
-            if(telConfirm && telConfirm.replace(/\D/g, '') === appConfig.telefoneRec) {
-                let codigoGerado = Math.floor(100000 + Math.random() * 900000).toString();
-                alert(`[SIMULAÇÃO DE SMS OFFLINE]\n\nSeu código gerado é: ${codigoGerado}`);
-                let inputCodigo = prompt("Digite o código de 6 dígitos que você 'recebeu' no SMS:");
-                if(inputCodigo === codigoGerado) {
-                    let novaSenha = prompt("Código correto! Digite sua NOVA senha:");
-                    if(novaSenha && novaSenha.trim().length > 0) {
-                        appConfig.senhaHash = novaSenha.trim();
-                        sessionStorage.setItem('isLoggedIn', 'true');
-                        salvarConfig();
-                        document.getElementById('lock-screen').style.opacity = '0';
-                        setTimeout(() => { document.getElementById('lock-screen').classList.add('hidden'); }, 500);
-                        showToast("Senha redefinida e Acesso Liberado!", "success");
-                    }
-                } else {
-                    showToast("Código inválido.", "error");
-                }
-            } else {
-                showToast("Telefone não confere.", "error");
+        function configurarSenha() {
+            let novaSenha = prompt("Digite a sua NOVA SENHA / PIN para o aplicativo:");
+            if(novaSenha && novaSenha.trim().length > 0) {
+                appConfig.senhaHash = novaSenha.trim();
+                salvarConfig();
+                showToast("Senha alterada com sucesso!", "success");
+                closeAll();
             }
         }
 
         function simularGoogleLogin() {
-            showToast("O Login Google requer banco na nuvem. Use a senha local.", "error");
+            showToast("Para usar LocalStorage, faça o cadastro normal acima.", "warning");
         }
 
         function sairApp() {
@@ -678,16 +735,18 @@
         function salvarConfig() {
             localStorage.setItem('meucaixa_config', JSON.stringify(appConfig));
             carregarConfig();
-            checkAppSecurity();
             renderizar();
         }
 
         function carregarConfig() {
+            if(!appConfig.nome) return; // Espera o cadastro
+
             document.getElementById('headerUserName').innerText = appConfig.nome;
             document.getElementById('sidebarUserName').innerText = appConfig.nome;
+            document.getElementById('userEmailSidebar').innerText = appConfig.email;
             document.getElementById('currentCurrencyDisplay').innerText = appConfig.moeda;
             
-            let avatares = [document.getElementById('headerAvatar'), document.getElementById('sidebarAvatar'), document.getElementById('loginAvatar')];
+            let avatares = [document.getElementById('headerAvatar'), document.getElementById('sidebarAvatar')];
             let iniciais = appConfig.nome.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
             avatares.forEach(av => {
                 if (appConfig.fotoPerfil) {
@@ -744,7 +803,7 @@
             salvarConfig();
         }
 
-        // METAS
+        // METAS COM EMOJI
         function abrirModalMeta() {
             document.getElementById('valorMetaInput').value = appConfig.metaMensal > 0 ? appConfig.metaMensal : "";
             document.getElementById('tipoMeta').value = appConfig.tipoMeta || "economia";
@@ -817,6 +876,7 @@
             document.getElementById('modalGraficos').classList.remove('open');
             document.getElementById('modalRelatorios').classList.remove('open');
             document.getElementById('modalLeitorExtrato').classList.remove('open');
+            document.getElementById('modalNotificacoes').classList.remove('open');
             document.getElementById('overlay').style.display = 'none'; 
         }
         
@@ -840,6 +900,58 @@
             renderizar(); 
         }
 
+        // VERIFICAR NOTIFICAÇÕES (VENCIMENTOS)
+        function verificarNotificacoes() {
+            let pendentesHoje = [];
+            let hoje = new Date();
+            hoje.setHours(0,0,0,0);
+
+            registros.forEach((r, idx) => {
+                let vT = parseFloat(r.valor) || 0;
+                let vP = parseFloat(r.pago) || 0;
+                let isPago = vP >= vT && vT > 0;
+                
+                if(!isPago && r.tipo !== 'Receita' && r.tipo !== 'Reserva') {
+                    let dataOperacao = new Date(r.data + "T12:00:00");
+                    dataOperacao.setHours(0,0,0,0);
+                    
+                    if(dataOperacao <= hoje) {
+                        pendentesHoje.push({ ...r, realIdx: idx });
+                    }
+                }
+            });
+
+            const badge = document.getElementById('badgeNotificacao');
+            const listaContainer = document.getElementById('listaNotificacoes');
+
+            if(pendentesHoje.length > 0) {
+                badge.classList.remove('hidden');
+                badge.innerText = pendentesHoje.length;
+                
+                let html = "";
+                pendentesHoje.forEach(p => {
+                    let textDate = new Date(p.data + "T12:00:00") < hoje ? `<span style="color:var(--danger)">Vencido (${p.data.split('-').reverse().join('/')})</span>` : `<span style="color:var(--warning)">Vence Hoje</span>`;
+                    html += `
+                    <div class="item-notificacao" onclick="openModal(${p.realIdx})" style="cursor:pointer; display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <strong style="color:var(--text); font-size:0.85rem; display:block;">${p.desc}</strong>
+                            ${textDate}
+                        </div>
+                        <strong style="color:var(--danger); font-size:0.85rem;">${formatarMoeda(p.valor - (p.pago || 0))}</strong>
+                    </div>`;
+                });
+                listaContainer.innerHTML = html;
+            } else {
+                badge.classList.add('hidden');
+                listaContainer.innerHTML = `<div style="padding:20px; text-align:center; color:var(--text-muted); font-size:0.8rem;">Tudo em dia! Nenhuma pendência para hoje.</div>`;
+            }
+        }
+
+        function abrirNotificacoes() {
+            document.getElementById('modalNotificacoes').classList.add('open');
+            document.getElementById('overlay').style.display = 'block';
+        }
+
         function renderizar() {
             document.getElementById('mesDisplay').innerText = formatarMesAno(dataVisualizacao);
             const prefixoMes = `${dataVisualizacao.getFullYear()}-${String(dataVisualizacao.getMonth() + 1).padStart(2, '0')}`;
@@ -849,7 +961,7 @@
             const ordenados = [...registros].sort((a, b) => new Date(b.data) - new Date(a.data));
             const registrosDoMes = ordenados.filter(r => r.data.startsWith(prefixoMes));
             
-            registrosDoMes.forEach((r, originalIdxEncontrado) => {
+            registrosDoMes.forEach((r) => {
                 const idxO = registros.indexOf(r);
                 const vT = parseFloat(r.valor) || 0;
                 const vP = parseFloat(r.pago) || 0;
@@ -875,7 +987,7 @@
                     
                     let recAction = '';
                     if(r.comprovante) {
-                        recAction = `<br><button onclick="event.stopPropagation(); viewComprovante(${idxO})" style="background:rgba(0,242,255,0.1); border:1px solid var(--accent); color:var(--accent); padding:4px 8px; border-radius:6px; cursor:pointer; font-size:0.65rem; font-weight:bold; margin-top:5px; font-family:'Ubuntu';"><i class="fa-solid fa-receipt"></i> Ver Anexo</button>`;
+                        recAction = `<br><button onclick="event.stopPropagation(); viewComprovante(${idxO})" class="btn-ver-comp"><i class="fa-solid fa-receipt"></i> Ver Anexo</button>`;
                     }
 
                     corpo.innerHTML += `
@@ -915,6 +1027,9 @@
                 document.getElementById('metaFillBar').style.width = progresso + '%';
                 document.getElementById('metaProgressoDisplay').innerText = progresso.toFixed(1) + '%';
             }
+
+            // Atualiza o sininho
+            verificarNotificacoes();
         }
 
         // VER COMPROVANTE (Visualização do anexo)
@@ -922,6 +1037,7 @@
             const r = registros[idx];
             if (!r || !r.comprovante) return;
             const container = document.getElementById('comprovanteContent');
+            
             if (r.comprovante.startsWith('data:application/pdf')) {
                 container.innerHTML = `<iframe src="${r.comprovante}" style="width:100%; height:400px; border:none; border-radius:12px; background:white;"></iframe>`;
             } else {
@@ -933,12 +1049,13 @@
         
         function closeViewComprovante() {
             document.getElementById('modalViewComprovante').classList.remove('open');
-            if(!document.getElementById('modalForm').classList.contains('open')) {
+            // Se o form modal não estiver aberto, esconde o overlay
+            if(!document.getElementById('modalForm').classList.contains('open') && !document.getElementById('modalNotificacoes').classList.contains('open')) {
                 document.getElementById('overlay').style.display = 'none';
             }
         }
 
-        // UPLOAD BASE64 COMPROVANTE
+        // UPLOAD BASE64 COMPROVANTE (No modal de Nova Operação)
         function handleComprovante(event) {
             const file = event.target.files[0];
             if(!file) {
@@ -1168,7 +1285,7 @@
             });
         }
         
-        // LEITOR IA DE EXTRATOS (OCR Tesseract.js)
+        // LEITOR IA DE EXTRATOS (Imagem Tesseract e PDF.js)
         function abrirLeitorExtrato() {
             document.getElementById('modalLeitorExtrato').classList.add('open');
             document.getElementById('overlay').style.display = 'block';
@@ -1184,16 +1301,35 @@
             document.getElementById('leitorResult').classList.add('hidden');
             
             try {
-                const { data: { text } } = await Tesseract.recognize(file, 'por', {
-                    logger: m => console.log(m)
-                });
-                analisarTextoExtrato(text);
+                if (file.type === "application/pdf") {
+                    // Lógica para ler texto de PDF usando PDF.js
+                    const fileReader = new FileReader();
+                    fileReader.onload = async function() {
+                        const typedarray = new Uint8Array(this.result);
+                        const pdf = await pdfjsLib.getDocument(typedarray).promise;
+                        let fullText = "";
+                        for(let i = 1; i <= pdf.numPages; i++) {
+                            const page = await pdf.getPage(i);
+                            const textContent = await page.getTextContent();
+                            fullText += textContent.items.map(item => item.str).join(' ') + "\n";
+                        }
+                        analisarTextoExtrato(fullText);
+                        document.getElementById('leitorLoading').classList.add('hidden');
+                    };
+                    fileReader.readAsArrayBuffer(file);
+                } else {
+                    // Lógica OCR para imagens (prints) usando Tesseract
+                    const { data: { text } } = await Tesseract.recognize(file, 'por', {
+                        logger: m => console.log(m)
+                    });
+                    analisarTextoExtrato(text);
+                    document.getElementById('leitorLoading').classList.add('hidden');
+                }
             } catch(e) {
-                showToast("Erro ao analisar a imagem", "error");
+                showToast("Erro ao analisar arquivo.", "error");
                 console.error(e);
+                document.getElementById('leitorLoading').classList.add('hidden');
             }
-            
-            document.getElementById('leitorLoading').classList.add('hidden');
         }
         
         function analisarTextoExtrato(text) {
@@ -1202,6 +1338,7 @@
             let saidas = 0;
             let listaHtml = "";
             
+            // Regex simples para capturar valores em BRL/US
             const moneyRegex = /(?:R\$|RS|\$)?\s*(\d{1,3}(?:\.\d{3})*,\d{2})/i;
             
             lines.forEach(line => {
@@ -1230,7 +1367,7 @@
             });
             
             if(entradas === 0 && saidas === 0) {
-                listaHtml = "<p style='color:var(--text-muted); text-align:center; font-size: 0.85rem;'>Nenhum valor financeiro claro foi identificado na imagem.</p>";
+                listaHtml = "<p style='color:var(--text-muted); text-align:center; font-size: 0.85rem;'>Nenhum valor financeiro claro foi identificado no arquivo.</p>";
             }
             
             document.getElementById('leitorLista').innerHTML = listaHtml;
