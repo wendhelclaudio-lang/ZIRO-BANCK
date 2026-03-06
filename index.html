@@ -63,7 +63,7 @@
         * { box-sizing: border-box; outline: none; transition: background-color 0.3s, color 0.3s, border-color 0.3s; }
         body { font-family: 'Ubuntu', system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 0; overflow-x: hidden; font-size: 0.95rem; }
 
-        /* TELA DE BLOQUEIO E CADASTRO - MODERNO */
+        /* TELA DE BLOQUEIO / CADASTRO */
         #lock-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(3, 7, 18, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 99999; display: flex; justify-content: center; align-items: center; padding: 20px; transition: opacity 0.5s ease, visibility 0.5s; }
         [data-theme="light"] #lock-screen, [data-theme="santander"] #lock-screen, [data-theme="itau"] #lock-screen, [data-theme="bradesco"] #lock-screen, [data-theme="nubank"] #lock-screen { background: rgba(255, 255, 255, 0.6); }
 
@@ -71,7 +71,6 @@
         [data-theme="light"] .login-card, [data-theme="santander"] .login-card, [data-theme="nubank"] .login-card { box-shadow: 0 30px 60px rgba(0,0,0,0.1); }
 
         .lock-avatar { width: 80px; height: 80px; border-radius: 22px; background: linear-gradient(135deg, var(--accent), #0a192f); display: flex; align-items: center; justify-content: center; font-size: 2.2rem; color: white; margin-bottom: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); background-size: cover; background-position: center; font-weight: 800; letter-spacing: 1px; }
-
         .lock-title { font-size: 1.6rem; margin: 0 0 8px 0; color: var(--text); font-weight: 800; letter-spacing: -0.5px; }
         .lock-subtitle { font-size: 0.85rem; color: var(--text-muted); margin: 0 0 30px 0; line-height: 1.4; font-weight: 400; }
 
@@ -80,16 +79,14 @@
         .lock-input { width: 100%; background: var(--input-bg); border: 2px solid transparent; padding: 16px 16px 16px 45px; border-radius: 16px; color: var(--text); font-size: 0.95rem; transition: all 0.3s; font-family: 'Ubuntu', sans-serif; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); }
         .lock-input::placeholder { color: var(--text-muted); opacity: 0.7; }
         .lock-input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 4px rgba(0, 242, 255, 0.1); }
-        
+        .input-group:focus-within i { color: var(--accent); }
         .lock-input.password { letter-spacing: 3px; font-weight: bold; }
         .lock-input.password::placeholder { letter-spacing: normal; font-weight: normal; }
 
         .btn-login { width: 100%; background: linear-gradient(135deg, var(--accent), var(--success)); color: #fff; border: none; padding: 16px; border-radius: 16px; font-weight: 800; font-size: 1rem; cursor: pointer; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3); margin-top: 10px; margin-bottom: 20px; transition: transform 0.2s, box-shadow 0.2s; letter-spacing: 0.5px; }
         .btn-login:active { transform: translateY(2px); box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2); }
-
         .btn-forgot { background: none; border: none; color: var(--text-muted); font-family: 'Ubuntu'; font-size: 0.85rem; cursor: pointer; font-weight: 600; transition: color 0.2s; padding: 10px; }
         .btn-forgot:hover, .btn-forgot:active { color: var(--accent); }
-
         .auth-view { width: 100%; display: flex; flex-direction: column; align-items: center; animation: fadeIn 0.4s ease forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -161,11 +158,10 @@
 
         .date-group-header { font-size: 0.7rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin: 20px 0 10px 5px; border-bottom: 1px solid var(--border); padding-bottom: 5px; }
         
-        /* NOVO DESIGN DO ITEM DE TRANSAÇÃO (Como pedido nas imagens 2 e 3) */
         .transaction-item { background: var(--card); padding: 16px; border-radius: 18px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; width: 100%; border: 1px solid var(--border); box-shadow: 0 2px 8px rgba(0,0,0,0.02); cursor: pointer; transition: transform 0.1s;}
         .transaction-item:active { transform: scale(0.98); }
         .item-left { display: flex; align-items: center; gap: 14px; flex: 1; overflow: hidden; }
-        .icon-box { width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; background: var(--bg); min-width: 44px; border: 1px solid var(--border); font-size: 1.05rem; }
+        .icon-box { width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; background: var(--bg); min-width: 40px; border: 1px solid var(--border); font-size: 1.05rem; }
         .details { flex: 1; overflow: hidden; text-align: left; }
         .details strong { display: block; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text); margin-bottom: 3px;}
         .details span { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
@@ -174,12 +170,19 @@
         .amount-section strong { display: block; font-size: 0.95rem; color: var(--text); margin-bottom: 3px;}
         .amount-section .status-text { font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;}
 
+        .status-badge { display: inline-block; padding: 3px 8px; border-radius: 8px; font-size: 0.6rem; font-weight: 800; letter-spacing: 0.5px; margin-top: 5px; }
+        .badge-pago { background: rgba(16, 185, 129, 0.1); color: var(--success); border: 1px solid var(--success); }
+        .badge-pendente { background: rgba(245, 158, 11, 0.1); color: var(--warning); border: 1px solid var(--warning); }
+        .badge-atrasado { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid var(--danger); }
+        
+        .btn-ver-comp { display: inline-block; background: rgba(0, 242, 255, 0.1); color: var(--accent); border: 1px solid var(--accent); padding: 4px 10px; border-radius: 8px; font-size: 0.65rem; margin-top: 6px; cursor: pointer; font-weight: 800; text-transform: uppercase; }
+
         /* BARRAS INFERIORES E BOTÕES */
         .bottom-charts { padding: 22px; background: var(--card); border-top: 1px solid var(--border); margin-bottom: 100px; border-radius: 24px 24px 0 0; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); }
         
-        .meta-panel { margin-bottom: 15px; }
-        .meta-label { display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 8px; color: var(--text); }
-        .meta-track { background: var(--bg); height: 10px; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
+        .meta-panel { margin-bottom: 15px; background: var(--bg); padding: 16px; border-radius: 16px; border: 1px solid var(--border); }
+        .meta-label { display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 8px; color: var(--text); align-items: center;}
+        .meta-track { background: var(--hover-bg); height: 10px; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
         .meta-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--success)); transition: width 1s cubic-bezier(0.17, 0.67, 0.83, 0.67); }
 
         .action-buttons { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
@@ -210,7 +213,6 @@
         .resumo-item { font-size: 0.7rem; color: var(--text-muted); }
         .resumo-item strong { color: var(--text); display: block; font-size: 0.85rem; margin-top: 2px;}
 
-        /* Container protegido para gráficos (impede que fiquem crescendo infinitamente) */
         .grafico-container { background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 15px; margin-bottom: 25px; position: relative; height: 250px; width: 100%; }
         
         .btn-toggle-meses { flex: 1; padding: 10px; background: var(--input-bg); border: 1px solid var(--border); border-radius: 10px; color: var(--text-muted); font-weight: 800; font-size: 0.75rem; cursor: pointer; }
@@ -219,6 +221,10 @@
         .comprovante-img-preview { width: 100%; max-height: 400px; object-fit: contain; border-radius: 12px; background: var(--bg); border: 1px solid var(--border); }
         .item-notificacao { padding: 12px; border-bottom: 1px solid var(--border); }
         .item-notificacao:last-child { border-bottom: none; }
+        
+        .btn-meta-action { flex: 1; padding: 12px; border-radius: 10px; border: none; font-weight: 800; color: #fff; cursor: pointer; font-size: 0.85rem;}
+        .btn-meta-add { background: var(--success); }
+        .btn-meta-rem { background: var(--danger); }
     </style>
 </head>
 <body>
@@ -320,8 +326,9 @@
             <div class="menu-item" onclick="document.getElementById('fotoPerfilInput').click()">
                 <div><i class="fa-solid fa-camera" style="color: var(--accent)"></i> <span>Alterar Foto</span></div>
             </div>
-            <div class="menu-item" onclick="abrirModalMeta()">
-                <div><i class="fa-solid fa-bullseye" style="color: var(--success)"></i> <span>Definir Meta / Objetivo</span></div>
+            
+            <div class="menu-item" onclick="abrirGestaoMetas()">
+                <div><i class="fa-solid fa-bullseye" style="color: var(--success)"></i> <span>Gestão de Metas</span></div>
             </div>
 
             <div class="menu-group-title">Ajustes & Segurança</div>
@@ -400,7 +407,7 @@
 
     <section class="bottom-charts">
         
-        <div class="meta-panel hidden" id="metaPanelInfo" style="border-top: none; padding-top: 0; background: var(--card); padding: 20px; border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px;">
+        <div class="meta-panel hidden" id="metaPanelInfo">
             <div class="meta-label">
                 <span style="font-size: 0.85rem; font-weight: bold;"><span id="lblTipoMetaApp">Meta</span></span>
                 <span id="metaProgressoDisplay" style="color: var(--success); font-weight: bold; font-size: 0.9rem;">0%</span>
@@ -413,7 +420,7 @@
         <div class="action-buttons">
             <button class="action-btn" onclick="abrirModalGraficos()"><i class="fa-solid fa-chart-pie" style="margin-right: 4px;"></i> GRÁFICOS DETALHADOS</button>
             <button class="action-btn" onclick="abrirModalRelatorios()"><i class="fa-solid fa-file-invoice" style="margin-right: 4px;"></i> RELATÓRIOS</button>
-            <button class="action-btn" onclick="abrirLeitorExtrato()" style="width: 100%; border-color: var(--success); color: var(--success); background: rgba(16, 185, 129, 0.1);"><i class="fa-solid fa-wand-magic-sparkles" style="margin-right: 4px;"></i> LEITOR IA DE EXTRATOS (NOVO)</button>
+            <button class="action-btn" onclick="abrirLeitorExtrato()" style="width: 100%; border-color: var(--success); color: var(--success); background: rgba(16, 185, 129, 0.1);"><i class="fa-solid fa-wand-magic-sparkles" style="margin-right: 4px;"></i> LEITOR IA DE EXTRATOS</button>
         </div>
     </section>
 
@@ -438,7 +445,6 @@
             <option value="Variavel">Gasto Variável</option>
             <option value="Divida">Dívida / Boleto</option>
             <option value="Reserva">Patrimônio</option>
-            <option value="Meta">🎯 Meta / Objetivo</option>
         </select>
 
         <span class="label-mini">Categoria</span>
@@ -496,12 +502,44 @@
         <button id="btnExcluir" class="btn-delete hidden" onclick="excluirRegistro()">EXCLUIR</button>
     </div>
 
-    <div class="modal modal-small" id="modalMeta">
+    <div class="modal" id="modalGestaoMetas">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <h2 style="margin:0; font-size:1.15rem; color: var(--text);">Configurar Meta</h2>
+            <h2 style="margin:0; font-size:1.15rem; color: var(--text);"><i class="fa-solid fa-bullseye" style="color: var(--success); margin-right: 5px;"></i> Gestão de Metas</h2>
             <i class="fa-solid fa-xmark" style="font-size:1.4rem; color:var(--text-muted); cursor:pointer;" onclick="closeModal()"></i>
         </div>
         
+        <div style="background: var(--bg); padding: 20px; border-radius: 16px; border: 1px solid var(--border); margin-bottom: 20px;">
+            <div style="text-align: center; margin-bottom: 15px;">
+                <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 5px;">Progresso Atual</span>
+                <h3 id="txtGestaoProgresso" style="font-size: 2.2rem; color: var(--success); margin: 0; font-weight: 800;">0%</h3>
+            </div>
+            <div class="meta-track" style="height: 12px; background: var(--input-bg); margin-bottom: 15px;"><div class="meta-fill" id="gestaoFillBar" style="border-radius: 10px;"></div></div>
+            
+            <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
+                <div style="text-align: left;">
+                    <span style="color: var(--text-muted); display: block;">Acumulado</span>
+                    <strong style="color: var(--text);" id="txtGestaoAcumulado">R$ 0,00</strong>
+                </div>
+                <div style="text-align: right;">
+                    <span style="color: var(--text-muted); display: block;">Alvo Final</span>
+                    <strong style="color: var(--accent);" id="txtGestaoAlvo">R$ 0,00</strong>
+                </div>
+            </div>
+        </div>
+
+        <div style="background: var(--hover-bg); padding: 16px; border-radius: 14px; border: 1px dashed var(--accent); margin-bottom: 20px;">
+            <span class="label-mini">Adicionar ou Remover Saldo da Meta</span>
+            <input type="number" id="valorMovimentacaoMeta" placeholder="Valor (Ex: 100,00)" step="0.01">
+            <div style="display: flex; gap: 10px;">
+                <button class="btn-meta-action btn-meta-add" onclick="movimentarMeta('add')"><i class="fa-solid fa-arrow-up"></i> DEPOSITAR</button>
+                <button class="btn-meta-action btn-meta-rem" onclick="movimentarMeta('rem')"><i class="fa-solid fa-arrow-down"></i> RESGATAR</button>
+            </div>
+            <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 10px; text-align: center;">O saldo da meta não altera o saldo de suas contas e despesas diárias.</p>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid var(--border); margin: 25px 0;">
+
+        <h4 style="font-size: 0.9rem; color: var(--text); margin: 0 0 15px 0;">Configurar Detalhes da Meta</h4>
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
             <div>
                 <span class="label-mini">Tipo de Meta</span>
@@ -523,14 +561,14 @@
             </div>
         </div>
 
-        <span class="label-mini">Valor Alvo</span>
-        <input type="number" id="valorMetaInput" placeholder="0,00" step="0.01">
+        <span class="label-mini">Novo Valor Alvo (R$)</span>
+        <input type="number" id="valorMetaInput" placeholder="Ex: 5000,00" step="0.01">
         
         <span class="label-mini">Descrição (Opcional)</span>
-        <input type="text" id="descMetaInput" placeholder="Ex: Economizar para viagem">
+        <input type="text" id="descMetaInput" placeholder="Ex: Viagem de Férias">
         
-        <button class="btn-confirm" onclick="salvarMeta()">DEFINIR META</button>
-        <button class="btn-delete" onclick="removerMeta()">REMOVER META</button>
+        <button class="btn-confirm" onclick="salvarConfiguracaoMeta()">SALVAR CONFIGURAÇÃO</button>
+        <button class="btn-delete" onclick="zerarMetaCompleta()">ZERAR META ATUAL</button>
     </div>
 
     <div class="modal" id="modalGraficos">
@@ -623,6 +661,7 @@
             senhaHash: savedConfig.senhaHash || null,
             moeda: savedConfig.moeda || "R$",
             metaMensal: parseFloat(savedConfig.metaMensal) || 0,
+            metaAcumulado: parseFloat(savedConfig.metaAcumulado) || 0, // NOVO CAMPO PARA GESTÃO INDEPENDENTE
             tipoMeta: savedConfig.tipoMeta || "economia",
             periodoMeta: savedConfig.periodoMeta || "Mensal",
             descMeta: savedConfig.descMeta || "",
@@ -650,39 +689,52 @@
         // SISTEMA DE CADASTRO, LOGIN E SEGURANÇA
         function checkAppSecurity() {
             if(!appConfig.email || !appConfig.senhaHash) {
-                // Usuário NOVO (Primeira Vez)
-                document.getElementById('lock-screen').classList.remove('hidden');
-                document.getElementById('viewCadastro').classList.remove('hidden');
-                document.getElementById('viewLogin').classList.add('hidden');
-                document.getElementById('viewRecuperar').classList.add('hidden');
+                document.getElementById('lock-screen')?.classList.remove('hidden');
+                document.getElementById('viewCadastro')?.classList.remove('hidden');
+                document.getElementById('viewLogin')?.classList.add('hidden');
+                document.getElementById('viewRecuperar')?.classList.add('hidden');
+                
+                const statusSec = document.getElementById('statusSeguranca');
+                if (statusSec) statusSec.innerText = "CONFIGURANDO...";
             } else if(!sessionStorage.getItem('isLoggedIn')) {
-                // Usuário Existente, mas deslogado
-                document.getElementById('lock-screen').classList.remove('hidden');
-                document.getElementById('viewLogin').classList.remove('hidden');
-                document.getElementById('viewCadastro').classList.add('hidden');
-                document.getElementById('viewRecuperar').classList.add('hidden');
+                document.getElementById('lock-screen')?.classList.remove('hidden');
+                document.getElementById('viewLogin')?.classList.remove('hidden');
+                document.getElementById('viewCadastro')?.classList.add('hidden');
+                document.getElementById('viewRecuperar')?.classList.add('hidden');
                 
-                document.getElementById('txtWelcomeBack').innerText = `Olá, ${appConfig.nome.split(' ')[0]}!`;
+                const welcome = document.getElementById('txtWelcomeBack');
+                if (welcome) welcome.innerText = `Olá, ${(appConfig.nome || 'Usuário').split(' ')[0]}!`;
                 
-                // Setar avatar no login
                 const av = document.getElementById('loginAvatar');
-                if (appConfig.fotoPerfil) {
-                    av.style.backgroundImage = `url(${appConfig.fotoPerfil})`;
-                    av.innerText = "";
-                } else {
-                    av.style.backgroundImage = "none";
-                    av.innerText = appConfig.nome.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                if (av) {
+                    if (appConfig.fotoPerfil) {
+                        av.style.backgroundImage = `url(${appConfig.fotoPerfil})`;
+                        av.innerText = "";
+                    } else {
+                        av.style.backgroundImage = "none";
+                        av.innerText = (appConfig.nome || 'US').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                    }
+                }
+                
+                const statusSec = document.getElementById('statusSeguranca');
+                if (statusSec) {
+                    statusSec.innerText = "ATIVADA";
+                    statusSec.style.color = "var(--success)";
                 }
             } else {
-                // Logado
-                document.getElementById('lock-screen').classList.add('hidden');
+                document.getElementById('lock-screen')?.classList.add('hidden');
+                const statusSec = document.getElementById('statusSeguranca');
+                if (statusSec) {
+                    statusSec.innerText = "ATIVADA";
+                    statusSec.style.color = "var(--success)";
+                }
             }
         }
 
         function efetuarCadastro() {
-            const nome = document.getElementById('cadNome').value.trim();
-            const email = document.getElementById('cadEmail').value.trim();
-            const senha = document.getElementById('cadSenha').value.trim();
+            const nome = document.getElementById('cadNome')?.value.trim();
+            const email = document.getElementById('cadEmail')?.value.trim();
+            const senha = document.getElementById('cadSenha')?.value.trim();
 
             if(!nome || !email || !senha) return showToast("Preencha todos os campos!", "error");
 
@@ -691,43 +743,41 @@
             appConfig.senhaHash = senha;
             
             sessionStorage.setItem('isLoggedIn', 'true');
-            salvarConfig(); // Isso já chama o renderizar
+            document.getElementById('lock-screen')?.classList.add('hidden');
             
-            document.getElementById('lock-screen').style.opacity = '0';
-            setTimeout(() => { document.getElementById('lock-screen').classList.add('hidden'); }, 500);
+            salvarConfig(); 
             showToast("Conta criada com sucesso!", "success");
         }
 
         function checkLogin() {
-            const input = document.getElementById('inputSenha').value;
+            const input = document.getElementById('inputSenha')?.value;
             if(input === appConfig.senhaHash) {
                 sessionStorage.setItem('isLoggedIn', 'true');
-                document.getElementById('lock-screen').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('lock-screen').classList.add('hidden');
-                    document.getElementById('inputSenha').value = "";
-                    carregarConfig();
-                    renderizar();
-                }, 500);
+                
+                document.getElementById('lock-screen')?.classList.add('hidden');
+                if (document.getElementById('inputSenha')) document.getElementById('inputSenha').value = "";
+                
+                carregarConfig();
+                renderizar();
                 showToast(`Acesso Liberado!`, "success");
             } else {
                 showToast("Senha Incorreta", "error");
-                document.getElementById('inputSenha').value = "";
+                if (document.getElementById('inputSenha')) document.getElementById('inputSenha').value = "";
             }
         }
 
         function recuperarSenha() {
-            document.getElementById('viewLogin').classList.add('hidden');
-            document.getElementById('viewRecuperar').classList.remove('hidden');
+            document.getElementById('viewLogin')?.classList.add('hidden');
+            document.getElementById('viewRecuperar')?.classList.remove('hidden');
         }
 
         function mostrarViewLogin() {
-            document.getElementById('viewRecuperar').classList.add('hidden');
-            document.getElementById('viewLogin').classList.remove('hidden');
+            document.getElementById('viewRecuperar')?.classList.add('hidden');
+            document.getElementById('viewLogin')?.classList.remove('hidden');
         }
 
         function enviarCodigoRecuperacao() {
-            const email = document.getElementById('recEmail').value.trim().toLowerCase();
+            const email = document.getElementById('recEmail')?.value.trim().toLowerCase();
             if(email !== appConfig.email) return showToast("E-mail não confere com o cadastrado.", "error");
 
             let codigoGerado = Math.floor(100000 + Math.random() * 900000).toString();
@@ -739,9 +789,8 @@
                 if(novaSenha && novaSenha.trim().length > 0) {
                     appConfig.senhaHash = novaSenha.trim();
                     sessionStorage.setItem('isLoggedIn', 'true');
+                    document.getElementById('lock-screen')?.classList.add('hidden');
                     salvarConfig();
-                    document.getElementById('lock-screen').style.opacity = '0';
-                    setTimeout(() => { document.getElementById('lock-screen').classList.add('hidden'); }, 500);
                     showToast("Senha redefinida com sucesso!", "success");
                 }
             } else {
@@ -774,10 +823,10 @@
             document.documentElement.setAttribute('data-theme', tema);
             localStorage.setItem('meucaixa_theme', tema);
             closeAll();
-            renderizar(); // Atualiza cores dos gráficos se estiverem abertos
+            renderizar();
         }
 
-        // CONFIGURAÇÕES GERAIS E AVATAR
+        // CONFIGURAÇÕES GERAIS
         function salvarConfig() {
             localStorage.setItem('meucaixa_config', JSON.stringify(appConfig));
             carregarConfig();
@@ -787,35 +836,37 @@
         function carregarConfig() {
             if(!appConfig.nome) return;
 
-            document.getElementById('headerUserName').innerText = appConfig.nome;
-            document.getElementById('sidebarUserName').innerText = appConfig.nome;
-            document.getElementById('userEmailSidebar').innerText = appConfig.email;
-            document.getElementById('currentCurrencyDisplay').innerText = appConfig.moeda;
+            if (document.getElementById('headerUserName')) document.getElementById('headerUserName').innerText = appConfig.nome;
+            if (document.getElementById('sidebarUserName')) document.getElementById('sidebarUserName').innerText = appConfig.nome;
+            if (document.getElementById('userEmailSidebar')) document.getElementById('userEmailSidebar').innerText = appConfig.email;
+            if (document.getElementById('currentCurrencyDisplay')) document.getElementById('currentCurrencyDisplay').innerText = appConfig.moeda;
             
             let avatares = [document.getElementById('headerAvatar'), document.getElementById('sidebarAvatar')];
             let iniciais = appConfig.nome.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
             avatares.forEach(av => {
-                if (appConfig.fotoPerfil) {
-                    av.style.backgroundImage = `url(${appConfig.fotoPerfil})`;
-                    av.innerText = "";
-                } else {
-                    av.style.backgroundImage = "none";
-                    av.innerText = iniciais;
+                if(av) {
+                    if (appConfig.fotoPerfil) {
+                        av.style.backgroundImage = `url(${appConfig.fotoPerfil})`;
+                        av.innerText = "";
+                    } else {
+                        av.style.backgroundImage = "none";
+                        av.innerText = iniciais;
+                    }
                 }
             });
 
             if(appConfig.metaMensal > 0) {
-                document.getElementById('metaPanelInfo').classList.remove('hidden');
-                document.getElementById('metaValorDisplay').innerText = formatarMoeda(appConfig.metaMensal);
+                document.getElementById('metaPanelInfo')?.classList.remove('hidden');
+                if (document.getElementById('metaValorDisplay')) document.getElementById('metaValorDisplay').innerText = formatarMoeda(appConfig.metaMensal);
                 
                 let emojiMeta = "🎯";
                 if(appConfig.tipoMeta === 'receita') emojiMeta = "💰";
                 if(appConfig.tipoMeta === 'investimento') emojiMeta = "📈";
                 if(appConfig.tipoMeta === 'divida') emojiMeta = "🛡️";
                 
-                document.getElementById('lblTipoMetaApp').innerText = `${emojiMeta} Meta ${appConfig.periodoMeta}`;
+                if (document.getElementById('lblTipoMetaApp')) document.getElementById('lblTipoMetaApp').innerText = `${emojiMeta} Meta ${appConfig.periodoMeta}`;
             } else {
-                document.getElementById('metaPanelInfo').classList.add('hidden');
+                document.getElementById('metaPanelInfo')?.classList.add('hidden');
             }
         }
 
@@ -856,43 +907,88 @@
             salvarConfig();
         }
 
-        // METAS COM EMOJI
-        function abrirModalMeta() {
-            document.getElementById('valorMetaInput').value = appConfig.metaMensal > 0 ? appConfig.metaMensal : "";
-            document.getElementById('tipoMeta').value = appConfig.tipoMeta || "economia";
-            document.getElementById('periodoMeta').value = appConfig.periodoMeta || "Mensal";
-            document.getElementById('descMetaInput').value = appConfig.descMeta || "";
-            document.getElementById('modalMeta').classList.add('open');
+        // MÓDULO EXCLUSIVO GESTÃO DE METAS
+        function abrirGestaoMetas() {
+            document.getElementById('modalGestaoMetas').classList.add('open');
             document.getElementById('overlay').style.display = 'block';
             document.getElementById('profileSidebar').classList.remove('open');
+            
+            atualizarUIGestaoMetas();
+            
+            // Popula os inputs de configuração
+            if (document.getElementById('valorMetaInput')) document.getElementById('valorMetaInput').value = appConfig.metaMensal > 0 ? appConfig.metaMensal : "";
+            if (document.getElementById('tipoMeta')) document.getElementById('tipoMeta').value = appConfig.tipoMeta || "economia";
+            if (document.getElementById('periodoMeta')) document.getElementById('periodoMeta').value = appConfig.periodoMeta || "Mensal";
+            if (document.getElementById('descMetaInput')) document.getElementById('descMetaInput').value = appConfig.descMeta || "";
+            if (document.getElementById('valorMovimentacaoMeta')) document.getElementById('valorMovimentacaoMeta').value = "";
         }
 
-        function salvarMeta() {
+        function atualizarUIGestaoMetas() {
+            const acumulado = appConfig.metaAcumulado || 0;
+            const alvo = appConfig.metaMensal || 0;
+            let progresso = 0;
+            
+            if(alvo > 0) {
+                progresso = Math.min((acumulado / alvo) * 100, 100);
+            }
+            
+            document.getElementById('txtGestaoProgresso').innerText = progresso.toFixed(1) + '%';
+            document.getElementById('gestaoFillBar').style.width = progresso + '%';
+            document.getElementById('txtGestaoAcumulado').innerText = formatarMoeda(acumulado);
+            document.getElementById('txtGestaoAlvo').innerText = formatarMoeda(alvo);
+        }
+
+        function salvarConfiguracaoMeta() {
             try {
-                let val = document.getElementById('valorMetaInput').value;
+                let val = document.getElementById('valorMetaInput')?.value;
                 if(val && !isNaN(val) && parseFloat(val) > 0) {
                     appConfig.metaMensal = parseFloat(val);
-                    appConfig.tipoMeta = document.getElementById('tipoMeta').value;
-                    appConfig.periodoMeta = document.getElementById('periodoMeta').value;
-                    appConfig.descMeta = document.getElementById('descMetaInput').value;
-                    salvarConfig(); // Já chama o renderizar internamente
-                    closeAll();
-                    showToast("Meta definida com sucesso!", "success");
+                    appConfig.tipoMeta = document.getElementById('tipoMeta')?.value || 'economia';
+                    appConfig.periodoMeta = document.getElementById('periodoMeta')?.value || 'Mensal';
+                    appConfig.descMeta = document.getElementById('descMetaInput')?.value || '';
+                    salvarConfig(); 
+                    atualizarUIGestaoMetas();
+                    showToast("Configuração salva!", "success");
+                    // O modal fecha sozinho após configurar com sucesso, conforme solicitado
+                    setTimeout(() => closeAll(), 800);
                 } else {
-                    showToast("Informe um valor válido.", "error");
+                    showToast("Informe um valor alvo válido.", "error");
                 }
-            } catch(e) {
-                console.error(e);
+            } catch(e) { console.error(e); }
+        }
+
+        function movimentarMeta(action) {
+            if(appConfig.metaMensal <= 0) return showToast("Primeiro configure um valor alvo!", "warning");
+            
+            let inputVal = document.getElementById('valorMovimentacaoMeta').value;
+            let valor = parseFloat(inputVal);
+            
+            if(!valor || isNaN(valor) || valor <= 0) return showToast("Digite um valor válido.", "error");
+
+            if(action === 'add') {
+                appConfig.metaAcumulado += valor;
+                showToast(`R$ ${valor} depositado na meta!`, "success");
+            } else if(action === 'rem') {
+                if(valor > appConfig.metaAcumulado) return showToast("Saldo insuficiente na meta.", "error");
+                appConfig.metaAcumulado -= valor;
+                showToast(`R$ ${valor} resgatado da meta.`, "warning");
             }
+            
+            document.getElementById('valorMovimentacaoMeta').value = "";
+            salvarConfig();
+            atualizarUIGestaoMetas();
         }
         
-        function removerMeta() {
-            appConfig.metaMensal = 0;
-            appConfig.tipoMeta = "economia";
-            appConfig.descMeta = "";
-            salvarConfig();
-            closeAll();
-            showToast("Meta removida.", "success");
+        function zerarMetaCompleta() {
+            if(confirm("Tem certeza que deseja excluir essa meta e zerar o saldo nela?")) {
+                appConfig.metaMensal = 0;
+                appConfig.metaAcumulado = 0;
+                appConfig.tipoMeta = "economia";
+                appConfig.descMeta = "";
+                salvarConfig();
+                closeAll();
+                showToast("Meta removida.", "success");
+            }
         }
 
         function limparMesAtual() {
@@ -911,13 +1007,13 @@
             return appConfig.moeda + " " + valor.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
         }
 
+        // TIREI O 'META' DAQUI COMO PEDIDO
         const opcoesSubmenu = {
             "Receita": ["💰 Salário", "🚀 Freelance", "✨ Rendimentos", "🛠️ Serviço", "📦 Produto"],
             "Fixo": ["🏠 Aluguel", "⚡ Energia", "🌐 Internet", "🎬 Streamings", "🏫 Mensalidade"],
             "Variavel": ["🛒 Mercado", "🍕 Alimentação", "⛽ Combustível", "🚗 Transporte", "💊 Saúde", "🐾 Pets"],
             "Divida": ["🏢 Financiamento", "💳 Cartão", "🤝 Empréstimo", "🧾 Boleto"],
-            "Reserva": ["🏦 Investimentos", "📦 Caixinha", "🛡️ Reserva Emergência", "🪙 Cripto"],
-            "Meta": ["🎯 Aporte em Meta", "🏦 Resgate de Meta"]
+            "Reserva": ["🏦 Investimentos", "📦 Caixinha", "🛡️ Reserva Emergência", "🪙 Cripto"]
         };
         
         function mudarMes(delta) { dataVisualizacao.setMonth(dataVisualizacao.getMonth() + delta); renderizar(); }
@@ -925,38 +1021,41 @@
         
         function toggleSidebar() { 
             const s = document.getElementById('profileSidebar'); 
-            s.classList.toggle('open');
-            document.getElementById('overlay').style.display = s.classList.contains('open') ? 'block' : 'none'; 
-            document.getElementById('themeOptions').classList.remove('open'); 
+            if(s) {
+                s.classList.toggle('open');
+                if(document.getElementById('overlay')) document.getElementById('overlay').style.display = s.classList.contains('open') ? 'block' : 'none'; 
+                document.getElementById('themeOptions')?.classList.remove('open'); 
+            }
         }
         
         function closeModal() { 
-            document.getElementById('modalForm').classList.remove('open');
-            document.getElementById('modalMeta').classList.remove('open');
-            document.getElementById('modalGraficos').classList.remove('open');
-            document.getElementById('modalRelatorios').classList.remove('open');
-            document.getElementById('modalLeitorExtrato').classList.remove('open');
-            document.getElementById('modalNotificacoes').classList.remove('open');
-            document.getElementById('overlay').style.display = 'none'; 
+            document.getElementById('modalForm')?.classList.remove('open');
+            document.getElementById('modalMeta')?.classList.remove('open');
+            document.getElementById('modalGestaoMetas')?.classList.remove('open');
+            document.getElementById('modalGraficos')?.classList.remove('open');
+            document.getElementById('modalRelatorios')?.classList.remove('open');
+            document.getElementById('modalLeitorExtrato')?.classList.remove('open');
+            document.getElementById('modalNotificacoes')?.classList.remove('open');
+            document.getElementById('modalViewComprovante')?.classList.remove('open');
+            if(document.getElementById('overlay')) document.getElementById('overlay').style.display = 'none'; 
         }
         
         function closeAll() { 
             closeModal(); 
-            document.getElementById('profileSidebar').classList.remove('open'); 
-            closeViewComprovante();
+            document.getElementById('profileSidebar')?.classList.remove('open'); 
         }
         
         function filtrarExtrato(c) { 
             filtroAtual = c;
-            document.getElementById('btnVoltar').classList.toggle('hidden', c === 'Tudo'); 
-            document.getElementById('subFiltros').classList.toggle('hidden', c === 'Tudo'); 
+            document.getElementById('btnVoltar')?.classList.toggle('hidden', c === 'Tudo'); 
+            document.getElementById('subFiltros')?.classList.toggle('hidden', c === 'Tudo'); 
             renderizar(); 
         }
         
         function setSubFiltro(s) { 
             subFiltro = s;
-            document.getElementById('btnPendente').classList.toggle('active', s === 'Pendente'); 
-            document.getElementById('btnPago').classList.toggle('active', s === 'Pago'); 
+            document.getElementById('btnPendente')?.classList.toggle('active', s === 'Pendente'); 
+            document.getElementById('btnPago')?.classList.toggle('active', s === 'Pago'); 
             renderizar(); 
         }
 
@@ -984,44 +1083,47 @@
             const badge = document.getElementById('badgeNotificacao');
             const listaContainer = document.getElementById('listaNotificacoes');
 
-            if(pendentesHoje.length > 0) {
-                badge.classList.remove('hidden');
-                badge.innerText = pendentesHoje.length;
-                
-                let html = "";
-                pendentesHoje.forEach(p => {
-                    let dataOp = new Date(p.data + "T12:00:00");
-                    dataOp.setHours(0,0,0,0);
+            if (badge && listaContainer) {
+                if(pendentesHoje.length > 0) {
+                    badge.classList.remove('hidden');
+                    badge.innerText = pendentesHoje.length;
                     
-                    let textDate = dataOp < hoje ? `<span class="status-badge badge-atrasado">Atrasado (${p.data.split('-').reverse().join('/')})</span>` : `<span class="status-badge badge-pendente">Vence Hoje</span>`;
-                    
-                    html += `
-                    <div class="item-notificacao" onclick="openModal(${p.realIdx})" style="cursor:pointer; display:flex; justify-content:space-between; align-items:center;">
-                        <div>
-                            <strong style="color:var(--text); font-size:0.85rem; display:block;">${p.desc}</strong>
-                            ${textDate}
-                        </div>
-                        <strong style="color:var(--danger); font-size:0.85rem;">${formatarMoeda(p.valor - (p.pago || 0))}</strong>
-                    </div>`;
-                });
-                listaContainer.innerHTML = html;
-            } else {
-                badge.classList.add('hidden');
-                listaContainer.innerHTML = `<div style="padding:20px; text-align:center; color:var(--text-muted); font-size:0.8rem;">Tudo em dia! Nenhuma pendência atrasada.</div>`;
+                    let html = "";
+                    pendentesHoje.forEach(p => {
+                        let dataOp = new Date(p.data + "T12:00:00");
+                        dataOp.setHours(0,0,0,0);
+                        
+                        let textDate = dataOp < hoje ? `<span class="status-badge badge-atrasado">Atrasado (${p.data.split('-').reverse().join('/')})</span>` : `<span class="status-badge badge-pendente">Vence Hoje</span>`;
+                        
+                        html += `
+                        <div class="item-notificacao" onclick="openModal(${p.realIdx})" style="cursor:pointer; display:flex; justify-content:space-between; align-items:center;">
+                            <div>
+                                <strong style="color:var(--text); font-size:0.85rem; display:block;">${p.desc}</strong>
+                                ${textDate}
+                            </div>
+                            <strong style="color:var(--danger); font-size:0.85rem;">${formatarMoeda(p.valor - (p.pago || 0))}</strong>
+                        </div>`;
+                    });
+                    listaContainer.innerHTML = html;
+                } else {
+                    badge.classList.add('hidden');
+                    listaContainer.innerHTML = `<div style="padding:20px; text-align:center; color:var(--text-muted); font-size:0.8rem;">Tudo em dia! Nenhuma pendência atrasada.</div>`;
+                }
             }
         }
 
         function abrirNotificacoes() {
-            document.getElementById('modalNotificacoes').classList.add('open');
-            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('modalNotificacoes')?.classList.add('open');
+            if(document.getElementById('overlay')) document.getElementById('overlay').style.display = 'block';
         }
 
         function renderizar() {
-            document.getElementById('mesDisplay').innerText = formatarMesAno(dataVisualizacao);
+            if (document.getElementById('mesDisplay')) document.getElementById('mesDisplay').innerText = formatarMesAno(dataVisualizacao);
             const prefixoMes = `${dataVisualizacao.getFullYear()}-${String(dataVisualizacao.getMonth() + 1).padStart(2, '0')}`;
-            const corpo = document.getElementById('tabelaCorpo'); corpo.innerHTML = '';
+            const corpo = document.getElementById('tabelaCorpo'); 
+            if (corpo) corpo.innerHTML = '';
             
-            let sRec=0, sGas=0, sDiv=0, sRes=0, sMeta=0;
+            let sRec=0, sGas=0, sDiv=0, sRes=0;
             const ordenados = [...registros].sort((a, b) => new Date(b.data) - new Date(a.data));
             const registrosDoMes = ordenados.filter(r => r.data.startsWith(prefixoMes));
             
@@ -1038,7 +1140,6 @@
                 if(r.tipo === 'Receita') { if(isPago) sRec += vT; } 
                 else if(r.tipo === 'Divida') { sDiv += falta; } 
                 else if(r.tipo === 'Reserva') { sRes += vT; } 
-                else if(r.tipo === 'Meta') { if(isPago) sMeta += vT; } 
                 else { sGas += vP; }
 
                 let exibir = (filtroAtual === "Tudo") || (filtroAtual === r.tipo) || (filtroAtual === "Gasto" && (r.tipo === "Fixo" || r.tipo === "Variavel"));
@@ -1063,10 +1164,10 @@
                 }
             });
 
-            // RENDERIZAR AGRUPADO COM NOVO LAYOUT DA IMAGEM 3
-            if(Object.keys(agrupados).length === 0) {
+            // RENDERIZAR AGRUPADO (NOVO LAYOUT ESTILO IMAGEM 3)
+            if(Object.keys(agrupados).length === 0 && corpo) {
                 corpo.innerHTML = `<div style="text-align:center; padding:40px; color:var(--text-muted); font-size:0.85rem;">Nenhuma operação encontrada</div>`;
-            } else {
+            } else if (corpo) {
                 Object.keys(agrupados).forEach(dataGrupo => {
                     corpo.innerHTML += `<div class="date-group-header">${dataGrupo}</div>`;
                     
@@ -1075,19 +1176,12 @@
                         let color = r.tipo === 'Receita' ? 'var(--success)' : (r.tipo === 'Divida' ? 'var(--danger)' : (r.tipo === 'Reserva' ? 'var(--reserve)' : 'var(--warning)'));
                         let extraInfo = r.forma ? ` • ${r.forma}` : '';
                         
-                        let statusColor = r.isPago ? (r.tipo === 'Receita' ? 'var(--success)' : 'var(--text-muted)') : 'var(--danger)';
+                        let statusColor = r.isPago ? (r.tipo === 'Receita' ? 'var(--success)' : 'var(--success)') : 'var(--danger)';
                         let statusText = r.isPago ? (r.tipo === 'Receita' ? 'RECEBIDO' : 'LIQUIDADO') : 'PENDENTE';
-                        
-                        if (r.tipo === 'Meta') {
-                            icon = 'fa-bullseye';
-                            color = 'var(--accent)';
-                            statusText = r.isPago ? 'ALCANÇADO' : 'PENDENTE';
-                            statusColor = r.isPago ? 'var(--accent)' : 'var(--danger)';
-                        }
                         
                         let recAction = '';
                         if(r.comprovante) {
-                            recAction = `<span onclick="event.stopPropagation(); viewComprovante(${r.realIdx})" class="btn-ver-comp"><i class="fa-solid fa-receipt"></i> ANEXO</span>`;
+                            recAction = `<span onclick="event.stopPropagation(); viewComprovante(${r.realIdx})" class="btn-ver-comp"><i class="fa-solid fa-receipt"></i> VER ANEXO</span>`;
                         }
 
                         corpo.innerHTML += `
@@ -1098,7 +1192,7 @@
                                 </div>
                                 <div class="details">
                                     <strong>${r.desc}</strong>
-                                    <span>${r.data.split('-').reverse().join('/')} • ${r.tipo}${extraInfo}</span>
+                                    <span>${r.tipo}${extraInfo}</span>
                                     ${recAction}
                                 </div>
                             </div>
@@ -1111,32 +1205,30 @@
                 });
             }
 
-            document.getElementById('totalReceitas').innerText = ocultarBits(sRec);
-            document.getElementById('totalGastos').innerText = ocultarBits(sGas);
-            document.getElementById('totalDividas').innerText = ocultarBits(sDiv);
-            document.getElementById('totalReserva').innerText = ocultarBits(sRes + sMeta);
-            document.getElementById('totalSaldo').innerText = ocultarBits(sRec - (sGas + sDiv + sMeta)); // Meta subtrai do saldo livre
+            if (document.getElementById('totalReceitas')) document.getElementById('totalReceitas').innerText = ocultarBits(sRec);
+            if (document.getElementById('totalGastos')) document.getElementById('totalGastos').innerText = ocultarBits(sGas);
+            if (document.getElementById('totalDividas')) document.getElementById('totalDividas').innerText = ocultarBits(sDiv);
+            if (document.getElementById('totalReserva')) document.getElementById('totalReserva').innerText = ocultarBits(sRes);
+            if (document.getElementById('totalSaldo')) document.getElementById('totalSaldo').innerText = ocultarBits(sRec - (sGas + sDiv)); 
             
             const pSaida = sRec > 0 ? Math.min(((sGas + sDiv) / sRec) * 100, 100) : 0;
-            const pRes = sRec > 0 ? Math.min(((sRes + sMeta) / sRec) * 100, 100) : 0;
+            const pRes = sRec > 0 ? Math.min((sRes / sRec) * 100, 100) : 0;
             
-            document.getElementById('fillSaida').style.width = pSaida + '%';
-            document.getElementById('labelPercSaida').innerText = pSaida.toFixed(1) + '%';
-            document.getElementById('fillRes').style.width = pRes + '%';
-            document.getElementById('labelPercRes').innerText = pRes.toFixed(1) + '%';
+            if (document.getElementById('fillSaida')) document.getElementById('fillSaida').style.width = pSaida + '%';
+            if (document.getElementById('labelPercSaida')) document.getElementById('labelPercSaida').innerText = pSaida.toFixed(1) + '%';
+            if (document.getElementById('fillRes')) document.getElementById('fillRes').style.width = pRes + '%';
+            if (document.getElementById('labelPercRes')) document.getElementById('labelPercRes').innerText = pRes.toFixed(1) + '%';
+            if (document.getElementById('contadorRegistros')) document.getElementById('contadorRegistros').innerText = registros.length;
             
+            // ATUALIZA BARRA DA META NA TELA PRINCIPAL (Lendo do appConfig.metaAcumulado agora)
             if(appConfig.metaMensal > 0) {
-                // A barra preenche conforme os lançamentos batem com o tipo escolhido
-                let baseCalc = sMeta; 
-                if(appConfig.tipoMeta === 'receita') baseCalc = sRec;
-                if(appConfig.tipoMeta === 'divida') baseCalc = sGas + sDiv;
+                const acumulado = appConfig.metaAcumulado || 0;
+                const progresso = Math.min((acumulado / appConfig.metaMensal) * 100, 100);
+                const falta = Math.max(appConfig.metaMensal - acumulado, 0);
                 
-                const progresso = Math.min((baseCalc / appConfig.metaMensal) * 100, 100);
-                const falta = Math.max(appConfig.metaMensal - baseCalc, 0);
-                
-                document.getElementById('metaFillBar').style.width = progresso + '%';
-                document.getElementById('metaProgressoDisplay').innerText = progresso.toFixed(1) + '%';
-                document.getElementById('metaFaltaDisplay').innerText = `Falta: ${formatarMoeda(falta)}`;
+                if (document.getElementById('metaFillBar')) document.getElementById('metaFillBar').style.width = progresso + '%';
+                if (document.getElementById('metaProgressoDisplay')) document.getElementById('metaProgressoDisplay').innerText = progresso.toFixed(1) + '%';
+                if (document.getElementById('metaFaltaDisplay')) document.getElementById('metaFaltaDisplay').innerText = `Falta: ${formatarMoeda(falta)}`;
             }
 
             verificarNotificacoes();
@@ -1147,20 +1239,22 @@
             const r = registros[idx];
             if (!r || !r.comprovante) return;
             const container = document.getElementById('comprovanteContent');
-            
-            if (r.comprovante.startsWith('data:application/pdf')) {
-                container.innerHTML = `<iframe src="${r.comprovante}" style="width:100%; height:400px; border:none; border-radius:12px; background:white;"></iframe>`;
-            } else {
-                container.innerHTML = `<img src="${r.comprovante}" class="comprovante-img-preview">`;
+            if (container) {
+                if (r.comprovante.startsWith('data:application/pdf')) {
+                    container.innerHTML = `<iframe src="${r.comprovante}" style="width:100%; height:400px; border:none; border-radius:12px; background:white;"></iframe>`;
+                } else {
+                    container.innerHTML = `<img src="${r.comprovante}" class="comprovante-img-preview">`;
+                }
             }
-            document.getElementById('modalViewComprovante').classList.add('open');
-            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('modalViewComprovante')?.classList.add('open');
+            if(document.getElementById('overlay')) document.getElementById('overlay').style.display = 'block';
         }
         
         function closeViewComprovante() {
-            document.getElementById('modalViewComprovante').classList.remove('open');
-            if(!document.getElementById('modalForm').classList.contains('open') && !document.getElementById('modalNotificacoes').classList.contains('open')) {
-                document.getElementById('overlay').style.display = 'none';
+            document.getElementById('modalViewComprovante')?.classList.remove('open');
+            // Só esconde o overlay se a tela de Nova Operação também não estiver aberta
+            if(!document.getElementById('modalForm')?.classList.contains('open') && !document.getElementById('modalNotificacoes')?.classList.contains('open')) {
+                if(document.getElementById('overlay')) document.getElementById('overlay').style.display = 'none';
             }
         }
 
@@ -1168,8 +1262,8 @@
         function handleComprovante(event) {
             const file = event.target.files[0];
             if(!file) {
-                document.getElementById('comprovanteBase64').value = "";
-                document.getElementById('txtNomeArqComp').innerText = "Selecionar arquivo...";
+                if (document.getElementById('comprovanteBase64')) document.getElementById('comprovanteBase64').value = "";
+                if (document.getElementById('txtNomeArqComp')) document.getElementById('txtNomeArqComp').innerText = "Selecionar arquivo...";
                 return;
             }
             if(file.size > 2000000) { 
@@ -1177,80 +1271,85 @@
                 event.target.value = "";
                 return;
             }
-            document.getElementById('txtNomeArqComp').innerText = file.name;
+            if (document.getElementById('txtNomeArqComp')) document.getElementById('txtNomeArqComp').innerText = file.name;
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = function(e) {
-                document.getElementById('comprovanteBase64').value = e.target.result;
+                if (document.getElementById('comprovanteBase64')) document.getElementById('comprovanteBase64').value = e.target.result;
             };
         }
 
         function openModal(idx = null) {
-            document.getElementById('modalForm').classList.add('open');
-            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('modalForm')?.classList.add('open');
+            if (document.getElementById('overlay')) document.getElementById('overlay').style.display = 'block';
             const resumo = document.getElementById('blocoResumoGeral');
             const prefixoMes = `${dataVisualizacao.getFullYear()}-${String(dataVisualizacao.getMonth() + 1).padStart(2, '0')}`;
             
             if(idx !== null) {
                 const r = registros[idx];
-                document.getElementById('editIndex').value = idx;
-                document.getElementById('tipo').value = r.tipo;
+                if (document.getElementById('editIndex')) document.getElementById('editIndex').value = idx;
+                if (document.getElementById('tipo')) document.getElementById('tipo').value = r.tipo;
                 atualizarSubmenu();
                 
-                document.getElementById('desc').value = r.desc;
-                document.getElementById('valor').value = r.valor;
-                document.getElementById('selectPago').value = (r.pago >= r.valor && r.valor > 0) ? "1" : "0";
-                document.getElementById('data').value = r.data;
-                document.getElementById('formaRecebimento').value = r.forma || "Pix";
-                document.getElementById('comprovanteBase64').value = r.comprovante || "";
-                document.getElementById('txtNomeArqComp').innerText = r.comprovante ? "Comprovante salvo (Anexar novo)" : "Selecionar arquivo...";
-                document.getElementById('btnExcluir').classList.remove('hidden');
+                if (document.getElementById('desc')) document.getElementById('desc').value = r.desc;
+                if (document.getElementById('valor')) document.getElementById('valor').value = r.valor;
+                if (document.getElementById('selectPago')) document.getElementById('selectPago').value = (r.pago >= r.valor && r.valor > 0) ? "1" : "0";
+                if (document.getElementById('data')) document.getElementById('data').value = r.data;
+                if (document.getElementById('formaRecebimento')) document.getElementById('formaRecebimento').value = r.forma || "Pix";
+                if (document.getElementById('comprovanteBase64')) document.getElementById('comprovanteBase64').value = r.comprovante || "";
+                if (document.getElementById('txtNomeArqComp')) document.getElementById('txtNomeArqComp').innerText = r.comprovante ? "Comprovante salvo (Anexar novo)" : "Selecionar arquivo...";
+                document.getElementById('btnExcluir')?.classList.remove('hidden');
 
                 if (r.tipo === 'Receita') {
-                    resumo.classList.remove('hidden');
-                    document.getElementById('resumoTitulo').innerText = "Resumo Receitas (Mês)";
+                    resumo?.classList.remove('hidden');
+                    if (document.getElementById('resumoTitulo')) document.getElementById('resumoTitulo').innerText = "Resumo Receitas (Mês)";
                     const recs = registros.filter(reg => reg.tipo === 'Receita' && reg.data.startsWith(prefixoMes) && reg.pago >= reg.valor);
                     const porForma = (f) => recs.filter(x => x.forma === f).reduce((a,b) => a+b.valor, 0);
-                    document.getElementById('resumoConteudo').innerHTML = `<div class="resumo-item">Pix<strong>${ocultarBits(porForma('Pix'))}</strong></div><div class="resumo-item">Dinheiro<strong>${ocultarBits(porForma('Dinheiro'))}</strong></div><div class="resumo-item">Cartão<strong>${ocultarBits(porForma('Cartão'))}</strong></div><div class="resumo-item">Total Recebido<strong>${ocultarBits(recs.reduce((a,b)=>a+b.valor,0))}</strong></div>`;
+                    if (document.getElementById('resumoConteudo')) document.getElementById('resumoConteudo').innerHTML = `<div class="resumo-item">Pix<strong>${ocultarBits(porForma('Pix'))}</strong></div><div class="resumo-item">Dinheiro<strong>${ocultarBits(porForma('Dinheiro'))}</strong></div><div class="resumo-item">Cartão<strong>${ocultarBits(porForma('Cartão'))}</strong></div><div class="resumo-item">Total Recebido<strong>${ocultarBits(recs.reduce((a,b)=>a+b.valor,0))}</strong></div>`;
                 } else if (r.desc.includes('(')) {
-                    resumo.classList.remove('hidden');
-                    document.getElementById('resumoTitulo').innerText = "Resumo do Contrato";
+                    resumo?.classList.remove('hidden');
+                    if (document.getElementById('resumoTitulo')) document.getElementById('resumoTitulo').innerText = "Resumo do Contrato";
                     const base = r.desc.split('(')[0].trim();
                     const vinc = registros.filter(reg => reg.desc.startsWith(base));
                     const tV = vinc.reduce((a,c)=>a+c.valor, 0);
                     const tP = vinc.reduce((a,c)=>a+c.pago, 0);
-                    document.getElementById('resumoConteudo').innerHTML = `<div class="resumo-item">Total Contrato<strong>${ocultarBits(tV)}</strong></div><div class="resumo-item">Total Pago<strong>${ocultarBits(tP)}</strong></div><div class="resumo-item">Restante<strong>${ocultarBits(tV-tP)}</strong></div><div class="resumo-item">Faltam<strong>${vinc.filter(x=>x.pago<x.valor).length} parc.</strong></div>`;
+                    if (document.getElementById('resumoConteudo')) document.getElementById('resumoConteudo').innerHTML = `<div class="resumo-item">Total Contrato<strong>${ocultarBits(tV)}</strong></div><div class="resumo-item">Total Pago<strong>${ocultarBits(tP)}</strong></div><div class="resumo-item">Restante<strong>${ocultarBits(tV-tP)}</strong></div><div class="resumo-item">Faltam<strong>${vinc.filter(x=>x.pago<x.valor).length} parc.</strong></div>`;
                 } else { 
-                    resumo.classList.add('hidden'); 
+                    resumo?.classList.add('hidden'); 
                 }
             } else {
-                document.getElementById('btnExcluir').classList.add('hidden');
-                resumo.classList.add('hidden');
+                document.getElementById('btnExcluir')?.classList.add('hidden');
+                resumo?.classList.add('hidden');
                 resetForm(); 
                 atualizarSubmenu();
             }
         }
         
         function atualizarSubmenu() {
-            const t = document.getElementById('tipo').value;
+            const t = document.getElementById('tipo')?.value;
             const sub = document.getElementById('submenu'); 
-            sub.innerHTML = '';
-            opcoesSubmenu[t].forEach(opt => sub.innerHTML += `<option value="${opt}">${opt}</option>`);
-            document.getElementById('blocoParcelamento').classList.toggle('hidden', t !== 'Divida');
-            document.getElementById('blocoRecebimento').classList.toggle('hidden', t !== 'Receita');
-            definirDescricao();
+            if (sub && t) {
+                sub.innerHTML = '';
+                opcoesSubmenu[t].forEach(opt => sub.innerHTML += `<option value="${opt}">${opt}</option>`);
+                document.getElementById('blocoParcelamento')?.classList.toggle('hidden', t !== 'Divida');
+                document.getElementById('blocoRecebimento')?.classList.toggle('hidden', t !== 'Receita');
+                definirDescricao();
+            }
         }
 
         function definirDescricao() { 
-            document.getElementById('desc').value = document.getElementById('submenu').value.split(' ').slice(1).join(' ');
+            const sub = document.getElementById('submenu')?.value;
+            if (document.getElementById('desc') && sub) {
+                document.getElementById('desc').value = sub.split(' ').slice(1).join(' ');
+            }
         }
         
         function salvar() {
-            const t = document.getElementById('tipo').value, desc = document.getElementById('desc').value, vT = parseFloat(document.getElementById('valor').value) || 0;
-            const dBase = document.getElementById('data').value, editIdx = document.getElementById('editIndex').value;
-            const forma = document.getElementById('formaRecebimento').value;
-            const isP = document.getElementById('selectPago').value === "1";
-            const compB64 = document.getElementById('comprovanteBase64').value;
+            const t = document.getElementById('tipo')?.value, desc = document.getElementById('desc')?.value, vT = parseFloat(document.getElementById('valor')?.value) || 0;
+            const dBase = document.getElementById('data')?.value, editIdx = document.getElementById('editIndex')?.value;
+            const forma = document.getElementById('formaRecebimento')?.value;
+            const isP = document.getElementById('selectPago')?.value === "1";
+            const compB64 = document.getElementById('comprovanteBase64')?.value;
             let valorPago = isP ? vT : 0;
 
             if(!desc || vT <= 0 || !dBase) return showToast("Preencha todos os campos!", "error");
@@ -1258,7 +1357,7 @@
             if(editIdx !== "") { 
                 registros[editIdx] = { ...registros[editIdx], tipo: t, desc, valor: vT, pago: valorPago, data: dBase, forma: t==='Receita' ? forma : null, comprovante: compB64 || registros[editIdx].comprovante }; 
             } else {
-                if (t === 'Divida' && parseInt(document.getElementById('parcelas').value) > 1) {
+                if (t === 'Divida' && parseInt(document.getElementById('parcelas')?.value) > 1) {
                     const p = parseInt(document.getElementById('parcelas').value), pP = parseInt(document.getElementById('parcelasPagas').value);
                     const vParc = vT / p; let dObj = new Date(dBase + "T12:00:00");
                     for (let i = 1; i <= p; i++) {
@@ -1286,8 +1385,8 @@
 
         // GRÁFICOS DETALHADOS (Atualizados com Categorias e Status)
         function abrirModalGraficos() {
-            document.getElementById('modalGraficos').classList.add('open');
-            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('modalGraficos')?.classList.add('open');
+            if (document.getElementById('overlay')) document.getElementById('overlay').style.display = 'block';
             renderizarGraficos();
         }
 
@@ -1301,81 +1400,83 @@
             
             registros.filter(r => r.data.startsWith(prefixoMes)).forEach(r => {
                 if(r.tipo === 'Fixo' || r.tipo === 'Variavel' || r.tipo === 'Divida') {
-                    // Categoria
                     let cat = r.categoria || r.tipo;
                     despesasCategoria[cat] = (despesasCategoria[cat] || 0) + parseFloat(r.valor);
                     
-                    // Status
                     let p = parseFloat(r.pago) || 0;
                     pagoVal += p;
                     pendenteVal += (parseFloat(r.valor) - p);
                 }
             });
 
-            // 1. Gráfico de Categorias (Rosca)
             if(chartCategorias) chartCategorias.destroy();
-            const ctxCat = document.getElementById('chartCategorias').getContext('2d');
-            
-            let catLabels = Object.keys(despesasCategoria);
-            let catData = Object.values(despesasCategoria);
-            
-            if(catData.length === 0) {
-                catLabels = ["Nenhuma despesa"]; catData = [1];
+            const canvasCat = document.getElementById('chartCategorias');
+            if (canvasCat) {
+                const ctxCat = canvasCat.getContext('2d');
+                let catLabels = Object.keys(despesasCategoria);
+                let catData = Object.values(despesasCategoria);
+                
+                if(catData.length === 0) {
+                    catLabels = ["Nenhuma despesa"]; catData = [1];
+                }
+
+                chartCategorias = new Chart(ctxCat, {
+                    type: 'doughnut',
+                    data: {
+                        labels: catLabels,
+                        datasets: [{
+                            data: catData,
+                            backgroundColor: ['#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4', '#ec4899', '#10b981'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: { 
+                        responsive: true, maintainAspectRatio: false, 
+                        plugins: { legend: { position: 'right', labels: { color: fontColor, font: {size: 10} } } },
+                        cutout: '65%'
+                    }
+                });
             }
 
-            chartCategorias = new Chart(ctxCat, {
-                type: 'doughnut',
-                data: {
-                    labels: catLabels,
-                    datasets: [{
-                        data: catData,
-                        backgroundColor: ['#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4', '#ec4899', '#10b981'],
-                        borderWidth: 0
-                    }]
-                },
-                options: { 
-                    responsive: true, maintainAspectRatio: false, 
-                    plugins: { legend: { position: 'right', labels: { color: fontColor, font: {size: 10} } } },
-                    cutout: '65%'
-                }
-            });
-
-            // 2. Gráfico de Status (Barra Horizontal)
             if(chartStatus) chartStatus.destroy();
-            const ctxStatus = document.getElementById('chartStatus').getContext('2d');
-            chartStatus = new Chart(ctxStatus, {
-                type: 'bar',
-                data: {
-                    labels: ['Liquidação do Mês'],
-                    datasets: [
-                        { label: 'Pago', data: [pagoVal], backgroundColor: '#10b981', borderRadius: 4 },
-                        { label: 'Pendente', data: [pendenteVal], backgroundColor: '#ef4444', borderRadius: 4 }
-                    ]
-                },
-                options: { 
-                    indexAxis: 'y', responsive: true, maintainAspectRatio: false, color: fontColor, 
-                    scales: { x: { stacked: true, ticks: { color: fontColor } }, y: { stacked: true, ticks: { display: false } } }, 
-                    plugins: { legend: { labels: { color: fontColor } } } 
-                }
-            });
+            const canvasStatus = document.getElementById('chartStatus');
+            if (canvasStatus) {
+                const ctxStatus = canvasStatus.getContext('2d');
+                chartStatus = new Chart(ctxStatus, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Liquidação do Mês'],
+                        datasets: [
+                            { label: 'Pago', data: [pagoVal], backgroundColor: '#10b981', borderRadius: 4 },
+                            { label: 'Pendente', data: [pendenteVal], backgroundColor: '#ef4444', borderRadius: 4 }
+                        ]
+                    },
+                    options: { 
+                        indexAxis: 'y', responsive: true, maintainAspectRatio: false, color: fontColor, 
+                        scales: { x: { stacked: true, ticks: { color: fontColor } }, y: { stacked: true, ticks: { display: false } } }, 
+                        plugins: { legend: { labels: { color: fontColor } } } 
+                    }
+                });
+            }
         }
 
         // RELATÓRIOS
         function abrirModalRelatorios() {
-            document.getElementById('modalRelatorios').classList.add('open');
-            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('modalRelatorios')?.classList.add('open');
+            if (document.getElementById('overlay')) document.getElementById('overlay').style.display = 'block';
             renderizarRelatorios(3);
         }
 
         function renderizarRelatorios(meses) {
-            document.getElementById('btnRel3m').classList.toggle('active', meses === 3);
-            document.getElementById('btnRel6m').classList.toggle('active', meses === 6);
+            document.getElementById('btnRel3m')?.classList.toggle('active', meses === 3);
+            document.getElementById('btnRel6m')?.classList.toggle('active', meses === 6);
             
             let agora = new Date();
             let limite = new Date(agora.getFullYear(), agora.getMonth() - meses + 1, 1);
             
             let lista = registros.filter(r => new Date(r.data) >= limite && r.comprovante);
             let container = document.getElementById('listaComprovantes');
+            if (!container) return;
             container.innerHTML = "";
 
             if(lista.length === 0) {
@@ -1403,18 +1504,18 @@
         
         // LEITOR IA DE EXTRATOS (Imagem Tesseract e PDF.js)
         function abrirLeitorExtrato() {
-            document.getElementById('modalLeitorExtrato').classList.add('open');
-            document.getElementById('overlay').style.display = 'block';
-            document.getElementById('leitorLoading').classList.add('hidden');
-            document.getElementById('leitorResult').classList.add('hidden');
+            document.getElementById('modalLeitorExtrato')?.classList.add('open');
+            if (document.getElementById('overlay')) document.getElementById('overlay').style.display = 'block';
+            document.getElementById('leitorLoading')?.classList.add('hidden');
+            document.getElementById('leitorResult')?.classList.add('hidden');
         }
 
         async function processarExtratoImagem(event) {
             const file = event.target.files[0];
             if(!file) return;
             
-            document.getElementById('leitorLoading').classList.remove('hidden');
-            document.getElementById('leitorResult').classList.add('hidden');
+            document.getElementById('leitorLoading')?.classList.remove('hidden');
+            document.getElementById('leitorResult')?.classList.add('hidden');
             
             try {
                 if (file.type === "application/pdf") {
@@ -1429,7 +1530,7 @@
                             fullText += textContent.items.map(item => item.str).join(' ') + "\n";
                         }
                         analisarTextoExtrato(fullText);
-                        document.getElementById('leitorLoading').classList.add('hidden');
+                        document.getElementById('leitorLoading')?.classList.add('hidden');
                     };
                     fileReader.readAsArrayBuffer(file);
                 } else {
@@ -1437,12 +1538,12 @@
                         logger: m => console.log(m)
                     });
                     analisarTextoExtrato(text);
-                    document.getElementById('leitorLoading').classList.add('hidden');
+                    document.getElementById('leitorLoading')?.classList.add('hidden');
                 }
             } catch(e) {
                 showToast("Erro ao analisar arquivo.", "error");
                 console.error(e);
-                document.getElementById('leitorLoading').classList.add('hidden');
+                document.getElementById('leitorLoading')?.classList.add('hidden');
             }
         }
         
@@ -1463,7 +1564,7 @@
                     let tipo = "Gasto";
                     let cor = "var(--danger)";
                     
-                    if(lineLower.includes('recebido') || lineLower.includes('entrada') || lineLower.includes('depósito') || lineLower.includes('transferência') || lineLower.includes('rendimento')) {
+                    if(lineLower.includes('recebido') || lineLower.includes('entrada') || lineLower.includes('depósito') || lineLower.includes('transferência') || lineLower.includes('rendimento') || lineLower.includes('salário')) {
                         tipo = "Receita";
                         cor = "var(--success)";
                         entradas += valor;
@@ -1483,30 +1584,33 @@
                 listaHtml = "<p style='color:var(--text-muted); text-align:center; font-size: 0.85rem;'>Nenhum valor financeiro claro foi identificado no arquivo.</p>";
             }
             
-            document.getElementById('leitorLista').innerHTML = listaHtml;
-            document.getElementById('leitorResult').classList.remove('hidden');
+            if (document.getElementById('leitorLista')) document.getElementById('leitorLista').innerHTML = listaHtml;
+            document.getElementById('leitorResult')?.classList.remove('hidden');
             
             if(chartLeitorInstance) chartLeitorInstance.destroy();
-            const ctx = document.getElementById('chartLeitor').getContext('2d');
-            let fontColor = getComputedStyle(document.body).getPropertyValue('--text-muted').trim() || '#999';
-            
-            chartLeitorInstance = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Entradas (Identificadas)', 'Saídas (Identificadas)'],
-                    datasets: [{
-                        data: [entradas, saidas],
-                        backgroundColor: ['#10b981', '#ef4444'],
-                        borderWidth: 0
-                    }]
-                },
-                options: { 
-                    responsive: true, 
-                    maintainAspectRatio: false, 
-                    plugins: { legend: { position: 'bottom', labels: { color: fontColor, font: {size: 11} } } },
-                    cutout: '70%'
-                }
-            });
+            const canvasLeitor = document.getElementById('chartLeitor');
+            if (canvasLeitor) {
+                const ctx = canvasLeitor.getContext('2d');
+                let fontColor = getComputedStyle(document.body).getPropertyValue('--text-muted').trim() || '#999';
+                
+                chartLeitorInstance = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Entradas (Identificadas)', 'Saídas (Identificadas)'],
+                        datasets: [{
+                            data: [entradas, saidas],
+                            backgroundColor: ['#10b981', '#ef4444'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: { 
+                        responsive: true, 
+                        maintainAspectRatio: false, 
+                        plugins: { legend: { position: 'bottom', labels: { color: fontColor, font: {size: 11} } } },
+                        cutout: '70%'
+                    }
+                });
+            }
         }
 
         function exportarDados() { 
@@ -1545,7 +1649,8 @@
         
         function toggleFantasma() { 
             modoFantasma = !modoFantasma;
-            document.getElementById('eyeIcon').className = modoFantasma ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'; 
+            const eyeIcon = document.getElementById('eyeIcon');
+            if (eyeIcon) eyeIcon.className = modoFantasma ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'; 
             renderizar();
         }
         function ocultarBits(v) { 
@@ -1558,16 +1663,16 @@
             } 
         }
         function resetForm() { 
-            document.getElementById('editIndex').value = ""; 
-            document.getElementById('valor').value = "";
-            document.getElementById('parcelas').value = "1"; 
-            document.getElementById('parcelasPagas').value = "0"; 
-            document.getElementById('desc').value = ""; 
-            document.getElementById('data').value = new Date().toISOString().split('T')[0]; 
-            document.getElementById('selectPago').value = "0";
-            document.getElementById('comprovanteInput').value = "";
-            document.getElementById('comprovanteBase64').value = "";
-            document.getElementById('txtNomeArqComp').innerText = "Selecionar arquivo...";
+            if (document.getElementById('editIndex')) document.getElementById('editIndex').value = ""; 
+            if (document.getElementById('valor')) document.getElementById('valor').value = "";
+            if (document.getElementById('parcelas')) document.getElementById('parcelas').value = "1"; 
+            if (document.getElementById('parcelasPagas')) document.getElementById('parcelasPagas').value = "0"; 
+            if (document.getElementById('desc')) document.getElementById('desc').value = ""; 
+            if (document.getElementById('data')) document.getElementById('data').value = new Date().toISOString().split('T')[0]; 
+            if (document.getElementById('selectPago')) document.getElementById('selectPago').value = "0";
+            if (document.getElementById('comprovanteInput')) document.getElementById('comprovanteInput').value = "";
+            if (document.getElementById('comprovanteBase64')) document.getElementById('comprovanteBase64').value = "";
+            if (document.getElementById('txtNomeArqComp')) document.getElementById('txtNomeArqComp').innerText = "Selecionar arquivo...";
         }
         
         window.onload = () => { 
