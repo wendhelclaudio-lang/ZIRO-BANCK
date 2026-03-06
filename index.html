@@ -227,7 +227,7 @@
         .resumo-item { font-size: 0.7rem; color: var(--text-muted); }
         .resumo-item strong { color: var(--text); display: block; font-size: 0.85rem; margin-top: 2px;}
 
-        /* Container protegido para gráficos (impede que fiquem crescendo infinitamente) */
+        /* Container protegido para gráficos */
         .grafico-container { background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 15px; margin-bottom: 25px; position: relative; height: 250px; width: 100%; }
         
         .btn-toggle-meses { flex: 1; padding: 10px; background: var(--input-bg); border: 1px solid var(--border); border-radius: 10px; color: var(--text-muted); font-weight: 800; font-size: 0.75rem; cursor: pointer; }
@@ -464,12 +464,12 @@
             <option value="Reserva">Patrimônio</option>
         </select>
 
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+        <div id="gridCategoriaBanco" style="display:grid; grid-template-columns: 1fr; gap:10px;">
             <div>
                 <span class="label-mini">Categoria</span>
                 <select id="submenu" onchange="definirDescricao()"></select>
             </div>
-            <div>
+            <div id="blocoBanco" class="hidden">
                 <span class="label-mini">Instituição / Banco</span>
                 <select id="banco">
                     <option value="">Outros / Nenhum</option>
@@ -1470,6 +1470,17 @@
                 opcoesSubmenu[t].forEach(opt => sub.innerHTML += `<option value="${opt}">${opt}</option>`);
                 document.getElementById('blocoParcelamento')?.classList.toggle('hidden', t !== 'Divida');
                 document.getElementById('blocoRecebimento')?.classList.toggle('hidden', t !== 'Receita');
+                
+                // Exibe o Banco SOMENTE se for Dívida / Boleto
+                const isDivida = t === 'Divida';
+                document.getElementById('blocoBanco')?.classList.toggle('hidden', !isDivida);
+                
+                // Ajusta o Layout: Se não for dívida, a Categoria ocupa a linha toda (1fr)
+                const gridCatBanco = document.getElementById('gridCategoriaBanco');
+                if(gridCatBanco) {
+                    gridCatBanco.style.gridTemplateColumns = isDivida ? '1fr 1fr' : '1fr';
+                }
+                
                 definirDescricao();
             }
         }
@@ -1485,7 +1496,10 @@
             const t = document.getElementById('tipo')?.value, desc = document.getElementById('desc')?.value, vT = parseFloat(document.getElementById('valor')?.value) || 0;
             const dBase = document.getElementById('data')?.value, editIdx = document.getElementById('editIndex')?.value;
             const forma = document.getElementById('formaRecebimento')?.value;
-            const bancoSel = document.getElementById('banco')?.value || "";
+            
+            // Só salva o Banco se for Dívida (senão deixa vazio)
+            const bancoSel = t === 'Divida' ? (document.getElementById('banco')?.value || "") : "";
+            
             const dataLanc = document.getElementById('dataLancamento')?.value || dBase;
             const isP = document.getElementById('selectPago')?.value === "1";
             const compB64 = document.getElementById('comprovanteBase64')?.value;
