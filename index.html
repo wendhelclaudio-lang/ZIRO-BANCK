@@ -217,7 +217,160 @@
         .comprovante-img-preview { width: 100%; max-height: 400px; object-fit: contain; border-radius: 12px; background: var(--bg); border: 1px solid var(--border); }
         .btn-meta-action { flex: 1; padding: 12px; border-radius: 10px; border: none; font-weight: 800; color: #fff; cursor: pointer; font-size: 0.85rem;}
         
-        /* NOVOS ESTILOS PARA CARDS DE NOTIFICAÇÃO (SUPER PREMIUM) */
+        /* ---------------------------------------------------
+           NOVO DASHBOARD PREMIUM DE METAS (JAW-DROPPING)
+        ----------------------------------------------------- */
+        .meta-dashboard-card {
+            background: linear-gradient(160deg, #111827 0%, #030712 100%);
+            border: 1px solid rgba(0, 242, 255, 0.2);
+            border-radius: 24px;
+            padding: 25px;
+            margin-bottom: 25px;
+            position: relative;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4), inset 0 2px 15px rgba(0,242,255,0.05);
+            text-align: center;
+        }
+        
+        .meta-badge-motivational {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(90deg, #00f2ff, #10b981);
+            color: #000;
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 5px 15px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+            white-space: nowrap;
+        }
+
+        .meta-progress-wrapper {
+            position: relative;
+            margin: 25px 0 20px;
+        }
+
+        .meta-progress-text {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #fff;
+            margin: 0;
+            line-height: 1;
+            text-shadow: 0 0 20px rgba(255,255,255,0.2);
+            transition: color 0.5s ease;
+        }
+
+        .meta-progress-track-glow {
+            width: 100%;
+            height: 14px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            margin-top: 15px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .meta-progress-fill-glow {
+            height: 100%;
+            width: 0%;
+            border-radius: 20px;
+            background: linear-gradient(90deg, #ef4444, #f59e0b, #10b981, #00f2ff);
+            background-size: 300% 100%;
+            transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1), background-position 0.5s ease;
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.6);
+        }
+
+        .meta-stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .meta-stat-box {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border);
+            padding: 15px;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .meta-stat-box.highlight {
+            border-color: rgba(0, 242, 255, 0.3);
+            background: rgba(0, 242, 255, 0.03);
+        }
+
+        .meta-stat-box span {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .meta-stat-box strong {
+            font-size: 1.15rem;
+            color: var(--text);
+            font-weight: 800;
+        }
+
+        .meta-stat-box.highlight strong { color: var(--accent); }
+        .meta-stat-box.danger strong { color: var(--danger); }
+
+        .meta-quick-actions {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .btn-meta-quick {
+            flex: 1;
+            padding: 16px 10px;
+            border-radius: 16px;
+            border: none;
+            font-weight: 800;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-meta-quick.deposit {
+            background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(16,185,129,0.2));
+            border: 1px solid rgba(16,185,129,0.3);
+            color: var(--success);
+        }
+        .btn-meta-quick.deposit:active { background: var(--success); color: #fff; transform: scale(0.95); }
+
+        .btn-meta-quick.withdraw {
+            background: linear-gradient(135deg, rgba(239,68,68,0.05), rgba(239,68,68,0.1));
+            border: 1px solid rgba(239,68,68,0.2);
+            color: var(--danger);
+        }
+        .btn-meta-quick.withdraw:active { background: var(--danger); color: #fff; transform: scale(0.95); }
+
+        .btn-meta-quick i { font-size: 1.4rem; }
+
+        /* ---------------------------------------------------
+           NOVOS ESTILOS PARA CARDS DE NOTIFICAÇÃO (SUPER PREMIUM)
+        ----------------------------------------------------- */
         .notif-card {
             background: var(--input-bg);
             border-radius: 16px;
@@ -259,7 +412,6 @@
         .notif-card.atrasado .notif-action { color: var(--danger); border-color: rgba(239, 68, 68, 0.3); }
         .notif-card.atrasado:hover .notif-action { background: var(--danger); color: #fff; }
         
-        /* Efeito Glow no Cabeçalho de Pendências */
         .notif-header-glow { display: flex; align-items: center; gap: 10px; background: linear-gradient(90deg, rgba(239, 68, 68, 0.1), transparent); padding: 15px 20px; border-radius: 16px; margin-bottom: 20px; border-left: 4px solid var(--danger); }
         .notif-header-glow h2 { margin: 0; font-size: 1.15rem; color: var(--danger); text-shadow: 0 0 10px rgba(239,68,68,0.3); }
 
@@ -359,7 +511,7 @@
                 </div>
 
                 <div class="menu-item" onclick="abrirGestaoMetas()">
-                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--success); background: rgba(16, 185, 129, 0.1);"><i class="fa-solid fa-bullseye"></i></div><span>Gestão de Metas</span></div>
+                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--success); background: rgba(16, 185, 129, 0.1);"><i class="fa-solid fa-bullseye fa-beat"></i></div><span>Gestão de Metas</span></div>
                     <i class="fa-solid fa-chevron-right menu-chevron"></i>
                 </div>
 
@@ -451,12 +603,12 @@
 
     <section class="bottom-charts">
         
-        <div class="meta-panel-home hidden" id="metaPanelInfo">
+        <div class="meta-panel-home hidden" id="metaPanelInfo" onclick="abrirGestaoMetas()" style="cursor:pointer; border: 1px solid var(--success);">
             <div class="meta-label-home">
-                <span id="lblTipoMetaApp">🎯 Meta Mensal</span>
-                <span id="metaProgressoDisplay" style="color: var(--success);">0%</span>
+                <span id="lblTipoMetaApp">🎯 Meta Principal</span>
+                <span id="metaProgressoDisplay" style="color: var(--success); font-weight: 900; text-shadow: 0 0 10px rgba(16,185,129,0.3);">0%</span>
             </div>
-            <div style="font-size: 0.7rem; color: var(--text-muted);">Objetivo: <strong id="metaValorDisplay" style="color: var(--text);">R$ 0,00</strong></div>
+            <div style="font-size: 0.7rem; color: var(--text-muted);">Objetivo Final: <strong id="metaValorDisplay" style="color: var(--text);">R$ 0,00</strong></div>
             <div class="meta-track-home"><div class="meta-fill-home" id="metaFillBarHome"></div></div>
             <div style="font-size: 0.75rem; color: var(--text-muted); text-align: right; font-weight: bold;" id="metaFaltaDisplay">Falta: R$ 0,00</div>
         </div>
@@ -597,76 +749,121 @@
         <button id="btnExcluir" class="btn-delete hidden" onclick="excluirRegistro()">EXCLUIR</button>
     </div>
 
-    <div class="modal" id="modalGestaoMetas" style="background: var(--bg); padding: 25px 30px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
-            <h2 style="margin:0; font-size:1.1rem; color: #fff; display: flex; align-items: center; gap: 8px;">
-                <i class="fa-solid fa-bullseye" style="color: #10b981;"></i> Gestão de Metas
+    <div class="modal" id="modalGestaoMetas" style="background: var(--bg); padding: 0;">
+        <div style="height: 120px; background: linear-gradient(to bottom, rgba(0,242,255,0.15), var(--bg)); position: relative; display: flex; justify-content: space-between; padding: 20px 25px;">
+            <h2 style="margin:0; font-size:1.3rem; color: #fff; z-index: 2; font-weight: 800; display: flex; align-items: center; gap: 10px;">
+                <i class="fa-solid fa-trophy" style="color: #f59e0b;"></i> Dashboard de Metas
             </h2>
-            <i class="fa-solid fa-xmark" style="font-size:1.3rem; color:var(--text-muted); cursor:pointer;" onclick="closeModal()"></i>
-        </div>
-        
-        <div style="text-align: center; margin-bottom: 5px;">
-            <span style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 2px; font-weight: bold;">PROGRESSO ATUAL</span>
-            <h3 id="txtGestaoProgresso" style="font-size: 1.8rem; color: #10b981; margin: 0; font-weight: 800;">0.0%</h3>
-        </div>
-        
-        <div class="meta-track" style="height: 6px; background: #1f2937; margin-bottom: 10px; border-radius: 10px; border: none;">
-            <div class="meta-fill" id="gestaoFillBar" style="border-radius: 10px; width: 0%; background: #10b981;"></div>
-        </div>
-        
-        <div style="display: flex; justify-content: space-between; font-size: 0.7rem; margin-bottom: 30px;">
-            <div style="text-align: left;">
-                <span style="color: var(--text-muted); display: block; margin-bottom: 2px;">Acumulado</span>
-                <strong style="color: #fff; font-size: 0.85rem;" id="txtGestaoAcumulado">R$ 0,00</strong>
-            </div>
-            <div style="text-align: right;">
-                <span style="color: var(--text-muted); display: block; margin-bottom: 2px;">Alvo Final</span>
-                <strong style="color: #00f2ff; font-size: 0.85rem;" id="txtGestaoAlvo">R$ 0,00</strong>
-            </div>
+            <i class="fa-solid fa-xmark" style="font-size:1.5rem; color:#fff; cursor:pointer; z-index: 2; background: rgba(0,0,0,0.5); width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center;" onclick="closeModal()"></i>
         </div>
 
-        <div style="background: transparent; padding: 18px; border-radius: 8px; border: 1px dashed #00f2ff; margin-bottom: 30px;">
-            <span style="font-size: 0.65rem; color: #00f2ff; font-weight: bold; margin-bottom: 12px; display: block; text-transform: uppercase; letter-spacing: 0.5px;">ADICIONAR OU REMOVER SALDO DA META</span>
+        <div style="padding: 0 25px 30px; margin-top: -60px; position: relative; z-index: 3;">
             
-            <input type="number" id="valorMovimentacaoMeta" placeholder="Valor (Ex: 100,00)" step="0.01" style="background: transparent; border: none; border-bottom: 1px solid #1f2937; border-radius: 0; padding: 12px 5px; margin-bottom: 20px; color: #fff; box-shadow: none;">
+            <div class="meta-dashboard-card">
+                <div class="meta-badge-motivational" id="txtMetaMotivacional">🚀 VAMOS COMEÇAR!</div>
+                
+                <div class="meta-progress-wrapper">
+                    <h3 class="meta-progress-text" id="txtGestaoProgresso">0.0%</h3>
+                    <span style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: bold; display: block; margin-top: 5px;" id="txtDescricaoResumoMeta">CONCLUÍDO DA SUA META</span>
+                    
+                    <div class="meta-progress-track-glow">
+                        <div class="meta-progress-fill-glow" id="gestaoFillBar"></div>
+                    </div>
+                </div>
+                
+                <div class="meta-stats-grid">
+                    <div class="meta-stat-box highlight">
+                        <span>Alvo Final</span>
+                        <strong id="txtGestaoAlvo">R$ 0,00</strong>
+                    </div>
+                    <div class="meta-stat-box danger">
+                        <span>Quanto Falta</span>
+                        <strong id="txtGestaoFalta">R$ 0,00</strong>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px; font-size: 0.75rem; color: var(--text-muted); background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px; border: 1px dashed rgba(255,255,255,0.1);">
+                    <i class="fa-solid fa-lightbulb" style="color: #f59e0b; margin-right: 5px;"></i> <span id="txtDicaAporte">Configure uma meta para ver dicas de aporte aqui.</span>
+                </div>
+            </div>
+
+            <div class="meta-quick-actions">
+                <button class="btn-meta-quick deposit" onclick="prepararMovimentacaoMeta('add')">
+                    <i class="fa-solid fa-circle-arrow-up"></i>
+                    GUARDAR<br>DINHEIRO
+                </button>
+                <button class="btn-meta-quick withdraw" onclick="prepararMovimentacaoMeta('rem')">
+                    <i class="fa-solid fa-circle-arrow-down"></i>
+                    RESGATAR<br>DINHEIRO
+                </button>
+            </div>
             
-            <div style="display: flex; gap: 10px;">
-                <button style="flex: 1; padding: 14px; border-radius: 6px; border: none; font-weight: bold; color: #fff; cursor: pointer; font-size: 0.8rem; background: #10b981;" onclick="movimentarMeta('add')"><i class="fa-solid fa-arrow-up"></i> DEPOSITAR</button>
-                <button style="flex: 1; padding: 14px; border-radius: 6px; border: none; font-weight: bold; color: #fff; cursor: pointer; font-size: 0.8rem; background: #ef4444;" onclick="movimentarMeta('rem')"><i class="fa-solid fa-arrow-down"></i> RESGATAR</button>
+            <div id="blocoMovimentacaoRapida" class="hidden" style="background: var(--card); padding: 20px; border-radius: 16px; border: 1px solid var(--accent); margin-bottom: 25px; animation: fadeIn 0.3s ease;">
+                <span class="label-mini" style="color: var(--accent);" id="lblAcaoRapida">QUAL VALOR DESEJA GUARDAR?</span>
+                <input type="number" id="valorMovimentacaoMeta" placeholder="R$ 0,00" step="0.01" style="font-size: 1.5rem; font-weight: 800; color: #fff; background: transparent; border: none; border-bottom: 2px solid var(--accent); border-radius: 0; box-shadow: none; padding: 10px 5px; margin-bottom: 15px;">
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn-confirm" id="btnConfirmarAcaoMeta" style="margin-top: 0; flex: 2;" onclick="executarMovimentacaoMeta()">CONFIRMAR</button>
+                    <button class="btn-delete" style="margin-top: 0; flex: 1; padding: 16px;" onclick="document.getElementById('blocoMovimentacaoRapida').classList.add('hidden')">CANCELAR</button>
+                </div>
             </div>
-            <p style="font-size: 0.6rem; color: var(--text-muted); margin-top: 10px; text-align: center;">O saldo da meta não altera o saldo de suas contas e despesas diárias.</p>
-        </div>
 
-        <h4 style="font-size: 0.8rem; color: #fff; margin: 0 0 15px 0;">Configurar Detalhes da Meta</h4>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-bottom: 15px;">
-            <div>
-                <span class="label-mini" style="color: #fff;">TIPO DE META</span>
-                <select id="tipoMeta" style="background: #111827; border-color: #1f2937; padding: 12px;">
-                    <option value="economia">🎯 Economia</option>
-                    <option value="receita">💰 Receita</option>
-                    <option value="investimento">📈 Investimento</option>
-                    <option value="divida">🛡️ Quitação</option>
-                </select>
-            </div>
-            <div>
-                <span class="label-mini" style="color: #fff;">PERÍODO</span>
-                <select id="periodoMeta" style="background: #111827; border-color: #1f2937; padding: 12px;">
-                    <option value="Semanal">Semanal</option>
-                    <option value="Quinzenal">Quinzenal</option>
-                    <option value="Mensal">Mensal</option>
-                    <option value="Anual">Anual</option>
-                </select>
-            </div>
-        </div>
+            <hr style="border: none; border-top: 1px dashed var(--border); margin: 30px 0;">
 
-        <span class="label-mini" style="color: #00f2ff;">NOVO VALOR ALVO (R$)</span>
-        <input type="number" id="valorMetaInput" placeholder="Ex: 5000,00" step="0.01" style="background: #111827; border-color: #1f2937; padding: 12px;">
-        
-        <span class="label-mini" style="color: #fff;">DESCRIÇÃO (OPCIONAL)</span>
-        <input type="text" id="descMetaInput" placeholder="Ex: Viagem de Férias" style="background: #111827; border-color: #1f2937; padding: 12px;">
-        
-        <button class="btn-confirm" style="background: #00f2ff; color: #000; font-weight: bold; border-radius: 6px; padding: 14px; text-transform: uppercase; font-size: 0.85rem;" onclick="salvarConfiguracaoMeta()">SALVAR CONFIGURAÇÃO</button>
-        <button class="btn-delete" style="border-color: #ef4444; color: #ef4444; font-weight: bold; border-radius: 6px; padding: 14px; text-transform: uppercase; font-size: 0.85rem; margin-top: 10px;" onclick="zerarMetaCompleta()">ZERAR META ATUAL</button>
+            <h4 style="font-size: 0.9rem; color: #fff; margin: 0 0 20px 0; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-sliders"></i> Configurações do Objetivo</h4>
+            
+            <div style="display:grid; grid-template-columns: 1fr; gap:15px; margin-bottom: 15px;">
+                <div>
+                    <span class="label-mini" style="color: #fff;">O QUE VOCÊ QUER ALCANÇAR?</span>
+                    <select id="tipoMeta" style="font-weight: bold; background: var(--input-bg);">
+                        <option value="reserva">🛡️ Reserva de Emergência</option>
+                        <option value="viagem">✈️ Viagem / Férias</option>
+                        <option value="veiculo">🚗 Trocar de Veículo</option>
+                        <option value="imovel">🏠 Casa Própria / Reforma</option>
+                        <option value="casamento">💍 Casamento / Festa</option>
+                        <option value="educacao">📚 Estudos / Faculdade</option>
+                        <option value="aposentadoria">🌅 Aposentadoria</option>
+                        <option value="quitacao">💸 Quitar Dívidas</option>
+                        <option value="investimento">📈 Liberdade Financeira</option>
+                        <option value="eletronico">💻 Eletrônicos / Setup</option>
+                        <option value="outros">🎯 Outro Objetivo</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-bottom: 15px;">
+                <div>
+                    <span class="label-mini" style="color: #00f2ff;">VALOR TOTAL DO OBJETIVO</span>
+                    <input type="number" id="valorMetaInput" placeholder="Ex: 5000,00" step="0.01" style="background: var(--input-bg);">
+                </div>
+                <div>
+                    <span class="label-mini" style="color: #fff;">FREQUÊNCIA DE APORTE IDEAL</span>
+                    <select id="periodoMeta" style="background: var(--input-bg);">
+                        <option value="Semanal">Por Semana</option>
+                        <option value="Quinzenal">Por Quinzena</option>
+                        <option value="Mensal">Por Mês</option>
+                        <option value="Anual">Por Ano</option>
+                    </select>
+                </div>
+            </div>
+            
+            <span class="label-mini" style="color: #fff;">DÊ UM NOME (OPCIONAL)</span>
+            <input type="text" id="descMetaInput" placeholder="Ex: Viagem para a Europa..." style="background: var(--input-bg);">
+            
+            <button class="btn-confirm" style="background: linear-gradient(90deg, #00f2ff, #0284c7); color: #fff; font-weight: 800; border-radius: 12px; padding: 16px; margin-top: 10px;" onclick="salvarConfiguracaoMeta()">SALVAR E ATUALIZAR DASHBOARD</button>
+            <button class="btn-delete" style="border-color: rgba(239, 68, 68, 0.3); color: var(--danger); font-weight: 800; border-radius: 12px; padding: 16px; margin-top: 15px;" onclick="zerarMetaCompleta()">EXCLUIR META ATUAL</button>
+        </div>
+    </div>
+
+    <div class="modal modal-small" id="modalNotificacoes" style="z-index: 2500; padding: 25px 20px; background: linear-gradient(to bottom, var(--card), var(--bg));">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <div class="notif-header-glow" style="margin:0; padding: 10px 15px; width: auto; flex: 1;">
+                <h2 style="display: flex; align-items: center; gap: 10px;"><i class="fa-solid fa-bell fa-shake"></i> Central de Alertas</h2>
+            </div>
+            <i class="fa-solid fa-xmark" style="font-size:1.5rem; color:var(--text-muted); cursor:pointer; background: var(--input-bg); width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin-left: 15px;" onclick="closeModal()"></i>
+        </div>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; text-align: center;">Monitoramento inteligente das suas contas próximas ao vencimento ou em atraso.</p>
+        <div id="listaNotificacoes" style="background: transparent; border: none; border-radius: 0; overflow: visible;">
+        </div>
     </div>
 
     <div class="modal" id="modalGraficos" style="background: var(--bg);">
@@ -735,18 +932,6 @@
             <div id="leitorLista"></div>
         </div>
     </div>
-
-    <div class="modal modal-small" id="modalNotificacoes" style="z-index: 2500; padding: 25px 20px; background: linear-gradient(to bottom, var(--card), var(--bg));">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <div class="notif-header-glow" style="margin:0; padding: 10px 15px; width: auto; flex: 1;">
-                <h2 style="display: flex; align-items: center; gap: 10px;"><i class="fa-solid fa-bell fa-shake"></i> Central de Alertas</h2>
-            </div>
-            <i class="fa-solid fa-xmark" style="font-size:1.5rem; color:var(--text-muted); cursor:pointer; background: var(--input-bg); width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin-left: 15px;" onclick="closeModal()"></i>
-        </div>
-        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; text-align: center;">Monitoramento inteligente das suas contas próximas ao vencimento ou em atraso.</p>
-        <div id="listaNotificacoes" style="background: transparent; border: none; border-radius: 0; overflow: visible;">
-        </div>
-    </div>
     
     <div id="pdf-container"></div>
 
@@ -795,6 +980,7 @@
         
         let modoFantasma = false, filtroAtual = "Tudo", subFiltro = "Pendente", dataVisualizacao = new Date();
         let chartCategorias = null, chartStatus = null, chartEvolucao = null, chartLeitorInstance = null;
+        let acaoMetaAtual = '';
         
         let savedConfig = JSON.parse(localStorage.getItem('meucaixa_config')) || {};
         let appConfig = {
@@ -804,7 +990,7 @@
             moeda: savedConfig.moeda || "R$",
             metaMensal: parseFloat(savedConfig.metaMensal) || 0,
             metaAcumulado: parseFloat(savedConfig.metaAcumulado) || 0,
-            tipoMeta: savedConfig.tipoMeta || "economia",
+            tipoMeta: savedConfig.tipoMeta || "reserva",
             periodoMeta: savedConfig.periodoMeta || "Mensal",
             descMeta: savedConfig.descMeta || "",
             fotoPerfil: savedConfig.fotoPerfil || null
@@ -868,7 +1054,7 @@
             } catch(e) { }
         }
 
-        // SINTETIZADOR PARA RECEITAS
+        // SINTETIZADOR PARA RECEITAS E SUCESSO DE META
         function playIncomeSound() {
             try {
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -992,7 +1178,7 @@
                 
                 if (sessionStorage.getItem('hasPendingAlert') === 'true') {
                     playNotificationSound();
-                    showToast("Atenção: Você tem faturas próximas do vencimento!", "warning");
+                    showToast("Você tem notificações na Central de Alertas!", "warning");
                 } else {
                     showToast(`Acesso Liberado!`, "success");
                 }
@@ -1075,12 +1261,16 @@
                 document.getElementById('metaPanelInfo')?.classList.remove('hidden');
                 if (document.getElementById('metaValorDisplay')) document.getElementById('metaValorDisplay').innerText = formatarMoeda(appConfig.metaMensal);
                 
-                let emojiMeta = "🎯";
-                if(appConfig.tipoMeta === 'receita') emojiMeta = "💰";
-                if(appConfig.tipoMeta === 'investimento') emojiMeta = "📈";
-                if(appConfig.tipoMeta === 'divida') emojiMeta = "🛡️";
+                // Mapear icones de metas para a home
+                const iconesMetas = {
+                    "reserva": "🛡️", "viagem": "✈️", "veiculo": "🚗", "imovel": "🏠",
+                    "casamento": "💍", "educacao": "📚", "aposentadoria": "🌅",
+                    "quitacao": "💸", "investimento": "📈", "eletronico": "💻", "outros": "🎯"
+                };
+                let emojiMeta = iconesMetas[appConfig.tipoMeta] || "🎯";
+                let nomeCurto = document.querySelector(`#tipoMeta option[value="${appConfig.tipoMeta}"]`)?.text.split(' ').slice(1).join(' ') || "Meta Principal";
                 
-                if (document.getElementById('lblTipoMetaApp')) document.getElementById('lblTipoMetaApp').innerText = `${emojiMeta} Meta ${appConfig.periodoMeta}`;
+                if (document.getElementById('lblTipoMetaApp')) document.getElementById('lblTipoMetaApp').innerText = `${emojiMeta} ${nomeCurto}`;
             } else {
                 document.getElementById('metaPanelInfo')?.classList.add('hidden');
             }
@@ -1114,34 +1304,95 @@
 
         function formatarMoeda(valor) { return appConfig.moeda + " " + valor.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}); }
 
+        /* =========================================================================
+           NOVA IA E LÓGICA DO DASHBOARD DE METAS
+        ========================================================================= */
         function abrirGestaoMetas() {
             document.getElementById('modalGestaoMetas')?.classList.add('open');
             if (document.getElementById('overlay')) document.getElementById('overlay').style.display = 'block';
             document.getElementById('profileSidebar')?.classList.remove('open');
+            document.getElementById('blocoMovimentacaoRapida')?.classList.add('hidden');
             
             atualizarUIGestaoMetas();
             
             if (document.getElementById('valorMetaInput')) document.getElementById('valorMetaInput').value = appConfig.metaMensal > 0 ? appConfig.metaMensal : "";
-            if (document.getElementById('tipoMeta')) document.getElementById('tipoMeta').value = appConfig.tipoMeta || "economia";
+            if (document.getElementById('tipoMeta')) document.getElementById('tipoMeta').value = appConfig.tipoMeta || "reserva";
             if (document.getElementById('periodoMeta')) document.getElementById('periodoMeta').value = appConfig.periodoMeta || "Mensal";
             if (document.getElementById('descMetaInput')) document.getElementById('descMetaInput').value = appConfig.descMeta || "";
             if (document.getElementById('valorMovimentacaoMeta')) document.getElementById('valorMovimentacaoMeta').value = "";
+        }
+
+        function gerarFraseMotivacional(progresso) {
+            if (progresso === 0) return { t: "🚀 VAMOS COMEÇAR A JORNADA!", c: "linear-gradient(90deg, #f59e0b, #ef4444)" };
+            if (progresso < 20) return { t: "🌱 ÓTIMO INÍCIO! CONTINUE ASSIM.", c: "linear-gradient(90deg, #f59e0b, #8b5cf6)" };
+            if (progresso < 50) return { t: "🔥 VOCÊ ESTÁ NO CAMINHO CERTO!", c: "linear-gradient(90deg, #8b5cf6, #3b82f6)" };
+            if (progresso < 80) return { t: "⚡ JÁ PASSOU DA METADE. ACELERA!", c: "linear-gradient(90deg, #3b82f6, #10b981)" };
+            if (progresso < 100) return { t: "🏆 FALTA MUITO POUCO! QUASE LÁ!", c: "linear-gradient(90deg, #10b981, #00f2ff)" };
+            return { t: "🎉 OBJETIVO CONCLUÍDO! PARABÉNS!", c: "linear-gradient(90deg, #f59e0b, #00f2ff)" };
         }
 
         function atualizarUIGestaoMetas() {
             const acumulado = appConfig.metaAcumulado || 0;
             const alvo = appConfig.metaMensal || 0;
             let progresso = 0;
+            let falta = 0;
+            
             if(alvo > 0) {
                 progresso = Math.min((acumulado / alvo) * 100, 100);
+                falta = Math.max(alvo - acumulado, 0);
             }
             
-            if(document.getElementById('txtGestaoProgresso')) document.getElementById('txtGestaoProgresso').innerText = progresso.toFixed(1) + '%';
-            if(document.getElementById('gestaoFillBar')) document.getElementById('gestaoFillBar').style.width = progresso + '%';
-            if(document.getElementById('txtGestaoAcumulado')) document.getElementById('txtGestaoAcumulado').innerText = formatarMoeda(acumulado);
-            if(document.getElementById('txtGestaoAlvo')) document.getElementById('txtGestaoAlvo').innerText = formatarMoeda(alvo);
+            const pTxt = document.getElementById('txtGestaoProgresso');
+            if(pTxt) {
+                pTxt.innerText = progresso.toFixed(1) + '%';
+                // Muda a cor do texto do progresso com base na porcentagem
+                if (progresso === 100) pTxt.style.color = '#00f2ff';
+                else if (progresso >= 50) pTxt.style.color = '#10b981';
+                else pTxt.style.color = '#fff';
+            }
+
+            const fill = document.getElementById('gestaoFillBar');
+            if(fill) {
+                fill.style.width = progresso + '%';
+                // Efeito visual no gradiente se chegar a 100%
+                if(progresso === 100) fill.style.boxShadow = '0 0 25px #00f2ff';
+                else fill.style.boxShadow = '0 0 15px rgba(0, 242, 255, 0.6)';
+            }
             
-            if(progresso === 100) triggerConfetti();
+            if(document.getElementById('txtGestaoAlvo')) document.getElementById('txtGestaoAlvo').innerText = formatarMoeda(alvo);
+            if(document.getElementById('txtGestaoFalta')) document.getElementById('txtGestaoFalta').innerText = formatarMoeda(falta);
+
+            // Lógica do Badge Motivacional
+            const motiv = gerarFraseMotivacional(progresso);
+            const badgeMotiv = document.getElementById('txtMetaMotivacional');
+            if(badgeMotiv) {
+                badgeMotiv.innerText = motiv.t;
+                badgeMotiv.style.background = motiv.c;
+            }
+
+            // Lógica de Dica de Aporte
+            const dicaArea = document.getElementById('txtDicaAporte');
+            if (dicaArea && alvo > 0) {
+                if (progresso === 100) {
+                    dicaArea.innerHTML = "Você atingiu o alvo! Deseja configurar uma nova meta ou curtir sua recompensa?";
+                } else {
+                    let divisor = 1;
+                    let txtPer = "vez";
+                    let p = appConfig.periodoMeta || "Mensal";
+                    
+                    if (p === "Semanal") { divisor = 4; txtPer = "semana"; }
+                    else if (p === "Quinzenal") { divisor = 2; txtPer = "quinzena"; }
+                    else if (p === "Mensal") { divisor = 1; txtPer = "mês"; }
+                    else if (p === "Anual") { divisor = 12; txtPer = "mês (para fechar o ano)"; }
+                    
+                    let sug = falta / divisor;
+                    dicaArea.innerHTML = `Guarde cerca de <strong>${formatarMoeda(sug)} por ${txtPer}</strong> para bater esse alvo mais rápido!`;
+                }
+            } else if (dicaArea) {
+                dicaArea.innerHTML = "Configure um valor alvo abaixo para começarmos.";
+            }
+            
+            if(progresso === 100 && alvo > 0) triggerConfetti();
         }
 
         function salvarConfiguracaoMeta() {
@@ -1149,51 +1400,81 @@
                 let val = document.getElementById('valorMetaInput')?.value;
                 if(val && !isNaN(val) && parseFloat(val) > 0) {
                     appConfig.metaMensal = parseFloat(val);
-                    appConfig.tipoMeta = document.getElementById('tipoMeta')?.value || 'economia';
+                    appConfig.tipoMeta = document.getElementById('tipoMeta')?.value || 'reserva';
                     appConfig.periodoMeta = document.getElementById('periodoMeta')?.value || 'Mensal';
                     appConfig.descMeta = document.getElementById('descMetaInput')?.value || '';
                     salvarConfig(); 
                     atualizarUIGestaoMetas();
-                    showToast("Configuração salva!", "success");
-                    setTimeout(() => closeAll(), 800);
+                    playNotificationSound();
+                    showToast("Dashboard atualizado com sucesso!", "success");
                 } else {
                     showToast("Informe um valor alvo válido.", "error");
                 }
             } catch(e) { console.error(e); }
         }
 
-        function movimentarMeta(action) {
-            if(appConfig.metaMensal <= 0) return showToast("Primeiro configure um valor alvo!", "warning");
+        function prepararMovimentacaoMeta(acao) {
+            if(appConfig.metaMensal <= 0) return showToast("Primeiro salve um Valor Alvo na configuração!", "warning");
+            
+            acaoMetaAtual = acao;
+            const bloco = document.getElementById('blocoMovimentacaoRapida');
+            const lbl = document.getElementById('lblAcaoRapida');
+            const btn = document.getElementById('btnConfirmarAcaoMeta');
+            const input = document.getElementById('valorMovimentacaoMeta');
+            
+            bloco.classList.remove('hidden');
+            input.value = '';
+            input.focus();
+            
+            if (acao === 'add') {
+                lbl.innerText = "QUAL VALOR DESEJA GUARDAR AGORA?";
+                lbl.style.color = "var(--success)";
+                input.style.borderBottomColor = "var(--success)";
+                btn.style.background = "var(--success)";
+                btn.innerText = "CONFIRMAR DEPÓSITO";
+            } else {
+                lbl.innerText = "QUAL VALOR DESEJA RESGATAR?";
+                lbl.style.color = "var(--danger)";
+                input.style.borderBottomColor = "var(--danger)";
+                btn.style.background = "var(--danger)";
+                btn.innerText = "CONFIRMAR RESGATE";
+            }
+        }
+
+        function executarMovimentacaoMeta() {
             let inputVal = document.getElementById('valorMovimentacaoMeta').value;
             let valor = parseFloat(inputVal);
             
             if(!valor || isNaN(valor) || valor <= 0) return showToast("Digite um valor válido.", "error");
-            if(action === 'add') {
+            
+            if(acaoMetaAtual === 'add') {
                 appConfig.metaAcumulado += valor;
-                showToast(`R$ ${valor} depositado na meta!`, "success");
-            } else if(action === 'rem') {
+                playIncomeSound();
+                showToast(`+ R$ ${valor} rumo ao objetivo!`, "success");
+            } else if(acaoMetaAtual === 'rem') {
                 if(valor > appConfig.metaAcumulado) return showToast("Saldo insuficiente na meta.", "error");
                 appConfig.metaAcumulado -= valor;
-                showToast(`R$ ${valor} resgatado da meta.`, "warning");
+                showToast(`- R$ ${valor} resgatado.`, "warning");
             }
             
-            document.getElementById('valorMovimentacaoMeta').value = "";
+            document.getElementById('blocoMovimentacaoRapida').classList.add('hidden');
             salvarConfig();
             atualizarUIGestaoMetas();
         }
         
         function zerarMetaCompleta() {
-            if(confirm("Tem certeza que deseja excluir essa meta e zerar o saldo nela?")) {
+            if(confirm("Tem certeza que deseja excluir essa meta e zerar o dashboard?")) {
                 appConfig.metaMensal = 0;
                 appConfig.metaAcumulado = 0;
-                appConfig.tipoMeta = "economia";
+                appConfig.tipoMeta = "reserva";
                 appConfig.descMeta = "";
                 salvarConfig();
                 closeAll();
-                showToast("Meta removida.", "success");
+                showToast("Dashboard resetado.", "success");
             }
         }
 
+        // --- AS CATEGORIAS FORAM ATUALIZADAS AQUI PARA INCLUIR SUAS NECESSIDADES E SURPRESAS ---
         const opcoesSubmenu = {
             "Receita": ["💰 Salário", "🚀 Freelance", "✨ Rendimentos", "🛠️ Serviço", "📦 Produto", "🎁 Presente/Bônus"],
             "Fixo": ["🏠 Aluguel", "⚡ Energia", "💧 Água", "🌐 Internet", "🎬 Streamings", "📚 Educação (Escola/Faculdade)", "🏥 Plano de Saúde", "🏋️ Academia"],
@@ -1538,7 +1819,7 @@
         
         function closeViewComprovante() {
             document.getElementById('modalViewComprovante')?.classList.remove('open');
-            if(!document.getElementById('modalForm')?.classList.contains('open') && !document.getElementById('modalNotificacoes')?.classList.contains('open')) {
+            if(!document.getElementById('modalForm')?.classList.contains('open') && !document.getElementById('modalNotificacoes')?.classList.contains('open') && !document.getElementById('modalGestaoMetas')?.classList.contains('open')) {
                 if(document.getElementById('overlay')) document.getElementById('overlay').style.display = 'none';
             }
         }
