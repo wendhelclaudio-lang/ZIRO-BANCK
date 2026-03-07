@@ -215,10 +215,54 @@
         .bloco-parcelas, .bloco-comprovante { background: var(--hover-bg); padding: 16px; border-radius: 14px; border: 1px dashed var(--accent); margin-bottom: 16px; }
         .bloco-comprovante { border: 1px solid var(--border); }
         .comprovante-img-preview { width: 100%; max-height: 400px; object-fit: contain; border-radius: 12px; background: var(--bg); border: 1px solid var(--border); }
-        .item-notificacao { padding: 12px; border-bottom: 1px solid var(--border); }
-        .item-notificacao:last-child { border-bottom: none; }
         .btn-meta-action { flex: 1; padding: 12px; border-radius: 10px; border: none; font-weight: 800; color: #fff; cursor: pointer; font-size: 0.85rem;}
         
+        /* NOVOS ESTILOS PARA CARDS DE NOTIFICAÇÃO (SUPER PREMIUM) */
+        .notif-card {
+            background: var(--input-bg);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+        .notif-card:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .notif-card::before {
+            content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+        }
+        .notif-card.atrasado::before { background: var(--danger); }
+        .notif-card.pendente::before { background: var(--warning); }
+        
+        .notif-icon {
+            width: 45px; height: 45px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; flex-shrink: 0;
+        }
+        .notif-card.atrasado .notif-icon { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+        .notif-card.pendente .notif-icon { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
+
+        .notif-content { flex: 1; display: flex; flex-direction: column; gap: 4px; overflow: hidden; }
+        .notif-title { color: var(--text); font-size: 0.95rem; font-weight: 700; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .notif-days { font-size: 0.7rem; font-weight: 800; display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px; border-radius: 6px; width: fit-content; text-transform: uppercase; letter-spacing: 0.5px;}
+        .notif-card.atrasado .notif-days { background: var(--danger); color: #fff; }
+        .notif-card.pendente .notif-days { background: var(--warning); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+        
+        .notif-value-box { text-align: right; display: flex; flex-direction: column; align-items: flex-end; }
+        .notif-val { color: var(--text); font-size: 1rem; font-weight: 800; display: block; }
+        .notif-action { background: var(--hover-bg); border: 1px solid var(--border); color: var(--text); font-size: 0.65rem; padding: 6px 12px; border-radius: 8px; margin-top: 6px; cursor: pointer; font-weight: 800; text-transform: uppercase; transition: all 0.2s; }
+        .notif-card.atrasado .notif-action { color: var(--danger); border-color: rgba(239, 68, 68, 0.3); }
+        .notif-card.atrasado:hover .notif-action { background: var(--danger); color: #fff; }
+        
+        /* Efeito Glow no Cabeçalho de Pendências */
+        .notif-header-glow { display: flex; align-items: center; gap: 10px; background: linear-gradient(90deg, rgba(239, 68, 68, 0.1), transparent); padding: 15px 20px; border-radius: 16px; margin-bottom: 20px; border-left: 4px solid var(--danger); }
+        .notif-header-glow h2 { margin: 0; font-size: 1.15rem; color: var(--danger); text-shadow: 0 0 10px rgba(239,68,68,0.3); }
+
         /* CONTAINER PDF (OCULTO DA TELA) */
         #pdf-container { position: absolute; left: -9999px; top: -9999px; width: 800px; background: white; color: black; z-index: -1; }
     </style>
@@ -692,13 +736,15 @@
         </div>
     </div>
 
-    <div class="modal modal-small" id="modalNotificacoes" style="z-index: 2500;">
+    <div class="modal modal-small" id="modalNotificacoes" style="z-index: 2500; padding: 25px 20px; background: linear-gradient(to bottom, var(--card), var(--bg));">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <h2 style="margin:0; font-size:1.15rem; color: var(--danger);"><i class="fa-solid fa-bell"></i> Pendências</h2>
-            <i class="fa-solid fa-xmark" style="font-size:1.4rem; color:var(--text-muted); cursor:pointer;" onclick="closeModal()"></i>
+            <div class="notif-header-glow" style="margin:0; padding: 10px 15px; width: auto; flex: 1;">
+                <h2 style="display: flex; align-items: center; gap: 10px;"><i class="fa-solid fa-bell fa-shake"></i> Central de Alertas</h2>
+            </div>
+            <i class="fa-solid fa-xmark" style="font-size:1.5rem; color:var(--text-muted); cursor:pointer; background: var(--input-bg); width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin-left: 15px;" onclick="closeModal()"></i>
         </div>
-        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">Contas que venceram ou vencem nos próximos 3 dias e não foram pagas.</p>
-        <div id="listaNotificacoes" style="background: var(--bg); border: 1px solid var(--border); border-radius: 12px; overflow: hidden;">
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; text-align: center;">Monitoramento inteligente das suas contas próximas ao vencimento ou em atraso.</p>
+        <div id="listaNotificacoes" style="background: transparent; border: none; border-radius: 0; overflow: visible;">
         </div>
     </div>
     
@@ -1148,7 +1194,6 @@
             }
         }
 
-        // --- AS CATEGORIAS FORAM ATUALIZADAS AQUI PARA INCLUIR SUAS NECESSIDADES E SURPRESAS ---
         const opcoesSubmenu = {
             "Receita": ["💰 Salário", "🚀 Freelance", "✨ Rendimentos", "🛠️ Serviço", "📦 Produto", "🎁 Presente/Bônus"],
             "Fixo": ["🏠 Aluguel", "⚡ Energia", "💧 Água", "🌐 Internet", "🎬 Streamings", "📚 Educação (Escola/Faculdade)", "🏥 Plano de Saúde", "🏋️ Academia"],
@@ -1252,7 +1297,7 @@
             return `<span class="bank-badge" style="background:var(--input-bg); color:var(--text); border: 1px solid var(--border);"><i class="fa-solid fa-building-columns"></i> ${bancoNome}</span>`;
         }
 
-        // VERIFICAR NOTIFICAÇÕES E ALERTAR
+        // VERIFICAR NOTIFICAÇÕES (AGORA COM O NOVO LAYOUT PODEROSO)
         function verificarNotificacoes() {
             let pendingList = [];
             let hoje = new Date();
@@ -1282,26 +1327,59 @@
                     badge.innerText = pendingList.length;
                     
                     let html = "";
+                    
+                    // Ordenar: Os mais atrasados primeiro
+                    pendingList.sort((a, b) => a.diffDays - b.diffDays);
+
                     pendingList.forEach(p => {
-                        let statusHtml;
-                        if(p.diffDays < 0) statusHtml = `<span class="status-badge badge-atrasado">Atrasado (${p.data.split('-').reverse().join('/')})</span>`;
-                        else if(p.diffDays === 0) statusHtml = `<span class="status-badge badge-pendente">Vence Hoje</span>`;
-                        else statusHtml = `<span class="status-badge badge-pendente">Vence em ${p.diffDays} dia(s)</span>`;
+                        let isAtrasado = p.diffDays < 0;
+                        let cardClass = isAtrasado ? 'atrasado' : 'pendente';
+                        let iconClass = isAtrasado ? 'fa-triangle-exclamation fa-beat-fade' : 'fa-clock';
+                        
+                        let tagHtml = "";
+                        if (isAtrasado) {
+                            let dias = Math.abs(p.diffDays);
+                            let textoDias = dias === 1 ? "1 dia" : `${dias} dias`;
+                            tagHtml = `<span class="notif-days"><i class="fa-solid fa-fire"></i> Atrasado há ${textoDias}</span>`;
+                        } else if (p.diffDays === 0) {
+                            tagHtml = `<span class="notif-days"><i class="fa-solid fa-bolt"></i> Vence Hoje!</span>`;
+                        } else {
+                            tagHtml = `<span class="notif-days" style="background: rgba(245, 158, 11, 0.2); color: var(--warning);"><i class="fa-solid fa-calendar-day"></i> Vence em ${p.diffDays} dia(s)</span>`;
+                        }
+
+                        let dataFormatada = p.data.split('-').reverse().join('/');
 
                         html += `
-                        <div class="item-notificacao" onclick="openModal(${p.realIdx})" style="cursor:pointer; display:flex; justify-content:space-between; align-items:center;">
-                            <div>
-                                <strong style="color:var(--text); font-size:0.85rem; display:block;">${p.desc}</strong>
-                                ${statusHtml}
+                        <div class="notif-card ${cardClass}" onclick="openModal(${p.realIdx})">
+                            <div class="notif-icon"><i class="fa-solid ${iconClass}"></i></div>
+                            <div class="notif-content">
+                                <h4 class="notif-title">${p.desc}</h4>
+                                <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 2px;">Vencimento: ${dataFormatada}</div>
+                                ${tagHtml}
                             </div>
-                            <strong style="color:var(--danger); font-size:0.85rem;">${formatarMoeda(p.valor - (p.pago || 0))}</strong>
+                            <div class="notif-value-box">
+                                <span class="notif-val">${formatarMoeda(p.valor - (p.pago || 0))}</span>
+                                <button class="notif-action">Resolver <i class="fa-solid fa-arrow-right" style="margin-left: 2px;"></i></button>
+                            </div>
                         </div>`;
                     });
+                    
                     listaContainer.innerHTML = html;
                     sessionStorage.setItem('hasPendingAlert', 'true');
                 } else {
                     badge.classList.add('hidden');
-                    listaContainer.innerHTML = `<div style="padding:20px; text-align:center; color:var(--text-muted); font-size:0.8rem;">Tudo em dia! Nenhuma pendência para os próximos 3 dias.</div>`;
+                    // TELA DE ESTADO VAZIO COMEMORATIVO
+                    listaContainer.innerHTML = `
+                        <div style="padding: 40px 20px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px;">
+                            <div style="width: 60px; height: 60px; border-radius: 50%; background: rgba(16, 185, 129, 0.1); color: var(--success); display: flex; align-items: center; justify-content: center; font-size: 2rem; box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <div>
+                                <h4 style="margin: 0 0 5px 0; color: var(--text); font-size: 1.1rem;">Tudo no Azul!</h4>
+                                <p style="margin: 0; color: var(--text-muted); font-size: 0.85rem;">Nenhuma conta pendente ou atrasada para os próximos dias. Excelente gestão!</p>
+                            </div>
+                        </div>
+                    `;
                     sessionStorage.setItem('hasPendingAlert', 'false');
                 }
             }
