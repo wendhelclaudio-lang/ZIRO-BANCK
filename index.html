@@ -63,7 +63,7 @@
         * { box-sizing: border-box; outline: none; transition: background-color 0.3s, color 0.3s, border-color 0.3s; }
         body { font-family: 'Ubuntu', system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 0; overflow-x: hidden; font-size: 0.95rem; }
 
-        /* TELA DE BLOQUEIO / CADASTRO */
+        /* TELA DE BLOQUEIO E CADASTRO - MODERNO */
         #lock-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(3, 7, 18, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 99999; display: flex; justify-content: center; align-items: center; padding: 20px; transition: opacity 0.5s ease, visibility 0.5s; }
         [data-theme="light"] #lock-screen, [data-theme="santander"] #lock-screen, [data-theme="itau"] #lock-screen, [data-theme="bradesco"] #lock-screen, [data-theme="nubank"] #lock-screen { background: rgba(255, 255, 255, 0.6); }
 
@@ -223,11 +223,17 @@
 
         .bloco-parcelas, .resumo-quitacao, .bloco-comprovante { background: var(--hover-bg); padding: 16px; border-radius: 14px; border: 1px dashed var(--accent); margin-bottom: 16px; }
         .bloco-comprovante { border: 1px solid var(--border); }
-        .resumo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 10px; }
-        .resumo-item { font-size: 0.7rem; color: var(--text-muted); }
-        .resumo-item strong { color: var(--text); display: block; font-size: 0.85rem; margin-top: 2px;}
+        
+        /* NOVO RESUMO DO CONTRATO (Clean & Modern) */
+        .resumo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px 10px; }
+        .resumo-item { font-size: 0.75rem; color: var(--text-muted); }
+        .resumo-item span { display: block; margin-bottom: 2px; }
+        .resumo-item strong { color: var(--text); display: block; font-size: 0.95rem; }
+        .resumo-item.highlight strong { color: var(--accent); }
+        .resumo-item.danger strong { color: var(--danger); }
+        .resumo-item.success strong { color: var(--success); }
 
-        /* Container protegido para os gráficos da aba "Análise do Mês Atual" */
+        /* Container protegido para gráficos (impede que fiquem crescendo infinitamente) */
         .grafico-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
         .grafico-title { font-size: 0.75rem; color: var(--accent); text-transform: uppercase; margin: 0 0 15px 0; text-align: center; letter-spacing: 1px; font-weight: 800; }
         
@@ -484,7 +490,7 @@
                     <option value="">Outros / Nenhum</option>
                     <optgroup label="Bancos Digitais">
                         <option value="Nubank">Nubank</option>
-                        <option value="Inter">Banco Inter</option>
+                        <option value="Banco Inter">Banco Inter</option>
                         <option value="C6 Bank">C6 Bank</option>
                         <option value="PagBank">PagBank</option>
                         <option value="PicPay">PicPay</option>
@@ -494,20 +500,20 @@
                         <option value="Banco Pan">Banco Pan</option>
                         <option value="Will Bank">Will Bank</option>
                         <option value="Agibank">Agibank</option>
-                        <option value="Sofisa">Sofisa Direto</option>
+                        <option value="Sofisa Direto">Sofisa Direto</option>
                         <option value="Digio">Digio</option>
-                        <option value="Bmg">Banco Bmg</option>
-                        <option value="XP">XP Investimentos</option>
+                        <option value="Banco Bmg">Banco Bmg</option>
+                        <option value="XP Investimentos">XP Investimentos</option>
                         <option value="Rico">Rico</option>
-                        <option value="BS2">Banco BS2</option>
+                        <option value="Banco BS2">Banco BS2</option>
                     </optgroup>
                     <optgroup label="Bancos Tradicionais">
                         <option value="Itaú">Itaú</option>
                         <option value="Santander">Santander</option>
                         <option value="Bradesco">Bradesco</option>
                         <option value="Banco do Brasil">Banco do Brasil</option>
-                        <option value="Caixa">Caixa Econômica</option>
-                        <option value="Safra">Banco Safra</option>
+                        <option value="Caixa Econômica">Caixa Econômica</option>
+                        <option value="Banco Safra">Banco Safra</option>
                         <option value="BTG Pactual">BTG Pactual</option>
                         <option value="Banco BV">Banco BV</option>
                         <option value="Sicoob">Sicoob</option>
@@ -848,7 +854,7 @@
                 
                 if (sessionStorage.getItem('hasPendingAlert') === 'true') {
                     playNotificationSound();
-                    showToast("Atenção: Você tem faturas próximas do vencimento!", "warning");
+                    showToast("Atenção: Você tem contas próximas do vencimento!", "warning");
                 } else {
                     showToast(`Acesso Liberado!`, "success");
                 }
@@ -1145,61 +1151,45 @@
             renderizar(); 
         }
 
+        // LÓGICA DE DETECÇÃO DE BANCOS PARA BADGE E ICONE
         function getBankBadge(bancoNome) {
             if (!bancoNome || bancoNome === 'Outros / Nenhum') return '';
+            
             const badges = {
-                "Nubank": { bg: "#8A05BE", color: "#fff" },
-                "Inter": { bg: "#FF7A00", color: "#fff" },
-                "C6 Bank": { bg: "#242424", color: "#fff" },
-                "PagBank": { bg: "#15B685", color: "#fff" },
-                "PicPay": { bg: "#11C76F", color: "#fff" },
-                "Neon": { bg: "#00E7DF", color: "#000" },
-                "Next": { bg: "#00FF5F", color: "#000" },
-                "Mercado Pago": { bg: "#009EE3", color: "#fff" },
-                "Banco Pan": { bg: "#1474FF", color: "#fff" },
-                "Will Bank": { bg: "#FFEB00", color: "#000" },
-                "Agibank": { bg: "#023436", color: "#fff" },
-                "Sofisa": { bg: "#FFB100", color: "#000" },
-                "Digio": { bg: "#002859", color: "#fff" },
-                "Bmg": { bg: "#FF5A00", color: "#fff" },
-                "XP": { bg: "#000000", color: "#FFD700" },
-                "Rico": { bg: "#FF6600", color: "#fff" },
-                "BS2": { bg: "#1D1D1B", color: "#fff" },
-                "Itaú": { bg: "#EC7000", color: "#fff" },
-                "Santander": { bg: "#EC0000", color: "#fff" },
-                "Bradesco": { bg: "#CC092F", color: "#fff" },
-                "Banco do Brasil": { bg: "#F2D300", color: "#003DA5" },
-                "Caixa": { bg: "#005CA9", color: "#fff" },
-                "Safra": { bg: "#000000", color: "#D4AF37" },
-                "BTG Pactual": { bg: "#0A2240", color: "#D4AF37" },
-                "Banco BV": { bg: "#FFD500", color: "#000" },
-                "Sicoob": { bg: "#003641", color: "#00AE9D" },
-                "Sicredi": { bg: "#00A650", color: "#fff" },
-                "Banrisul": { bg: "#005CA9", color: "#fff" },
-                "Banco do Nordeste": { bg: "#00723A", color: "#fff" }
+                "Nubank": { bg: "#8A05BE", color: "#fff", icon: "fa-building-columns" },
+                "Banco Inter": { bg: "#FF7A00", color: "#fff", icon: "fa-building-columns" },
+                "C6 Bank": { bg: "#242424", color: "#fff", icon: "fa-building-columns" },
+                "PagBank": { bg: "#15B685", color: "#fff", icon: "fa-building-columns" },
+                "PicPay": { bg: "#11C76F", color: "#fff", icon: "fa-building-columns" },
+                "Neon": { bg: "#00E7DF", color: "#000", icon: "fa-building-columns" },
+                "Next": { bg: "#00FF5F", color: "#000", icon: "fa-building-columns" },
+                "Mercado Pago": { bg: "#009EE3", color: "#fff", icon: "fa-handshake" },
+                "Banco Pan": { bg: "#1474FF", color: "#fff", icon: "fa-building-columns" },
+                "Will Bank": { bg: "#FFEB00", color: "#000", icon: "fa-building-columns" },
+                "Agibank": { bg: "#023436", color: "#fff", icon: "fa-building-columns" },
+                "Sofisa Direto": { bg: "#FFB100", color: "#000", icon: "fa-building-columns" },
+                "Digio": { bg: "#002859", color: "#fff", icon: "fa-building-columns" },
+                "Banco Bmg": { bg: "#FF5A00", color: "#fff", icon: "fa-building-columns" },
+                "XP Investimentos": { bg: "#000000", color: "#FFD700", icon: "fa-chart-simple" },
+                "Rico": { bg: "#FF6600", color: "#fff", icon: "fa-chart-pie" },
+                "Banco BS2": { bg: "#1D1D1B", color: "#fff", icon: "fa-building-columns" },
+                "Itaú": { bg: "#EC7000", color: "#fff", icon: "fa-building-columns" },
+                "Santander": { bg: "#EC0000", color: "#fff", icon: "fa-building-columns" },
+                "Bradesco": { bg: "#CC092F", color: "#fff", icon: "fa-building-columns" },
+                "Banco do Brasil": { bg: "#F2D300", color: "#003DA5", icon: "fa-building-columns" },
+                "Caixa Econômica": { bg: "#005CA9", color: "#fff", icon: "fa-building-columns" },
+                "Banco Safra": { bg: "#000000", color: "#D4AF37", icon: "fa-building-columns" },
+                "BTG Pactual": { bg: "#0A2240", color: "#D4AF37", icon: "fa-building-columns" },
+                "Banco BV": { bg: "#FFD500", color: "#000", icon: "fa-building-columns" },
+                "Sicoob": { bg: "#003641", color: "#00AE9D", icon: "fa-building-columns" },
+                "Sicredi": { bg: "#00A650", color: "#fff", icon: "fa-building-columns" },
+                "Banrisul": { bg: "#005CA9", color: "#fff", icon: "fa-building-columns" },
+                "Banco do Nordeste": { bg: "#00723A", color: "#fff", icon: "fa-building-columns" }
             };
 
             let style = badges[bancoNome];
-            if (!style) {
-                const d = bancoNome.toLowerCase();
-                if (d.includes('nubank')) style = badges["Nubank"];
-                else if (d.includes('santander')) style = badges["Santander"];
-                else if (d.includes('bradesco')) style = badges["Bradesco"];
-                else if (d.includes('itau') || d.includes('itaú')) style = badges["Itaú"];
-                else if (d.includes('banco do brasil') || d.includes('bb')) style = badges["Banco do Brasil"];
-                else if (d.includes('caixa')) style = badges["Caixa"];
-                else if (d.includes('inter')) style = badges["Inter"];
-                else if (d.includes('c6')) style = badges["C6 Bank"];
-                else if (d.includes('pagbank') || d.includes('pagseguro')) style = badges["PagBank"];
-                else if (d.includes('picpay')) style = badges["PicPay"];
-                else if (d.includes('mercado pago')) style = badges["Mercado Pago"];
-                else if (d.includes('sicoob')) style = badges["Sicoob"];
-                else if (d.includes('sicredi')) style = badges["Sicredi"];
-            }
-
             if (style) {
-                let finalName = Object.keys(badges).find(k => badges[k] === style) || bancoNome;
-                return `<span class="bank-badge" style="background:${style.bg}; color:${style.color};"><i class="fa-solid fa-building-columns"></i> ${finalName}</span>`;
+                return `<span class="bank-badge" style="background:${style.bg}; color:${style.color};"><i class="fa-solid ${style.icon}"></i> ${bancoNome}</span>`;
             }
             return `<span class="bank-badge" style="background:var(--input-bg); color:var(--text); border: 1px solid var(--border);"><i class="fa-solid fa-building-columns"></i> ${bancoNome}</span>`;
         }
@@ -1333,6 +1323,7 @@
                             if(o < h) { statusColor = 'var(--danger)'; statusText = 'ATRASADO'; }
                         }
 
+                        // Lançamento/Vencimento EXCLUSIVO para Dívida, os outros só exibem a data limpa
                         let datasInfo = '';
                         let dtLanc = (r.dataLancamento || r.data).split('-').reverse().join('/');
                         let dtVenc = r.data.split('-').reverse().join('/');
@@ -1341,7 +1332,6 @@
                             datasInfo = `Lançado: ${dtLanc} • Vence: ${dtVenc}`;
                         } else {
                             datasInfo = `Data: ${dtVenc}`;
-                            if (dtLanc !== dtVenc && r.dataLancamento) datasInfo = `Lançado: ${dtLanc} • Confirmado: ${dtVenc}`;
                         }
                         
                         let bankBadgeHtml = getBankBadge(r.banco);
@@ -1349,6 +1339,12 @@
                         let recAction = '';
                         if(r.comprovante) {
                             recAction = `<br><span onclick="event.stopPropagation(); viewComprovante(${r.realIdx})" class="btn-ver-comp"><i class="fa-solid fa-receipt"></i> VER ANEXO</span>`;
+                        }
+
+                        // Extrai a Categoria formatada para o extrato
+                        let labelCategoria = r.categoria || r.tipo;
+                        if(labelCategoria.includes(' ')) {
+                            labelCategoria = labelCategoria.split(' ').slice(1).join(' '); // Tira o emoji se tiver
                         }
 
                         corpo.innerHTML += `
@@ -1360,7 +1356,7 @@
                                         <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${r.desc}</span> 
                                         ${bankBadgeHtml}
                                     </strong>
-                                    <span>${r.categoria || r.tipo}${extraInfo}</span>
+                                    <span>${labelCategoria}${extraInfo}</span>
                                     <span style="font-size: 0.65rem; color: var(--text-muted); opacity: 0.8; margin-top: 2px;">${datasInfo}</span>
                                     ${recAction}
                                 </div>
@@ -1448,17 +1444,25 @@
             document.getElementById('modalForm')?.classList.add('open');
             if (document.getElementById('overlay')) document.getElementById('overlay').style.display = 'block';
             const resumo = document.getElementById('blocoResumoGeral');
-            const prefixoMes = `${dataVisualizacao.getFullYear()}-${String(dataVisualizacao.getMonth() + 1).padStart(2, '0')}`;
             
             if(idx !== null) {
                 const r = registros[idx];
                 if (document.getElementById('editIndex')) document.getElementById('editIndex').value = idx;
                 if (document.getElementById('tipo')) document.getElementById('tipo').value = r.tipo;
                 
+                // Preenche o submenu primeiro
                 atualizarSubmenu();
                 
-                if (document.getElementById('submenu')) document.getElementById('submenu').value = r.categoria || "";
+                // Aplica a categoria salva garantindo que não vai mudar sozinha
+                if (document.getElementById('submenu') && r.categoria) {
+                    let opts = Array.from(document.getElementById('submenu').options);
+                    let match = opts.find(o => o.value === r.categoria);
+                    if(match) {
+                        document.getElementById('submenu').value = r.categoria;
+                    }
+                }
                 
+                // Define o restante dos dados
                 if (document.getElementById('desc')) document.getElementById('desc').value = r.desc;
                 if (document.getElementById('valor')) document.getElementById('valor').value = r.valor;
                 if (document.getElementById('selectPago')) document.getElementById('selectPago').value = (r.pago >= r.valor && r.valor > 0) ? "1" : "0";
@@ -1472,28 +1476,33 @@
                 if (document.getElementById('txtNomeArqComp')) document.getElementById('txtNomeArqComp').innerText = r.comprovante ? "Comprovante salvo (Anexar novo)" : "Selecionar arquivo...";
                 document.getElementById('btnExcluir')?.classList.remove('hidden');
 
-                if (r.tipo === 'Receita') {
-                    resumo?.classList.remove('hidden');
-                    if (document.getElementById('resumoTitulo')) document.getElementById('resumoTitulo').innerHTML = `Resumo Receitas (Mês) ${getBankBadge(r.banco)}`;
-                    const recs = registros.filter(reg => reg.tipo === 'Receita' && reg.data.startsWith(prefixoMes) && reg.pago >= reg.valor);
-                    const porForma = (f) => recs.filter(x => x.forma === f).reduce((a,b) => a+b.valor, 0);
-                    if (document.getElementById('resumoConteudo')) document.getElementById('resumoConteudo').innerHTML = `<div class="resumo-item">Pix<strong>${ocultarBits(porForma('Pix'))}</strong></div><div class="resumo-item">Dinheiro<strong>${ocultarBits(porForma('Dinheiro'))}</strong></div><div class="resumo-item">Cartão<strong>${ocultarBits(porForma('Cartão'))}</strong></div><div class="resumo-item">Total Recebido<strong>${ocultarBits(recs.reduce((a,b)=>a+b.valor,0))}</strong></div>`;
-                } else if (r.desc.includes('(')) {
+                if (r.desc.includes('(') && r.tipo === 'Divida') {
                     resumo?.classList.remove('hidden');
                     if (document.getElementById('resumoTitulo')) document.getElementById('resumoTitulo').innerHTML = `Resumo do Contrato ${getBankBadge(r.banco)}`;
-                    const base = r.desc.split('(')[0].trim();
-                    const vinc = registros.filter(reg => reg.desc.startsWith(base));
+                    
+                    // Cálculo Exato para Resumo do Contrato (Correção do Bug da Imagem 1)
+                    const getBaseName = (name) => name.replace(/\(\d+\/\d+\)/, '').trim();
+                    const baseDesc = getBaseName(r.desc);
+                    
+                    const vinc = registros.filter(reg =>
+                        reg.tipo === 'Divida' &&
+                        reg.banco === r.banco && 
+                        reg.categoria === r.categoria && 
+                        getBaseName(reg.desc) === baseDesc
+                    );
+
                     const tV = vinc.reduce((a,c)=>a+c.valor, 0);
                     const tP = vinc.reduce((a,c)=>a+c.pago, 0);
+                    const pendentes = vinc.filter(x => parseFloat(x.pago||0) < parseFloat(x.valor||0));
                     const diaVenc = r.data.split('-')[2];
                     
                     if (document.getElementById('resumoConteudo')) document.getElementById('resumoConteudo').innerHTML = `
-                        <div class="resumo-item">Total Contrato<strong>${ocultarBits(tV)}</strong></div>
-                        <div class="resumo-item">Total Pago<strong>${ocultarBits(tP)}</strong></div>
-                        <div class="resumo-item">Restante<strong>${ocultarBits(tV-tP)}</strong></div>
-                        <div class="resumo-item">Faltam<strong>${vinc.filter(x=>x.pago<x.valor).length} parc.</strong></div>
-                        <div class="resumo-item">Valor Parcela<strong>${ocultarBits(r.valor)}</strong></div>
-                        <div class="resumo-item">Vencimento<strong>Todo dia ${diaVenc}</strong></div>
+                        <div class="resumo-item"><span>Total do Contrato</span><strong>${ocultarBits(tV)}</strong></div>
+                        <div class="resumo-item"><span>Total Pago</span><strong style="color:var(--success)">${ocultarBits(tP)}</strong></div>
+                        <div class="resumo-item"><span>Restante / Falta</span><strong style="color:var(--danger)">${ocultarBits(tV-tP)}</strong></div>
+                        <div class="resumo-item"><span>Faltam</span><strong>${pendentes.length} parc.</strong></div>
+                        <div class="resumo-item"><span>Valor Parcela Atual</span><strong>${ocultarBits(r.valor)}</strong></div>
+                        <div class="resumo-item"><span>Vencimento</span><strong>Todo dia ${diaVenc}</strong></div>
                     `;
                 } else { 
                     resumo?.classList.add('hidden'); 
@@ -1517,19 +1526,17 @@
                 
                 const isDivida = t === 'Divida';
                 document.getElementById('blocoBanco')?.classList.toggle('hidden', !isDivida);
-                
-                const gridCatBanco = document.getElementById('gridCategoriaBanco');
-                if(gridCatBanco) {
-                    gridCatBanco.style.gridTemplateColumns = isDivida ? '1fr 1fr' : '1fr';
-                }
-                
                 document.getElementById('boxDataLancamento')?.classList.toggle('hidden', !isDivida);
+                
                 const lblDataMain = document.getElementById('lblDataMain');
                 if(lblDataMain) lblDataMain.innerText = isDivida ? "Data de Vencimento" : "Data da Operação";
                 
+                const gridCatBanco = document.getElementById('gridCategoriaBanco');
+                if(gridCatBanco) gridCatBanco.style.gridTemplateColumns = isDivida ? '1fr 1fr' : '1fr';
+                
                 const gridDatas = document.getElementById('blocoDatas');
                 if(gridDatas) gridDatas.style.gridTemplateColumns = isDivida ? '1fr 1fr' : '1fr';
-
+                
                 definirDescricao();
             }
         }
@@ -1601,6 +1608,9 @@
             registros.filter(r => r.data.startsWith(prefixoMes)).forEach(r => {
                 if(r.tipo === 'Fixo' || r.tipo === 'Variavel' || r.tipo === 'Divida') {
                     let cat = r.categoria || r.tipo;
+                    // Limpar o emoji da legenda para ficar bonitinho
+                    if(cat.includes(' ')) cat = cat.split(' ').slice(1).join(' ');
+                    
                     despesasCategoria[cat] = (despesasCategoria[cat] || 0) + parseFloat(r.valor);
                     
                     let p = parseFloat(r.pago) || 0;
@@ -1615,7 +1625,7 @@
                 const ctxCat = canvasCat.getContext('2d');
                 let catLabels = Object.keys(despesasCategoria);
                 let catData = Object.values(despesasCategoria);
-                let bgColors = ['#3b82f6', '#8b5cf6', '#ec4899', '#f43f5e', '#f59e0b', '#10b981', '#14b8a6', '#06b6d4'];
+                let bgColors = ['#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4', '#ec4899', '#10b981', '#3b82f6'];
                 
                 if(catData.length === 0) {
                     catLabels = ["Nenhuma despesa"]; 
@@ -1638,9 +1648,9 @@
                         responsive: true, maintainAspectRatio: false, layout: { padding: 10 },
                         plugins: { 
                             legend: { position: 'bottom', labels: { color: fontColor, font: {size: 11, family: "'Ubuntu', sans-serif"}, padding: 15, usePointStyle: true } },
-                            tooltip: { callbacks: { label: function(context) { return (catLabels[0] === "Nenhuma despesa") ? " Nenhuma despesa registrada" : ' ' + context.label + ': ' + formatarMoeda(context.raw); } } }
+                            tooltip: { callbacks: { label: function(context) { return (catLabels[0] === "Nenhuma despesa") ? " Nenhuma despesa" : ' ' + context.label + ': ' + formatarMoeda(context.raw); } } }
                         },
-                        cutout: '75%'
+                        cutout: '70%'
                     }
                 });
             }
@@ -1652,10 +1662,10 @@
                 chartStatus = new Chart(ctxStatus, {
                     type: 'bar',
                     data: {
-                        labels: ['Total'],
+                        labels: ['Total do Mês'],
                         datasets: [
-                            { label: 'Pago', data: [pagoVal], backgroundColor: '#10b981', borderRadius: 4, barThickness: 30 },
-                            { label: 'Pendente', data: [pendenteVal], backgroundColor: '#ef4444', borderRadius: 4, barThickness: 30 }
+                            { label: 'Pago', data: [pagoVal], backgroundColor: '#10b981', borderRadius: 6, barThickness: 40 },
+                            { label: 'Pendente', data: [pendenteVal], backgroundColor: '#ef4444', borderRadius: 6, barThickness: 40 }
                         ]
                     },
                     options: { 
@@ -1850,7 +1860,6 @@
                             obj.banco = c[7].trim();
                             obj.forma = c[8].trim() || null;
                         } else if (c.length >= 8) {
-                            // compatibilidade backup anterior
                             obj.valor = parseFloat(c[2]); obj.pago = parseFloat(c[3]); obj.data = c[4].trim();
                             obj.dataLancamento = c[5].trim();
                             obj.banco = c[6].trim();
