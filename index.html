@@ -129,7 +129,7 @@
 
         .date-group-header { font-size: 0.7rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin: 20px 0 10px 5px; border-bottom: 1px solid var(--border); padding-bottom: 5px; }
         
-        /* CARD DA TRANSAÇÃO NA LISTA (Ajuste para não cortar texto) */
+        /* CARD DA TRANSAÇÃO NA LISTA */
         .transaction-item { background: var(--card); padding: 16px; border-radius: 18px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; width: 100%; border: 1px solid var(--border); box-shadow: 0 2px 8px rgba(0,0,0,0.02); cursor: pointer; transition: transform 0.1s;}
         .transaction-item:active { transform: scale(0.98); }
         .item-left { display: flex; align-items: flex-start; gap: 14px; flex: 1; overflow: hidden; }
@@ -155,12 +155,14 @@
 
         /* BARRAS INFERIORES E BOTÕES */
         .bottom-charts { padding: 22px; background: var(--card); border-top: 1px solid var(--border); margin-bottom: 100px; border-radius: 24px 24px 0 0; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); }
-        .meta-panel { margin-bottom: 15px; background: var(--bg); padding: 16px; border-radius: 16px; border: 1px solid var(--border); }
-        .meta-label { display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 8px; color: var(--text); align-items: center;}
-        .meta-track { background: var(--hover-bg); height: 10px; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
-        .meta-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--success)); transition: width 1s cubic-bezier(0.17, 0.67, 0.83, 0.67); }
+        
+        /* META PANEL NA HOME */
+        .meta-panel-home { background: var(--card); padding: 20px; border-radius: 16px; border: 1px solid var(--border); margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .meta-label-home { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: bold; margin-bottom: 8px; color: var(--text); align-items: center;}
+        .meta-track-home { background: var(--input-bg); height: 12px; border-radius: 10px; overflow: hidden; margin-top: 10px; margin-bottom: 8px;}
+        .meta-fill-home { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--success)); transition: width 1s ease-in-out; border-radius: 10px;}
 
-        .action-buttons { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+        .action-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
         .action-btn { flex: 1; min-width: 45%; padding: 12px 10px; background: rgba(0,242,255,0.1); border: 1px solid var(--accent); border-radius: 10px; color: var(--accent); font-weight: 800; font-size: 0.7rem; cursor: pointer; display: flex; align-items: center; justify-content: center;}
 
         /* MODAIS GERAIS */
@@ -216,10 +218,8 @@
         .item-notificacao { padding: 12px; border-bottom: 1px solid var(--border); }
         .item-notificacao:last-child { border-bottom: none; }
         .btn-meta-action { flex: 1; padding: 12px; border-radius: 10px; border: none; font-weight: 800; color: #fff; cursor: pointer; font-size: 0.85rem;}
-        .btn-meta-add { background: var(--success); }
-        .btn-meta-rem { background: var(--danger); }
         
-        /* CONTAINER PDF (OCULTO DA TELA) - CORRIGE O BUG DA TELA BRANCA */
+        /* CONTAINER PDF (OCULTO DA TELA) */
         #pdf-container { position: absolute; left: -9999px; top: -9999px; width: 800px; background: white; color: black; z-index: -1; }
     </style>
 </head>
@@ -314,6 +314,11 @@
                     <i class="fa-solid fa-chevron-right menu-chevron"></i>
                 </div>
 
+                <div class="menu-item" onclick="abrirGestaoMetas()">
+                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--success); background: rgba(16, 185, 129, 0.1);"><i class="fa-solid fa-bullseye"></i></div><span>Gestão de Metas</span></div>
+                    <i class="fa-solid fa-chevron-right menu-chevron"></i>
+                </div>
+
                 <div class="menu-group-title">Ajustes & Segurança</div>
                 
                 <div class="menu-item" onclick="configurarSenha()">
@@ -333,11 +338,6 @@
                     <div class="theme-btn" onclick="mudarTema('santander')" style="border-left: 4px solid #ec0000; background: #f5f5f5; color: #222;">Santander</div>
                     <div class="theme-btn" onclick="mudarTema('itau')" style="border-left: 4px solid #ec7000; background: #f0f1f3; color: #002959;">Itaú</div>
                     <div class="theme-btn" onclick="mudarTema('bradesco')" style="border-left: 4px solid #cc092f; background: #fff; color: #333;">Bradesco</div>
-                </div>
-                
-                <div class="menu-item" onclick="mudarMoeda()">
-                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--warning); background: rgba(245, 158, 11, 0.1);"><i class="fa-solid fa-dollar-sign"></i></div><span>Símbolo da Moeda</span></div>
-                    <span id="currentCurrencyDisplay" style="font-size: 0.8rem; font-weight: 800; color: var(--accent);">R$</span>
                 </div>
                 
                 <div class="menu-group-title">Sistema & Dados</div>
@@ -406,9 +406,20 @@
     </main>
 
     <section class="bottom-charts">
+        
+        <div class="meta-panel-home hidden" id="metaPanelInfo">
+            <div class="meta-label-home">
+                <span id="lblTipoMetaApp">🎯 Meta Mensal</span>
+                <span id="metaProgressoDisplay" style="color: var(--success);">0%</span>
+            </div>
+            <div style="font-size: 0.7rem; color: var(--text-muted);">Objetivo: <strong id="metaValorDisplay" style="color: var(--text);">R$ 0,00</strong></div>
+            <div class="meta-track-home"><div class="meta-fill-home" id="metaFillBarHome"></div></div>
+            <div style="font-size: 0.75rem; color: var(--text-muted); text-align: right; font-weight: bold;" id="metaFaltaDisplay">Falta: R$ 0,00</div>
+        </div>
+
         <div class="action-buttons">
             <button class="action-btn" onclick="abrirModalGraficos()"><i class="fa-solid fa-chart-pie" style="margin-right: 4px;"></i> GRÁFICOS DETALHADOS</button>
-            <button class="action-btn" onclick="gerarPDFoficial()"><i class="fa-solid fa-file-invoice" style="margin-right: 4px;"></i> RELATÓRIO PDF</button>
+            <button class="action-btn" onclick="gerarPDFoficial()"><i class="fa-solid fa-file-invoice" style="margin-right: 4px;"></i> RELATÓRIOS PDF</button>
             <button class="action-btn" onclick="abrirLeitorExtrato()" style="width: 100%; border-color: var(--success); color: var(--success); background: rgba(16, 185, 129, 0.1);"><i class="fa-solid fa-wand-magic-sparkles" style="margin-right: 4px;"></i> LEITOR IA DE EXTRATOS</button>
         </div>
     </section>
@@ -542,47 +553,51 @@
         <button id="btnExcluir" class="btn-delete hidden" onclick="excluirRegistro()">EXCLUIR</button>
     </div>
 
-    <div class="modal" id="modalGestaoMetas">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <h2 style="margin:0; font-size:1.15rem; color: var(--text);"><i class="fa-solid fa-bullseye" style="color: var(--success); margin-right: 5px;"></i> Gestão de Metas</h2>
-            <i class="fa-solid fa-xmark" style="font-size:1.4rem; color:var(--text-muted); cursor:pointer;" onclick="closeModal()"></i>
+    <div class="modal" id="modalGestaoMetas" style="background: var(--bg); padding: 25px 30px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+            <h2 style="margin:0; font-size:1.1rem; color: #fff; display: flex; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-bullseye" style="color: #10b981;"></i> Gestão de Metas
+            </h2>
+            <i class="fa-solid fa-xmark" style="font-size:1.3rem; color:var(--text-muted); cursor:pointer;" onclick="closeModal()"></i>
         </div>
         
-        <div style="background: var(--bg); padding: 20px; border-radius: 16px; border: 1px solid var(--border); margin-bottom: 20px;">
-            <div style="text-align: center; margin-bottom: 15px;">
-                <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 5px;">Progresso Atual</span>
-                <h3 id="txtGestaoProgresso" style="font-size: 2.2rem; color: var(--success); margin: 0; font-weight: 800;">0%</h3>
+        <div style="text-align: center; margin-bottom: 5px;">
+            <span style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 2px; font-weight: bold;">PROGRESSO ATUAL</span>
+            <h3 id="txtGestaoProgresso" style="font-size: 1.8rem; color: #10b981; margin: 0; font-weight: 800;">0.0%</h3>
+        </div>
+        
+        <div class="meta-track" style="height: 6px; background: #1f2937; margin-bottom: 10px; border-radius: 10px; border: none;">
+            <div class="meta-fill" id="gestaoFillBar" style="border-radius: 10px; width: 0%; background: #10b981;"></div>
+        </div>
+        
+        <div style="display: flex; justify-content: space-between; font-size: 0.7rem; margin-bottom: 30px;">
+            <div style="text-align: left;">
+                <span style="color: var(--text-muted); display: block; margin-bottom: 2px;">Acumulado</span>
+                <strong style="color: #fff; font-size: 0.85rem;" id="txtGestaoAcumulado">R$ 0,00</strong>
             </div>
-            <div class="meta-track" style="height: 12px; background: var(--input-bg); margin-bottom: 15px;"><div class="meta-fill" id="gestaoFillBar" style="border-radius: 10px;"></div></div>
+            <div style="text-align: right;">
+                <span style="color: var(--text-muted); display: block; margin-bottom: 2px;">Alvo Final</span>
+                <strong style="color: #00f2ff; font-size: 0.85rem;" id="txtGestaoAlvo">R$ 0,00</strong>
+            </div>
+        </div>
+
+        <div style="background: transparent; padding: 18px; border-radius: 8px; border: 1px dashed #00f2ff; margin-bottom: 30px;">
+            <span style="font-size: 0.65rem; color: #00f2ff; font-weight: bold; margin-bottom: 12px; display: block; text-transform: uppercase; letter-spacing: 0.5px;">ADICIONAR OU REMOVER SALDO DA META</span>
             
-            <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
-                <div style="text-align: left;">
-                    <span style="color: var(--text-muted); display: block;">Acumulado</span>
-                    <strong style="color: var(--text);" id="txtGestaoAcumulado">R$ 0,00</strong>
-                </div>
-                <div style="text-align: right;">
-                    <span style="color: var(--text-muted); display: block;">Alvo Final</span>
-                    <strong style="color: var(--accent);" id="txtGestaoAlvo">R$ 0,00</strong>
-                </div>
-            </div>
-        </div>
-
-        <div style="background: var(--hover-bg); padding: 16px; border-radius: 14px; border: 1px dashed var(--accent); margin-bottom: 20px;">
-            <span class="label-mini">Adicionar ou Remover Saldo da Meta</span>
-            <input type="number" id="valorMovimentacaoMeta" placeholder="Valor (Ex: 100,00)" step="0.01">
+            <input type="number" id="valorMovimentacaoMeta" placeholder="Valor (Ex: 100,00)" step="0.01" style="background: transparent; border: none; border-bottom: 1px solid #1f2937; border-radius: 0; padding: 12px 5px; margin-bottom: 20px; color: #fff; box-shadow: none;">
+            
             <div style="display: flex; gap: 10px;">
-                <button class="btn-meta-action btn-meta-add" onclick="movimentarMeta('add')"><i class="fa-solid fa-arrow-up"></i> DEPOSITAR</button>
-                <button class="btn-meta-action btn-meta-rem" onclick="movimentarMeta('rem')"><i class="fa-solid fa-arrow-down"></i> RESGATAR</button>
+                <button style="flex: 1; padding: 14px; border-radius: 6px; border: none; font-weight: bold; color: #fff; cursor: pointer; font-size: 0.8rem; background: #10b981;" onclick="movimentarMeta('add')"><i class="fa-solid fa-arrow-up"></i> DEPOSITAR</button>
+                <button style="flex: 1; padding: 14px; border-radius: 6px; border: none; font-weight: bold; color: #fff; cursor: pointer; font-size: 0.8rem; background: #ef4444;" onclick="movimentarMeta('rem')"><i class="fa-solid fa-arrow-down"></i> RESGATAR</button>
             </div>
+            <p style="font-size: 0.6rem; color: var(--text-muted); margin-top: 10px; text-align: center;">O saldo da meta não altera o saldo de suas contas e despesas diárias.</p>
         </div>
 
-        <hr style="border: 0; border-top: 1px solid var(--border); margin: 25px 0;">
-
-        <h4 style="font-size: 0.9rem; color: var(--text); margin: 0 0 15px 0;">Configurar Detalhes da Meta</h4>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+        <h4 style="font-size: 0.8rem; color: #fff; margin: 0 0 15px 0;">Configurar Detalhes da Meta</h4>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-bottom: 15px;">
             <div>
-                <span class="label-mini">Tipo de Meta</span>
-                <select id="tipoMeta">
+                <span class="label-mini" style="color: #fff;">TIPO DE META</span>
+                <select id="tipoMeta" style="background: #111827; border-color: #1f2937; padding: 12px;">
                     <option value="economia">🎯 Economia</option>
                     <option value="receita">💰 Receita</option>
                     <option value="investimento">📈 Investimento</option>
@@ -590,8 +605,8 @@
                 </select>
             </div>
             <div>
-                <span class="label-mini">Período</span>
-                <select id="periodoMeta">
+                <span class="label-mini" style="color: #fff;">PERÍODO</span>
+                <select id="periodoMeta" style="background: #111827; border-color: #1f2937; padding: 12px;">
                     <option value="Semanal">Semanal</option>
                     <option value="Quinzenal">Quinzenal</option>
                     <option value="Mensal">Mensal</option>
@@ -600,14 +615,14 @@
             </div>
         </div>
 
-        <span class="label-mini">Novo Valor Alvo (R$)</span>
-        <input type="number" id="valorMetaInput" placeholder="Ex: 5000,00" step="0.01">
+        <span class="label-mini" style="color: #00f2ff;">NOVO VALOR ALVO (R$)</span>
+        <input type="number" id="valorMetaInput" placeholder="Ex: 5000,00" step="0.01" style="background: #111827; border-color: #1f2937; padding: 12px;">
         
-        <span class="label-mini">Descrição (Opcional)</span>
-        <input type="text" id="descMetaInput" placeholder="Ex: Viagem de Férias">
+        <span class="label-mini" style="color: #fff;">DESCRIÇÃO (OPCIONAL)</span>
+        <input type="text" id="descMetaInput" placeholder="Ex: Viagem de Férias" style="background: #111827; border-color: #1f2937; padding: 12px;">
         
-        <button class="btn-confirm" onclick="salvarConfiguracaoMeta()">SALVAR CONFIGURAÇÃO</button>
-        <button class="btn-delete" onclick="zerarMetaCompleta()">ZERAR META ATUAL</button>
+        <button class="btn-confirm" style="background: #00f2ff; color: #000; font-weight: bold; border-radius: 6px; padding: 14px; text-transform: uppercase; font-size: 0.85rem;" onclick="salvarConfiguracaoMeta()">SALVAR CONFIGURAÇÃO</button>
+        <button class="btn-delete" style="border-color: #ef4444; color: #ef4444; font-weight: bold; border-radius: 6px; padding: 14px; text-transform: uppercase; font-size: 0.85rem; margin-top: 10px;" onclick="zerarMetaCompleta()">ZERAR META ATUAL</button>
     </div>
 
     <div class="modal" id="modalGraficos" style="background: var(--bg);">
@@ -807,7 +822,7 @@
             } catch(e) { }
         }
 
-        // SINTETIZADOR PARA RECEITAS (Som Mágico / Videogame Ka-ching)
+        // SINTETIZADOR PARA RECEITAS
         function playIncomeSound() {
             try {
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -1009,6 +1024,20 @@
                     else { av.style.backgroundImage = "none"; av.innerText = iniciais; }
                 }
             });
+            
+            if(appConfig.metaMensal > 0) {
+                document.getElementById('metaPanelInfo')?.classList.remove('hidden');
+                if (document.getElementById('metaValorDisplay')) document.getElementById('metaValorDisplay').innerText = formatarMoeda(appConfig.metaMensal);
+                
+                let emojiMeta = "🎯";
+                if(appConfig.tipoMeta === 'receita') emojiMeta = "💰";
+                if(appConfig.tipoMeta === 'investimento') emojiMeta = "📈";
+                if(appConfig.tipoMeta === 'divida') emojiMeta = "🛡️";
+                
+                if (document.getElementById('lblTipoMetaApp')) document.getElementById('lblTipoMetaApp').innerText = `${emojiMeta} Meta ${appConfig.periodoMeta}`;
+            } else {
+                document.getElementById('metaPanelInfo')?.classList.add('hidden');
+            }
         }
 
         function carregarNovaFoto(event) {
@@ -1401,6 +1430,15 @@
             if (document.getElementById('totalReserva')) document.getElementById('totalReserva').innerText = ocultarBits(sRes);
             if (document.getElementById('totalSaldo')) document.getElementById('totalSaldo').innerText = ocultarBits(totalSaldoFinal); 
             
+            if(appConfig.metaMensal > 0) {
+                const acumulado = appConfig.metaAcumulado || 0;
+                const progresso = Math.min((acumulado / appConfig.metaMensal) * 100, 100);
+                const falta = Math.max(appConfig.metaMensal - acumulado, 0);
+                if (document.getElementById('metaFillBarHome')) document.getElementById('metaFillBarHome').style.width = progresso + '%';
+                if (document.getElementById('metaProgressoDisplay')) document.getElementById('metaProgressoDisplay').innerText = progresso.toFixed(1) + '%';
+                if (document.getElementById('metaFaltaDisplay')) document.getElementById('metaFaltaDisplay').innerText = `Falta: ${formatarMoeda(falta)}`;
+            }
+
             verificarNotificacoes();
         }
 
