@@ -26,201 +26,407 @@
     <style>
         /* VARIÁVEIS DE TEMAS */
         :root {
-            --bg: #030712; --card: #111827; --accent: #00f2ff; --text: #f3f4f6;
+            --bg: #030712;
+            --card: #111827; --accent: #00f2ff; --text: #f3f4f6;
             --text-muted: #94a3b8; --border: #1f2937; --input-bg: #1f2937;
             --hover-bg: rgba(255,255,255,0.05); --success: #10b981; --danger: #ef4444;
-            --warning: #f59e0b; --reserve: #8b5cf6;
+            --warning: #f59e0b;
+            --reserve: #8b5cf6;
         }
-        [data-theme="light"] { --bg: #f8fafc; --card: #ffffff; --accent: #0284c7; --text: #0f172a; --text-muted: #64748b; --border: #e2e8f0; --input-bg: #f1f5f9; --hover-bg: rgba(0,0,0,0.05); --success: #059669; --danger: #dc2626; --warning: #d97706; --reserve: #7c3aed; }
-        [data-theme="nubank"] { --bg: #f0f1f5; --card: #ffffff; --accent: #820ad1; --text: #111111; --text-muted: #757575; --border: #e0e0e0; --input-bg: #f5f5f5; --hover-bg: rgba(130, 10, 209, 0.05); --success: #00a868; --danger: #e92929; --warning: #ff9800; --reserve: #820ad1; }
-        [data-theme="santander"] { --bg: #f5f5f5; --card: #ffffff; --accent: #ec0000; --text: #222222; --text-muted: #666666; --border: #cccccc; --input-bg: #eeeeee; --hover-bg: rgba(236, 0, 0, 0.05); --success: #107c10; --danger: #cc0000; --warning: #ff7300; --reserve: #444444; }
-        [data-theme="itau"] { --bg: #f0f1f3; --card: #ffffff; --accent: #ec7000; --text: #002959; --text-muted: #6c7a89; --border: #dcdde1; --input-bg: #f5f6f8; --hover-bg: rgba(236, 112, 0, 0.05); --success: #008f39; --danger: #da291c; --warning: #ec7000; --reserve: #002959; }
-        [data-theme="bradesco"] { --bg: #ffffff; --card: #f9f9f9; --accent: #cc092f; --text: #333333; --text-muted: #777777; --border: #e6e6e6; --input-bg: #ffffff; --hover-bg: rgba(204, 9, 47, 0.05); --success: #008000; --danger: #cc092f; --warning: #f2a900; --reserve: #444444; }
+        [data-theme="light"] { --bg: #f8fafc; --card: #ffffff; --accent: #0284c7; --text: #0f172a;
+            --text-muted: #64748b; --border: #e2e8f0; --input-bg: #f1f5f9; --hover-bg: rgba(0,0,0,0.05); --success: #059669; --danger: #dc2626; --warning: #d97706; --reserve: #7c3aed;
+        }
+        [data-theme="nubank"] { --bg: #f0f1f5; --card: #ffffff; --accent: #820ad1; --text: #111111; --text-muted: #757575;
+            --border: #e0e0e0; --input-bg: #f5f5f5; --hover-bg: rgba(130, 10, 209, 0.05); --success: #00a868; --danger: #e92929; --warning: #ff9800; --reserve: #820ad1;
+        }
+        [data-theme="santander"] { --bg: #f5f5f5; --card: #ffffff; --accent: #ec0000; --text: #222222; --text-muted: #666666;
+            --border: #cccccc; --input-bg: #eeeeee; --hover-bg: rgba(236, 0, 0, 0.05); --success: #107c10; --danger: #cc0000; --warning: #ff7300; --reserve: #444444;
+        }
+        [data-theme="itau"] { --bg: #f0f1f3; --card: #ffffff; --accent: #ec7000; --text: #002959; --text-muted: #6c7a89;
+            --border: #dcdde1; --input-bg: #f5f6f8; --hover-bg: rgba(236, 112, 0, 0.05); --success: #008f39; --danger: #da291c; --warning: #ec7000; --reserve: #002959;
+        }
+        [data-theme="bradesco"] { --bg: #ffffff; --card: #f9f9f9; --accent: #cc092f; --text: #333333; --text-muted: #777777;
+            --border: #e6e6e6; --input-bg: #ffffff; --hover-bg: rgba(204, 9, 47, 0.05); --success: #008000; --danger: #cc092f; --warning: #f2a900; --reserve: #444444;
+        }
 
-        * { box-sizing: border-box; outline: none; transition: background-color 0.3s, color 0.3s, border-color 0.3s; }
-        body { font-family: 'Ubuntu', system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 0; overflow-x: hidden; font-size: 0.95rem; }
+        * { box-sizing: border-box; outline: none;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s; }
+        body { font-family: 'Ubuntu', system-ui, sans-serif;
+            background: var(--bg); color: var(--text); margin: 0; padding: 0; overflow-x: hidden; font-size: 0.95rem;
+        }
 
         /* TELA DE BLOQUEIO */
-        #lock-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(3, 7, 18, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 99999; display: flex; justify-content: center; align-items: center; padding: 20px; transition: opacity 0.5s ease, visibility 0.5s; }
-        [data-theme="light"] #lock-screen, [data-theme="santander"] #lock-screen, [data-theme="itau"] #lock-screen, [data-theme="bradesco"] #lock-screen, [data-theme="nubank"] #lock-screen { background: rgba(255, 255, 255, 0.85); }
-        .login-card { background: var(--card); border: 1px solid var(--border); border-radius: 28px; padding: 40px 30px; width: 100%; max-width: 380px; box-shadow: 0 30px 60px rgba(0,0,0,0.4); display: flex; flex-direction: column; align-items: center; position: relative; text-align: center; }
-        .lock-avatar { width: 80px; height: 80px; border-radius: 22px; background: linear-gradient(135deg, var(--accent), #0a192f); display: flex; align-items: center; justify-content: center; font-size: 2.2rem; color: white; margin-bottom: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); background-size: cover; background-position: center; font-weight: 800; position: relative; }
-        .lock-avatar i { font-size: 2.8rem; animation: pulseGlow 2s infinite ease-in-out; }
-        @keyframes pulseGlow { 0% { filter: drop-shadow(0 0 2px rgba(255,255,255,0.3)); transform: scale(1); } 50% { filter: drop-shadow(0 0 15px rgba(255,255,255,0.9)); transform: scale(1.05); } 100% { filter: drop-shadow(0 0 2px rgba(255,255,255,0.3)); transform: scale(1); } }
-        .lock-title { font-size: 1.6rem; margin: 0 0 8px 0; color: var(--text); font-weight: 800; }
-        .lock-subtitle { font-size: 0.85rem; color: var(--text-muted); margin: 0 0 30px 0; line-height: 1.4; font-weight: 400; }
-        .input-group { position: relative; width: 100%; margin-bottom: 16px; text-align: left; }
-        .input-group i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.1rem; transition: color 0.3s; pointer-events: none; }
-        .lock-input { width: 100%; background: var(--input-bg); border: 2px solid transparent; padding: 16px 16px 16px 45px; border-radius: 16px; color: var(--text); font-size: 0.95rem; transition: all 0.3s; font-family: 'Ubuntu', sans-serif; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); }
-        .lock-input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 4px rgba(0, 242, 255, 0.1); }
-        .input-group:focus-within i { color: var(--accent); }
-        .btn-login { width: 100%; background: linear-gradient(135deg, var(--accent), var(--success)); color: #fff; border: none; padding: 16px; border-radius: 16px; font-weight: 800; font-size: 1rem; cursor: pointer; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3); margin-top: 10px; margin-bottom: 20px; transition: transform 0.2s; }
-        .btn-login:active { transform: translateY(2px); box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2); }
-        .btn-forgot { background: none; border: none; color: var(--text-muted); font-family: 'Ubuntu'; font-size: 0.85rem; cursor: pointer; font-weight: 600; padding: 10px; }
-        .auth-view { width: 100%; display: flex; flex-direction: column; align-items: center; animation: fadeIn 0.4s ease forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        #lock-screen { position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%; background: rgba(3, 7, 18, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 99999;
+            display: flex; justify-content: center; align-items: center; padding: 20px; transition: opacity 0.5s ease, visibility 0.5s;
+        }
+        [data-theme="light"] #lock-screen, [data-theme="santander"] #lock-screen, [data-theme="itau"] #lock-screen, [data-theme="bradesco"] #lock-screen, [data-theme="nubank"] #lock-screen { background: rgba(255, 255, 255, 0.85);
+        }
+        .login-card { background: var(--card); border: 1px solid var(--border); border-radius: 28px;
+            padding: 40px 30px; width: 100%; max-width: 380px; box-shadow: 0 30px 60px rgba(0,0,0,0.4); display: flex; flex-direction: column; align-items: center; position: relative;
+            text-align: center; }
+        .lock-avatar { width: 80px; height: 80px; border-radius: 22px;
+            background: linear-gradient(135deg, var(--accent), #0a192f); display: flex; align-items: center; justify-content: center; font-size: 2.2rem; color: white; margin-bottom: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2); background-size: cover; background-position: center; font-weight: 800; position: relative;
+        }
+        .lock-avatar i { font-size: 2.8rem; animation: pulseGlow 2s infinite ease-in-out;
+        }
+        @keyframes pulseGlow { 0% { filter: drop-shadow(0 0 2px rgba(255,255,255,0.3)); transform: scale(1);
+            } 50% { filter: drop-shadow(0 0 15px rgba(255,255,255,0.9)); transform: scale(1.05); } 100% { filter: drop-shadow(0 0 2px rgba(255,255,255,0.3)); transform: scale(1);
+        } }
+        .lock-title { font-size: 1.6rem; margin: 0 0 8px 0; color: var(--text);
+            font-weight: 800; }
+        .lock-subtitle { font-size: 0.85rem; color: var(--text-muted);
+            margin: 0 0 30px 0; line-height: 1.4; font-weight: 400; }
+        .input-group { position: relative;
+            width: 100%; margin-bottom: 16px; text-align: left; }
+        .input-group i { position: absolute;
+            left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.1rem; transition: color 0.3s; pointer-events: none;
+        }
+        .lock-input { width: 100%; background: var(--input-bg); border: 2px solid transparent;
+            padding: 16px 16px 16px 45px; border-radius: 16px; color: var(--text); font-size: 0.95rem; transition: all 0.3s; font-family: 'Ubuntu', sans-serif;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); }
+        .lock-input:focus { border-color: var(--accent); outline: none;
+            box-shadow: 0 0 0 4px rgba(0, 242, 255, 0.1); }
+        .input-group:focus-within i { color: var(--accent);
+        }
+        .btn-login { width: 100%; background: linear-gradient(135deg, var(--accent), var(--success)); color: #fff; border: none;
+            padding: 16px; border-radius: 16px; font-weight: 800; font-size: 1rem; cursor: pointer; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3); margin-top: 10px;
+            margin-bottom: 20px; transition: transform 0.2s; }
+        .btn-login:active { transform: translateY(2px);
+            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2); }
+        .btn-forgot { background: none;
+            border: none; color: var(--text-muted); font-family: 'Ubuntu'; font-size: 0.85rem; cursor: pointer; font-weight: 600; padding: 10px;
+        }
+        .auth-view { width: 100%; display: flex; flex-direction: column; align-items: center;
+            animation: fadeIn 0.4s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0;
+            transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* TOAST */
-        #toast-container { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 100000; display: flex; flex-direction: column; gap: 10px; pointer-events: none; width: 90%; max-width: 350px;}
-        .toast { background: var(--card); color: var(--text); padding: 16px 20px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 15px; font-weight: 500; font-size: 0.9rem; animation: slideUp 0.3s ease forwards; border-left: 5px solid var(--accent); }
-        .toast.success { border-left-color: var(--success); }
-        .toast.error { border-left-color: var(--danger); }
-        .toast.warning { border-left-color: var(--warning); }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        #toast-container { position: fixed;
+            bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 100000; display: flex; flex-direction: column; gap: 10px; pointer-events: none; width: 90%;
+            max-width: 350px;}
+        .toast { background: var(--card); color: var(--text); padding: 16px 20px; border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 15px; font-weight: 500; font-size: 0.9rem; animation: slideUp 0.3s ease forwards;
+            border-left: 5px solid var(--accent); }
+        .toast.success { border-left-color: var(--success);
+        }
+        .toast.error { border-left-color: var(--danger);
+        }
+        .toast.warning { border-left-color: var(--warning);
+        }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px);
+            } to { opacity: 1; transform: translateY(0); } }
 
         /* HEADER */
-        header { background: var(--bg); padding: 18px 22px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
-        .profile-section { display: flex; align-items: center; gap: 14px; cursor: pointer; }
-        .avatar { width: 44px; height: 44px; border-radius: 14px; background: linear-gradient(135deg, var(--accent), #0a192f); display: flex; align-items: center; justify-content: center; font-weight: bold; color: #ffffff; border: 2px solid var(--border); font-size: 1.3rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2); overflow: hidden; background-size: cover; background-position: center; }
-        .user-info span { font-size: 0.65rem; color: var(--text-muted); letter-spacing: 1px; display: block; text-transform: uppercase; margin-bottom: 2px; }
-        .user-info strong { font-size: 0.95rem; color: var(--text); letter-spacing: 0.5px;}
-        .bell-btn { background:none; border:1px solid var(--border); color:var(--text); padding:8px 10px; border-radius:10px; cursor:pointer; position:relative; display: flex; align-items: center; justify-content: center; height: 38px; width: 38px; }
-        .badge { position:absolute; top:-5px; right:-5px; background:var(--danger); color:white; font-size:0.6rem; font-weight:bold; border-radius:50%; width:18px; height:18px; display:flex; align-items:center; justify-content:center; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+        header { background: var(--bg);
+            padding: 18px 22px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--border);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+        .profile-section { display: flex;
+            align-items: center; gap: 14px; cursor: pointer; }
+        .avatar { width: 44px; height: 44px;
+            border-radius: 14px; background: linear-gradient(135deg, var(--accent), #0a192f); display: flex; align-items: center; justify-content: center; font-weight: bold; color: #ffffff; border: 2px solid var(--border);
+            font-size: 1.3rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2); overflow: hidden; background-size: cover; background-position: center;
+        }
+        .user-info span { font-size: 0.65rem; color: var(--text-muted); letter-spacing: 1px; display: block;
+            text-transform: uppercase; margin-bottom: 2px; }
+        .user-info strong { font-size: 0.95rem; color: var(--text);
+            letter-spacing: 0.5px;}
+        .bell-btn { background:none; border:1px solid var(--border); color:var(--text); padding:8px 10px; border-radius:10px; cursor:pointer;
+            position:relative; display: flex; align-items: center; justify-content: center; height: 38px; width: 38px;
+        }
+        .badge { position:absolute; top:-5px; right:-5px; background:var(--danger); color:white; font-size:0.6rem; font-weight:bold; border-radius:50%; width:18px; height:18px;
+            display:flex; align-items:center; justify-content:center; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
 
         /* MENU LATERAL */
-        .sidebar { position: fixed; top: 0; right: -100%; width: 85%; max-width: 400px; height: 100%; background: var(--card); z-index: 3000; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); padding: 0; box-shadow: -20px 0 50px rgba(0,0,0,0.5); display: flex; flex-direction: column; overflow: hidden; }
-        .sidebar.open { right: 0; }
-        .sidebar-scroll-area { padding: 30px 24px; overflow-y: auto; flex: 1; }
-        .sidebar-top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-        .sidebar-top-bar h3 { margin: 0; font-size: 1.1rem; color: var(--text); font-weight: 800; }
-        .close-sidebar-btn { background: var(--input-bg); border: 1px solid var(--border); color: var(--text-muted); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-        .sidebar-profile-card { background: linear-gradient(145deg, var(--input-bg), transparent); border: 1px solid var(--border); border-radius: 20px; padding: 25px 20px; display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 30px; }
-        .sidebar-profile-card .avatar { width: 75px; height: 75px; font-size: 2.2rem; border-radius: 22px; margin-bottom: 12px; }
-        .sidebar-profile-card h2 { margin: 0 0 5px 0; font-size: 1.25rem; color: var(--text); font-weight: 800; }
-        .security-badge { background: rgba(16, 185, 129, 0.1); color: var(--success); font-size: 0.65rem; font-weight: 800; padding: 5px 12px; border-radius: 20px; margin-top: 15px; display: inline-flex; align-items: center; gap: 6px; border: 1px solid rgba(16, 185, 129, 0.2); letter-spacing: 0.5px; }
+        .sidebar { position: fixed;
+            top: 0; right: -100%; width: 85%; max-width: 400px; height: 100%; background: var(--card); z-index: 3000; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 0; box-shadow: -20px 0 50px rgba(0,0,0,0.5); display: flex; flex-direction: column; overflow: hidden;
+        }
+        .sidebar.open { right: 0;
+        }
+        .sidebar-scroll-area { padding: 30px 24px; overflow-y: auto; flex: 1;
+        }
+        .sidebar-top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;
+        }
+        .sidebar-top-bar h3 { margin: 0; font-size: 1.1rem; color: var(--text); font-weight: 800;
+        }
+        .close-sidebar-btn { background: var(--input-bg); border: 1px solid var(--border); color: var(--text-muted); width: 36px;
+            height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;
+        }
+        .sidebar-profile-card { background: linear-gradient(145deg, var(--input-bg), transparent); border: 1px solid var(--border); border-radius: 20px;
+            padding: 25px 20px; display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 30px;
+        }
+        .sidebar-profile-card .avatar { width: 75px; height: 75px; font-size: 2.2rem; border-radius: 22px;
+            margin-bottom: 12px; }
+        .sidebar-profile-card h2 { margin: 0 0 5px 0; font-size: 1.25rem;
+            color: var(--text); font-weight: 800; }
+        .security-badge { background: rgba(16, 185, 129, 0.1);
+            color: var(--success); font-size: 0.65rem; font-weight: 800; padding: 5px 12px; border-radius: 20px; margin-top: 15px; display: inline-flex; align-items: center; gap: 6px;
+            border: 1px solid rgba(16, 185, 129, 0.2); letter-spacing: 0.5px; }
         
-        .menu-group-title { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin: 25px 0 10px 10px; font-weight: 700; opacity: 0.8; }
-        .sidebar-menu { display: flex; flex-direction: column; gap: 6px; padding-bottom: 30px;}
-        .menu-item { padding: 12px 15px; border-radius: 16px; background: transparent; display: flex; align-items: center; justify-content: space-between; gap: 15px; font-size: 0.95rem; cursor: pointer; border: 1px solid transparent; color: var(--text); font-weight: 600; transition: all 0.2s ease; }
-        .menu-item:hover, .menu-item:active { background: var(--hover-bg); border-color: var(--border); transform: translateX(4px); }
-        .menu-item-left { display: flex; align-items: center; gap: 15px; }
-        .menu-icon-wrap { width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
-        .menu-chevron { color: var(--text-muted); font-size: 0.8rem; opacity: 0.5; transition: transform 0.2s; }
+        .menu-group-title { font-size: 0.7rem;
+            color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin: 25px 0 10px 10px; font-weight: 700; opacity: 0.8;
+        }
+        .sidebar-menu { display: flex; flex-direction: column; gap: 6px;
+            padding-bottom: 30px;}
+        .menu-item { padding: 12px 15px; border-radius: 16px; background: transparent; display: flex;
+            align-items: center; justify-content: space-between; gap: 15px; font-size: 0.95rem; cursor: pointer; border: 1px solid transparent; color: var(--text); font-weight: 600;
+            transition: all 0.2s ease; }
+        .menu-item:hover, .menu-item:active { background: var(--hover-bg); border-color: var(--border);
+            transform: translateX(4px); }
+        .menu-item-left { display: flex; align-items: center; gap: 15px;
+        }
+        .menu-icon-wrap { width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center;
+            justify-content: center; font-size: 1.1rem; }
+        .menu-chevron { color: var(--text-muted); font-size: 0.8rem; opacity: 0.5;
+            transition: transform 0.2s; }
         
-        .theme-selector { background: var(--input-bg); border: 1px solid var(--border); border-radius: 12px; padding: 10px; display: none; grid-template-columns: 1fr 1fr; gap: 5px; }
-        .theme-selector.open { display: grid; }
-        .theme-btn { padding: 10px; border-radius: 8px; font-size: 0.8rem; cursor: pointer; border: 1px solid var(--border); background: var(--card); color: var(--text); text-align: center; font-weight: bold; }
-        .btn-logout-menu { margin-top: 15px; border: 1px solid rgba(239, 68, 68, 0.2) !important; background: rgba(239, 68, 68, 0.05) !important; color: var(--danger) !important; }
+        .theme-selector { background: var(--input-bg);
+            border: 1px solid var(--border); border-radius: 12px; padding: 10px; display: none; grid-template-columns: 1fr 1fr; gap: 5px;
+        }
+        .theme-selector.open { display: grid;
+        }
+        .theme-btn { padding: 10px; border-radius: 8px; font-size: 0.8rem; cursor: pointer;
+            border: 1px solid var(--border); background: var(--card); color: var(--text); text-align: center; font-weight: bold;
+        }
+        .btn-logout-menu { margin-top: 15px; border: 1px solid rgba(239, 68, 68, 0.2) !important;
+            background: rgba(239, 68, 68, 0.05) !important; color: var(--danger) !important; }
 
         /* DASHBOARD */
-        .month-selector { display: flex; justify-content: space-between; align-items: center; padding: 22px 22px 0; }
-        .month-selector button { background: var(--hover-bg); border: 1px solid var(--border); color: var(--text); width: 38px; height: 38px; border-radius: 10px; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .month-selector span { font-size: 0.95rem; font-weight: 800; text-transform: uppercase; color: var(--accent); letter-spacing: 1.2px; }
+        .month-selector { display: flex;
+            justify-content: space-between; align-items: center; padding: 22px 22px 0; }
+        .month-selector button { background: var(--hover-bg);
+            border: 1px solid var(--border); color: var(--text); width: 38px; height: 38px; border-radius: 10px; font-size: 1rem; cursor: pointer; display: flex; align-items: center;
+            justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .month-selector span { font-size: 0.95rem;
+            font-weight: 800; text-transform: uppercase; color: var(--accent); letter-spacing: 1.2px; }
 
-        .balance-card { padding: 18px 22px 5px; text-align: center; position: relative;}
-        .balance-card small { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; font-weight: 500;}
-        .balance-card h1 { font-size: 2.5rem; margin: 8px 0 0; font-weight: 800; color: var(--text); text-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .balance-card { padding: 18px 22px 5px;
+            text-align: center; position: relative;}
+        .balance-card small { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;
+            letter-spacing: 2px; font-weight: 500;}
+        .balance-card h1 { font-size: 2.5rem; margin: 8px 0 0;
+            font-weight: 800; color: var(--text); text-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         
-        .quick-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 20px 22px; }
-        .mini-card { background: var(--card); padding: 16px; border-radius: 16px; border: 1px solid var(--border); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .mini-card:active { transform: translateY(2px); box-shadow: 0 2px 3px rgba(0,0,0,0.05); }
-        .mini-card i { font-size: 0.85rem; margin-bottom: 8px; }
-        .mini-card span { display: block; font-size: 0.65rem; color: var(--text-muted); font-weight: 500; margin-bottom: 4px;}
-        .mini-card strong { font-size: 0.95rem; color: var(--text); }
+        .quick-stats { display: grid;
+            grid-template-columns: 1fr 1fr; gap: 14px; padding: 20px 22px; }
+        .mini-card { background: var(--card);
+            padding: 16px; border-radius: 16px; border: 1px solid var(--border); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .mini-card:active { transform: translateY(2px); box-shadow: 0 2px 3px rgba(0,0,0,0.05);
+        }
+        .mini-card i { font-size: 0.85rem; margin-bottom: 8px;
+        }
+        .mini-card span { display: block; font-size: 0.65rem; color: var(--text-muted); font-weight: 500;
+            margin-bottom: 4px;}
+        .mini-card strong { font-size: 0.95rem; color: var(--text);
+        }
 
         /* LISTA DE OPERAÇÕES */
-        main { padding: 0 22px 22px; }
-        .section-header { display: flex; justify-content: space-between; align-items: center; margin: 20px 0 15px; }
-        .section-header h3 { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; margin: 0; letter-spacing: 1px;}
+        main { padding: 0 22px 22px;
+        }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin: 20px 0 15px;
+        }
+        .section-header h3 { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; margin: 0;
+            letter-spacing: 1px;}
         
-        .submenu-divida { display: flex; gap: 10px; margin-bottom: 18px; }
-        .sub-btn { flex: 1; padding: 10px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; font-size: 0.65rem; font-weight: 800; color: var(--text-muted); letter-spacing: 0.5px;}
-        .sub-btn.active { background: var(--hover-bg); border-color: var(--accent); color: var(--accent); }
+        .submenu-divida { display: flex;
+            gap: 10px; margin-bottom: 18px; }
+        .sub-btn { flex: 1; padding: 10px; background: var(--card);
+            border: 1px solid var(--border); border-radius: 10px; font-size: 0.65rem; font-weight: 800; color: var(--text-muted);
+            letter-spacing: 0.5px;}
+        .sub-btn.active { background: var(--hover-bg); border-color: var(--accent); color: var(--accent);
+        }
 
-        .date-group-header { font-size: 0.7rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin: 20px 0 10px 5px; border-bottom: 1px solid var(--border); padding-bottom: 5px; }
+        .date-group-header { font-size: 0.7rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;
+            margin: 20px 0 10px 5px; border-bottom: 1px solid var(--border); padding-bottom: 5px;
+        }
         
-        /* CARD DA TRANSAÇÃO NA LISTA (Ajuste para não cortar texto) */
-        .transaction-item { background: var(--card); padding: 16px; border-radius: 18px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; width: 100%; border: 1px solid var(--border); box-shadow: 0 2px 8px rgba(0,0,0,0.02); cursor: pointer; transition: transform 0.1s;}
-        .transaction-item:active { transform: scale(0.98); }
-        .item-left { display: flex; align-items: flex-start; gap: 14px; flex: 1; overflow: hidden; }
-        .icon-box { width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; background: var(--bg); min-width: 40px; border: 1px solid var(--border); font-size: 1.05rem; margin-top: 2px;}
+        /* CARD DA TRANSAÇÃO NA LISTA */
+        .transaction-item { background: var(--card);
+            padding: 16px; border-radius: 18px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; width: 100%; border: 1px solid var(--border);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02); cursor: pointer; transition: transform 0.1s;}
+        .transaction-item:active { transform: scale(0.98);
+        }
+        .item-left { display: flex; align-items: flex-start; gap: 14px; flex: 1; overflow: hidden;
+        }
+        .icon-box { width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center;
+            justify-content: center; background: var(--bg); min-width: 40px; border: 1px solid var(--border); font-size: 1.05rem;
+            margin-top: 2px;}
         
-        .details { flex: 1; overflow: hidden; text-align: left; }
-        .details strong { display: block; font-size: 0.95rem; color: var(--text); margin-bottom: 3px; line-height: 1.3;}
-        .details strong .bank-badge { display: inline-flex; vertical-align: middle; margin-left: 6px; margin-bottom: 2px; }
-        .details span.txt-sub { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+        .details { flex: 1;
+            overflow: hidden; text-align: left; }
+        .details strong { display: block; font-size: 0.95rem;
+            color: var(--text); margin-bottom: 3px; line-height: 1.3;}
+        .details strong .bank-badge { display: inline-flex;
+            vertical-align: middle; margin-left: 6px; margin-bottom: 2px; }
+        .details span.txt-sub { font-size: 0.75rem;
+            color: var(--text-muted); font-weight: 500; display: block; white-space: nowrap; overflow: hidden;
+            text-overflow: ellipsis;}
         
-        .amount-section { text-align: right; min-width: 90px; padding-left: 10px; display: flex; flex-direction: column; align-items: flex-end; }
-        .amount-section strong { display: block; font-size: 0.95rem; color: var(--text); margin-bottom: 3px;}
-        .amount-section .status-text { font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;}
+        .amount-section { text-align: right;
+            min-width: 90px; padding-left: 10px; display: flex; flex-direction: column; align-items: flex-end;
+        }
+        .amount-section strong { display: block; font-size: 0.95rem; color: var(--text);
+            margin-bottom: 3px;}
+        .amount-section .status-text { font-size: 0.65rem; font-weight: 800; text-transform: uppercase;
+            letter-spacing: 0.5px;}
 
-        .status-badge { display: inline-block; padding: 3px 8px; border-radius: 8px; font-size: 0.6rem; font-weight: 800; letter-spacing: 0.5px; margin-top: 5px; }
-        .badge-pago { background: rgba(16, 185, 129, 0.1); color: var(--success); border: 1px solid var(--success); }
-        .badge-pendente { background: rgba(245, 158, 11, 0.1); color: var(--warning); border: 1px solid var(--warning); }
-        .badge-atrasado { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid var(--danger); }
+        .status-badge { display: inline-block; padding: 3px 8px; border-radius: 8px; font-size: 0.6rem;
+            font-weight: 800; letter-spacing: 0.5px; margin-top: 5px; }
+        .badge-pago { background: rgba(16, 185, 129, 0.1);
+            color: var(--success); border: 1px solid var(--success); }
+        .badge-pendente { background: rgba(245, 158, 11, 0.1);
+            color: var(--warning); border: 1px solid var(--warning); }
+        .badge-atrasado { background: rgba(239, 68, 68, 0.1);
+            color: var(--danger); border: 1px solid var(--danger); }
         
-        .btn-ver-comp { display: inline-block; background: rgba(0, 242, 255, 0.1); color: var(--accent); border: 1px solid var(--accent); padding: 4px 10px; border-radius: 8px; font-size: 0.65rem; margin-top: 6px; cursor: pointer; font-weight: 800; text-transform: uppercase; }
+        .btn-ver-comp { display: inline-block;
+            background: rgba(0, 242, 255, 0.1); color: var(--accent); border: 1px solid var(--accent); padding: 4px 10px; border-radius: 8px; font-size: 0.65rem; margin-top: 6px;
+            cursor: pointer; font-weight: 800; text-transform: uppercase; }
         
-        .bank-badge { padding: 3px 6px; border-radius: 6px; font-size: 0.6rem; font-weight: 800; display: inline-flex; align-items: center; gap: 4px; text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.2);}
+        .bank-badge { padding: 3px 6px;
+            border-radius: 6px; font-size: 0.6rem; font-weight: 800; display: inline-flex; align-items: center; gap: 4px; text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);}
 
         /* BARRAS INFERIORES E BOTÕES */
-        .bottom-charts { padding: 22px; background: var(--card); border-top: 1px solid var(--border); margin-bottom: 100px; border-radius: 24px 24px 0 0; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); }
-        .meta-panel { margin-bottom: 15px; background: var(--bg); padding: 16px; border-radius: 16px; border: 1px solid var(--border); }
-        .meta-label { display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 8px; color: var(--text); align-items: center;}
-        .meta-track { background: var(--hover-bg); height: 10px; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
-        .meta-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--success)); transition: width 1s cubic-bezier(0.17, 0.67, 0.83, 0.67); }
+        .bottom-charts { padding: 22px;
+            background: var(--card); border-top: 1px solid var(--border); margin-bottom: 100px; border-radius: 24px 24px 0 0; box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
+        }
+        .meta-panel { margin-bottom: 15px; background: var(--bg); padding: 16px; border-radius: 16px;
+            border: 1px solid var(--border); }
+        .meta-label { display: flex; justify-content: space-between; font-size: 0.75rem;
+            margin-bottom: 8px; color: var(--text); align-items: center;}
+        .meta-track { background: var(--hover-bg); height: 10px;
+            border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
+        .meta-fill { height: 100%;
+            width: 0%; background: linear-gradient(90deg, var(--accent), var(--success)); transition: width 1s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+        }
 
-        .action-buttons { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
-        .action-btn { flex: 1; min-width: 45%; padding: 12px 10px; background: rgba(0,242,255,0.1); border: 1px solid var(--accent); border-radius: 10px; color: var(--accent); font-weight: 800; font-size: 0.7rem; cursor: pointer; display: flex; align-items: center; justify-content: center;}
+        .action-buttons { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap;
+        }
+        .action-btn { flex: 1; min-width: 45%; padding: 12px 10px; background: rgba(0,242,255,0.1);
+            border: 1px solid var(--accent); border-radius: 10px; color: var(--accent); font-weight: 800; font-size: 0.7rem; cursor: pointer; display: flex; align-items: center;
+            justify-content: center;}
 
         /* MODAIS GERAIS */
-        .fab { position: fixed; bottom: 30px; right: 22px; width: 60px; height: 60px; border-radius: 20px; background: var(--accent); color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; box-shadow: 0 10px 25px rgba(0,0,0,0.2); border: none; z-index: 1000; cursor: pointer; transition: transform 0.2s; }
-        .fab:active { transform: scale(0.95); }
+        .fab { position: fixed;
+            bottom: 30px; right: 22px; width: 60px; height: 60px; border-radius: 20px; background: var(--accent); color: #ffffff; display: flex; align-items: center; justify-content: center;
+            font-size: 1.6rem; box-shadow: 0 10px 25px rgba(0,0,0,0.2); border: none; z-index: 1000; cursor: pointer; transition: transform 0.2s;
+        }
+        .fab:active { transform: scale(0.95);
+        }
 
-        .modal { position: fixed; bottom: -100%; left: 0; width: 100%; height: 92%; background: var(--card); border-radius: 35px 35px 0 0; z-index: 2000; padding: 25px 22px; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); overflow-y: auto; border-top: 1px solid var(--border); box-shadow: 0 -10px 40px rgba(0,0,0,0.5); }
-        .modal.open { bottom: 0; }
-        .modal-small { height: auto; max-height: 90%; }
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; z-index: 1500; backdrop-filter: blur(4px); }
+        .modal { position: fixed; bottom: -100%; left: 0; width: 100%; height: 92%;
+            background: var(--card); border-radius: 35px 35px 0 0; z-index: 2000; padding: 25px 22px; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); overflow-y: auto;
+            border-top: 1px solid var(--border); box-shadow: 0 -10px 40px rgba(0,0,0,0.5); }
+        .modal.open { bottom: 0;
+        }
+        .modal-small { height: auto; max-height: 90%;
+        }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); display: none; z-index: 1500; backdrop-filter: blur(4px); }
 
-        input, select { width: 100%; background: var(--input-bg); border: 1px solid var(--border); padding: 14px; border-radius: 12px; color: var(--text); margin-bottom: 14px; font-family: 'Ubuntu', sans-serif; font-size: 0.95rem; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); }
-        input:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(0,0,0,0.05); }
+        input, select { width: 100%;
+            background: var(--input-bg); border: 1px solid var(--border); padding: 14px; border-radius: 12px; color: var(--text); margin-bottom: 14px; font-family: 'Ubuntu', sans-serif; font-size: 0.95rem;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); }
+        input:focus, select:focus { border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(0,0,0,0.05); }
         
-        .btn-confirm { background: var(--accent); color: #ffffff; width: 100%; padding: 16px; border-radius: 12px; border: none; font-weight: 800; font-family: 'Ubuntu', sans-serif; margin-top: 10px; cursor: pointer; font-size: 0.95rem; transition: transform 0.1s;}
-        .btn-confirm:active { transform: scale(0.98); }
-        .btn-delete { background: none; color: var(--danger); width: 100%; padding: 14px; border: 1px solid var(--danger); border-radius: 12px; margin-top: 16px; font-weight: 700; font-family: 'Ubuntu', sans-serif; font-size: 0.9rem; cursor: pointer; transition: background-color 0.2s;}
+        .btn-confirm { background: var(--accent);
+            color: #ffffff; width: 100%; padding: 16px; border-radius: 12px; border: none; font-weight: 800; font-family: 'Ubuntu', sans-serif; margin-top: 10px; cursor: pointer;
+            font-size: 0.95rem; transition: transform 0.1s;}
+        .btn-confirm:active { transform: scale(0.98);
+        }
+        .btn-delete { background: none; color: var(--danger); width: 100%; padding: 14px;
+            border: 1px solid var(--danger); border-radius: 12px; margin-top: 16px; font-weight: 700; font-family: 'Ubuntu', sans-serif; font-size: 0.9rem; cursor: pointer;
+            transition: background-color 0.2s;}
         
-        .label-mini { font-size: 0.65rem; color: var(--accent); font-weight: 800; margin-bottom: 5px; display: block; text-transform: uppercase; letter-spacing: 0.5px;}
-        .hidden { display: none !important; }
+        .label-mini { font-size: 0.65rem;
+            color: var(--accent); font-weight: 800; margin-bottom: 5px; display: block; text-transform: uppercase;
+            letter-spacing: 0.5px;}
+        .hidden { display: none !important;
+        }
 
         /* RESUMO DO CONTRATO NA NOVA OPERAÇÃO */
-        .resumo-quitacao { background: linear-gradient(145deg, var(--card), var(--bg)); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); position: relative; overflow: hidden; }
-        .resumo-quitacao::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent), var(--success)); }
-        #resumoTitulo { font-size: 1.05rem; color: var(--text); margin: 0 0 15px 0; display: flex; align-items: center; gap: 10px; font-weight: 700; flex-wrap: wrap;}
+        .resumo-quitacao { background: linear-gradient(145deg, var(--card), var(--bg));
+            border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); position: relative; overflow: hidden;
+        }
+        .resumo-quitacao::before { content: ''; position: absolute; top: 0; left: 0; right: 0;
+            height: 3px; background: linear-gradient(90deg, var(--accent), var(--success)); }
+        #resumoTitulo { font-size: 1.05rem; color: var(--text);
+            margin: 0 0 15px 0; display: flex; align-items: center; gap: 10px; font-weight: 700;
+            flex-wrap: wrap;}
         
-        .resumo-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        .resumo-mini-card { background: var(--input-bg); padding: 12px 15px; border-radius: 12px; display: flex; flex-direction: column; gap: 4px; border: 1px solid rgba(255,255,255,0.02); }
-        .resumo-mini-card span { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
-        .resumo-mini-card strong { font-size: 1.1rem; color: var(--text); font-weight: 800; letter-spacing: 0.5px; }
-        .resumo-mini-card.paid strong { color: var(--success); }
-        .resumo-mini-card.remain strong { color: var(--danger); }
-        .resumo-mini-card.installment strong { color: var(--accent); }
+        .resumo-grid { display: grid;
+            grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .resumo-mini-card { background: var(--input-bg); padding: 12px 15px;
+            border-radius: 12px; display: flex; flex-direction: column; gap: 4px; border: 1px solid rgba(255,255,255,0.02);
+        }
+        .resumo-mini-card span { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;
+            font-weight: 600; }
+        .resumo-mini-card strong { font-size: 1.1rem; color: var(--text); font-weight: 800;
+            letter-spacing: 0.5px; }
+        .resumo-mini-card.paid strong { color: var(--success);
+        }
+        .resumo-mini-card.remain strong { color: var(--danger);
+        }
+        .resumo-mini-card.installment strong { color: var(--accent);
+        }
 
-        .resumo-footer { margin-top: 15px; background: rgba(0,0,0,0.2); padding: 10px 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: var(--text-muted); border: 1px solid var(--border); }
-        .resumo-footer div { display: flex; align-items: center; gap: 6px; }
-        .resumo-footer strong { color: var(--text); font-weight: 700; }
+        .resumo-footer { margin-top: 15px; background: rgba(0,0,0,0.2); padding: 10px 15px; border-radius: 10px;
+            display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: var(--text-muted); border: 1px solid var(--border);
+        }
+        .resumo-footer div { display: flex; align-items: center; gap: 6px;
+        }
+        .resumo-footer strong { color: var(--text); font-weight: 700;
+        }
         
-        .contract-progress-bg { width: 100%; height: 6px; background: var(--bg); border-radius: 10px; margin-top: 15px; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.3); }
-        .contract-progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--success)); border-radius: 10px; transition: width 1s ease-in-out; }
+        .contract-progress-bg { width: 100%;
+            height: 6px; background: var(--bg); border-radius: 10px; margin-top: 15px; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
+        }
+        .contract-progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--success)); border-radius: 10px;
+            transition: width 1s ease-in-out; }
 
         /* GRÁFICOS FUTURISTAS NO MODAL */
-        .grafico-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
-        .grafico-title { font-size: 0.75rem; color: var(--accent); text-transform: uppercase; margin: 0 0 15px 0; text-align: center; letter-spacing: 1px; font-weight: 800; }
+        .grafico-card { background: var(--card);
+            border: 1px solid var(--border); border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        .grafico-title { font-size: 0.75rem; color: var(--accent); text-transform: uppercase;
+            margin: 0 0 15px 0; text-align: center; letter-spacing: 1px; font-weight: 800;
+        }
         
-        .btn-toggle-meses { flex: 1; padding: 10px; background: var(--input-bg); border: 1px solid var(--border); border-radius: 10px; color: var(--text-muted); font-weight: 800; font-size: 0.75rem; cursor: pointer; }
-        .btn-toggle-meses.active { background: rgba(0,242,255,0.1); border-color: var(--accent); color: var(--accent); }
+        .btn-toggle-meses { flex: 1;
+            padding: 10px; background: var(--input-bg); border: 1px solid var(--border); border-radius: 10px; color: var(--text-muted); font-weight: 800; font-size: 0.75rem; cursor: pointer;
+        }
+        .btn-toggle-meses.active { background: rgba(0,242,255,0.1); border-color: var(--accent); color: var(--accent);
+        }
 
         /* UTILITARIOS */
-        .bloco-parcelas, .bloco-comprovante { background: var(--hover-bg); padding: 16px; border-radius: 14px; border: 1px dashed var(--accent); margin-bottom: 16px; }
-        .bloco-comprovante { border: 1px solid var(--border); }
-        .comprovante-img-preview { width: 100%; max-height: 400px; object-fit: contain; border-radius: 12px; background: var(--bg); border: 1px solid var(--border); }
-        .item-notificacao { padding: 12px; border-bottom: 1px solid var(--border); }
-        .item-notificacao:last-child { border-bottom: none; }
-        .btn-meta-action { flex: 1; padding: 12px; border-radius: 10px; border: none; font-weight: 800; color: #fff; cursor: pointer; font-size: 0.85rem;}
-        .btn-meta-add { background: var(--success); }
-        .btn-meta-rem { background: var(--danger); }
+        .bloco-parcelas, .bloco-comprovante { background: var(--hover-bg);
+            padding: 16px; border-radius: 14px; border: 1px dashed var(--accent); margin-bottom: 16px;
+        }
+        .bloco-comprovante { border: 1px solid var(--border);
+        }
+        .comprovante-img-preview { width: 100%; max-height: 400px; object-fit: contain; border-radius: 12px; background: var(--bg);
+            border: 1px solid var(--border); }
+        .item-notificacao { padding: 12px; border-bottom: 1px solid var(--border);
+        }
+        .item-notificacao:last-child { border-bottom: none;
+        }
+        .btn-meta-action { flex: 1; padding: 12px; border-radius: 10px; border: none; font-weight: 800;
+            color: #fff; cursor: pointer; font-size: 0.85rem;}
+        .btn-meta-add { background: var(--success);
+        }
+        .btn-meta-rem { background: var(--danger);
+        }
         
         /* CONTAINER PDF (OCULTO DA TELA) - CORRIGE O BUG DA TELA BRANCA */
-        #pdf-container { position: absolute; left: -9999px; top: -9999px; width: 800px; background: white; color: black; z-index: -1; }
+        #pdf-container { position: absolute;
+            left: -9999px; top: -9999px; width: 800px; background: white; color: black; z-index: -1;
+        }
     </style>
 </head>
 <body>
@@ -230,7 +436,8 @@
     <div id="ios-prompt" class="hidden" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--card); border: 2px solid var(--accent); padding: 20px; border-radius: 16px; z-index: 100000; width: 90%; max-width: 350px; box-shadow: 0 10px 40px rgba(0,0,0,0.7); text-align: center;">
         <h3 style="margin: 0 0 10px 0; color: var(--text); font-size: 1.1rem;"><i class="fa-brands fa-apple" style="margin-right: 5px;"></i> Instalar no iPhone</h3>
         <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px; line-height: 1.5;">
-            O Safari não instala apps automaticamente. Para ter o <b>MeuCaixa</b> no celular, toque em <i class="fa-solid fa-arrow-up-from-bracket" style="color: var(--accent); margin: 0 4px;"></i> <b>Compartilhar</b> e selecione <br><br><b>"Adicionar à Tela de Início"</b> <i class="fa-regular fa-square-plus" style="margin: 0 4px;"></i>.
+            O Safari 
+            não instala apps automaticamente. Para ter o <b>MeuCaixa</b> no celular, toque em <i class="fa-solid fa-arrow-up-from-bracket" style="color: var(--accent); margin: 0 4px;"></i> <b>Compartilhar</b> e selecione <br><br><b>"Adicionar à Tela de Início"</b> <i class="fa-regular fa-square-plus" style="margin: 0 4px;"></i>.
         </p>
         <button onclick="document.getElementById('ios-prompt').style.display='none'" style="background: var(--accent); color: #fff; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 800; cursor: pointer; width: 100%;">ENTENDI</button>
     </div>
@@ -240,27 +447,32 @@
             <div class="lock-avatar" id="loginAvatar"><i class="fa-solid fa-fingerprint"></i></div>
             
             <div id="viewCadastro" class="auth-view hidden">
+            
                 <h2 class="lock-title">Criar Conta</h2>
                 <p class="lock-subtitle">Sua jornada financeira começa aqui.</p>
                 <div class="input-group"><i class="fa-solid fa-user"></i><input type="text" id="cadNome" class="lock-input" placeholder="Como devemos te chamar?"></div>
                 <div class="input-group"><i class="fa-solid fa-envelope"></i><input type="email" id="cadEmail" class="lock-input" placeholder="Seu melhor e-mail"></div>
-                <div class="input-group"><i class="fa-solid fa-lock"></i><input type="password" id="cadSenha" class="lock-input password" placeholder="Crie uma senha forte" onkeypress="if(event.key === 'Enter') efetuarCadastro()"></div>
+                <div class="input-group"><i class="fa-solid fa-lock"></i><input type="password" id="cadSenha" 
+                class="lock-input password" placeholder="Crie uma senha forte" onkeypress="if(event.key === 'Enter') efetuarCadastro()"></div>
                 <button class="btn-login" onclick="efetuarCadastro()">CADASTRAR E ENTRAR</button>
             </div>
 
             <div id="viewLogin" class="auth-view hidden">
                 <h2 class="lock-title" id="txtWelcomeBack">Bem-vindo(a) de volta!</h2>
-                <p class="lock-subtitle">Que bom ter você de volta. Digite sua senha.</p>
+                <p class="lock-subtitle">Que bom ter você de volta.
+                Digite sua senha.</p>
                 <div class="input-group"><i class="fa-solid fa-key"></i><input type="password" id="inputSenha" class="lock-input password" placeholder="Sua senha secreta" onkeypress="if(event.key === 'Enter') checkLogin()"></div>
                 <button class="btn-login" onclick="checkLogin()">ENTRAR NO MEUCAIXA</button>
                 <button class="btn-forgot" onclick="recuperarSenha()">Esqueci minha senha</button>
             </div>
 
             <div id="viewRecuperar" class="auth-view hidden">
+ 
                 <h2 class="lock-title">Recuperar Senha</h2>
                 <p class="lock-subtitle">Não se preocupe, vamos resolver isso.</p>
                 <div class="input-group"><i class="fa-solid fa-envelope"></i><input type="email" id="recEmail" class="lock-input" placeholder="Confirme seu e-mail cadastrado"></div>
                 <button class="btn-login" onclick="enviarCodigoRecuperacao()">ENVIAR CÓDIGO</button>
+                
                 <button class="btn-forgot" onclick="mostrarViewLogin()"><i class="fa-solid fa-arrow-left"></i> Voltar ao Login</button>
             </div>
         </div>
@@ -271,15 +483,18 @@
             <div class="avatar" id="headerAvatar">MC</div>
             <div class="user-info">
                 <span>MEUCAIXA</span>
+            
                 <strong id="headerUserName">Usuário</strong>
             </div>
         </div>
-        <div style="display: flex; gap: 10px; align-items: center;">
+        <div style="display: flex;
+            gap: 10px; align-items: center;">
             <button class="bell-btn" onclick="abrirNotificacoes()">
                 <i class="fa-solid fa-bell"></i>
                 <span id="badgeNotificacao" class="badge hidden">0</span>
             </button>
-            <button onclick="toggleFantasma()" style="background:none; border:1px solid var(--border); color:var(--text); padding:8px 10px; border-radius:10px; cursor:pointer;">
+            <button onclick="toggleFantasma()" style="background:none;
+            border:1px solid var(--border); color:var(--text); padding:8px 10px; border-radius:10px; cursor:pointer;">
                 <i id="eyeIcon" class="fa-solid fa-eye"></i>
             </button>
         </div>
@@ -289,12 +504,14 @@
         <div class="sidebar-scroll-area">
             <div class="sidebar-top-bar">
                 <h3>Configurações</h3>
+      
                 <button class="close-sidebar-btn" onclick="toggleSidebar()"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
             <div class="sidebar-profile-card">
                 <div class="avatar" id="sidebarAvatar">MC</div>
                 <h2 id="sidebarUserName">Usuário</h2>
+              
                 <span id="userEmailSidebar">usuario@local</span>
                 <div class="security-badge"><i class="fa-solid fa-shield-halved"></i> SEGURO (LOCAL)</div>
             </div>
@@ -302,78 +519,102 @@
             <div class="sidebar-menu">
                 <div class="menu-group-title">Sua Conta</div>
                 
+     
                 <div class="menu-item" onclick="mudarNome()">
-                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--accent); background: rgba(0, 242, 255, 0.1);"><i class="fa-solid fa-user"></i></div><span>Editar Nome</span></div>
+                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--accent);
+                        background: rgba(0, 242, 255, 0.1);"><i class="fa-solid fa-user"></i></div><span>Editar Nome</span></div>
                     <i class="fa-solid fa-chevron-right menu-chevron"></i>
                 </div>
                 
                 <input type="file" id="fotoPerfilInput" accept="image/*" style="display: none;" onchange="carregarNovaFoto(event)">
+                
                 <div class="menu-item" onclick="document.getElementById('fotoPerfilInput').click()">
-                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--accent); background: rgba(0, 242, 255, 0.1);"><i class="fa-solid fa-camera"></i></div><span>Alterar Foto</span></div>
+                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--accent);
+                        background: rgba(0, 242, 255, 0.1);"><i class="fa-solid fa-camera"></i></div><span>Alterar Foto</span></div>
                     <i class="fa-solid fa-chevron-right menu-chevron"></i>
                 </div>
                 
                 <div class="menu-item" onclick="abrirGestaoMetas()">
+                    
                     <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--success); background: rgba(16, 185, 129, 0.1);"><i class="fa-solid fa-bullseye"></i></div><span>Gestão de Metas</span></div>
                     <i class="fa-solid fa-chevron-right menu-chevron"></i>
                 </div>
 
                 <div class="menu-group-title">Ajustes & Segurança</div>
                 
+             
                 <div class="menu-item" onclick="configurarSenha()">
-                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--warning); background: rgba(245, 158, 11, 0.1);"><i class="fa-solid fa-lock"></i></div><span>Alterar Senha</span></div>
+                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--warning);
+                        background: rgba(245, 158, 11, 0.1);"><i class="fa-solid fa-lock"></i></div><span>Alterar Senha</span></div>
                     <i class="fa-solid fa-chevron-right menu-chevron"></i>
                 </div>
                 
                 <div class="menu-item" onclick="document.getElementById('themeOptions').classList.toggle('open')">
+                    
                     <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--accent); background: rgba(0, 242, 255, 0.1);"><i class="fa-solid fa-palette"></i></div><span>Aparência / Banco</span></div>
                     <i class="fa-solid fa-chevron-down menu-chevron" style="opacity: 1;"></i>
                 </div>
                 
                 <div class="theme-selector" id="themeOptions">
+            
                     <div class="theme-btn" onclick="mudarTema('dark')" style="border-left: 4px solid #00f2ff;">Escuro</div>
-                    <div class="theme-btn" onclick="mudarTema('light')" style="border-left: 4px solid #0ea5e9; background: #fff; color: #000;">Claro</div>
-                    <div class="theme-btn" onclick="mudarTema('nubank')" style="border-left: 4px solid #820ad1; background: #f0f1f5; color: #111;">Nubank</div>
-                    <div class="theme-btn" onclick="mudarTema('santander')" style="border-left: 4px solid #ec0000; background: #f5f5f5; color: #222;">Santander</div>
-                    <div class="theme-btn" onclick="mudarTema('itau')" style="border-left: 4px solid #ec7000; background: #f0f1f3; color: #002959;">Itaú</div>
-                    <div class="theme-btn" onclick="mudarTema('bradesco')" style="border-left: 4px solid #cc092f; background: #fff; color: #333;">Bradesco</div>
+                    <div class="theme-btn" onclick="mudarTema('light')" style="border-left: 4px solid #0ea5e9;
+                        background: #fff; color: #000;">Claro</div>
+                    <div class="theme-btn" onclick="mudarTema('nubank')" style="border-left: 4px solid #820ad1;
+                        background: #f0f1f5; color: #111;">Nubank</div>
+                    <div class="theme-btn" onclick="mudarTema('santander')" style="border-left: 4px solid #ec0000;
+                        background: #f5f5f5; color: #222;">Santander</div>
+                    <div class="theme-btn" onclick="mudarTema('itau')" style="border-left: 4px solid #ec7000;
+                        background: #f0f1f3; color: #002959;">Itaú</div>
+                    <div class="theme-btn" onclick="mudarTema('bradesco')" style="border-left: 4px solid #cc092f;
+                        background: #fff; color: #333;">Bradesco</div>
                 </div>
                 
                 <div class="menu-item" onclick="mudarMoeda()">
-                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--warning); background: rgba(245, 158, 11, 0.1);"><i class="fa-solid fa-dollar-sign"></i></div><span>Símbolo da Moeda</span></div>
-                    <span id="currentCurrencyDisplay" style="font-size: 0.8rem; font-weight: 800; color: var(--accent);">R$</span>
+                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--warning);
+                        background: rgba(245, 158, 11, 0.1);"><i class="fa-solid fa-dollar-sign"></i></div><span>Símbolo da Moeda</span></div>
+                    <span id="currentCurrencyDisplay" style="font-size: 0.8rem;
+                        font-weight: 800; color: var(--accent);">R$</span>
                 </div>
                 
                 <div class="menu-group-title">Sistema & Dados</div>
                 
                 <div class="menu-item" onclick="gerarPDFoficial()">
-                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--danger); background: rgba(239, 68, 68, 0.1);"><i class="fa-solid fa-file-pdf"></i></div><span>Baixar Extrato PDF</span></div>
+            
+                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--danger);
+                        background: rgba(239, 68, 68, 0.1);"><i class="fa-solid fa-file-pdf"></i></div><span>Baixar Extrato PDF</span></div>
                     <i class="fa-solid fa-chevron-right menu-chevron"></i>
                 </div>
                 
                 <div class="menu-item" onclick="exportarDados()">
+                   
                     <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--success); background: rgba(16, 185, 129, 0.1);"><i class="fa-solid fa-file-excel"></i></div><span>Exportar Planilha (CSV)</span></div>
                     <i class="fa-solid fa-chevron-right menu-chevron"></i>
                 </div>
                 
                 <input type="file" id="fileInput" accept=".csv" style="display: none;" onchange="importarDados(event)">
+         
                 <div class="menu-item" onclick="document.getElementById('fileInput').click()"> 
-                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--accent); background: rgba(0, 242, 255, 0.1);"><i class="fa-solid fa-file-import"></i></div><span>Importar Backup</span></div>
+                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--accent);
+                        background: rgba(0, 242, 255, 0.1);"><i class="fa-solid fa-file-import"></i></div><span>Importar Backup</span></div>
                     <i class="fa-solid fa-chevron-right menu-chevron"></i>
                 </div>
                 
                 <div class="menu-item" onclick="limparMesAtual()">
+                    
                     <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--warning); background: rgba(245, 158, 11, 0.1);"><i class="fa-solid fa-calendar-xmark"></i></div><span>Limpar Mês Atual</span></div>
                 </div>
                 
                 <div class="menu-item" onclick="limparTerminal()">
-                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--danger); background: rgba(239, 68, 68, 0.1);"><i class="fa-solid fa-trash"></i></div><span>Zerar Banco de Dados</span></div>
+                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--danger);
+                        background: rgba(239, 68, 68, 0.1);"><i class="fa-solid fa-trash"></i></div><span>Zerar Banco de Dados</span></div>
                 </div>
 
                 <div class="menu-item btn-logout-menu" onclick="sairApp()">
                     <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--danger);"><i class="fa-solid fa-right-from-bracket"></i></div><span>Sair (Logout)</span></div>
                 </div>
             </div>
+ 
         </div>
     </div>
 
@@ -389,7 +630,8 @@
     </div>
 
     <div class="quick-stats">
-        <div class="mini-card" onclick="filtrarExtrato('Receita')"><i class="fa-solid fa-arrow-up" style="color:var(--success)"></i><span>Entradas</span><strong id="totalReceitas">R$ 0,00</strong></div>
+        <div class="mini-card" onclick="filtrarExtrato('Receita')"><i class="fa-solid fa-arrow-up" 
+            style="color:var(--success)"></i><span>Entradas</span><strong id="totalReceitas">R$ 0,00</strong></div>
         <div class="mini-card" onclick="filtrarExtrato('Gasto')"><i class="fa-solid fa-arrow-down" style="color:var(--warning)"></i><span>Gastos</span><strong id="totalGastos">R$ 0,00</strong></div>
         <div class="mini-card" onclick="filtrarExtrato('Divida')"><i class="fa-solid fa-barcode" style="color:var(--danger)"></i><span>Dívidas</span><strong id="totalDividas">R$ 0,00</strong></div>
         <div class="mini-card" onclick="filtrarExtrato('Reserva')"><i class="fa-solid fa-vault" style="color:var(--reserve)"></i><span>Patrimônio</span><strong id="totalReserva">R$ 0,00</strong></div>
@@ -398,7 +640,9 @@
     <main>
         <div class="section-header">
             <h3 id="txtExtrato">Histórico de Lançamentos</h3>
-            <button id="btnVoltar" class="hidden" onclick="filtrarExtrato('Tudo')" style="background: rgba(0, 0, 0, 0.05); color: var(--accent); border: 1px solid var(--accent); padding: 6px 12px; border-radius: 8px; font-size: 0.7rem; font-weight: 800; cursor: pointer;"><i class="fa-solid fa-chevron-left"></i> VOLTAR</button>
+            <button id="btnVoltar" class="hidden" onclick="filtrarExtrato('Tudo')" style="background: rgba(0, 0, 0, 0.05);
+                color: var(--accent); border: 1px solid var(--accent); padding: 6px 12px; border-radius: 8px; font-size: 0.7rem; font-weight: 800;
+                cursor: pointer;"><i class="fa-solid fa-chevron-left"></i> VOLTAR</button>
         </div>
         
         <div id="subFiltros" class="submenu-divida hidden">
@@ -410,10 +654,12 @@
     </main>
 
     <section class="bottom-charts">
+    
         <div class="action-buttons">
             <button class="action-btn" onclick="abrirModalGraficos()"><i class="fa-solid fa-chart-pie" style="margin-right: 4px;"></i> GRÁFICOS DETALHADOS</button>
             <button class="action-btn" onclick="gerarPDFoficial()"><i class="fa-solid fa-file-invoice" style="margin-right: 4px;"></i> RELATÓRIO PDF</button>
-            <button class="action-btn" onclick="abrirLeitorExtrato()" style="width: 100%; border-color: var(--success); color: var(--success); background: rgba(16, 185, 129, 0.1);"><i class="fa-solid fa-wand-magic-sparkles" style="margin-right: 4px;"></i> LEITOR IA DE EXTRATOS</button>
+            <button class="action-btn" onclick="abrirLeitorExtrato()" style="width: 100%;
+                border-color: var(--success); color: var(--success); background: rgba(16, 185, 129, 0.1);"><i class="fa-solid fa-wand-magic-sparkles" style="margin-right: 4px;"></i> LEITOR IA DE EXTRATOS</button>
         </div>
     </section>
 
@@ -421,13 +667,17 @@
     <div class="overlay" id="overlay" onclick="closeAll()"></div>
 
     <div class="modal" id="modalForm">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <h2 id="modalTitle" style="margin:0; font-size:1.15rem; color: var(--text);">Nova Operação</h2>
-            <i class="fa-solid fa-xmark" style="font-size:1.4rem; color:var(--text-muted); cursor:pointer;" onclick="closeModal()"></i>
+        <div style="display:flex;
+            justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <h2 id="modalTitle" style="margin:0; font-size:1.15rem;
+                color: var(--text);">Nova Operação</h2>
+            <i class="fa-solid fa-xmark" style="font-size:1.4rem; color:var(--text-muted);
+                cursor:pointer;" onclick="closeModal()"></i>
         </div>
         
         <div id="blocoResumoGeral" class="resumo-quitacao hidden">
-            <h4 id="resumoTitulo" style="display: flex; align-items: center; gap: 8px; margin-bottom: 15px; color: var(--text);">Resumo do Contrato</h4>
+            <h4 id="resumoTitulo" style="display: flex;
+                align-items: center; gap: 8px; margin-bottom: 15px; color: var(--text);">Resumo do Contrato</h4>
             <div id="resumoConteudo"></div>
         </div>
 
@@ -436,53 +686,65 @@
             <option value="Receita">Receita</option>
             <option value="Fixo">Gasto Fixo</option>
             <option value="Variavel">Gasto Variável</option>
+          
             <option value="Divida">Dívida / Boleto</option>
             <option value="Reserva">Patrimônio</option>
         </select>
 
-        <div id="gridCategoriaBanco" style="display:grid; grid-template-columns: 1fr; gap:10px;">
+        <div id="gridCategoriaBanco" style="display:grid;
+            grid-template-columns: 1fr; gap:10px;">
             <div>
                 <span class="label-mini">Categoria</span>
                 <select id="submenu" onchange="definirDescricao()"></select>
             </div>
             <div id="blocoBanco" class="hidden">
                 <span class="label-mini">Instituição / Banco</span>
+      
                 <select id="banco">
                     <option value="">Outros / Nenhum</option>
                     <optgroup label="Bancos Digitais">
                         <option value="Nubank">Nubank</option>
+                   
                         <option value="Banco Inter">Banco Inter</option>
                         <option value="C6 Bank">C6 Bank</option>
                         <option value="PagBank">PagBank</option>
                         <option value="PicPay">PicPay</option>
+               
                         <option value="Neon">Neon</option>
                         <option value="Next">Next</option>
                         <option value="Mercado Pago">Mercado Pago</option>
                         <option value="Banco Pan">Banco Pan</option>
+           
                         <option value="Will Bank">Will Bank</option>
                         <option value="Agibank">Agibank</option>
                         <option value="Sofisa Direto">Sofisa Direto</option>
                         <option value="Digio">Digio</option>
+       
                         <option value="Banco Bmg">Banco Bmg</option>
                         <option value="XP Investimentos">XP Investimentos</option>
                         <option value="Rico">Rico</option>
                         <option value="Banco BS2">Banco BS2</option>
+ 
                     </optgroup>
                     <optgroup label="Bancos Tradicionais">
                         <option value="Itaú">Itaú</option>
                         <option value="Santander">Santander</option>
+         
                         <option value="Bradesco">Bradesco</option>
                         <option value="Banco do Brasil">Banco do Brasil</option>
                         <option value="Caixa Econômica">Caixa Econômica</option>
                         <option value="Banco Safra">Banco Safra</option>
+ 
                         <option value="BTG Pactual">BTG Pactual</option>
                         <option value="Banco BV">Banco BV</option>
                         <option value="Sicoob">Sicoob</option>
+                      
                         <option value="Sicredi">Sicredi</option>
                         <option value="Banrisul">Banrisul</option>
                         <option value="Banco do Nordeste">Banco do Nordeste</option>
                     </optgroup>
                 </select>
+       
             </div>
         </div>
 
@@ -491,6 +753,7 @@
             <select id="formaRecebimento">
                 <option value="Pix">Pix</option>
                 <option value="Dinheiro">Dinheiro</option>
+               
                 <option value="Cartão">Cartão</option>
                 <option value="Outros">Outros</option>
             </select>
@@ -498,13 +761,15 @@
 
         <input type="text" id="desc" placeholder="Descrição Personalizada">
 
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+        <div style="display:grid;
+            grid-template-columns: 1fr 1fr; gap:10px;">
             <div>
                 <span class="label-mini" id="lblValorMain">Valor (R$)</span>
                 <input type="number" id="valor" placeholder="0,00" step="0.01" inputmode="decimal">
             </div>
             <div id="campoPago">
                 <span class="label-mini">Confirmado?</span>
+   
                 <select id="selectPago">
                     <option value="0">Não</option>
                     <option value="1">Sim</option>
@@ -512,30 +777,37 @@
             </div>
         </div>
         
-        <div id="blocoDatas" style="display:grid; grid-template-columns: 1fr; gap:10px;">
+        <div id="blocoDatas" style="display:grid; grid-template-columns: 1fr;
+            gap:10px;">
             <div id="boxDataLancamento" class="hidden">
                 <span class="label-mini">Data de Lançamento</span>
                 <input type="date" id="dataLancamento">
             </div>
             <div>
                 <span class="label-mini" id="lblDataMain">Data da Operação</span>
+     
                 <input type="date" id="data">
             </div>
         </div>
 
         <div id="blocoParcelamento" class="bloco-parcelas hidden">
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+            <div style="display:grid;
+                grid-template-columns: 1fr 1fr; gap:10px;">
                 <div><span class="label-mini">Total Parcelas</span><input type="number" id="parcelas" value="1" min="1"></div>
                 <div><span class="label-mini">Pagas</span><input type="number" id="parcelasPagas" value="0" min="0"></div>
             </div>
         </div>
         
         <div class="bloco-comprovante">
-            <span class="label-mini"><i class="fa-solid fa-receipt"></i> Comprovante de Pagamento</span>
-            <div style="display: flex; gap: 8px;">
+            <span class="label-mini"><i class="fa-solid fa-receipt"></i> Comprovante 
+                de Pagamento</span>
+            <div style="display: flex;
+                gap: 8px;">
                 <input type="file" id="comprovanteInput" accept="image/*,.pdf" style="display: none;" onchange="handleComprovante(event)">
-                <button class="btn-google" style="margin:0; width:100%; max-width:100%; justify-content: flex-start; color: var(--text-muted);" onclick="document.getElementById('comprovanteInput').click()" id="btnComprovanteText">
-                    <i class="fa-solid fa-image" style="color: var(--text-muted); font-size: 1rem;"></i> <span id="txtNomeArqComp">Selecionar arquivo...</span>
+                <button class="btn-google" style="margin:0;
+                    width:100%; max-width:100%; justify-content: flex-start; color: var(--text-muted);" onclick="document.getElementById('comprovanteInput').click()" id="btnComprovanteText">
+                    <i class="fa-solid fa-image" style="color: var(--text-muted);
+                        font-size: 1rem;"></i> <span id="txtNomeArqComp">Selecionar arquivo...</span>
                 </button>
             </div>
             <input type="hidden" id="comprovanteBase64">
@@ -547,59 +819,78 @@
     </div>
 
     <div class="modal" id="modalGestaoMetas">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <h2 style="margin:0; font-size:1.15rem; color: var(--text);"><i class="fa-solid fa-bullseye" style="color: var(--success); margin-right: 5px;"></i> Gestão de Metas</h2>
-            <i class="fa-solid fa-xmark" style="font-size:1.4rem; color:var(--text-muted); cursor:pointer;" onclick="closeModal()"></i>
+        <div style="display:flex; justify-content:space-between; align-items:center;
+            margin-bottom:20px;">
+            <h2 style="margin:0; font-size:1.15rem;
+                color: var(--text);"><i class="fa-solid fa-bullseye" style="color: var(--success); margin-right: 5px;"></i> Gestão de Metas</h2>
+            <i class="fa-solid fa-xmark" style="font-size:1.4rem;
+                color:var(--text-muted); cursor:pointer;" onclick="closeModal()"></i>
         </div>
         
-        <div style="background: var(--bg); padding: 20px; border-radius: 16px; border: 1px solid var(--border); margin-bottom: 20px;">
-            <div style="text-align: center; margin-bottom: 15px;">
-                <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 5px;">Progresso Atual</span>
-                <h3 id="txtGestaoProgresso" style="font-size: 2.2rem; color: var(--success); margin: 0; font-weight: 800;">0%</h3>
+        <div style="background: var(--bg);
+            padding: 20px; border-radius: 16px; border: 1px solid var(--border); margin-bottom: 20px;">
+            <div style="text-align: center;
+                margin-bottom: 15px;">
+                <span style="font-size: 0.75rem;
+                    color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 5px;">Progresso Atual</span>
+                <h3 id="txtGestaoProgresso" style="font-size: 2.2rem;
+                    color: var(--success); margin: 0; font-weight: 800;">0%</h3>
             </div>
-            <div class="meta-track" style="height: 12px; background: var(--input-bg); margin-bottom: 15px;"><div class="meta-fill" id="gestaoFillBar" style="border-radius: 10px;"></div></div>
+            <div class="meta-track" style="height: 12px;
+                background: var(--input-bg); margin-bottom: 15px;"><div class="meta-fill" id="gestaoFillBar" style="border-radius: 10px;"></div></div>
             
-            <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
+            <div style="display: flex;
+                justify-content: space-between; font-size: 0.8rem;">
                 <div style="text-align: left;">
-                    <span style="color: var(--text-muted); display: block;">Acumulado</span>
+                    <span style="color: var(--text-muted);
+                        display: block;">Acumulado</span>
                     <strong style="color: var(--text);" id="txtGestaoAcumulado">R$ 0,00</strong>
                 </div>
                 <div style="text-align: right;">
-                    <span style="color: var(--text-muted); display: block;">Alvo Final</span>
+                    <span style="color: var(--text-muted);
+                        display: block;">Alvo Final</span>
                     <strong style="color: var(--accent);" id="txtGestaoAlvo">R$ 0,00</strong>
                 </div>
             </div>
         </div>
 
-        <div style="background: var(--hover-bg); padding: 16px; border-radius: 14px; border: 1px dashed var(--accent); margin-bottom: 20px;">
+        <div style="background: var(--hover-bg);
+            padding: 16px; border-radius: 14px; border: 1px dashed var(--accent); margin-bottom: 20px;">
             <span class="label-mini">Adicionar ou Remover Saldo da Meta</span>
             <input type="number" id="valorMovimentacaoMeta" placeholder="Valor (Ex: 100,00)" step="0.01">
-            <div style="display: flex; gap: 10px;">
+            <div style="display: flex;
+                gap: 10px;">
                 <button class="btn-meta-action btn-meta-add" onclick="movimentarMeta('add')"><i class="fa-solid fa-arrow-up"></i> DEPOSITAR</button>
                 <button class="btn-meta-action btn-meta-rem" onclick="movimentarMeta('rem')"><i class="fa-solid fa-arrow-down"></i> RESGATAR</button>
             </div>
         </div>
 
-        <hr style="border: 0; border-top: 1px solid var(--border); margin: 25px 0;">
+        <hr style="border: 0;
+            border-top: 1px solid var(--border); margin: 25px 0;">
 
-        <h4 style="font-size: 0.9rem; color: var(--text); margin: 0 0 15px 0;">Configurar Detalhes da Meta</h4>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+        <h4 style="font-size: 0.9rem; color: var(--text);
+            margin: 0 0 15px 0;">Configurar Detalhes da Meta</h4>
+        <div style="display:grid; grid-template-columns: 1fr 1fr;
+            gap:10px;">
             <div>
                 <span class="label-mini">Tipo de Meta</span>
                 <select id="tipoMeta">
                     <option value="economia">🎯 Economia</option>
                     <option value="receita">💰 Receita</option>
+        
                     <option value="investimento">📈 Investimento</option>
                     <option value="divida">🛡️ Quitação</option>
                 </select>
             </div>
             <div>
                 <span class="label-mini">Período</span>
+       
                 <select id="periodoMeta">
                     <option value="Semanal">Semanal</option>
                     <option value="Quinzenal">Quinzenal</option>
                     <option value="Mensal">Mensal</option>
                     <option value="Anual">Anual</option>
+      
                 </select>
             </div>
         </div>
@@ -610,84 +901,110 @@
         <span class="label-mini">Descrição (Opcional)</span>
         <input type="text" id="descMetaInput" placeholder="Ex: Viagem de Férias">
         
+     
         <button class="btn-confirm" onclick="salvarConfiguracaoMeta()">SALVAR CONFIGURAÇÃO</button>
         <button class="btn-delete" onclick="zerarMetaCompleta()">ZERAR META ATUAL</button>
     </div>
 
     <div class="modal" id="modalGraficos" style="background: var(--bg);">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <h2 style="margin:0; font-size:1.15rem; color: var(--text);">Análise do Mês Atual</h2>
-            <i class="fa-solid fa-xmark" style="font-size:1.4rem; color:var(--text-muted); cursor:pointer;" onclick="closeModal()"></i>
+        <div style="display:flex;
+            justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <h2 style="margin:0; font-size:1.15rem;
+                color: var(--text);">Análise do Mês Atual</h2>
+            <i class="fa-solid fa-xmark" style="font-size:1.4rem;
+                color:var(--text-muted); cursor:pointer;" onclick="closeModal()"></i>
         </div>
         
         <div class="grafico-card">
             <h4 class="grafico-title">Despesas por Categoria</h4>
-            <div style="position: relative; height: 260px; width: 100%;">
+            <div style="position: relative;
+                height: 260px; width: 100%;">
                 <canvas id="chartCategorias"></canvas>
             </div>
         </div>
 
         <div class="grafico-card">
             <h4 class="grafico-title">Fluxo Diário de Caixa</h4>
-            <div style="position: relative; height: 200px; width: 100%;">
+            <div style="position: relative;
+                height: 200px; width: 100%;">
                 <canvas id="chartEvolucao"></canvas>
             </div>
         </div>
         
         <div class="grafico-card">
             <h4 class="grafico-title">Status de Pagamentos (Despesas)</h4>
-            <div style="position: relative; height: 120px; width: 100%;">
+            <div style="position: relative;
+                height: 120px; width: 100%;">
                 <canvas id="chartStatus"></canvas>
             </div>
         </div>
     </div>
 
     <div class="modal" id="modalViewComprovante" style="z-index: 3000;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <h2 style="margin:0; font-size:1.15rem; color: var(--text);">Visualizar Anexo</h2>
-            <i class="fa-solid fa-xmark" style="font-size:1.4rem; color:var(--text-muted); cursor:pointer;" onclick="closeViewComprovante()"></i>
+        <div style="display:flex;
+            justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <h2 style="margin:0; font-size:1.15rem;
+                color: var(--text);">Visualizar Anexo</h2>
+            <i class="fa-solid fa-xmark" style="font-size:1.4rem; color:var(--text-muted);
+                cursor:pointer;" onclick="closeViewComprovante()"></i>
         </div>
         <div id="comprovanteContent" style="text-align:center;"></div>
     </div>
 
     <div class="modal" id="modalLeitorExtrato">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <h2 style="margin:0; font-size:1.15rem; color: var(--success);"><i class="fa-solid fa-wand-magic-sparkles"></i> Leitor IA</h2>
-            <i class="fa-solid fa-xmark" style="font-size:1.4rem; color:var(--text-muted); cursor:pointer;" onclick="closeModal()"></i>
+        <div style="display:flex;
+            justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <h2 style="margin:0; font-size:1.15rem;
+                color: var(--success);"><i class="fa-solid fa-wand-magic-sparkles"></i> Leitor IA</h2>
+            <i class="fa-solid fa-xmark" style="font-size:1.4rem;
+                color:var(--text-muted); cursor:pointer;" onclick="closeModal()"></i>
         </div>
-        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.4;">
+        <p style="font-size: 0.85rem;
+            color: var(--text-muted); margin-bottom: 20px; line-height: 1.4;">
             Anexe um <b>print de tela ou PDF</b> do seu extrato bancário. A IA lerá o arquivo e gerará botões para adicionar as compras!
         </p>
         
         <input type="file" id="extratoInput" accept="image/*,application/pdf" style="display: none;" onchange="processarExtratoImagem(event)">
-        <button class="btn-confirm" onclick="document.getElementById('extratoInput').click()" style="background: var(--success); margin-bottom: 20px;">
+        <button class="btn-confirm" onclick="document.getElementById('extratoInput').click()" style="background: var(--success);
+            margin-bottom: 20px;">
             <i class="fa-solid fa-file-arrow-up"></i> SELECIONAR EXTRATO
         </button>
 
-        <div id="leitorLoading" class="hidden" style="text-align:center; padding:20px; color:var(--success);">
-            <i class="fa-solid fa-spinner fa-spin" style="font-size: 2rem; margin-bottom:10px;"></i>
-            <p style="font-size: 0.9rem; font-weight: bold;">Analisando dados...</p>
+        <div id="leitorLoading" class="hidden" style="text-align:center;
+            padding:20px; color:var(--success);">
+            <i class="fa-solid fa-spinner fa-spin" style="font-size: 2rem;
+                margin-bottom:10px;"></i>
+            <p style="font-size: 0.9rem;
+                font-weight: bold;">Analisando dados...</p>
         </div>
 
         <div id="leitorResult" class="hidden">
-            <div class="grafico-card" style="padding: 15px; margin-bottom: 15px;">
+            <div class="grafico-card" style="padding: 15px;
+                margin-bottom: 15px;">
                 <span class="label-mini" style="text-align: center;">Resumo Lido</span>
-                <div style="position: relative; height: 180px; width: 100%;">
+                <div style="position: relative;
+                    height: 180px; width: 100%;">
                     <canvas id="chartLeitor"></canvas>
                 </div>
             </div>
-            <h4 style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px;">Operações Identificadas:</h4>
+            <h4 style="font-size: 0.85rem;
+                color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px;">Operações Identificadas:</h4>
             <div id="leitorLista"></div>
         </div>
     </div>
 
     <div class="modal modal-small" id="modalNotificacoes" style="z-index: 2500;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <h2 style="margin:0; font-size:1.15rem; color: var(--danger);"><i class="fa-solid fa-bell"></i> Pendências</h2>
-            <i class="fa-solid fa-xmark" style="font-size:1.4rem; color:var(--text-muted); cursor:pointer;" onclick="closeModal()"></i>
+        <div style="display:flex;
+            justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <h2 style="margin:0; font-size:1.15rem;
+                color: var(--danger);"><i class="fa-solid fa-bell"></i> Pendências</h2>
+            <i class="fa-solid fa-xmark" style="font-size:1.4rem;
+                color:var(--text-muted); cursor:pointer;" onclick="closeModal()"></i>
         </div>
-        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">Contas que venceram ou vencem nos próximos 3 dias e não foram pagas.</p>
-        <div id="listaNotificacoes" style="background: var(--bg); border: 1px solid var(--border); border-radius: 12px; overflow: hidden;">
+        <p style="font-size: 0.8rem;
+            color: var(--text-muted); margin-bottom: 15px;">Contas que venceram ou vencem nos próximos 3 dias e não foram pagas.</p>
+        <div id="listaNotificacoes" style="background: var(--bg);
+            border: 1px solid var(--border); border-radius: 12px; overflow: hidden;">
         </div>
     </div>
     
@@ -762,7 +1079,6 @@
                 const gain = ctx.createGain();
                 osc.connect(gain);
                 gain.connect(ctx.destination);
-
                 let name = (bankName || "").toLowerCase();
 
                 if (name.includes('nubank')) {
@@ -772,15 +1088,16 @@
                     gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
                     osc.start(ctx.currentTime);
                     osc.stop(ctx.currentTime + 0.1);
-
                     setTimeout(() => {
                         const osc2 = ctx.createOscillator();
                         const gain2 = ctx.createGain();
                         osc2.connect(gain2);
+                    
                         gain2.connect(ctx.destination);
                         osc2.type = 'sine';
                         osc2.frequency.setValueAtTime(1318.51, ctx.currentTime);
                         gain2.gain.setValueAtTime(0.1, ctx.currentTime);
+                    
                         gain2.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
                         osc2.start(ctx.currentTime);
                         osc2.stop(ctx.currentTime + 0.2);
@@ -819,7 +1136,6 @@
                 const osc1 = ctx.createOscillator();
                 const osc2 = ctx.createOscillator();
                 const gain = ctx.createGain();
-
                 osc1.type = 'sine';
                 osc2.type = 'triangle';
 
@@ -864,15 +1180,18 @@
         }
 
         function triggerConfetti() {
-            try { confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors: ['#00f2ff', '#10b981', '#f59e0b'] }); } catch(e) {}
+            try { confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors: ['#00f2ff', '#10b981', '#f59e0b'] });
+            } catch(e) {}
         }
 
         function showToast(message, type = "success") {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
-            let icon = type === 'success' ? '<i class="fa-solid fa-check-circle" style="color: var(--success); font-size: 1.2rem;"></i>' : 
-                       type === 'warning' ? '<i class="fa-solid fa-bell" style="color: var(--warning); font-size: 1.2rem;"></i>' :
+            let icon = type === 'success' ?
+            '<i class="fa-solid fa-check-circle" style="color: var(--success); font-size: 1.2rem;"></i>' : 
+                       type === 'warning' ?
+            '<i class="fa-solid fa-bell" style="color: var(--warning); font-size: 1.2rem;"></i>' :
                        '<i class="fa-solid fa-triangle-exclamation" style="color: var(--danger); font-size: 1.2rem;"></i>';
             toast.innerHTML = `${icon} <span>${message}</span>`;
             container.appendChild(toast);
@@ -898,8 +1217,10 @@
                 
                 const av = document.getElementById('loginAvatar');
                 if (av) {
-                    if (appConfig.fotoPerfil) { av.style.backgroundImage = `url(${appConfig.fotoPerfil})`; av.innerHTML = ""; } 
-                    else { av.style.backgroundImage = "none"; av.innerHTML = '<i class="fa-solid fa-fingerprint"></i>'; }
+                    if (appConfig.fotoPerfil) { av.style.backgroundImage = `url(${appConfig.fotoPerfil})`;
+                        av.innerHTML = ""; } 
+                    else { av.style.backgroundImage = "none";
+                        av.innerHTML = '<i class="fa-solid fa-fingerprint"></i>'; }
                 }
             } else {
                 document.getElementById('lock-screen')?.classList.add('hidden');
@@ -912,7 +1233,6 @@
             const senha = document.getElementById('cadSenha')?.value.trim();
 
             if(!nome || !email || !senha) return showToast("Preencha todos os campos!", "error");
-
             appConfig.nome = nome.toUpperCase();
             appConfig.email = email.toLowerCase();
             appConfig.senhaHash = senha;
@@ -970,7 +1290,8 @@
                     salvarConfig();
                     showToast("Senha redefinida com sucesso!", "success");
                 }
-            } else { showToast("Código inválido.", "error"); }
+            } else { showToast("Código inválido.", "error");
+            }
         }
 
         function configurarSenha() {
@@ -983,7 +1304,8 @@
             }
         }
 
-        function sairApp() { sessionStorage.removeItem('isLoggedIn'); location.reload(); }
+        function sairApp() { sessionStorage.removeItem('isLoggedIn');
+            location.reload(); }
 
         function checkTheme() {
             const savedTheme = localStorage.getItem('meucaixa_theme');
@@ -997,7 +1319,8 @@
             renderizar();
         }
 
-        function salvarConfig() { localStorage.setItem('meucaixa_config', JSON.stringify(appConfig)); carregarConfig(); renderizar(); }
+        function salvarConfig() { localStorage.setItem('meucaixa_config', JSON.stringify(appConfig)); carregarConfig(); renderizar();
+        }
 
         function carregarConfig() {
             if(!appConfig.nome) return;
@@ -1011,7 +1334,8 @@
                 if(av) {
                     if (appConfig.fotoPerfil) { av.style.backgroundImage = `url(${appConfig.fotoPerfil})`; av.innerText = ""; } 
                     else { av.style.backgroundImage = "none"; av.innerText = iniciais; }
-                }
+               
+                 }
             });
         }
 
@@ -1039,23 +1363,107 @@
             };
         }
 
-        function mudarNome() { let novo = prompt("Como deseja ser chamado?", appConfig.nome); if (novo && novo.trim() !== "") { appConfig.nome = novo.trim().toUpperCase(); salvarConfig(); closeAll(); } }
+        function mudarNome() { let novo = prompt("Como deseja ser chamado?", appConfig.nome);
+            if (novo && novo.trim() !== "") { appConfig.nome = novo.trim().toUpperCase(); salvarConfig(); closeAll();
+            } }
 
-        function formatarMoeda(valor) { return appConfig.moeda + " " + valor.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}); }
+        function formatarMoeda(valor) { return appConfig.moeda + " " + valor.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        }
+
+        function abrirGestaoMetas() {
+            document.getElementById('modalGestaoMetas')?.classList.add('open');
+            if (document.getElementById('overlay')) document.getElementById('overlay').style.display = 'block';
+            document.getElementById('profileSidebar')?.classList.remove('open');
+            
+            atualizarUIGestaoMetas();
+            
+            if (document.getElementById('valorMetaInput')) document.getElementById('valorMetaInput').value = appConfig.metaMensal > 0 ? appConfig.metaMensal : "";
+            if (document.getElementById('tipoMeta')) document.getElementById('tipoMeta').value = appConfig.tipoMeta || "economia";
+            if (document.getElementById('periodoMeta')) document.getElementById('periodoMeta').value = appConfig.periodoMeta || "Mensal";
+            if (document.getElementById('descMetaInput')) document.getElementById('descMetaInput').value = appConfig.descMeta || "";
+            if (document.getElementById('valorMovimentacaoMeta')) document.getElementById('valorMovimentacaoMeta').value = "";
+        }
+
+        function atualizarUIGestaoMetas() {
+            const acumulado = appConfig.metaAcumulado || 0;
+            const alvo = appConfig.metaMensal || 0;
+            let progresso = 0;
+            if(alvo > 0) {
+                progresso = Math.min((acumulado / alvo) * 100, 100);
+            }
+            
+            if(document.getElementById('txtGestaoProgresso')) document.getElementById('txtGestaoProgresso').innerText = progresso.toFixed(1) + '%';
+            if(document.getElementById('gestaoFillBar')) document.getElementById('gestaoFillBar').style.width = progresso + '%';
+            if(document.getElementById('txtGestaoAcumulado')) document.getElementById('txtGestaoAcumulado').innerText = formatarMoeda(acumulado);
+            if(document.getElementById('txtGestaoAlvo')) document.getElementById('txtGestaoAlvo').innerText = formatarMoeda(alvo);
+            
+            if(progresso === 100) triggerConfetti();
+        }
+
+        function salvarConfiguracaoMeta() {
+            try {
+                let val = document.getElementById('valorMetaInput')?.value;
+                if(val && !isNaN(val) && parseFloat(val) > 0) {
+                    appConfig.metaMensal = parseFloat(val);
+                    appConfig.tipoMeta = document.getElementById('tipoMeta')?.value || 'economia';
+                    appConfig.periodoMeta = document.getElementById('periodoMeta')?.value || 'Mensal';
+                    appConfig.descMeta = document.getElementById('descMetaInput')?.value || '';
+                    salvarConfig(); 
+                    atualizarUIGestaoMetas();
+                    showToast("Configuração salva!", "success");
+                    setTimeout(() => closeAll(), 800);
+                } else {
+                    showToast("Informe um valor alvo válido.", "error");
+                }
+            } catch(e) { console.error(e); }
+        }
+
+        function movimentarMeta(action) {
+            if(appConfig.metaMensal <= 0) return showToast("Primeiro configure um valor alvo!", "warning");
+            let inputVal = document.getElementById('valorMovimentacaoMeta').value;
+            let valor = parseFloat(inputVal);
+            
+            if(!valor || isNaN(valor) || valor <= 0) return showToast("Digite um valor válido.", "error");
+            if(action === 'add') {
+                appConfig.metaAcumulado += valor;
+                showToast(`R$ ${valor} depositado na meta!`, "success");
+            } else if(action === 'rem') {
+                if(valor > appConfig.metaAcumulado) return showToast("Saldo insuficiente na meta.", "error");
+                appConfig.metaAcumulado -= valor;
+                showToast(`R$ ${valor} resgatado da meta.`, "warning");
+            }
+            
+            document.getElementById('valorMovimentacaoMeta').value = "";
+            salvarConfig();
+            atualizarUIGestaoMetas();
+        }
+        
+        function zerarMetaCompleta() {
+            if(confirm("Tem certeza que deseja excluir essa meta e zerar o saldo nela?")) {
+                appConfig.metaMensal = 0;
+                appConfig.metaAcumulado = 0;
+                appConfig.tipoMeta = "economia";
+                appConfig.descMeta = "";
+                salvarConfig();
+                closeAll();
+                showToast("Meta removida.", "success");
+            }
+        }
 
         const opcoesSubmenu = {
             "Receita": ["💰 Salário", "🚀 Freelance", "✨ Rendimentos", "🛠️ Serviço", "📦 Produto"],
             "Fixo": ["🏠 Aluguel", "⚡ Energia", "🌐 Internet", "🎬 Streamings", "🏫 Mensalidade"],
             "Variavel": ["🛒 Mercado", "🍕 Alimentação", "⛽ Combustível", "🚗 Transporte", "💊 Saúde", "🐾 Pets"],
             "Divida": ["🏢 Financiamento", "💳 Cartão", "🤝 Empréstimo", "🧾 Boleto"],
+ 
             "Reserva": ["🏦 Investimentos", "📦 Caixinha", "🛡️ Reserva Emergência", "🪙 Cripto"]
         };
-        
         function mudarMes(delta) { dataVisualizacao.setMonth(dataVisualizacao.getMonth() + delta); renderizar(); }
-        function formatarMesAno(d) { const meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro']; return `${meses[d.getMonth()]} ${d.getFullYear()}`; }
+        function formatarMesAno(d) { const meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+            return `${meses[d.getMonth()]} ${d.getFullYear()}`; }
         
         function toggleSidebar() { 
-            const s = document.getElementById('profileSidebar'); 
+            const s = document.getElementById('profileSidebar');
             if(s) {
                 s.classList.toggle('open');
                 if(document.getElementById('overlay')) document.getElementById('overlay').style.display = s.classList.contains('open') ? 'block' : 'none'; 
@@ -1068,7 +1476,8 @@
             if(document.getElementById('overlay')) document.getElementById('overlay').style.display = 'none'; 
         }
         
-        function closeAll() { closeModal(); document.getElementById('profileSidebar')?.classList.remove('open'); }
+        function closeAll() { closeModal();
+            document.getElementById('profileSidebar')?.classList.remove('open'); }
         
         function filtrarExtrato(c) { 
             filtroAtual = c;
@@ -1091,34 +1500,40 @@
                 "Nubank": { bg: "#8A05BE", color: "#fff", icon: "fa-building-columns" },
                 "Banco Inter": { bg: "#FF7A00", color: "#fff", icon: "fa-building-columns" },
                 "C6 Bank": { bg: "#242424", color: "#fff", icon: "fa-building-columns" },
-                "PagBank": { bg: "#15B685", color: "#fff", icon: "fa-building-columns" },
+                "PagBank": { bg: "#15B685", color: "#fff", icon: 
+                "fa-building-columns" },
                 "PicPay": { bg: "#11C76F", color: "#fff", icon: "fa-building-columns" },
                 "Neon": { bg: "#00E7DF", color: "#000", icon: "fa-building-columns" },
                 "Next": { bg: "#00FF5F", color: "#000", icon: "fa-building-columns" },
                 "Mercado Pago": { bg: "#009EE3", color: "#fff", icon: "fa-handshake" },
+  
                 "Banco Pan": { bg: "#1474FF", color: "#fff", icon: "fa-building-columns" },
                 "Will Bank": { bg: "#FFEB00", color: "#000", icon: "fa-building-columns" },
                 "Agibank": { bg: "#023436", color: "#fff", icon: "fa-building-columns" },
                 "Sofisa Direto": { bg: "#FFB100", color: "#000", icon: "fa-building-columns" },
+   
                 "Digio": { bg: "#002859", color: "#fff", icon: "fa-building-columns" },
                 "Banco Bmg": { bg: "#FF5A00", color: "#fff", icon: "fa-building-columns" },
                 "XP Investimentos": { bg: "#000000", color: "#FFD700", icon: "fa-chart-simple" },
                 "Rico": { bg: "#FF6600", color: "#fff", icon: "fa-chart-pie" },
+     
                 "Banco BS2": { bg: "#1D1D1B", color: "#fff", icon: "fa-building-columns" },
                 "Itaú": { bg: "#EC7000", color: "#fff", icon: "fa-building-columns" },
                 "Santander": { bg: "#EC0000", color: "#fff", icon: "fa-building-columns" },
                 "Bradesco": { bg: "#CC092F", color: "#fff", icon: "fa-building-columns" },
+        
                 "Banco do Brasil": { bg: "#F2D300", color: "#003DA5", icon: "fa-building-columns" },
                 "Caixa Econômica": { bg: "#005CA9", color: "#fff", icon: "fa-building-columns" },
                 "Banco Safra": { bg: "#000000", color: "#D4AF37", icon: "fa-building-columns" },
                 "BTG Pactual": { bg: "#0A2240", color: "#D4AF37", icon: "fa-building-columns" },
+       
                 "Banco BV": { bg: "#FFD500", color: "#000", icon: "fa-building-columns" },
                 "Sicoob": { bg: "#003641", color: "#00AE9D", icon: "fa-building-columns" },
                 "Sicredi": { bg: "#00A650", color: "#fff", icon: "fa-building-columns" },
                 "Banrisul": { bg: "#005CA9", color: "#fff", icon: "fa-building-columns" },
+          
                 "Banco do Nordeste": { bg: "#00723A", color: "#fff", icon: "fa-building-columns" }
             };
-
             let style = badges[bancoNome];
             if (!style) {
                 const d = bancoNome.toLowerCase();
@@ -1140,7 +1555,8 @@
             }
 
             if (style) {
-                let finalName = Object.keys(badges).find(k => badges[k] === style) || bancoNome;
+                let finalName = Object.keys(badges).find(k => badges[k] === style) ||
+                bancoNome;
                 return `<span class="bank-badge" style="background:${style.bg}; color:${style.color};"><i class="fa-solid ${style.icon}"></i> ${finalName}</span>`;
             }
             return `<span class="bank-badge" style="background:var(--input-bg); color:var(--text); border: 1px solid var(--border);"><i class="fa-solid fa-building-columns"></i> ${bancoNome}</span>`;
@@ -1157,19 +1573,21 @@
                 let vP = parseFloat(r.pago) || 0;
                 let isPago = vP >= vT && vT > 0;
                 
+        
                 if(!isPago && (r.tipo === 'Divida' || r.tipo === 'Fixo' || r.tipo === 'Variavel')) {
                     let dataOperacao = new Date(r.data + "T12:00:00");
                     dataOperacao.setHours(0,0,0,0);
                     const msPerDay = 1000 * 60 * 60 * 24;
+    
                     const diffTime = dataOperacao.getTime() - hoje.getTime();
                     const diffDays = Math.ceil(diffTime / msPerDay);
                     if(diffDays <= 3) { pendingList.push({ ...r, realIdx: idx, diffDays: diffDays }); }
                 }
-            });
+       
+             });
 
             const badge = document.getElementById('badgeNotificacao');
             const listaContainer = document.getElementById('listaNotificacoes');
-
             if (badge && listaContainer) {
                 if(pendingList.length > 0) {
                     badge.classList.remove('hidden');
@@ -1180,22 +1598,28 @@
                         let statusHtml;
                         if(p.diffDays < 0) statusHtml = `<span class="status-badge badge-atrasado">Atrasado (${p.data.split('-').reverse().join('/')})</span>`;
                         else if(p.diffDays === 0) statusHtml = `<span class="status-badge badge-pendente">Vence Hoje</span>`;
+ 
                         else statusHtml = `<span class="status-badge badge-pendente">Vence em ${p.diffDays} dia(s)</span>`;
 
                         html += `
                         <div class="item-notificacao" onclick="openModal(${p.realIdx})" style="cursor:pointer; display:flex; justify-content:space-between; align-items:center;">
+             
                             <div>
                                 <strong style="color:var(--text); font-size:0.85rem; display:block;">${p.desc}</strong>
                                 ${statusHtml}
+                  
                             </div>
-                            <strong style="color:var(--danger); font-size:0.85rem;">${formatarMoeda(p.valor - (p.pago || 0))}</strong>
+                            <strong style="color:var(--danger);
+                            font-size:0.85rem;">${formatarMoeda(p.valor - (p.pago || 0))}</strong>
                         </div>`;
                     });
                     listaContainer.innerHTML = html;
                     sessionStorage.setItem('hasPendingAlert', 'true');
+         
                 } else {
                     badge.classList.add('hidden');
-                    listaContainer.innerHTML = `<div style="padding:20px; text-align:center; color:var(--text-muted); font-size:0.8rem;">Tudo em dia! Nenhuma pendência para os próximos 3 dias.</div>`;
+                    listaContainer.innerHTML = `<div style="padding:20px;
+                        text-align:center; color:var(--text-muted); font-size:0.8rem;">Tudo em dia! Nenhuma pendência para os próximos 3 dias.</div>`;
                     sessionStorage.setItem('hasPendingAlert', 'false');
                 }
             }
@@ -1203,6 +1627,7 @@
 
         function abrirNotificacoes() {
             document.getElementById('modalNotificacoes')?.classList.add('open');
+          
             if(document.getElementById('overlay')) document.getElementById('overlay').style.display = 'block';
         }
 
@@ -1211,14 +1636,13 @@
             if (document.getElementById('mesDisplay')) document.getElementById('mesDisplay').innerText = formatarMesAno(dataVisualizacao);
             const prefixoMes = `${dataVisualizacao.getFullYear()}-${String(dataVisualizacao.getMonth() + 1).padStart(2, '0')}`;
             const corpo = document.getElementById('tabelaCorpo'); 
-            if (corpo) corpo.innerHTML = '';
+            if (corpo) corpo.innerHTML 
+            = '';
             
             // LÓGICA DE SALDO ISOLADO POR MÊS
             let sRec=0, sGas=0, sDiv=0, sRes=0;
-
             const ordenados = [...registros].sort((a, b) => new Date(b.data) - new Date(a.data));
             const registrosDoMes = ordenados.filter(r => r.data.startsWith(prefixoMes));
-            
             let agrupados = {};
             
             registrosDoMes.forEach((r) => {
@@ -1226,16 +1650,19 @@
                 const vT = parseFloat(r.valor) || 0;
                 const vP = parseFloat(r.pago) || 0;
                 const falta = vT - vP;
+            
                 const isPago = vP >= vT && vT > 0;
 
                 if(r.tipo === 'Receita') { if(isPago) sRec += vT; } 
                 else if(r.tipo === 'Divida') { sDiv += falta; sGas += vP; } 
                 else if(r.tipo === 'Reserva') { sRes += vT; } 
+         
                 else { sGas += vP; }
 
                 let exibir = (filtroAtual === "Tudo") || (filtroAtual === r.tipo) || (filtroAtual === "Gasto" && (r.tipo === "Fixo" || r.tipo === "Variavel"));
                 if (filtroAtual !== "Tudo") {
                     if (subFiltro === "Pendente" && isPago) exibir = false;
+   
                     if (subFiltro === "Pago" && !isPago) exibir = false;
                 }
 
@@ -1244,16 +1671,13 @@
                     let hoje = new Date();
                     let ontem = new Date(hoje); ontem.setDate(ontem.getDate() - 1);
                     let targetDate = new Date(r.data + "T12:00:00");
-                    
                     let groupName = dataFormatada;
                     if(targetDate.toDateString() === hoje.toDateString()) groupName = "Hoje";
                     else if(targetDate.toDateString() === ontem.toDateString()) groupName = "Ontem";
-
                     if(!agrupados[groupName]) agrupados[groupName] = [];
                     agrupados[groupName].push({ ...r, realIdx: idxO, isPago, vT });
                 }
             });
-
             if(Object.keys(agrupados).length === 0 && corpo) {
                 corpo.innerHTML = `<div style="text-align:center; padding:40px; color:var(--text-muted); font-size:0.85rem;">Nenhuma operação encontrada</div>`;
             } else if (corpo) {
@@ -1261,64 +1685,76 @@
                     corpo.innerHTML += `<div class="date-group-header">${dataGrupo}</div>`;
                     
                     agrupados[dataGrupo].forEach(r => {
+             
                         let icon = r.tipo === 'Receita' ? 'fa-arrow-up' : (r.tipo === 'Divida' ? 'fa-barcode' : (r.tipo === 'Reserva' ? 'fa-vault' : 'fa-arrow-down'));
                         let color = r.tipo === 'Receita' ? 'var(--success)' : (r.tipo === 'Divida' ? 'var(--danger)' : (r.tipo === 'Reserva' ? 'var(--reserve)' : 'var(--warning)'));
+                       
                         let extraInfo = r.forma ? ` • ${r.forma}` : '';
                         
                         let statusColor = r.isPago ? (r.tipo === 'Receita' ? 'var(--success)' : 'var(--success)') : 'var(--warning)';
-                        let statusText = r.isPago ? (r.tipo === 'Receita' ? 'RECEBIDO' : 'LIQUIDADO') : 'PENDENTE';
+                        let statusText = r.isPago ? 
+                        (r.tipo === 'Receita' ? 'RECEBIDO' : 'LIQUIDADO') : 'PENDENTE';
                         
-                        if(!r.isPago && (r.tipo === 'Divida' || r.tipo === 'Fixo' || r.tipo === 'Variavel')) {
-                            let h = new Date(); h.setHours(0,0,0,0);
+                        if(!r.isPago && (r.tipo === 'Divida' ||
+                        r.tipo === 'Fixo' || r.tipo === 'Variavel')) {
+                            let h = new Date();
+                            h.setHours(0,0,0,0);
                             let o = new Date(r.data + "T12:00:00"); o.setHours(0,0,0,0);
-                            if(o < h) { statusColor = 'var(--danger)'; statusText = 'ATRASADO'; }
+                            if(o < h) { statusColor = 'var(--danger)'; statusText = 'ATRASADO';
+                            }
                         }
 
                         // Lançamento/Vencimento EXCLUSIVO para Dívida
                         let datasInfo = '';
                         let dtLanc = (r.dataLancamento || r.data).split('-').reverse().join('/');
                         let dtVenc = r.data.split('-').reverse().join('/');
-
                         if (r.tipo === 'Divida') {
                             datasInfo = `Lançado: ${dtLanc} • Vence: ${dtVenc}`;
                         }
 
-                        let bankBadgeHtml = r.tipo === 'Divida' ? getBankBadge(r.banco) : '';
+                        let bankBadgeHtml = r.tipo === 'Divida' ?
+                        getBankBadge(r.banco) : '';
 
                         let recAction = '';
                         if(r.comprovante) {
                             recAction = `<br><span onclick="event.stopPropagation(); viewComprovante(${r.realIdx})" class="btn-ver-comp"><i class="fa-solid fa-receipt"></i> VER ANEXO</span>`;
                         }
 
-                        let labelCategoria = r.categoria || r.tipo;
+                        let labelCategoria = r.categoria ||
+                        r.tipo;
                         if(labelCategoria.includes(' ')) labelCategoria = labelCategoria.split(' ').slice(1).join(' ');
 
                         corpo.innerHTML += `
                         <div class="transaction-item" onclick="openModal(${r.realIdx})">
                             <div class="item-left">
-                                <div class="icon-box" style="color:${color};"><i class="fa-solid ${icon}"></i></div>
+                                <div class="icon-box" style="color:${color};"><i 
+                                class="fa-solid ${icon}"></i></div>
                                 <div class="details">
                                     <strong>
+                              
                                         <span class="txt-desc">${r.desc}</span> 
                                         ${bankBadgeHtml}
                                     </strong>
+            
                                     <span class="txt-sub">${labelCategoria}${extraInfo}</span>
-                                    ${datasInfo ? `<span style="font-size: 0.65rem; color: var(--text-muted); opacity: 0.8; margin-top: 2px;">${datasInfo}</span>` : ''}
+                                    ${datasInfo ?
+                                    `<span style="font-size: 0.65rem; color: var(--text-muted); opacity: 0.8; margin-top: 2px;">${datasInfo}</span>` : ''}
                                     ${recAction}
                                 </div>
+                      
                             </div>
                             <div class="amount-section">
                                 <strong>${ocultarBits(r.vT)}</strong>
-                                <span class="status-text" style="color: ${statusColor};">${statusText}</span>
+                                <span 
+                                class="status-text" style="color: ${statusColor};">${statusText}</span>
                             </div>
                         </div>`;
-                    });
+                });
                 });
             }
 
             // SALDO DO MÊS ATUAL ISOLADO
             const totalSaldoFinal = sRec - sGas;
-
             if (document.getElementById('totalReceitas')) document.getElementById('totalReceitas').innerText = ocultarBits(sRec);
             if (document.getElementById('totalGastos')) document.getElementById('totalGastos').innerText = ocultarBits(sGas);
             if (document.getElementById('totalDividas')) document.getElementById('totalDividas').innerText = ocultarBits(sDiv);
@@ -1380,27 +1816,26 @@
                 if (document.getElementById('editIndex')) document.getElementById('editIndex').value = idx;
                 if (document.getElementById('tipo')) document.getElementById('tipo').value = r.tipo;
                 
-                atualizarSubmenu(); 
-                
+                atualizarSubmenu();
                 setTimeout(() => {
                     if (document.getElementById('submenu') && r.categoria) {
                         let opts = Array.from(document.getElementById('submenu').options);
                         let match = opts.find(o => o.value === r.categoria);
+                
                         if(match) document.getElementById('submenu').value = r.categoria;
                     }
                 }, 50);
-                
                 if (document.getElementById('desc')) document.getElementById('desc').value = r.desc;
                 if (document.getElementById('valor')) document.getElementById('valor').value = r.valor;
                 if (document.getElementById('selectPago')) document.getElementById('selectPago').value = (r.pago >= r.valor && r.valor > 0) ? "1" : "0";
-                
                 if (document.getElementById('dataLancamento')) document.getElementById('dataLancamento').value = r.dataLancamento || r.data;
                 if (document.getElementById('data')) document.getElementById('data').value = r.data;
                 
                 if (document.getElementById('banco')) document.getElementById('banco').value = r.banco || "";
                 if (document.getElementById('formaRecebimento')) document.getElementById('formaRecebimento').value = r.forma || "Pix";
                 if (document.getElementById('comprovanteBase64')) document.getElementById('comprovanteBase64').value = r.comprovante || "";
-                if (document.getElementById('txtNomeArqComp')) document.getElementById('txtNomeArqComp').innerText = r.comprovante ? "Comprovante salvo (Anexar novo)" : "Selecionar arquivo...";
+                if (document.getElementById('txtNomeArqComp')) document.getElementById('txtNomeArqComp').innerText = r.comprovante ?
+                "Comprovante salvo (Anexar novo)" : "Selecionar arquivo...";
                 document.getElementById('btnExcluir')?.classList.remove('hidden');
 
                 const lblValor = document.getElementById('lblValorMain');
@@ -1417,14 +1852,13 @@
                     
                     const getBaseName = (name) => name.replace(/\(\d+\/\d+\)/, '').trim();
                     const baseDesc = getBaseName(r.desc);
-                    
                     const vinc = registros.filter(reg =>
                         reg.tipo === 'Divida' &&
                         reg.banco === r.banco && 
                         reg.categoria === r.categoria && 
+             
                         getBaseName(reg.desc) === baseDesc
                     );
-
                     const tV = vinc.reduce((a,c)=>a+c.valor, 0);
                     const tP = vinc.reduce((a,c)=>a+c.pago, 0);
                     const pendentes = vinc.filter(x => parseFloat(x.pago||0) < parseFloat(x.valor||0));
@@ -1434,38 +1868,49 @@
                         document.getElementById('resumoConteudo').innerHTML = `
                             <div class="resumo-grid">
                                 <div class="resumo-mini-card">
+      
                                     <span>Total do Contrato</span>
                                     <strong>${ocultarBits(tV)}</strong>
+                                
                                 </div>
                                 <div class="resumo-mini-card paid">
                                     <span>Total Pago</span>
+                             
                                     <strong>${ocultarBits(tP)}</strong>
                                 </div>
                                 <div class="resumo-mini-card remain">
+                           
                                     <span>Restante / Falta</span>
                                     <strong>${ocultarBits(tV-tP)}</strong>
                                 </div>
+                     
                                 <div class="resumo-mini-card installment">
                                     <span>Valor da Parcela</span>
                                     <strong>${ocultarBits(r.valor)}</strong>
+             
                                 </div>
                             </div>
                             
+                         
                             <div class="contract-progress-bg">
-                                <div class="contract-progress-fill" style="width: ${tV > 0 ? (tP/tV)*100 : 0}%"></div>
+                                <div class="contract-progress-fill" style="width: ${tV > 0 ?
+                                (tP/tV)*100 : 0}%"></div>
                             </div>
 
                             <div class="resumo-footer">
                                 <div><i class="fa-solid fa-layer-group" style="color: var(--text-muted);"></i> Faltam <strong>${pendentes.length} parc.</strong></div>
+  
                                 <div><i class="fa-regular fa-calendar-check" style="color: var(--accent);"></i> Vencimento: <strong>Dia ${diaVenc}</strong></div>
                             </div>
                         `;
+           
                     }
                 } else { 
                     resumo?.classList.add('hidden'); 
                 }
             } else {
                 document.getElementById('btnExcluir')?.classList.add('hidden');
+     
                 resumo?.classList.add('hidden');
                 if (document.getElementById('lblValorMain')) document.getElementById('lblValorMain').innerText = "Valor (R$)";
                 resetForm(); 
@@ -1473,6 +1918,7 @@
             }
         }
         
+       
         function atualizarSubmenu() {
             const t = document.getElementById('tipo')?.value;
             const sub = document.getElementById('submenu'); 
@@ -1482,7 +1928,6 @@
                 
                 const isEdit = document.getElementById('editIndex')?.value !== "";
                 const isDivida = t === 'Divida';
-                
                 document.getElementById('blocoParcelamento')?.classList.toggle('hidden', !isDivida || isEdit);
                 document.getElementById('blocoRecebimento')?.classList.toggle('hidden', t !== 'Receita');
                 
@@ -1496,7 +1941,8 @@
                 if(gridCatBanco) gridCatBanco.style.gridTemplateColumns = isDivida ? '1fr 1fr' : '1fr';
                 
                 const gridDatas = document.getElementById('blocoDatas');
-                if(gridDatas) gridDatas.style.gridTemplateColumns = isDivida ? '1fr 1fr' : '1fr';
+                if(gridDatas) gridDatas.style.gridTemplateColumns = isDivida ?
+                '1fr 1fr' : '1fr';
                 
                 if(!isEdit) definirDescricao();
             }
@@ -1510,31 +1956,36 @@
         }
         
         function salvar() {
-            const t = document.getElementById('tipo')?.value, desc = document.getElementById('desc')?.value, vT = parseFloat(document.getElementById('valor')?.value) || 0;
+            const t = document.getElementById('tipo')?.value, desc = document.getElementById('desc')?.value, vT = parseFloat(document.getElementById('valor')?.value) ||
+            0;
             const dBase = document.getElementById('data')?.value, editIdx = document.getElementById('editIndex')?.value;
             const forma = document.getElementById('formaRecebimento')?.value;
             
             const cat = document.getElementById('submenu')?.value || "";
             const bancoSel = t === 'Divida' ? (document.getElementById('banco')?.value || "") : "";
-            const dataLanc = t === 'Divida' ? (document.getElementById('dataLancamento')?.value || dBase) : dBase;
+            const dataLanc = t === 'Divida' ?
+            (document.getElementById('dataLancamento')?.value || dBase) : dBase;
             
             const isP = document.getElementById('selectPago')?.value === "1";
             const compB64 = document.getElementById('comprovanteBase64')?.value;
-            let valorPago = isP ? vT : 0;
+            let valorPago = isP ?
+            vT : 0;
 
             if(!desc || vT <= 0 || !dBase) return showToast("Preencha todos os campos!", "error");
-            
             let isReceita = (t === 'Receita');
             let triggerWin = false;
-
             if(editIdx !== "") { 
                 let wasNotPaid = (parseFloat(registros[editIdx].pago) || 0) === 0;
-                registros[editIdx] = { ...registros[editIdx], tipo: t, desc, categoria: cat, valor: vT, pago: valorPago, data: dBase, dataLancamento: dataLanc, banco: bancoSel, forma: isReceita ? forma : null, comprovante: compB64 || registros[editIdx].comprovante }; 
+                registros[editIdx] = { ...registros[editIdx], tipo: t, desc, categoria: cat, valor: vT, pago: valorPago, data: dBase, dataLancamento: dataLanc, banco: bancoSel, forma: isReceita ?
+                forma : null, comprovante: compB64 || registros[editIdx].comprovante }; 
                 
                 if (wasNotPaid && isP) {
-                    if (isReceita) { setTimeout(playIncomeSound, 400); triggerConfetti(); }
-                    else if (t === 'Divida') { triggerWin = true; }
-                    else { setTimeout(playNotificationSound, 400); triggerConfetti(); }
+                    if (isReceita) { setTimeout(playIncomeSound, 400);
+                    triggerConfetti(); }
+                    else if (t === 'Divida') { triggerWin = true;
+                    }
+                    else { setTimeout(playNotificationSound, 400);
+                    triggerConfetti(); }
                 }
             } else {
                 if (t === 'Divida' && parseInt(document.getElementById('parcelas')?.value) > 1) {
@@ -1547,9 +1998,12 @@
                 } else { 
                     registros.push({ tipo: t, desc, categoria: cat, valor: vT, pago: valorPago, data: dBase, dataLancamento: dataLanc, banco: bancoSel, forma: isReceita ? forma : null, comprovante: compB64 });
                     if(isP) {
-                        if (isReceita) { setTimeout(playIncomeSound, 400); triggerConfetti(); }
-                        else if (t === 'Divida') { triggerWin = true; }
-                        else { setTimeout(playNotificationSound, 400); triggerConfetti(); }
+                        if (isReceita) { setTimeout(playIncomeSound, 400);
+                        triggerConfetti(); }
+                        else if (t === 'Divida') { triggerWin = true;
+                        }
+                        else { setTimeout(playNotificationSound, 400);
+                        triggerConfetti(); }
                     }
                 }
             }
@@ -1583,7 +2037,8 @@
         }
 
         function renderizarGraficos() {
-            let fontColor = getComputedStyle(document.body).getPropertyValue('--text-muted').trim() || '#999';
+            let fontColor = getComputedStyle(document.body).getPropertyValue('--text-muted').trim() ||
+            '#999';
             let gridColor = getComputedStyle(document.body).getPropertyValue('--border').trim() || '#333';
             const prefixoMes = `${dataVisualizacao.getFullYear()}-${String(dataVisualizacao.getMonth() + 1).padStart(2, '0')}`;
             
@@ -1592,21 +2047,23 @@
             let fluxoDiario = {};
             
             const regsMes = registros.filter(r => r.data.startsWith(prefixoMes));
-            
             regsMes.forEach(r => {
                 if(r.tipo === 'Fixo' || r.tipo === 'Variavel' || r.tipo === 'Divida') {
                     let cat = r.categoria || r.tipo;
                     if(cat.includes(' ')) cat = cat.split(' ').slice(1).join(' ');
+                    
                     despesasCategoria[cat] = (despesasCategoria[cat] || 0) + parseFloat(r.valor);
                     let p = parseFloat(r.pago) || 0;
                     pagoVal += p;
                     pendenteVal += (parseFloat(r.valor) - p);
                 }
-                let dia = parseInt(r.data.split('-')[2]);
+       
+                 let dia = parseInt(r.data.split('-')[2]);
                 if(!fluxoDiario[dia]) fluxoDiario[dia] = { in: 0, out: 0 };
                 if (r.tipo === 'Receita' && parseFloat(r.pago) > 0) fluxoDiario[dia].in += parseFloat(r.valor);
                 else if (r.tipo !== 'Receita' && r.tipo !== 'Reserva' && parseFloat(r.pago) > 0) fluxoDiario[dia].out += parseFloat(r.pago);
-            });
+       
+             });
 
             if(chartCategorias) chartCategorias.destroy();
             const canvasCat = document.getElementById('chartCategorias');
@@ -1615,12 +2072,14 @@
                 let catLabels = Object.keys(despesasCategoria);
                 let catData = Object.values(despesasCategoria);
                 let bgColors = ['#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4', '#ec4899', '#10b981', '#3b82f6'];
-                if(catData.length === 0) { catLabels = ["Sem dados"]; catData = [1]; bgColors = ['#333333']; }
+                if(catData.length === 0) { catLabels = ["Sem dados"]; catData = [1]; bgColors = ['#333333'];
+                }
 
                 chartCategorias = new Chart(ctxCat, {
                     type: 'doughnut',
                     data: { labels: catLabels, datasets: [{ data: catData, backgroundColor: bgColors, borderColor: '#111827', borderWidth: 2, hoverOffset: 10 }] },
-                    options: { responsive: true, maintainAspectRatio: false, layout: { padding: 10 }, plugins: { legend: { position: 'right', labels: { color: fontColor, font: {size: 11, family: "'Ubuntu', sans-serif"}, padding: 15, usePointStyle: true } }, tooltip: { callbacks: { label: function(context) { return (catLabels[0] === "Sem dados") ? " Nenhuma despesa" : ' ' + context.label + ': ' + formatarMoeda(context.raw); } } } }, cutout: '75%' }
+                    options: { 
+                        responsive: true, maintainAspectRatio: false, layout: { padding: 10 }, plugins: { legend: { position: 'right', labels: { color: fontColor, font: {size: 11, family: "'Ubuntu', sans-serif"}, padding: 15, usePointStyle: true } }, tooltip: { callbacks: { label: function(context) { return (catLabels[0] === "Sem dados") ? " Nenhuma despesa" : ' ' + context.label + ': ' + formatarMoeda(context.raw); } } } }, cutout: '75%' }
                 });
             }
 
@@ -1628,13 +2087,13 @@
             const canvasEvolucao = document.getElementById('chartEvolucao');
             if(canvasEvolucao) {
                 const ctxEvo = canvasEvolucao.getContext('2d');
-                let diasArr = Array.from({length: 31}, (_, i) => i + 1); 
+                let diasArr = Array.from({length: 31}, (_, i) => i + 1);
                 let dataIn = diasArr.map(d => fluxoDiario[d] ? fluxoDiario[d].in : 0);
                 let dataOut = diasArr.map(d => fluxoDiario[d] ? fluxoDiario[d].out : 0);
-
                 chartEvolucao = new Chart(ctxEvo, {
                     type: 'line',
                     data: { labels: diasArr, datasets: [{ label: 'Entrou', data: dataIn, borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.1)', fill: true, tension: 0.4, pointRadius: 0 }, { label: 'Saiu', data: dataOut, borderColor: '#ef4444', backgroundColor: 'transparent', tension: 0.4, pointRadius: 0 }] },
+                 
                     options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, scales: { x: { grid: { color: gridColor }, ticks: { color: fontColor, maxTicksLimit: 10 } }, y: { grid: { color: gridColor }, ticks: { display: false } } }, plugins: { legend: { display: false } } }
                 });
             }
@@ -1646,84 +2105,97 @@
                 chartStatus = new Chart(ctxStatus, {
                     type: 'bar',
                     data: { labels: ['Total'], datasets: [{ label: 'Pago', data: [pagoVal], backgroundColor: '#10b981', borderRadius: 6, barThickness: 25 }, { label: 'Pendente', data: [pendenteVal], backgroundColor: '#ef4444', borderRadius: 6, barThickness: 25 }] },
-                    options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true, display: false }, y: { stacked: true, display: false } }, plugins: { legend: { position: 'bottom', labels: { color: fontColor, font: {size: 11, family: "'Ubuntu', sans-serif"}, usePointStyle: true } }, tooltip: { callbacks: { label: function(context) { return ' ' + context.dataset.label + ': ' + formatarMoeda(context.raw); } } } } }
+                    options: { indexAxis: 'y', responsive: true, 
+                        maintainAspectRatio: false, scales: { x: { stacked: true, display: false }, y: { stacked: true, display: false } }, plugins: { legend: { position: 'bottom', labels: { color: fontColor, font: {size: 11, family: "'Ubuntu', sans-serif"}, usePointStyle: true } }, tooltip: { callbacks: { label: function(context) { return ' ' + context.dataset.label + ': ' + formatarMoeda(context.raw); } } } } }
                 });
             }
         }
 
-        // EXPORTAR RELATÓRIO PDF (CORRIGIDO PARA NÃO DAR TELA BRANCA)
+        // EXPORTAR RELATÓRIO PDF
         function gerarPDFoficial() {
             if(registros.length === 0) return showToast("Não há dados para exportar.", "error");
             showToast("Gerando Relatório Oficial...", "success");
             
             const container = document.getElementById('pdf-container');
             const mesFormatado = formatarMesAno(dataVisualizacao);
-            
             let html = `
                 <div style="border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px;">
                     <h1 style="color:#000; margin: 0 0 5px 0; font-size: 24px;">MeuCaixa - Extrato Consolidado</h1>
-                    <p style="margin:0; color:#555; font-size: 14px;"><strong>Cliente:</strong> ${appConfig.nome} | <strong>Período:</strong> ${mesFormatado}</p>
+                    <p style="margin:0; color:#555; font-size: 14px;"><strong>Cliente:</strong> ${appConfig.nome} |
+                    <strong>Período:</strong> ${mesFormatado}</p>
                 </div>
                 <table style="width:100%; border-collapse: collapse; font-size: 12px; margin-bottom: 30px;">
                     <tr style="background:#f5f5f5; border-bottom: 2px solid #ccc;">
                         <th style="padding:12px 8px; text-align:left;">Lançamento</th>
+        
                         <th style="padding:12px 8px; text-align:left;">Vencimento</th>
                         <th style="padding:12px 8px; text-align:left;">Descrição / Banco</th>
                         <th style="padding:12px 8px; text-align:center;">Anexo</th>
-                        <th style="padding:12px 8px; text-align:right;">Valor (R$)</th>
+                        <th 
+                        style="padding:12px 8px; text-align:right;">Valor (R$)</th>
                         <th style="padding:12px 8px; text-align:center;">Status</th>
                     </tr>
             `;
-            
             const prefixoMes = `${dataVisualizacao.getFullYear()}-${String(dataVisualizacao.getMonth() + 1).padStart(2, '0')}`;
             const registrosDoMes = registros.filter(r => r.data.startsWith(prefixoMes)).sort((a, b) => new Date(a.data) - new Date(b.data));
-            
             let totalEntradas = 0, totalSaidas = 0;
 
             registrosDoMes.forEach(r => {
                 let v = parseFloat(r.valor) || 0;
                 let status = (parseFloat(r.pago) >= v && v > 0) ? "PAGO" : "PENDENTE";
                 let corStatus = status === 'PAGO' ? '#10b981' : '#ef4444';
+                
                 let corValor = r.tipo === 'Receita' ? '#10b981' : '#111';
                 
                 if(r.tipo === 'Receita' && status === 'PAGO') totalEntradas += v;
                 if(r.tipo !== 'Receita' && r.tipo !== 'Reserva') totalSaidas += v; 
                 
+        
                 let dtLanc = (r.dataLancamento || r.data).split('-').reverse().join('/');
                 let dtVenc = r.data.split('-').reverse().join('/');
                 let bancoInfo = r.banco ? `<br><span style="color:#666; font-size:10px;">${r.banco}</span>` : '';
                 let hasAnexo = r.comprovante ? 'Sim' : '-';
 
                 html += `
+  
                 <tr style="border-bottom:1px solid #eee;">
                     <td style="padding:12px 8px; color:#555;">${dtLanc}</td>
-                    <td style="padding:12px 8px; font-weight:bold;">${dtVenc}</td>
+                    <td style="padding:12px 8px;
+                    font-weight:bold;">${dtVenc}</td>
                     <td style="padding:12px 8px;"><strong>${r.desc}</strong>${bancoInfo}</td>
-                    <td style="padding:12px 8px; text-align:center; color:#666;">${hasAnexo}</td>
-                    <td style="padding:12px 8px; color:${corValor}; text-align:right; font-weight:bold;">${formatarMoeda(v).replace('R$', '')}</td>
-                    <td style="padding:12px 8px; text-align:center; font-weight:bold; color:${corStatus};">${status}</td>
+                    <td style="padding:12px 8px;
+                    text-align:center; color:#666;">${hasAnexo}</td>
+                    <td style="padding:12px 8px;
+                    color:${corValor}; text-align:right; font-weight:bold;">${formatarMoeda(v).replace('R$', '')}</td>
+                    <td style="padding:12px 8px;
+                    text-align:center; font-weight:bold; color:${corStatus};">${status}</td>
                 </tr>`;
             });
             html += `</table>`;
             html += `
-                <div style="text-align:right; font-size: 14px; background: #f9f9f9; padding: 15px; border-radius: 8px; width: 250px; float: right;">
+                <div style="text-align:right;
+                    font-size: 14px; background: #f9f9f9; padding: 15px; border-radius: 8px; width: 250px;
+                    float: right;">
                     <p style="margin:0 0 5px 0;">Total Receitas: <strong style="color:#10b981">${formatarMoeda(totalEntradas)}</strong></p>
                     <p style="margin:0;">Total Despesas: <strong style="color:#ef4444">${formatarMoeda(totalSaidas)}</strong></p>
                 </div>
             `;
             
+        
             container.innerHTML = html;
             
             html2pdf().from(container).set({
                 margin: 10,
                 filename: `Relatorio_MeuCaixa_${mesFormatado.replace(' ', '_')}.pdf`,
                 image: { type: 'jpeg', quality: 0.98 },
+            
                 html2canvas: { scale: 2, useCORS: true },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             }).save().then(() => {
                 container.innerHTML = '';
                 showToast("PDF salvo com sucesso!", "success");
-            }).catch(err => {
+            }).catch(err => 
+            {
                 container.innerHTML = '';
                 showToast("Erro ao gerar PDF.", "error");
             });
@@ -1772,42 +2244,52 @@
             const lines = text.split('\n');
             let entradas = 0, saidas = 0, listaHtml = "";
             const moneyRegex = /(?:R\$|RS|\$)?\s*(\d{1,3}(?:\.\d{3})*,\d{2})/i;
-            
             lines.forEach(line => {
                 const match = line.match(moneyRegex);
                 if(match) {
                     const valor = parseFloat(match[1].replace(/\./g, '').replace(',', '.'));
                     const lineLower = line.toLowerCase();
+              
                     const descLida = line.replace(match[0], '').trim().substring(0, 30) || 'Operação';
                     
                     let tipo = "Variavel";
                     let cor = "var(--danger)";
                     
+ 
                     if(lineLower.includes('recebido') || lineLower.includes('entrada') || lineLower.includes('depósito') || lineLower.includes('transferência') || lineLower.includes('rendimento') || lineLower.includes('salário')) {
                         tipo = "Receita"; cor = "var(--success)"; entradas += valor;
                     } else { saidas += valor; }
+            
                     
-                    listaHtml += `<div style="background:var(--bg); padding:10px; border-radius:10px; margin-bottom:8px; border:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
-                        <span style="font-size:0.75rem; color:var(--text); flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-right:10px;">${descLida}</span>
-                        <div style="display:flex; gap:10px; align-items:center;">
-                            <strong style="color:${cor}; font-size:0.85rem;">${formatarMoeda(valor)}</strong>
-                            <button onclick="preencherIA('${descLida}', ${valor}, '${tipo}')" style="background:var(--accent); border:none; color:#fff; border-radius:6px; padding:4px 8px; font-size:0.6rem; cursor:pointer; font-weight:bold;">+ LANÇAR</button>
+                    listaHtml += `<div style="background:var(--bg); padding:10px; border-radius:10px; margin-bottom:8px;
+                        border:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-size:0.75rem;
+                        color:var(--text); flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-right:10px;">${descLida}</span>
+                        <div style="display:flex;
+                        gap:10px; align-items:center;">
+                            <strong style="color:${cor};
+                            font-size:0.85rem;">${formatarMoeda(valor)}</strong>
+                            <button onclick="preencherIA('${descLida}', ${valor}, '${tipo}')" style="background:var(--accent);
+                            border:none; color:#fff; border-radius:6px; padding:4px 8px; font-size:0.6rem; cursor:pointer; font-weight:bold;">+ LANÇAR</button>
                         </div></div>`;
                 }
             });
             
-            if(entradas === 0 && saidas === 0) listaHtml = "<p style='color:var(--text-muted); text-align:center; font-size: 0.85rem;'>Nenhum valor financeiro claro foi identificado.</p>";
+            if(entradas === 0 && saidas === 0) listaHtml = "<p style='color:var(--text-muted);
+                text-align:center; font-size: 0.85rem;'>Nenhum valor financeiro claro foi identificado.</p>";
             if (document.getElementById('leitorLista')) document.getElementById('leitorLista').innerHTML = listaHtml;
             document.getElementById('leitorResult')?.classList.remove('hidden');
             
             if(chartLeitorInstance) chartLeitorInstance.destroy();
             const canvasLeitor = document.getElementById('chartLeitor');
             if (canvasLeitor) {
+           
                 const ctx = canvasLeitor.getContext('2d');
                 let fontColor = getComputedStyle(document.body).getPropertyValue('--text-muted').trim() || '#999';
                 chartLeitorInstance = new Chart(ctx, {
                     type: 'doughnut',
-                    data: { labels: ['Entradas', 'Saídas'], datasets: [{ data: [entradas, saidas], backgroundColor: ['#10b981', '#ef4444'], borderWidth: 0 }] },
+                    data: { labels: ['Entradas', 'Saídas'], datasets: [{ data: [entradas, saidas], 
+                        backgroundColor: ['#10b981', '#ef4444'], borderWidth: 0 }] },
                     options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: fontColor, font: {size: 11} } } }, cutout: '70%' }
                 });
             }
@@ -1840,37 +2322,44 @@
             if(!f) return; 
             const r = new FileReader(); 
             r.onload = function(ev) { 
-                const lines = ev.target.result.split('\n'); 
+                const lines = ev.target.result.split('\n');
                 let novos = [];
                 for(let i=1; i<lines.length; i++){ 
-                    const c = lines[i].split(','); 
+                    const c = lines[i].split(',');
                     if(c.length>=5) {
                         let obj = { tipo: c[0], desc: c[1], valor: parseFloat(c[3]||c[2]), pago: parseFloat(c[4]||c[3]), data: (c[5]||c[4]).trim() };
                         if (c.length >= 9) {
-                            obj.categoria = c[2].trim(); obj.dataLancamento = c[6].trim(); obj.banco = c[7].trim(); obj.forma = c[8].trim() || null;
+                            obj.categoria = c[2].trim();
+                            obj.dataLancamento = c[6].trim(); obj.banco = c[7].trim(); obj.forma = c[8].trim() || null;
                         } else if (c.length >= 8) {
-                            obj.valor = parseFloat(c[2]); obj.pago = parseFloat(c[3]); obj.data = c[4].trim(); obj.dataLancamento = c[5].trim(); obj.banco = c[6].trim(); obj.forma = c[7].trim() || null;
+                            obj.valor = parseFloat(c[2]);
+                            obj.pago = parseFloat(c[3]); obj.data = c[4].trim(); obj.dataLancamento = c[5].trim(); obj.banco = c[6].trim(); obj.forma = c[7].trim() || null;
                         }
                         novos.push(obj);
                     }
                 } 
-                if(novos.length > 0){ registros = novos; salvarDB(); renderizar(); closeAll(); showToast("Backup Importado!", "success"); } 
-            }; 
+                if(novos.length > 0){ registros = novos;
+                    salvarDB(); renderizar(); closeAll(); showToast("Backup Importado!", "success"); } 
+            };
             r.readAsText(f);
         }
         
-        function toggleFantasma() { modoFantasma = !modoFantasma; const eyeIcon = document.getElementById('eyeIcon'); if (eyeIcon) eyeIcon.className = modoFantasma ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'; renderizar(); }
-        function ocultarBits(v) { return modoFantasma ? appConfig.moeda + " ••••" : formatarMoeda(v); }
-        function limparTerminal() { if(confirm("Atenção! Deseja apagar TODOS os dados de todos os meses?")) { const tx = db.transaction("financeiro", "readwrite"); tx.objectStore("financeiro").clear(); tx.oncomplete = () => location.reload(); } }
+        function toggleFantasma() { modoFantasma = !modoFantasma;
+            const eyeIcon = document.getElementById('eyeIcon'); if (eyeIcon) eyeIcon.className = modoFantasma ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'; renderizar();
+        }
+        function ocultarBits(v) { return modoFantasma ? appConfig.moeda + " ••••" : formatarMoeda(v);
+        }
+        function limparTerminal() { if(confirm("Atenção! Deseja apagar TODOS os dados de todos os meses?")) { const tx = db.transaction("financeiro", "readwrite");
+            tx.objectStore("financeiro").clear(); tx.oncomplete = () => location.reload(); } }
         function resetForm() { 
-            if (document.getElementById('editIndex')) document.getElementById('editIndex').value = ""; 
+            if (document.getElementById('editIndex')) document.getElementById('editIndex').value = "";
             if (document.getElementById('valor')) document.getElementById('valor').value = "";
             if (document.getElementById('parcelas')) document.getElementById('parcelas').value = "1"; 
             if (document.getElementById('parcelasPagas')) document.getElementById('parcelasPagas').value = "0"; 
-            if (document.getElementById('desc')) document.getElementById('desc').value = ""; 
+            if (document.getElementById('desc')) document.getElementById('desc').value = "";
             if (document.getElementById('banco')) document.getElementById('banco').value = ""; 
             if (document.getElementById('dataLancamento')) document.getElementById('dataLancamento').value = new Date().toISOString().split('T')[0]; 
-            if (document.getElementById('data')) document.getElementById('data').value = new Date().toISOString().split('T')[0]; 
+            if (document.getElementById('data')) document.getElementById('data').value = new Date().toISOString().split('T')[0];
             if (document.getElementById('selectPago')) document.getElementById('selectPago').value = "0";
             if (document.getElementById('comprovanteInput')) document.getElementById('comprovanteInput').value = "";
             if (document.getElementById('comprovanteBase64')) document.getElementById('comprovanteBase64').value = "";
@@ -1883,14 +2372,15 @@
             renderizar(); 
             const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
             const isStandalone = ('standalone' in window.navigator) && window.navigator.standalone;
-            if (isIos && !isStandalone) { setTimeout(() => { const prompt = document.getElementById('ios-prompt'); if(prompt) prompt.classList.remove('hidden'); }, 2000); }
+            if (isIos && !isStandalone) { setTimeout(() => { const prompt = document.getElementById('ios-prompt'); if(prompt) prompt.classList.remove('hidden'); }, 2000);
+            }
         }
     </script>
     
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(err => console.error('Erro no PWA:', err)); });
-      }
+        }
     </script>
 </body>
 </html>
