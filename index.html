@@ -6,12 +6,9 @@
     <title>MeuCaixa - Comando de Ativos</title>
     
     <link rel="manifest" href="./manifest.json">
-    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-touch-fullscreen" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="MeuCaixa">
-    <link rel="apple-touch-icon" href="./icon-192.png">
+    <link rel="apple-touch-icon" href="./icon.svg">
     <meta name="theme-color" content="#030712">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -191,7 +188,7 @@
         
         .btn-ver-comp { display: inline-block; background: rgba(0, 242, 255, 0.1); color: var(--accent); border: 1px solid var(--accent); padding: 4px 10px; border-radius: 8px; font-size: 0.65rem; margin-top: 6px; cursor: pointer; font-weight: 800; text-transform: uppercase; }
         
-        /* Bank Badges para Resumo */
+        /* Bank Badges para Resumo e Extrato */
         .bank-badge { padding: 3px 8px; border-radius: 6px; font-size: 0.6rem; font-weight: 800; display: inline-flex; align-items: center; gap: 4px; text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0; }
 
         /* BARRAS INFERIORES E BOTÕES */
@@ -230,8 +227,9 @@
         .resumo-item { font-size: 0.7rem; color: var(--text-muted); }
         .resumo-item strong { color: var(--text); display: block; font-size: 0.85rem; margin-top: 2px;}
 
-        /* Container protegido para gráficos (impede que fiquem crescendo infinitamente) */
-        .grafico-container { background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 15px; margin-bottom: 25px; position: relative; height: 250px; width: 100%; }
+        /* Container protegido para os gráficos da aba "Análise do Mês Atual" */
+        .grafico-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+        .grafico-title { font-size: 0.75rem; color: var(--accent); text-transform: uppercase; margin: 0 0 15px 0; text-align: center; letter-spacing: 1px; font-weight: 800; }
         
         .btn-toggle-meses { flex: 1; padding: 10px; background: var(--input-bg); border: 1px solid var(--border); border-radius: 10px; color: var(--text-muted); font-weight: 800; font-size: 0.75rem; cursor: pointer; }
         .btn-toggle-meses.active { background: rgba(0,242,255,0.1); border-color: var(--accent); color: var(--accent); }
@@ -462,7 +460,7 @@
         </div>
         
         <div id="blocoResumoGeral" class="resumo-quitacao hidden">
-            <h4 id="resumoTitulo">Resumo do Contrato</h4>
+            <h4 id="resumoTitulo" style="display: flex; align-items: center; gap: 8px;">Resumo do Contrato</h4>
             <div id="resumoConteudo" class="resumo-grid"></div>
         </div>
 
@@ -547,13 +545,13 @@
             </div>
         </div>
         
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-            <div>
+        <div id="blocoDatas" style="display:grid; grid-template-columns: 1fr; gap:10px;">
+            <div id="boxDataLancamento" class="hidden">
                 <span class="label-mini">Data de Lançamento</span>
                 <input type="date" id="dataLancamento">
             </div>
             <div>
-                <span class="label-mini">Data de Vencimento</span>
+                <span class="label-mini" id="lblDataMain">Data da Operação</span>
                 <input type="date" id="data">
             </div>
         </div>
@@ -650,20 +648,24 @@
         <button class="btn-delete" onclick="zerarMetaCompleta()">ZERAR META ATUAL</button>
     </div>
 
-    <div class="modal" id="modalGraficos">
+    <div class="modal" id="modalGraficos" style="background: var(--bg);">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
             <h2 style="margin:0; font-size:1.15rem; color: var(--text);">Análise do Mês Atual</h2>
             <i class="fa-solid fa-xmark" style="font-size:1.4rem; color:var(--text-muted); cursor:pointer;" onclick="closeModal()"></i>
         </div>
         
-        <div class="grafico-container" style="height: 280px;">
-            <span class="label-mini" style="text-align: center;">Despesas por Categoria</span>
-            <canvas id="chartCategorias"></canvas>
+        <div class="grafico-card">
+            <h4 class="grafico-title">Despesas por Categoria</h4>
+            <div style="position: relative; height: 260px; width: 100%;">
+                <canvas id="chartCategorias"></canvas>
+            </div>
         </div>
         
-        <div class="grafico-container" style="height: 220px;">
-            <span class="label-mini" style="text-align: center;">Status de Pagamentos (Gastos e Dívidas)</span>
-            <canvas id="chartStatus"></canvas>
+        <div class="grafico-card">
+            <h4 class="grafico-title">Status de Pagamentos (Gastos e Dívidas)</h4>
+            <div style="position: relative; height: 120px; width: 100%;">
+                <canvas id="chartStatus"></canvas>
+            </div>
         </div>
     </div>
 
@@ -684,8 +686,7 @@
             <h2 style="margin:0; font-size:1.15rem; color: var(--text);">Visualizar Anexo</h2>
             <i class="fa-solid fa-xmark" style="font-size:1.4rem; color:var(--text-muted); cursor:pointer;" onclick="closeViewComprovante()"></i>
         </div>
-        <div id="comprovanteContent" style="text-align:center;">
-            </div>
+        <div id="comprovanteContent" style="text-align:center;"></div>
     </div>
 
     <div class="modal" id="modalLeitorExtrato">
@@ -725,7 +726,7 @@
         </div>
         <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">Contas que venceram ou vencem nos próximos 3 dias e ainda não foram pagas.</p>
         <div id="listaNotificacoes" style="background: var(--bg); border: 1px solid var(--border); border-radius: 12px; overflow: hidden;">
-            </div>
+        </div>
     </div>
 
     <script>
@@ -747,7 +748,6 @@
             fotoPerfil: savedConfig.fotoPerfil || null
         };
 
-        // GERAR SOM DE NOTIFICAÇÃO (IPHONE STYLE)
         function playNotificationSound() {
             try {
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -767,10 +767,9 @@
                 gainNode.connect(ctx.destination);
                 osc.start(ctx.currentTime);
                 osc.stop(ctx.currentTime + 0.5);
-            } catch(e) { console.log("Audio not supported or blocked by browser"); }
+            } catch(e) { console.log("Audio not supported"); }
         }
 
-        // SISTEMA DE TOAST NOTIFICATIONS
         function showToast(message, type = "success") {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
@@ -788,7 +787,6 @@
             }, 3000);
         }
 
-        // SISTEMA DE CADASTRO, LOGIN E SEGURANÇA
         function checkAppSecurity() {
             if(!appConfig.email || !appConfig.senhaHash) {
                 document.getElementById('lock-screen')?.classList.remove('hidden');
@@ -907,7 +905,6 @@
             location.reload();
         }
 
-        // LÓGICA DE TEMAS
         function checkTheme() {
             const savedTheme = localStorage.getItem('meucaixa_theme');
             if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
@@ -920,7 +917,6 @@
             renderizar();
         }
 
-        // CONFIGURAÇÕES GERAIS
         function salvarConfig() {
             localStorage.setItem('meucaixa_config', JSON.stringify(appConfig));
             carregarConfig();
@@ -1001,7 +997,6 @@
             salvarConfig();
         }
 
-        // MÓDULO EXCLUSIVO GESTÃO DE METAS
         function abrirGestaoMetas() {
             document.getElementById('modalGestaoMetas')?.classList.add('open');
             if (document.getElementById('overlay')) document.getElementById('overlay').style.display = 'block';
@@ -1150,22 +1145,65 @@
             renderizar(); 
         }
 
-        // LÓGICA DE DETECÇÃO DE BANCOS PARA BADGE
         function getBankBadge(bancoNome) {
-            if (!bancoNome) return '';
-            const d = bancoNome.toLowerCase();
-            if (d.includes('nubank')) return '<span class="bank-badge" style="background:#8A05BE; color:#fff;"><i class="fa-solid fa-building-columns"></i> Nubank</span>';
-            if (d.includes('santander')) return '<span class="bank-badge" style="background:#EC0000; color:#fff;"><i class="fa-solid fa-building-columns"></i> Santander</span>';
-            if (d.includes('bradesco')) return '<span class="bank-badge" style="background:#CC092F; color:#fff;"><i class="fa-solid fa-building-columns"></i> Bradesco</span>';
-            if (d.includes('itau') || d.includes('itaú')) return '<span class="bank-badge" style="background:#EC7000; color:#fff;"><i class="fa-solid fa-building-columns"></i> Itaú</span>';
-            if (d.includes('banco do brasil') || d.includes('bb')) return '<span class="bank-badge" style="background:#F2D300; color:#003DA5;"><i class="fa-solid fa-building-columns"></i> Banco do Brasil</span>';
-            if (d.includes('caixa')) return '<span class="bank-badge" style="background:#005CA9; color:#fff;"><i class="fa-solid fa-building-columns"></i> Caixa</span>';
-            if (d.includes('inter')) return '<span class="bank-badge" style="background:#FF7A00; color:#fff;"><i class="fa-solid fa-building-columns"></i> Inter</span>';
-            if (d.includes('c6')) return '<span class="bank-badge" style="background:#242424; color:#fff;"><i class="fa-solid fa-building-columns"></i> C6 Bank</span>';
-            return '';
+            if (!bancoNome || bancoNome === 'Outros / Nenhum') return '';
+            const badges = {
+                "Nubank": { bg: "#8A05BE", color: "#fff" },
+                "Inter": { bg: "#FF7A00", color: "#fff" },
+                "C6 Bank": { bg: "#242424", color: "#fff" },
+                "PagBank": { bg: "#15B685", color: "#fff" },
+                "PicPay": { bg: "#11C76F", color: "#fff" },
+                "Neon": { bg: "#00E7DF", color: "#000" },
+                "Next": { bg: "#00FF5F", color: "#000" },
+                "Mercado Pago": { bg: "#009EE3", color: "#fff" },
+                "Banco Pan": { bg: "#1474FF", color: "#fff" },
+                "Will Bank": { bg: "#FFEB00", color: "#000" },
+                "Agibank": { bg: "#023436", color: "#fff" },
+                "Sofisa": { bg: "#FFB100", color: "#000" },
+                "Digio": { bg: "#002859", color: "#fff" },
+                "Bmg": { bg: "#FF5A00", color: "#fff" },
+                "XP": { bg: "#000000", color: "#FFD700" },
+                "Rico": { bg: "#FF6600", color: "#fff" },
+                "BS2": { bg: "#1D1D1B", color: "#fff" },
+                "Itaú": { bg: "#EC7000", color: "#fff" },
+                "Santander": { bg: "#EC0000", color: "#fff" },
+                "Bradesco": { bg: "#CC092F", color: "#fff" },
+                "Banco do Brasil": { bg: "#F2D300", color: "#003DA5" },
+                "Caixa": { bg: "#005CA9", color: "#fff" },
+                "Safra": { bg: "#000000", color: "#D4AF37" },
+                "BTG Pactual": { bg: "#0A2240", color: "#D4AF37" },
+                "Banco BV": { bg: "#FFD500", color: "#000" },
+                "Sicoob": { bg: "#003641", color: "#00AE9D" },
+                "Sicredi": { bg: "#00A650", color: "#fff" },
+                "Banrisul": { bg: "#005CA9", color: "#fff" },
+                "Banco do Nordeste": { bg: "#00723A", color: "#fff" }
+            };
+
+            let style = badges[bancoNome];
+            if (!style) {
+                const d = bancoNome.toLowerCase();
+                if (d.includes('nubank')) style = badges["Nubank"];
+                else if (d.includes('santander')) style = badges["Santander"];
+                else if (d.includes('bradesco')) style = badges["Bradesco"];
+                else if (d.includes('itau') || d.includes('itaú')) style = badges["Itaú"];
+                else if (d.includes('banco do brasil') || d.includes('bb')) style = badges["Banco do Brasil"];
+                else if (d.includes('caixa')) style = badges["Caixa"];
+                else if (d.includes('inter')) style = badges["Inter"];
+                else if (d.includes('c6')) style = badges["C6 Bank"];
+                else if (d.includes('pagbank') || d.includes('pagseguro')) style = badges["PagBank"];
+                else if (d.includes('picpay')) style = badges["PicPay"];
+                else if (d.includes('mercado pago')) style = badges["Mercado Pago"];
+                else if (d.includes('sicoob')) style = badges["Sicoob"];
+                else if (d.includes('sicredi')) style = badges["Sicredi"];
+            }
+
+            if (style) {
+                let finalName = Object.keys(badges).find(k => badges[k] === style) || bancoNome;
+                return `<span class="bank-badge" style="background:${style.bg}; color:${style.color};"><i class="fa-solid fa-building-columns"></i> ${finalName}</span>`;
+            }
+            return `<span class="bank-badge" style="background:var(--input-bg); color:var(--text); border: 1px solid var(--border);"><i class="fa-solid fa-building-columns"></i> ${bancoNome}</span>`;
         }
 
-        // VERIFICAR NOTIFICAÇÕES E ALERTAR (Som de Ding do iPhone 3 dias antes ou vencido)
         function verificarNotificacoes() {
             let pendingList = [];
             let hoje = new Date();
@@ -1216,7 +1254,6 @@
                     });
                     listaContainer.innerHTML = html;
                     
-                    // Alerta de som guardado na sessão para tocar ao logar
                     sessionStorage.setItem('hasPendingAlert', 'true');
                 } else {
                     badge.classList.add('hidden');
@@ -1276,7 +1313,6 @@
                 }
             });
 
-            // RENDERIZAR AGRUPADO COM DATAS LANÇAMENTO X VENCIMENTO E BANCOS
             if(Object.keys(agrupados).length === 0 && corpo) {
                 corpo.innerHTML = `<div style="text-align:center; padding:40px; color:var(--text-muted); font-size:0.85rem;">Nenhuma operação encontrada</div>`;
             } else if (corpo) {
@@ -1291,26 +1327,24 @@
                         let statusColor = r.isPago ? (r.tipo === 'Receita' ? 'var(--success)' : 'var(--success)') : 'var(--warning)';
                         let statusText = r.isPago ? (r.tipo === 'Receita' ? 'RECEBIDO' : 'LIQUIDADO') : 'PENDENTE';
                         
-                        // Status Atrasado
                         if(!r.isPago && (r.tipo === 'Divida' || r.tipo === 'Fixo' || r.tipo === 'Variavel')) {
                             let h = new Date(); h.setHours(0,0,0,0);
                             let o = new Date(r.data + "T12:00:00"); o.setHours(0,0,0,0);
                             if(o < h) { statusColor = 'var(--danger)'; statusText = 'ATRASADO'; }
                         }
 
-                        // Datas Formatadas para exibição
                         let datasInfo = '';
                         let dtLanc = (r.dataLancamento || r.data).split('-').reverse().join('/');
                         let dtVenc = r.data.split('-').reverse().join('/');
 
-                        if (r.tipo === 'Divida' || r.tipo === 'Fixo' || r.tipo === 'Variavel') {
+                        if (r.tipo === 'Divida') {
                             datasInfo = `Lançado: ${dtLanc} • Vence: ${dtVenc}`;
                         } else {
                             datasInfo = `Data: ${dtVenc}`;
-                            if (dtLanc !== dtVenc) datasInfo = `Lançado: ${dtLanc} • Confirmado: ${dtVenc}`;
+                            if (dtLanc !== dtVenc && r.dataLancamento) datasInfo = `Lançado: ${dtLanc} • Confirmado: ${dtVenc}`;
                         }
                         
-                        let bankBadgeHtml = getBankBadge(r.banco || r.desc);
+                        let bankBadgeHtml = getBankBadge(r.banco);
 
                         let recAction = '';
                         if(r.comprovante) {
@@ -1355,7 +1389,6 @@
             if (document.getElementById('labelPercRes')) document.getElementById('labelPercRes').innerText = pRes.toFixed(1) + '%';
             if (document.getElementById('contadorRegistros')) document.getElementById('contadorRegistros').innerText = registros.length;
             
-            // ATUALIZA BARRA DA META NA TELA PRINCIPAL (Variável global independente)
             if(appConfig.metaMensal > 0) {
                 const acumulado = appConfig.metaAcumulado || 0;
                 const progresso = Math.min((acumulado / appConfig.metaMensal) * 100, 100);
@@ -1369,7 +1402,6 @@
             verificarNotificacoes();
         }
 
-        // VER COMPROVANTE (Visualização do anexo)
         function viewComprovante(idx) {
             const r = registros[idx];
             if (!r || !r.comprovante) return;
@@ -1392,7 +1424,6 @@
             }
         }
 
-        // UPLOAD BASE64 COMPROVANTE
         function handleComprovante(event) {
             const file = event.target.files[0];
             if(!file) {
@@ -1423,13 +1454,15 @@
                 const r = registros[idx];
                 if (document.getElementById('editIndex')) document.getElementById('editIndex').value = idx;
                 if (document.getElementById('tipo')) document.getElementById('tipo').value = r.tipo;
+                
                 atualizarSubmenu();
+                
+                if (document.getElementById('submenu')) document.getElementById('submenu').value = r.categoria || "";
                 
                 if (document.getElementById('desc')) document.getElementById('desc').value = r.desc;
                 if (document.getElementById('valor')) document.getElementById('valor').value = r.valor;
                 if (document.getElementById('selectPago')) document.getElementById('selectPago').value = (r.pago >= r.valor && r.valor > 0) ? "1" : "0";
                 
-                // Setar Data Lancamento e Vencimento
                 if (document.getElementById('dataLancamento')) document.getElementById('dataLancamento').value = r.dataLancamento || r.data;
                 if (document.getElementById('data')) document.getElementById('data').value = r.data;
                 
@@ -1441,13 +1474,13 @@
 
                 if (r.tipo === 'Receita') {
                     resumo?.classList.remove('hidden');
-                    if (document.getElementById('resumoTitulo')) document.getElementById('resumoTitulo').innerHTML = `Resumo Receitas (Mês) ${getBankBadge(r.banco || r.desc)}`;
+                    if (document.getElementById('resumoTitulo')) document.getElementById('resumoTitulo').innerHTML = `Resumo Receitas (Mês) ${getBankBadge(r.banco)}`;
                     const recs = registros.filter(reg => reg.tipo === 'Receita' && reg.data.startsWith(prefixoMes) && reg.pago >= reg.valor);
                     const porForma = (f) => recs.filter(x => x.forma === f).reduce((a,b) => a+b.valor, 0);
                     if (document.getElementById('resumoConteudo')) document.getElementById('resumoConteudo').innerHTML = `<div class="resumo-item">Pix<strong>${ocultarBits(porForma('Pix'))}</strong></div><div class="resumo-item">Dinheiro<strong>${ocultarBits(porForma('Dinheiro'))}</strong></div><div class="resumo-item">Cartão<strong>${ocultarBits(porForma('Cartão'))}</strong></div><div class="resumo-item">Total Recebido<strong>${ocultarBits(recs.reduce((a,b)=>a+b.valor,0))}</strong></div>`;
                 } else if (r.desc.includes('(')) {
                     resumo?.classList.remove('hidden');
-                    if (document.getElementById('resumoTitulo')) document.getElementById('resumoTitulo').innerHTML = `Resumo do Contrato ${getBankBadge(r.banco || r.desc)}`;
+                    if (document.getElementById('resumoTitulo')) document.getElementById('resumoTitulo').innerHTML = `Resumo do Contrato ${getBankBadge(r.banco)}`;
                     const base = r.desc.split('(')[0].trim();
                     const vinc = registros.filter(reg => reg.desc.startsWith(base));
                     const tV = vinc.reduce((a,c)=>a+c.valor, 0);
@@ -1482,16 +1515,21 @@
                 document.getElementById('blocoParcelamento')?.classList.toggle('hidden', t !== 'Divida');
                 document.getElementById('blocoRecebimento')?.classList.toggle('hidden', t !== 'Receita');
                 
-                // Exibe o Banco SOMENTE se for Dívida / Boleto
                 const isDivida = t === 'Divida';
                 document.getElementById('blocoBanco')?.classList.toggle('hidden', !isDivida);
                 
-                // Ajusta o Layout: Se não for dívida, a Categoria ocupa a linha toda (1fr)
                 const gridCatBanco = document.getElementById('gridCategoriaBanco');
                 if(gridCatBanco) {
                     gridCatBanco.style.gridTemplateColumns = isDivida ? '1fr 1fr' : '1fr';
                 }
                 
+                document.getElementById('boxDataLancamento')?.classList.toggle('hidden', !isDivida);
+                const lblDataMain = document.getElementById('lblDataMain');
+                if(lblDataMain) lblDataMain.innerText = isDivida ? "Data de Vencimento" : "Data da Operação";
+                
+                const gridDatas = document.getElementById('blocoDatas');
+                if(gridDatas) gridDatas.style.gridTemplateColumns = isDivida ? '1fr 1fr' : '1fr';
+
                 definirDescricao();
             }
         }
@@ -1508,10 +1546,10 @@
             const dBase = document.getElementById('data')?.value, editIdx = document.getElementById('editIndex')?.value;
             const forma = document.getElementById('formaRecebimento')?.value;
             
-            // Só salva o Banco se for Dívida (senão deixa vazio)
+            const cat = document.getElementById('submenu')?.value || "";
             const bancoSel = t === 'Divida' ? (document.getElementById('banco')?.value || "") : "";
+            const dataLanc = t === 'Divida' ? (document.getElementById('dataLancamento')?.value || dBase) : dBase;
             
-            const dataLanc = document.getElementById('dataLancamento')?.value || dBase;
             const isP = document.getElementById('selectPago')?.value === "1";
             const compB64 = document.getElementById('comprovanteBase64')?.value;
             let valorPago = isP ? vT : 0;
@@ -1519,17 +1557,17 @@
             if(!desc || vT <= 0 || !dBase) return showToast("Preencha todos os campos!", "error");
             
             if(editIdx !== "") { 
-                registros[editIdx] = { ...registros[editIdx], tipo: t, desc, valor: vT, pago: valorPago, data: dBase, dataLancamento: dataLanc, banco: bancoSel, forma: t==='Receita' ? forma : null, comprovante: compB64 || registros[editIdx].comprovante }; 
+                registros[editIdx] = { ...registros[editIdx], tipo: t, desc, categoria: cat, valor: vT, pago: valorPago, data: dBase, dataLancamento: dataLanc, banco: bancoSel, forma: t==='Receita' ? forma : null, comprovante: compB64 || registros[editIdx].comprovante }; 
             } else {
                 if (t === 'Divida' && parseInt(document.getElementById('parcelas')?.value) > 1) {
                     const p = parseInt(document.getElementById('parcelas').value), pP = parseInt(document.getElementById('parcelasPagas').value);
                     const vParc = vT / p; let dObj = new Date(dBase + "T12:00:00");
                     for (let i = 1; i <= p; i++) {
                         let nD = new Date(dObj.getFullYear(), dObj.getMonth() + (i - 1), dObj.getDate()).toISOString().split('T')[0];
-                        registros.push({ tipo: t, desc: `${desc} (${i}/${p})`, valor: vParc, pago: (i <= pP) ? vParc : 0, data: nD, dataLancamento: dataLanc, banco: bancoSel, comprovante: i===1 ? compB64 : null });
+                        registros.push({ tipo: t, desc: `${desc} (${i}/${p})`, categoria: cat, valor: vParc, pago: (i <= pP) ? vParc : 0, data: nD, dataLancamento: dataLanc, banco: bancoSel, comprovante: i===1 ? compB64 : null });
                     }
                 } else { 
-                    registros.push({ tipo: t, desc, valor: vT, pago: valorPago, data: dBase, dataLancamento: dataLanc, banco: bancoSel, forma: t==='Receita' ? forma : null, comprovante: compB64 });
+                    registros.push({ tipo: t, desc, categoria: cat, valor: vT, pago: valorPago, data: dBase, dataLancamento: dataLanc, banco: bancoSel, forma: t==='Receita' ? forma : null, comprovante: compB64 });
                 }
             }
             localStorage.setItem('foton_db', JSON.stringify(registros));
@@ -1547,7 +1585,6 @@
             } 
         }
 
-        // GRÁFICOS DETALHADOS
         function abrirModalGraficos() {
             document.getElementById('modalGraficos')?.classList.add('open');
             if (document.getElementById('overlay')) document.getElementById('overlay').style.display = 'block';
@@ -1578,9 +1615,12 @@
                 const ctxCat = canvasCat.getContext('2d');
                 let catLabels = Object.keys(despesasCategoria);
                 let catData = Object.values(despesasCategoria);
+                let bgColors = ['#3b82f6', '#8b5cf6', '#ec4899', '#f43f5e', '#f59e0b', '#10b981', '#14b8a6', '#06b6d4'];
                 
                 if(catData.length === 0) {
-                    catLabels = ["Nenhuma despesa"]; catData = [1];
+                    catLabels = ["Nenhuma despesa"]; 
+                    catData = [1];
+                    bgColors = ['#333333'];
                 }
 
                 chartCategorias = new Chart(ctxCat, {
@@ -1589,14 +1629,18 @@
                         labels: catLabels,
                         datasets: [{
                             data: catData,
-                            backgroundColor: ['#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4', '#ec4899', '#10b981'],
-                            borderWidth: 0
+                            backgroundColor: bgColors,
+                            borderWidth: 0,
+                            hoverOffset: 4
                         }]
                     },
                     options: { 
-                        responsive: true, maintainAspectRatio: false, 
-                        plugins: { legend: { position: 'right', labels: { color: fontColor, font: {size: 10} } } },
-                        cutout: '65%'
+                        responsive: true, maintainAspectRatio: false, layout: { padding: 10 },
+                        plugins: { 
+                            legend: { position: 'bottom', labels: { color: fontColor, font: {size: 11, family: "'Ubuntu', sans-serif"}, padding: 15, usePointStyle: true } },
+                            tooltip: { callbacks: { label: function(context) { return (catLabels[0] === "Nenhuma despesa") ? " Nenhuma despesa registrada" : ' ' + context.label + ': ' + formatarMoeda(context.raw); } } }
+                        },
+                        cutout: '75%'
                     }
                 });
             }
@@ -1608,22 +1652,24 @@
                 chartStatus = new Chart(ctxStatus, {
                     type: 'bar',
                     data: {
-                        labels: ['Liquidação do Mês'],
+                        labels: ['Total'],
                         datasets: [
-                            { label: 'Pago', data: [pagoVal], backgroundColor: '#10b981', borderRadius: 4 },
-                            { label: 'Pendente', data: [pendenteVal], backgroundColor: '#ef4444', borderRadius: 4 }
+                            { label: 'Pago', data: [pagoVal], backgroundColor: '#10b981', borderRadius: 4, barThickness: 30 },
+                            { label: 'Pendente', data: [pendenteVal], backgroundColor: '#ef4444', borderRadius: 4, barThickness: 30 }
                         ]
                     },
                     options: { 
-                        indexAxis: 'y', responsive: true, maintainAspectRatio: false, color: fontColor, 
-                        scales: { x: { stacked: true, ticks: { color: fontColor } }, y: { stacked: true, ticks: { display: false } } }, 
-                        plugins: { legend: { labels: { color: fontColor } } } 
+                        indexAxis: 'y', responsive: true, maintainAspectRatio: false, 
+                        scales: { x: { stacked: true, display: false }, y: { stacked: true, display: false } }, 
+                        plugins: { 
+                            legend: { position: 'bottom', labels: { color: fontColor, font: {size: 11, family: "'Ubuntu', sans-serif"}, usePointStyle: true } },
+                            tooltip: { callbacks: { label: function(context) { return ' ' + context.dataset.label + ': ' + formatarMoeda(context.raw); } } }
+                        } 
                     }
                 });
             }
         }
 
-        // RELATÓRIOS
         function abrirModalRelatorios() {
             document.getElementById('modalRelatorios')?.classList.add('open');
             if (document.getElementById('overlay')) document.getElementById('overlay').style.display = 'block';
@@ -1665,7 +1711,6 @@
             });
         }
         
-        // LEITOR IA DE EXTRATOS (Imagem Tesseract e PDF.js)
         function abrirLeitorExtrato() {
             document.getElementById('modalLeitorExtrato')?.classList.add('open');
             if (document.getElementById('overlay')) document.getElementById('overlay').style.display = 'block';
@@ -1778,8 +1823,8 @@
 
         function exportarDados() { 
             if(registros.length === 0) return showToast("Nenhum dado para exportar.", "error");
-            let csv = "Tipo,Descricao,Valor Total,Valor Pago,Data Vencimento,Data Lancamento,Banco,Forma\n"; 
-            registros.forEach(r => { csv += `${r.tipo},${r.desc.replace(/,/g, '')},${r.valor},${r.pago},${r.data},${r.dataLancamento||r.data},${r.banco||''},${r.forma||''}\n`; });
+            let csv = "Tipo,Descricao,Categoria,Valor Total,Valor Pago,Data Vencimento,Data Lancamento,Banco,Forma\n"; 
+            registros.forEach(r => { csv += `${r.tipo},${r.desc.replace(/,/g, '')},${r.categoria||''},${r.valor},${r.pago},${r.data},${r.dataLancamento||r.data},${r.banco||''},${r.forma||''}\n`; });
             const blob = new Blob([csv], { type: 'text/csv' }); 
             const a = document.createElement('a'); 
             a.href = URL.createObjectURL(blob); 
@@ -1798,14 +1843,18 @@
                 for(let i=1; i<lines.length; i++){ 
                     const c = lines[i].split(','); 
                     if(c.length>=5) {
-                        let obj = { tipo: c[0], desc: c[1], valor: parseFloat(c[2]), pago: parseFloat(c[3]), data: c[4].trim() };
-                        if (c.length >= 8) {
+                        let obj = { tipo: c[0], desc: c[1], valor: parseFloat(c[3]||c[2]), pago: parseFloat(c[4]||c[3]), data: (c[5]||c[4]).trim() };
+                        if (c.length >= 9) {
+                            obj.categoria = c[2].trim();
+                            obj.dataLancamento = c[6].trim();
+                            obj.banco = c[7].trim();
+                            obj.forma = c[8].trim() || null;
+                        } else if (c.length >= 8) {
+                            // compatibilidade backup anterior
+                            obj.valor = parseFloat(c[2]); obj.pago = parseFloat(c[3]); obj.data = c[4].trim();
                             obj.dataLancamento = c[5].trim();
                             obj.banco = c[6].trim();
                             obj.forma = c[7].trim() || null;
-                        } else if (c.length >= 6) {
-                            obj.forma = c[5].trim() || null;
-                            obj.dataLancamento = obj.data; // fallback for older backups
                         }
                         novos.push(obj);
                     }
@@ -1856,7 +1905,6 @@
             checkAppSecurity(); 
             renderizar(); 
             
-            // DETECTAR IPHONE E EXIBIR AVISO DE INSTALAÇÃO
             const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
             const isStandalone = ('standalone' in window.navigator) && window.navigator.standalone;
             if (isIos && !isStandalone) {
