@@ -20,6 +20,8 @@
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
     <style>
         /* VARIÁVEIS DE TEMAS */
@@ -73,11 +75,7 @@
         .lock-avatar { width: 80px; height: 80px; border-radius: 22px; background: linear-gradient(135deg, var(--accent), #0a192f); display: flex; align-items: center; justify-content: center; font-size: 2.2rem; color: white; margin-bottom: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); background-size: cover; background-position: center; font-weight: 800; letter-spacing: 1px; position: relative; }
         .lock-avatar i { font-size: 2.8rem; animation: pulseGlow 2s infinite ease-in-out; }
         
-        @keyframes pulseGlow {
-            0% { filter: drop-shadow(0 0 2px rgba(255,255,255,0.3)); transform: scale(1); }
-            50% { filter: drop-shadow(0 0 15px rgba(255,255,255,0.9)); transform: scale(1.05); }
-            100% { filter: drop-shadow(0 0 2px rgba(255,255,255,0.3)); transform: scale(1); }
-        }
+        @keyframes pulseGlow { 0% { filter: drop-shadow(0 0 2px rgba(255,255,255,0.3)); transform: scale(1); } 50% { filter: drop-shadow(0 0 15px rgba(255,255,255,0.9)); transform: scale(1.05); } 100% { filter: drop-shadow(0 0 2px rgba(255,255,255,0.3)); transform: scale(1); } }
 
         .lock-title { font-size: 1.6rem; margin: 0 0 8px 0; color: var(--text); font-weight: 800; letter-spacing: -0.5px; }
         .lock-subtitle { font-size: 0.85rem; color: var(--text-muted); margin: 0 0 30px 0; line-height: 1.4; font-weight: 400; }
@@ -147,11 +145,12 @@
         .month-selector button { background: var(--hover-bg); border: 1px solid var(--border); color: var(--text); width: 38px; height: 38px; border-radius: 10px; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .month-selector span { font-size: 0.95rem; font-weight: 800; text-transform: uppercase; color: var(--accent); letter-spacing: 1.2px; }
 
-        .balance-card { padding: 18px 22px 25px; text-align: center; }
+        .balance-card { padding: 18px 22px 5px; text-align: center; position: relative;}
         .balance-card small { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; font-weight: 500;}
         .balance-card h1 { font-size: 2.5rem; margin: 8px 0 0; font-weight: 800; color: var(--text); text-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .rollover-badge { display: inline-block; font-size: 0.65rem; background: rgba(0, 242, 255, 0.1); color: var(--accent); padding: 4px 8px; border-radius: 10px; margin-top: 8px; font-weight: bold; border: 1px solid var(--accent);}
 
-        .quick-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 0 22px 22px; }
+        .quick-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 20px 22px; }
         .mini-card { background: var(--card); padding: 16px; border-radius: 16px; border: 1px solid var(--border); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
         .mini-card:active { transform: translateY(2px); box-shadow: 0 2px 3px rgba(0,0,0,0.05); }
         .mini-card i { font-size: 0.85rem; margin-bottom: 8px; }
@@ -174,8 +173,9 @@
         .item-left { display: flex; align-items: center; gap: 14px; flex: 1; overflow: hidden; }
         .icon-box { width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; background: var(--bg); min-width: 40px; border: 1px solid var(--border); font-size: 1.05rem; }
         .details { flex: 1; overflow: hidden; text-align: left; }
-        .details strong { display: block; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text); margin-bottom: 3px;}
-        .details span { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+        .details strong { display: flex; align-items: center; gap: 6px; font-size: 0.95rem; color: var(--text); margin-bottom: 3px;}
+        .details strong span.txt-desc { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex-shrink: 1;}
+        .details span.txt-sub { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
         
         .amount-section { text-align: right; min-width: 90px; padding-left: 10px; display: flex; flex-direction: column; align-items: flex-end; }
         .amount-section strong { display: block; font-size: 0.95rem; color: var(--text); margin-bottom: 3px;}
@@ -189,7 +189,7 @@
         .btn-ver-comp { display: inline-block; background: rgba(0, 242, 255, 0.1); color: var(--accent); border: 1px solid var(--accent); padding: 4px 10px; border-radius: 8px; font-size: 0.65rem; margin-top: 6px; cursor: pointer; font-weight: 800; text-transform: uppercase; }
         
         /* Bank Badges para Resumo e Extrato */
-        .bank-badge { padding: 3px 8px; border-radius: 6px; font-size: 0.6rem; font-weight: 800; display: inline-flex; align-items: center; gap: 4px; text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0; }
+        .bank-badge { padding: 3px 6px; border-radius: 6px; font-size: 0.6rem; font-weight: 800; display: inline-flex; align-items: center; gap: 4px; text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.2);}
 
         /* BARRAS INFERIORES E BOTÕES */
         .bottom-charts { padding: 22px; background: var(--card); border-top: 1px solid var(--border); margin-bottom: 100px; border-radius: 24px 24px 0 0; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); }
@@ -227,13 +227,13 @@
         /* NOVO RESUMO DO CONTRATO (Clean & Modern) */
         .resumo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px 10px; }
         .resumo-item { font-size: 0.75rem; color: var(--text-muted); }
-        .resumo-item span { display: block; margin-bottom: 2px; }
+        .resumo-item span { display: block; margin-bottom: 2px; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.5px;}
         .resumo-item strong { color: var(--text); display: block; font-size: 0.95rem; }
         .resumo-item.highlight strong { color: var(--accent); }
         .resumo-item.danger strong { color: var(--danger); }
         .resumo-item.success strong { color: var(--success); }
 
-        /* Container protegido para gráficos (impede que fiquem crescendo infinitamente) */
+        /* Container protegido para gráficos */
         .grafico-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
         .grafico-title { font-size: 0.75rem; color: var(--accent); text-transform: uppercase; margin: 0 0 15px 0; text-align: center; letter-spacing: 1px; font-weight: 800; }
         
@@ -247,6 +247,8 @@
         .btn-meta-action { flex: 1; padding: 12px; border-radius: 10px; border: none; font-weight: 800; color: #fff; cursor: pointer; font-size: 0.85rem;}
         .btn-meta-add { background: var(--success); }
         .btn-meta-rem { background: var(--danger); }
+        
+        #pdf-container { position: absolute; left: -9999px; top: 0; background: white; width: 800px; padding: 40px; color: #000; font-family: sans-serif; }
     </style>
 </head>
 <body>
@@ -256,7 +258,7 @@
     <div id="ios-prompt" class="hidden" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--card); border: 2px solid var(--accent); padding: 20px; border-radius: 16px; z-index: 100000; width: 90%; max-width: 350px; box-shadow: 0 10px 40px rgba(0,0,0,0.7); text-align: center;">
         <h3 style="margin: 0 0 10px 0; color: var(--text); font-size: 1.1rem;"><i class="fa-brands fa-apple" style="margin-right: 5px;"></i> Instalar no iPhone</h3>
         <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px; line-height: 1.5;">
-            O Safari não instala apps automaticamente. Para ter o <b>MeuCaixa</b> no celular e ativar todos os recursos, toque em <i class="fa-solid fa-arrow-up-from-bracket" style="color: var(--accent); margin: 0 4px;"></i> <b>Compartilhar</b> na barra do Safari e selecione <br><br><b>"Adicionar à Tela de Início"</b> <i class="fa-regular fa-square-plus" style="margin: 0 4px;"></i>.
+            O Safari não instala apps automaticamente. Para ter o <b>MeuCaixa</b> no celular, toque em <i class="fa-solid fa-arrow-up-from-bracket" style="color: var(--accent); margin: 0 4px;"></i> <b>Compartilhar</b> e selecione <br><br><b>"Adicionar à Tela de Início"</b> <i class="fa-regular fa-square-plus" style="margin: 0 4px;"></i>.
         </p>
         <button onclick="document.getElementById('ios-prompt').style.display='none'" style="background: var(--accent); color: #fff; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 800; cursor: pointer; width: 100%;">ENTENDI</button>
     </div>
@@ -384,9 +386,12 @@
                 <span id="currentCurrencyDisplay" style="font-size: 0.75rem; color: var(--text-muted); font-weight: bold;">R$</span>
             </div>
             
-            <div class="menu-group-title">Sistema & Dados</div>
+            <div class="menu-group-title">Sistema & Relatórios</div>
+            <div class="menu-item" onclick="gerarPDFoficial()">
+                <div><i class="fa-solid fa-file-pdf" style="color: var(--danger)"></i> <span>Baixar Extrato PDF</span></div>
+            </div>
             <div class="menu-item" onclick="exportarDados()">
-                <div><i class="fa-solid fa-download" style="color: var(--accent)"></i> <span>Exportar Relatório</span></div>
+                <div><i class="fa-solid fa-file-excel" style="color: var(--success)"></i> <span>Exportar Planilha (CSV)</span></div>
             </div>
             <input type="file" id="fileInput" accept=".csv" style="display: none;" onchange="importarDados(event)">
             <div class="menu-item" onclick="document.getElementById('fileInput').click()"> 
@@ -414,6 +419,7 @@
     <div class="balance-card">
         <small>Saldo Disponível do Mês</small>
         <h1 id="totalSaldo">R$ 0,00</h1>
+        <div id="saldoRolagemBadge" class="hidden"><span class="rollover-badge"></span></div>
     </div>
 
     <div class="quick-stats">
@@ -451,8 +457,8 @@
 
         <div class="action-buttons">
             <button class="action-btn" onclick="abrirModalGraficos()"><i class="fa-solid fa-chart-pie" style="margin-right: 4px;"></i> GRÁFICOS DETALHADOS</button>
-            <button class="action-btn" onclick="abrirModalRelatorios()"><i class="fa-solid fa-file-invoice" style="margin-right: 4px;"></i> RELATÓRIOS</button>
-            <button class="action-btn" onclick="abrirLeitorExtrato()" style="width: 100%; border-color: var(--success); color: var(--success); background: rgba(16, 185, 129, 0.1);"><i class="fa-solid fa-wand-magic-sparkles" style="margin-right: 4px;"></i> LEITOR IA DE EXTRATOS</button>
+            <button class="action-btn" onclick="abrirModalRelatorios()"><i class="fa-solid fa-file-invoice" style="margin-right: 4px;"></i> RELATÓRIOS PDF</button>
+            <button class="action-btn" onclick="abrirLeitorExtrato()" style="width: 100%; border-color: var(--success); color: var(--success); background: rgba(16, 185, 129, 0.1);"><i class="fa-solid fa-wand-magic-sparkles" style="margin-right: 4px;"></i> LEITOR IA DE EXTRATOS (AUTOMÁTICO)</button>
         </div>
     </section>
 
@@ -466,7 +472,7 @@
         </div>
         
         <div id="blocoResumoGeral" class="resumo-quitacao hidden">
-            <h4 id="resumoTitulo" style="display: flex; align-items: center; gap: 8px;">Resumo do Contrato</h4>
+            <h4 id="resumoTitulo" style="display: flex; align-items: center; gap: 8px; margin-bottom: 15px; color: var(--text);">Resumo do Contrato</h4>
             <div id="resumoConteudo" class="resumo-grid"></div>
         </div>
 
@@ -701,7 +707,7 @@
             <i class="fa-solid fa-xmark" style="font-size:1.4rem; color:var(--text-muted); cursor:pointer;" onclick="closeModal()"></i>
         </div>
         <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.4;">
-            Anexe um <b>print de tela ou PDF</b> do seu extrato bancário (Pix, compras, etc). A IA lerá o arquivo e gerará um relatório detalhado!
+            Anexe um <b>print de tela ou PDF</b> do seu extrato bancário (Pix, compras, etc). A IA lerá o arquivo e gerará botões para adicionar as compras!
         </p>
         
         <input type="file" id="extratoInput" accept="image/*,application/pdf" style="display: none;" onchange="processarExtratoImagem(event)">
@@ -716,9 +722,11 @@
         </div>
 
         <div id="leitorResult" class="hidden">
-            <div class="grafico-container" style="height: 260px;">
+            <div class="grafico-card" style="padding: 15px; margin-bottom: 15px;">
                 <span class="label-mini" style="text-align: center;">Resumo do Extrato Lido</span>
-                <canvas id="chartLeitor"></canvas>
+                <div style="position: relative; height: 180px; width: 100%;">
+                    <canvas id="chartLeitor"></canvas>
+                </div>
             </div>
             <h4 style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px;">Operações Identificadas:</h4>
             <div id="leitorLista"></div>
@@ -734,9 +742,59 @@
         <div id="listaNotificacoes" style="background: var(--bg); border: 1px solid var(--border); border-radius: 12px; overflow: hidden;">
         </div>
     </div>
+    
+    <div id="pdf-container"></div>
 
     <script>
-        let registros = JSON.parse(localStorage.getItem('foton_db')) || [];
+        // ----------------------------------------------------------------------------------
+        // BANCO DE DADOS INFINITO (INDEXEDDB) - RESOLVE O PROBLEMA DOS COMPROVANTES GRANDES
+        // ----------------------------------------------------------------------------------
+        let db;
+        let registros = [];
+        const requestDB = indexedDB.open("MeuCaixaApp", 1);
+        
+        requestDB.onupgradeneeded = function(e) {
+            db = e.target.result;
+            if (!db.objectStoreNames.contains("financeiro")) {
+                db.createObjectStore("financeiro");
+            }
+        };
+        
+        requestDB.onsuccess = function(e) {
+            db = e.target.result;
+            carregarDB();
+        };
+
+        function carregarDB() {
+            const tx = db.transaction("financeiro", "readonly");
+            const store = tx.objectStore("financeiro");
+            const request = store.get("registros_lista");
+            
+            request.onsuccess = function() {
+                if (request.result) {
+                    registros = request.result;
+                } else {
+                    // Se estiver vazio, tenta migrar do localStorage (Primeira vez)
+                    const oldDb = localStorage.getItem('foton_db');
+                    if (oldDb) {
+                        registros = JSON.parse(oldDb);
+                        salvarDB(); // Salva na nova DB
+                        localStorage.removeItem('foton_db'); // Apaga a antiga
+                    }
+                }
+                iniciarApp();
+            };
+        }
+
+        function salvarDB() {
+            const tx = db.transaction("financeiro", "readwrite");
+            const store = tx.objectStore("financeiro");
+            store.put(registros, "registros_lista");
+        }
+        
+        // ----------------------------------------------------------------------------------
+        // VARIÁVEIS GERAIS DO APP
+        // ----------------------------------------------------------------------------------
         let modoFantasma = false, filtroAtual = "Tudo", subFiltro = "Pendente", dataVisualizacao = new Date();
         let chartCategorias = null, chartStatus = null, chartLeitorInstance = null;
         
@@ -774,6 +832,12 @@
                 osc.start(ctx.currentTime);
                 osc.stop(ctx.currentTime + 0.5);
             } catch(e) { console.log("Audio not supported"); }
+        }
+
+        function triggerConfetti() {
+            try {
+                confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors: ['#00f2ff', '#10b981', '#f59e0b'] });
+            } catch(e) {}
         }
 
         function showToast(message, type = "success") {
@@ -854,7 +918,7 @@
                 
                 if (sessionStorage.getItem('hasPendingAlert') === 'true') {
                     playNotificationSound();
-                    showToast("Atenção: Você tem contas próximas do vencimento!", "warning");
+                    showToast("Atenção: Você tem faturas próximas do vencimento!", "warning");
                 } else {
                     showToast(`Acesso Liberado!`, "success");
                 }
@@ -916,6 +980,7 @@
             if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
         }
         checkTheme();
+        
         function mudarTema(tema) {
             document.documentElement.setAttribute('data-theme', tema);
             localStorage.setItem('meucaixa_theme', tema);
@@ -1030,6 +1095,8 @@
             if(document.getElementById('gestaoFillBar')) document.getElementById('gestaoFillBar').style.width = progresso + '%';
             if(document.getElementById('txtGestaoAcumulado')) document.getElementById('txtGestaoAcumulado').innerText = formatarMoeda(acumulado);
             if(document.getElementById('txtGestaoAlvo')) document.getElementById('txtGestaoAlvo').innerText = formatarMoeda(alvo);
+            
+            if(progresso === 100) triggerConfetti();
         }
 
         function salvarConfiguracaoMeta() {
@@ -1089,7 +1156,7 @@
             if(confirm(`Apagar TODAS as operações de ${mesFormatado}? Irreversível.`)) {
                 const prefixoMes = `${dataVisualizacao.getFullYear()}-${String(dataVisualizacao.getMonth() + 1).padStart(2, '0')}`;
                 registros = registros.filter(r => !r.data.startsWith(prefixoMes));
-                localStorage.setItem('foton_db', JSON.stringify(registros));
+                salvarDB();
                 renderizar();
                 closeAll();
                 showToast(`Registros de ${mesFormatado} apagados.`, "success");
@@ -1103,7 +1170,7 @@
         const opcoesSubmenu = {
             "Receita": ["💰 Salário", "🚀 Freelance", "✨ Rendimentos", "🛠️ Serviço", "📦 Produto"],
             "Fixo": ["🏠 Aluguel", "⚡ Energia", "🌐 Internet", "🎬 Streamings", "🏫 Mensalidade"],
-            "Variavel": ["🛒 Mercado", "🍕 Alimentação", "⛽ Combustível", "🚗 Transporte", "💊 Saúde", "🐾 Pets"],
+            "Variavel": ["🛒 Mercado", "🍕 Alimentação", "⛽ Combustível", "🚗 Transporte", "💊 Saúde", "🐾 Pets", "🛍️ Compras", "👗 Roupas"],
             "Divida": ["🏢 Financiamento", "💳 Cartão", "🤝 Empréstimo", "🧾 Boleto"],
             "Reserva": ["🏦 Investimentos", "📦 Caixinha", "🛡️ Reserva Emergência", "🪙 Cripto"]
         };
@@ -1151,7 +1218,6 @@
             renderizar(); 
         }
 
-        // LÓGICA DE DETECÇÃO DE BANCOS PARA BADGE E ICONE
         function getBankBadge(bancoNome) {
             if (!bancoNome || bancoNome === 'Outros / Nenhum') return '';
             
@@ -1194,6 +1260,7 @@
             return `<span class="bank-badge" style="background:var(--input-bg); color:var(--text); border: 1px solid var(--border);"><i class="fa-solid fa-building-columns"></i> ${bancoNome}</span>`;
         }
 
+        // VERIFICAR NOTIFICAÇÕES
         function verificarNotificacoes() {
             let pendingList = [];
             let hoje = new Date();
@@ -1243,7 +1310,6 @@
                         </div>`;
                     });
                     listaContainer.innerHTML = html;
-                    
                     sessionStorage.setItem('hasPendingAlert', 'true');
                 } else {
                     badge.classList.add('hidden');
@@ -1265,9 +1331,23 @@
             if (corpo) corpo.innerHTML = '';
             
             let sRec=0, sGas=0, sDiv=0, sRes=0;
+            let saldoRolagem = 0; // Rolagem de meses anteriores
+
             const ordenados = [...registros].sort((a, b) => new Date(b.data) - new Date(a.data));
             const registrosDoMes = ordenados.filter(r => r.data.startsWith(prefixoMes));
             
+            // Calculo da rolagem do saldo (Tudo antes do mes atual)
+            const dataVisObj = new Date(dataVisualizacao.getFullYear(), dataVisualizacao.getMonth(), 1);
+            registros.forEach((r) => {
+                const opDate = new Date(r.data + "T12:00:00");
+                if(opDate < dataVisObj) {
+                    const isP = (parseFloat(r.pago) || 0) >= (parseFloat(r.valor) || 0) && (parseFloat(r.valor) || 0) > 0;
+                    if(r.tipo === 'Receita' && isP) saldoRolagem += parseFloat(r.valor);
+                    else if(r.tipo === 'Fixo' || r.tipo === 'Variavel') saldoRolagem -= parseFloat(r.pago);
+                    else if(r.tipo === 'Divida') saldoRolagem -= parseFloat(r.pago);
+                }
+            });
+
             let agrupados = {};
             
             registrosDoMes.forEach((r) => {
@@ -1278,7 +1358,7 @@
                 const isPago = vP >= vT && vT > 0;
 
                 if(r.tipo === 'Receita') { if(isPago) sRec += vT; } 
-                else if(r.tipo === 'Divida') { sDiv += falta; } 
+                else if(r.tipo === 'Divida') { sDiv += falta; sGas += vP; } // Adicionado vP ao sGas para debitar do saldo 
                 else if(r.tipo === 'Reserva') { sRes += vT; } 
                 else { sGas += vP; }
 
@@ -1323,29 +1403,24 @@
                             if(o < h) { statusColor = 'var(--danger)'; statusText = 'ATRASADO'; }
                         }
 
-                        // Lançamento/Vencimento EXCLUSIVO para Dívida, os outros só exibem a data limpa
+                        // Exclusivo para dívida mostrar Lançado/Vence
                         let datasInfo = '';
                         let dtLanc = (r.dataLancamento || r.data).split('-').reverse().join('/');
                         let dtVenc = r.data.split('-').reverse().join('/');
 
                         if (r.tipo === 'Divida') {
                             datasInfo = `Lançado: ${dtLanc} • Vence: ${dtVenc}`;
-                        } else {
-                            datasInfo = `Data: ${dtVenc}`;
                         }
-                        
-                        let bankBadgeHtml = getBankBadge(r.banco);
+
+                        let bankBadgeHtml = r.tipo === 'Divida' ? getBankBadge(r.banco) : '';
 
                         let recAction = '';
                         if(r.comprovante) {
                             recAction = `<br><span onclick="event.stopPropagation(); viewComprovante(${r.realIdx})" class="btn-ver-comp"><i class="fa-solid fa-receipt"></i> VER ANEXO</span>`;
                         }
 
-                        // Extrai a Categoria formatada para o extrato
                         let labelCategoria = r.categoria || r.tipo;
-                        if(labelCategoria.includes(' ')) {
-                            labelCategoria = labelCategoria.split(' ').slice(1).join(' '); // Tira o emoji se tiver
-                        }
+                        if(labelCategoria.includes(' ')) labelCategoria = labelCategoria.split(' ').slice(1).join(' ');
 
                         corpo.innerHTML += `
                         <div class="transaction-item" onclick="openModal(${r.realIdx})">
@@ -1353,11 +1428,11 @@
                                 <div class="icon-box" style="color:${color};"><i class="fa-solid ${icon}"></i></div>
                                 <div class="details">
                                     <strong style="display:flex; align-items:center; gap:6px; flex-wrap: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                                        <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${r.desc}</span> 
+                                        <span class="txt-desc">${r.desc}</span> 
                                         ${bankBadgeHtml}
                                     </strong>
-                                    <span>${labelCategoria}${extraInfo}</span>
-                                    <span style="font-size: 0.65rem; color: var(--text-muted); opacity: 0.8; margin-top: 2px;">${datasInfo}</span>
+                                    <span class="txt-sub">${labelCategoria}${extraInfo}</span>
+                                    ${datasInfo ? `<span style="font-size: 0.65rem; color: var(--text-muted); opacity: 0.8; margin-top: 2px;">${datasInfo}</span>` : ''}
                                     ${recAction}
                                 </div>
                             </div>
@@ -1370,20 +1445,31 @@
                 });
             }
 
+            const totalSaldoFinal = (saldoRolagem + sRec) - sGas;
+
             if (document.getElementById('totalReceitas')) document.getElementById('totalReceitas').innerText = ocultarBits(sRec);
             if (document.getElementById('totalGastos')) document.getElementById('totalGastos').innerText = ocultarBits(sGas);
             if (document.getElementById('totalDividas')) document.getElementById('totalDividas').innerText = ocultarBits(sDiv);
             if (document.getElementById('totalReserva')) document.getElementById('totalReserva').innerText = ocultarBits(sRes);
-            if (document.getElementById('totalSaldo')) document.getElementById('totalSaldo').innerText = ocultarBits(sRec - (sGas + sDiv)); 
+            if (document.getElementById('totalSaldo')) document.getElementById('totalSaldo').innerText = ocultarBits(totalSaldoFinal); 
             
-            const pSaida = sRec > 0 ? Math.min(((sGas + sDiv) / sRec) * 100, 100) : 0;
-            const pRes = sRec > 0 ? Math.min((sRes) / sRec * 100, 100) : 0;
+            // Badge Rolagem de Saldo
+            const rBadge = document.getElementById('saldoRolagemBadge');
+            if(rBadge && saldoRolagem !== 0) {
+                rBadge.classList.remove('hidden');
+                rBadge.innerHTML = `<span class="rollover-badge">Inclui ${formatarMoeda(saldoRolagem)} do mês anterior</span>`;
+            } else if (rBadge) {
+                rBadge.classList.add('hidden');
+            }
+            
+            let calcRec = sRec + (saldoRolagem > 0 ? saldoRolagem : 0);
+            const pSaida = calcRec > 0 ? Math.min((sGas / calcRec) * 100, 100) : 0;
+            const pRes = calcRec > 0 ? Math.min((sRes / calcRec) * 100, 100) : 0;
             
             if (document.getElementById('fillSaida')) document.getElementById('fillSaida').style.width = pSaida + '%';
             if (document.getElementById('labelPercSaida')) document.getElementById('labelPercSaida').innerText = pSaida.toFixed(1) + '%';
             if (document.getElementById('fillRes')) document.getElementById('fillRes').style.width = pRes + '%';
             if (document.getElementById('labelPercRes')) document.getElementById('labelPercRes').innerText = pRes.toFixed(1) + '%';
-            if (document.getElementById('contadorRegistros')) document.getElementById('contadorRegistros').innerText = registros.length;
             
             if(appConfig.metaMensal > 0) {
                 const acumulado = appConfig.metaAcumulado || 0;
@@ -1398,47 +1484,24 @@
             verificarNotificacoes();
         }
 
-        function viewComprovante(idx) {
-            const r = registros[idx];
-            if (!r || !r.comprovante) return;
-            const container = document.getElementById('comprovanteContent');
-            if (container) {
-                if (r.comprovante.startsWith('data:application/pdf')) {
-                    container.innerHTML = `<iframe src="${r.comprovante}" style="width:100%; height:400px; border:none; border-radius:12px; background:white;"></iframe>`;
-                } else {
-                    container.innerHTML = `<img src="${r.comprovante}" class="comprovante-img-preview">`;
-                }
-            }
-            document.getElementById('modalViewComprovante')?.classList.add('open');
-            if(document.getElementById('overlay')) document.getElementById('overlay').style.display = 'block';
-        }
-        
-        function closeViewComprovante() {
-            document.getElementById('modalViewComprovante')?.classList.remove('open');
-            if(!document.getElementById('modalForm')?.classList.contains('open') && !document.getElementById('modalNotificacoes')?.classList.contains('open')) {
-                if(document.getElementById('overlay')) document.getElementById('overlay').style.display = 'none';
-            }
-        }
+        // Inteligência para Categorizar pelo nome
+        document.getElementById('desc')?.addEventListener('input', function(e) {
+            const val = e.target.value.toLowerCase();
+            const catSelect = document.getElementById('submenu');
+            if(!catSelect) return;
 
-        function handleComprovante(event) {
-            const file = event.target.files[0];
-            if(!file) {
-                if (document.getElementById('comprovanteBase64')) document.getElementById('comprovanteBase64').value = "";
-                if (document.getElementById('txtNomeArqComp')) document.getElementById('txtNomeArqComp').innerText = "Selecionar arquivo...";
-                return;
+            if(val.includes('ifood') || val.includes('mcdonalds') || val.includes('burger king') || val.includes('pizza')) {
+                catSelect.value = Array.from(catSelect.options).find(o => o.value.includes('Alimentação'))?.value || catSelect.value;
+            } else if(val.includes('uber') || val.includes('99') || val.includes('ônibus') || val.includes('metro')) {
+                catSelect.value = Array.from(catSelect.options).find(o => o.value.includes('Transporte'))?.value || catSelect.value;
+            } else if(val.includes('posto') || val.includes('ipiranga') || val.includes('shell')) {
+                catSelect.value = Array.from(catSelect.options).find(o => o.value.includes('Combustível'))?.value || catSelect.value;
+            } else if(val.includes('netflix') || val.includes('spotify') || val.includes('amazon')) {
+                document.getElementById('tipo').value = 'Fixo';
+                atualizarSubmenu();
+                setTimeout(() => document.getElementById('submenu').value = Array.from(document.getElementById('submenu').options).find(o => o.value.includes('Streaming'))?.value, 50);
             }
-            if(file.size > 2000000) { 
-                alert("Arquivo muito grande. Máximo de 2MB.");
-                event.target.value = "";
-                return;
-            }
-            if (document.getElementById('txtNomeArqComp')) document.getElementById('txtNomeArqComp').innerText = file.name;
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = function(e) {
-                if (document.getElementById('comprovanteBase64')) document.getElementById('comprovanteBase64').value = e.target.result;
-            };
-        }
+        });
 
         function openModal(idx = null) {
             document.getElementById('modalForm')?.classList.add('open');
@@ -1450,19 +1513,15 @@
                 if (document.getElementById('editIndex')) document.getElementById('editIndex').value = idx;
                 if (document.getElementById('tipo')) document.getElementById('tipo').value = r.tipo;
                 
-                // Preenche o submenu primeiro
-                atualizarSubmenu();
+                atualizarSubmenu(); // Isso muda a tela baseada no tipo
                 
-                // Aplica a categoria salva garantindo que não vai mudar sozinha
-                if (document.getElementById('submenu') && r.categoria) {
-                    let opts = Array.from(document.getElementById('submenu').options);
-                    let match = opts.find(o => o.value === r.categoria);
-                    if(match) {
+                // Setamos a categoria salva
+                setTimeout(() => {
+                    if (document.getElementById('submenu') && r.categoria) {
                         document.getElementById('submenu').value = r.categoria;
                     }
-                }
+                }, 50);
                 
-                // Define o restante dos dados
                 if (document.getElementById('desc')) document.getElementById('desc').value = r.desc;
                 if (document.getElementById('valor')) document.getElementById('valor').value = r.valor;
                 if (document.getElementById('selectPago')) document.getElementById('selectPago').value = (r.pago >= r.valor && r.valor > 0) ? "1" : "0";
@@ -1480,7 +1539,6 @@
                     resumo?.classList.remove('hidden');
                     if (document.getElementById('resumoTitulo')) document.getElementById('resumoTitulo').innerHTML = `Resumo do Contrato ${getBankBadge(r.banco)}`;
                     
-                    // Cálculo Exato para Resumo do Contrato (Correção do Bug da Imagem 1)
                     const getBaseName = (name) => name.replace(/\(\d+\/\d+\)/, '').trim();
                     const baseDesc = getBaseName(r.desc);
                     
@@ -1496,14 +1554,31 @@
                     const pendentes = vinc.filter(x => parseFloat(x.pago||0) < parseFloat(x.valor||0));
                     const diaVenc = r.data.split('-')[2];
                     
-                    if (document.getElementById('resumoConteudo')) document.getElementById('resumoConteudo').innerHTML = `
-                        <div class="resumo-item"><span>Total do Contrato</span><strong>${ocultarBits(tV)}</strong></div>
-                        <div class="resumo-item"><span>Total Pago</span><strong style="color:var(--success)">${ocultarBits(tP)}</strong></div>
-                        <div class="resumo-item"><span>Restante / Falta</span><strong style="color:var(--danger)">${ocultarBits(tV-tP)}</strong></div>
-                        <div class="resumo-item"><span>Faltam</span><strong>${pendentes.length} parc.</strong></div>
-                        <div class="resumo-item"><span>Valor Parcela Atual</span><strong>${ocultarBits(r.valor)}</strong></div>
-                        <div class="resumo-item"><span>Vencimento</span><strong>Todo dia ${diaVenc}</strong></div>
-                    `;
+                    if (document.getElementById('resumoConteudo')) {
+                        document.getElementById('resumoConteudo').innerHTML = `
+                            <div class="resumo-card-container">
+                                <div class="resumo-mini-card">
+                                    <span>Total do Contrato</span>
+                                    <strong>${ocultarBits(tV)}</strong>
+                                </div>
+                                <div class="resumo-mini-card success">
+                                    <span>Total Pago</span>
+                                    <strong>${ocultarBits(tP)}</strong>
+                                </div>
+                                <div class="resumo-mini-card danger">
+                                    <span>Restante / Falta</span>
+                                    <strong>${ocultarBits(tV-tP)}</strong>
+                                </div>
+                                <div class="resumo-mini-card highlight">
+                                    <span>Valor da Parcela</span>
+                                    <strong>${ocultarBits(r.valor)}</strong>
+                                </div>
+                            </div>
+                            <div style="margin-top: 12px; font-size: 0.8rem; color: var(--text-muted); text-align: center; background: var(--bg); padding: 8px; border-radius: 8px; border: 1px dashed var(--border);">
+                                Faltam <strong>${pendentes.length}</strong> parcelas pendentes | Vencimento Fixo: Dia <strong>${diaVenc}</strong>
+                            </div>
+                        `;
+                    }
                 } else { 
                     resumo?.classList.add('hidden'); 
                 }
@@ -1537,14 +1612,6 @@
                 const gridDatas = document.getElementById('blocoDatas');
                 if(gridDatas) gridDatas.style.gridTemplateColumns = isDivida ? '1fr 1fr' : '1fr';
                 
-                definirDescricao();
-            }
-        }
-
-        function definirDescricao() { 
-            const sub = document.getElementById('submenu')?.value;
-            if (document.getElementById('desc') && sub) {
-                document.getElementById('desc').value = sub.split(' ').slice(1).join(' ');
             }
         }
         
@@ -1564,7 +1631,9 @@
             if(!desc || vT <= 0 || !dBase) return showToast("Preencha todos os campos!", "error");
             
             if(editIdx !== "") { 
+                let wasNotPaid = (parseFloat(registros[editIdx].pago) || 0) === 0;
                 registros[editIdx] = { ...registros[editIdx], tipo: t, desc, categoria: cat, valor: vT, pago: valorPago, data: dBase, dataLancamento: dataLanc, banco: bancoSel, forma: t==='Receita' ? forma : null, comprovante: compB64 || registros[editIdx].comprovante }; 
+                if (wasNotPaid && isP && t === 'Divida') triggerConfetti();
             } else {
                 if (t === 'Divida' && parseInt(document.getElementById('parcelas')?.value) > 1) {
                     const p = parseInt(document.getElementById('parcelas').value), pP = parseInt(document.getElementById('parcelasPagas').value);
@@ -1575,9 +1644,10 @@
                     }
                 } else { 
                     registros.push({ tipo: t, desc, categoria: cat, valor: vT, pago: valorPago, data: dBase, dataLancamento: dataLanc, banco: bancoSel, forma: t==='Receita' ? forma : null, comprovante: compB64 });
+                    if(isP && t === 'Divida') triggerConfetti();
                 }
             }
-            localStorage.setItem('foton_db', JSON.stringify(registros));
+            salvarDB();
             closeAll(); renderizar();
             showToast("Operação Salva com Sucesso!", "success");
         }
@@ -1585,13 +1655,14 @@
         function excluirRegistro() { 
             if(confirm("Excluir este registro permanentemente?")) { 
                 registros.splice(document.getElementById('editIndex').value, 1);
-                localStorage.setItem('foton_db', JSON.stringify(registros)); 
+                salvarDB(); 
                 renderizar(); 
                 closeAll(); 
                 showToast("Registro Excluído.", "success"); 
             } 
         }
 
+        // GRÁFICOS DETALHADOS REFORMULADOS
         function abrirModalGraficos() {
             document.getElementById('modalGraficos')?.classList.add('open');
             if (document.getElementById('overlay')) document.getElementById('overlay').style.display = 'block';
@@ -1608,7 +1679,6 @@
             registros.filter(r => r.data.startsWith(prefixoMes)).forEach(r => {
                 if(r.tipo === 'Fixo' || r.tipo === 'Variavel' || r.tipo === 'Divida') {
                     let cat = r.categoria || r.tipo;
-                    // Limpar o emoji da legenda para ficar bonitinho
                     if(cat.includes(' ')) cat = cat.split(' ').slice(1).join(' ');
                     
                     despesasCategoria[cat] = (despesasCategoria[cat] || 0) + parseFloat(r.valor);
@@ -1680,47 +1750,65 @@
             }
         }
 
-        function abrirModalRelatorios() {
-            document.getElementById('modalRelatorios')?.classList.add('open');
-            if (document.getElementById('overlay')) document.getElementById('overlay').style.display = 'block';
-            renderizarRelatorios(3);
+        // EXPORTAR RELATÓRIO PDF (HTML2PDF)
+        function gerarPDFoficial() {
+            if(registros.length === 0) return showToast("Não há dados para exportar.", "error");
+            showToast("Gerando PDF...", "success");
+            
+            const div = document.createElement('div');
+            const mesFormatado = formatarMesAno(dataVisualizacao);
+            div.style.padding = '40px';
+            div.style.background = '#fff';
+            div.style.color = '#000';
+            div.style.fontFamily = 'sans-serif';
+            
+            let html = `<h1 style="color:#000; margin-bottom: 5px;">MeuCaixa - Extrato Oficial</h1>`;
+            html += `<p style="margin-top:0; color:#555;">Usuário: ${appConfig.nome} | Período: ${mesFormatado}</p><hr>`;
+            html += `<table style="width:100%; border-collapse: collapse; margin-top:20px; font-size: 14px;">`;
+            html += `<tr style="background:#f0f0f0;"><th style="padding:10px; text-align:left;">Data</th><th style="padding:10px; text-align:left;">Descrição</th><th style="padding:10px; text-align:left;">Categoria</th><th style="padding:10px; text-align:right;">Valor</th><th style="padding:10px; text-align:center;">Status</th></tr>`;
+            
+            const prefixoMes = `${dataVisualizacao.getFullYear()}-${String(dataVisualizacao.getMonth() + 1).padStart(2, '0')}`;
+            const registrosDoMes = registros.filter(r => r.data.startsWith(prefixoMes)).sort((a, b) => new Date(a.data) - new Date(b.data));
+            
+            let totalEntradas = 0, totalSaidas = 0;
+
+            registrosDoMes.forEach(r => {
+                let v = parseFloat(r.valor) || 0;
+                let status = (parseFloat(r.pago) >= v && v > 0) ? "PAGO" : "PENDENTE";
+                let cor = r.tipo === 'Receita' ? 'green' : 'red';
+                if(r.tipo === 'Receita' && status === 'PAGO') totalEntradas += v;
+                if(r.tipo !== 'Receita' && r.tipo !== 'Reserva') totalSaidas += v; // conta a saida global
+                
+                html += `<tr>
+                    <td style="padding:10px; border-bottom:1px solid #eee;">${r.data.split('-').reverse().join('/')}</td>
+                    <td style="padding:10px; border-bottom:1px solid #eee;">${r.desc}</td>
+                    <td style="padding:10px; border-bottom:1px solid #eee;">${r.tipo}</td>
+                    <td style="padding:10px; border-bottom:1px solid #eee; color:${cor}; text-align:right;">${formatarMoeda(v)}</td>
+                    <td style="padding:10px; border-bottom:1px solid #eee; text-align:center; font-weight:bold; font-size:12px;">${status}</td>
+                </tr>`;
+            });
+            html += `</table>`;
+            html += `<div style="margin-top:30px; text-align:right; font-size: 16px;">
+                        <p>Total Entradas Liquidadas: <b style="color:green">${formatarMoeda(totalEntradas)}</b></p>
+                        <p>Total Despesas Lançadas: <b style="color:red">${formatarMoeda(totalSaidas)}</b></p>
+                     </div>`;
+            div.innerHTML = html;
+            
+            html2pdf().from(div).set({
+                margin: 10,
+                filename: `Extrato_MeuCaixa_${mesFormatado.replace(' ', '_')}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            }).save();
         }
 
-        function renderizarRelatorios(meses) {
-            document.getElementById('btnRel3m')?.classList.toggle('active', meses === 3);
-            document.getElementById('btnRel6m')?.classList.toggle('active', meses === 6);
-            
-            let agora = new Date();
-            let limite = new Date(agora.getFullYear(), agora.getMonth() - meses + 1, 1);
-            
-            let lista = registros.filter(r => new Date(r.data) >= limite && r.comprovante);
-            let container = document.getElementById('listaComprovantes');
-            if (!container) return;
-            container.innerHTML = "";
-
-            if(lista.length === 0) {
-                container.innerHTML = `<div style="text-align:center; padding:40px; color:var(--text-muted); font-size:0.85rem;">Nenhum comprovante anexado nos últimos ${meses} meses</div>`;
-                return;
-            }
-
-            container.innerHTML = `<div style="margin-bottom:16px; padding:12px; background:rgba(0,242,255,0.05); border-radius:12px; border:1px solid var(--border);"><strong style="color:var(--accent); font-size:0.85rem;">${lista.length} comprovante(s)</strong><span style="color:var(--text-muted); font-size:0.75rem; margin-left:8px;">nos últimos ${meses} meses</span></div>`;
-
-            lista.forEach((r, idx) => {
-                const realIdx = registros.indexOf(r);
-                container.innerHTML += `
-                <div style="background:var(--bg); padding:14px; border-radius:14px; margin-bottom:10px; border:1px solid var(--border);">
-                    <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
-                        <strong style="font-size:0.85rem; color:var(--text);">${r.desc}</strong>
-                        <span style="font-size:0.75rem; color:var(--text-muted);">${r.data.split('-').reverse().join('/')}</span>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="font-size:0.75rem; color:var(--text-muted);">${r.tipo} • ${formatarMoeda(r.valor)}</span>
-                        <button onclick="viewComprovante(${realIdx})" style="background:none; border:none; color:var(--accent); font-size:0.75rem; font-weight:700; cursor:pointer;"><i class="fa-solid fa-eye" style="margin-right:4px;"></i> Visualizar</button>
-                    </div>
-                </div>`;
-            });
+        // RELATÓRIOS NORMAIS (De Imagens)
+        function abrirModalRelatorios() {
+            gerarPDFoficial();
         }
         
+        // LEITOR IA DE EXTRATOS (Imagem Tesseract e PDF.js)
         function abrirLeitorExtrato() {
             document.getElementById('modalLeitorExtrato')?.classList.add('open');
             if (document.getElementById('overlay')) document.getElementById('overlay').style.display = 'block';
@@ -1778,8 +1866,9 @@
                 if(match) {
                     const valor = parseFloat(match[1].replace(/\./g, '').replace(',', '.'));
                     const lineLower = line.toLowerCase();
+                    const descLida = line.replace(match[0], '').trim().substring(0, 30) || 'Operação';
                     
-                    let tipo = "Gasto";
+                    let tipo = "Variavel";
                     let cor = "var(--danger)";
                     
                     if(lineLower.includes('recebido') || lineLower.includes('entrada') || lineLower.includes('depósito') || lineLower.includes('transferência') || lineLower.includes('rendimento') || lineLower.includes('salário')) {
@@ -1790,10 +1879,14 @@
                         saidas += valor;
                     }
                     
+                    // IA ADICIONA BOTÃO DE LANÇAR AUTOMATICO!
                     listaHtml += `
                     <div style="background:var(--bg); padding:10px; border-radius:10px; margin-bottom:8px; border:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
-                        <span style="font-size:0.75rem; color:var(--text); flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-right:10px;">${line.replace(match[0], '').trim() || 'Operação'}</span>
-                        <strong style="color:${cor}; font-size:0.85rem;">${formatarMoeda(valor)}</strong>
+                        <span style="font-size:0.75rem; color:var(--text); flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-right:10px;">${descLida}</span>
+                        <div style="display:flex; gap:10px; align-items:center;">
+                            <strong style="color:${cor}; font-size:0.85rem;">${formatarMoeda(valor)}</strong>
+                            <button onclick="preencherIA('${descLida}', ${valor}, '${tipo}')" style="background:var(--accent); border:none; color:#fff; border-radius:6px; padding:4px 8px; font-size:0.6rem; cursor:pointer; font-weight:bold;">+ LANÇAR</button>
+                        </div>
                     </div>`;
                 }
             });
@@ -1829,6 +1922,17 @@
                     }
                 });
             }
+        }
+
+        // FUNÇÃO DO BOTÃO "LANÇAR" DA IA
+        window.preencherIA = function(desc, valor, tipo) {
+            closeAll();
+            openModal();
+            document.getElementById('desc').value = desc;
+            document.getElementById('valor').value = valor;
+            document.getElementById('tipo').value = tipo;
+            atualizarSubmenu();
+            showToast("Dados preenchidos. Salve a operação!", "success");
         }
 
         function exportarDados() { 
@@ -1870,7 +1974,7 @@
                 } 
                 if(novos.length > 0){ 
                     registros = novos; 
-                    localStorage.setItem('foton_db', JSON.stringify(registros)); 
+                    salvarDB(); 
                     renderizar(); 
                     closeAll(); 
                     showToast("Backup Importado!", "success"); 
@@ -1890,8 +1994,9 @@
         }
         function limparTerminal() { 
             if(confirm("Atenção! Deseja apagar TODOS os dados de todos os meses?")) { 
-                localStorage.removeItem('foton_db');
-                location.reload(); 
+                const tx = db.transaction("financeiro", "readwrite");
+                tx.objectStore("financeiro").clear();
+                tx.oncomplete = () => location.reload();
             } 
         }
         function resetForm() { 
@@ -1909,7 +2014,7 @@
             if (document.getElementById('txtNomeArqComp')) document.getElementById('txtNomeArqComp').innerText = "Selecionar arquivo...";
         }
         
-        window.onload = () => { 
+        function iniciarApp() {
             carregarConfig();
             checkAppSecurity(); 
             renderizar(); 
@@ -1922,7 +2027,8 @@
                     if(prompt) prompt.classList.remove('hidden');
                 }, 2000);
             }
-        };
+        }
+
     </script>
     
     <script>
