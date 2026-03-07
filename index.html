@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
@@ -65,37 +65,28 @@
         * { box-sizing: border-box; outline: none; transition: background-color 0.3s, color 0.3s, border-color 0.3s; }
         body { font-family: 'Ubuntu', system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 0; overflow-x: hidden; font-size: 0.95rem; }
 
-        /* TELA DE BLOQUEIO E CADASTRO - MODERNO */
+        /* TELA DE BLOQUEIO */
         #lock-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(3, 7, 18, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 99999; display: flex; justify-content: center; align-items: center; padding: 20px; transition: opacity 0.5s ease, visibility 0.5s; }
         [data-theme="light"] #lock-screen, [data-theme="santander"] #lock-screen, [data-theme="itau"] #lock-screen, [data-theme="bradesco"] #lock-screen, [data-theme="nubank"] #lock-screen { background: rgba(255, 255, 255, 0.6); }
-
         .login-card { background: var(--card); border: 1px solid var(--border); border-radius: 28px; padding: 40px 30px; width: 100%; max-width: 380px; box-shadow: 0 30px 60px rgba(0,0,0,0.4); display: flex; flex-direction: column; align-items: center; position: relative; text-align: center; }
         [data-theme="light"] .login-card, [data-theme="santander"] .login-card, [data-theme="nubank"] .login-card { box-shadow: 0 30px 60px rgba(0,0,0,0.1); }
-
         .lock-avatar { width: 80px; height: 80px; border-radius: 22px; background: linear-gradient(135deg, var(--accent), #0a192f); display: flex; align-items: center; justify-content: center; font-size: 2.2rem; color: white; margin-bottom: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); background-size: cover; background-position: center; font-weight: 800; letter-spacing: 1px; position: relative; }
         .lock-avatar i { font-size: 2.8rem; animation: pulseGlow 2s infinite ease-in-out; }
-        
         @keyframes pulseGlow { 0% { filter: drop-shadow(0 0 2px rgba(255,255,255,0.3)); transform: scale(1); } 50% { filter: drop-shadow(0 0 15px rgba(255,255,255,0.9)); transform: scale(1.05); } 100% { filter: drop-shadow(0 0 2px rgba(255,255,255,0.3)); transform: scale(1); } }
-
         .lock-title { font-size: 1.6rem; margin: 0 0 8px 0; color: var(--text); font-weight: 800; letter-spacing: -0.5px; }
         .lock-subtitle { font-size: 0.85rem; color: var(--text-muted); margin: 0 0 30px 0; line-height: 1.4; font-weight: 400; }
-
         .input-group { position: relative; width: 100%; margin-bottom: 16px; text-align: left; }
         .input-group i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.1rem; transition: color 0.3s; pointer-events: none; }
         .lock-input { width: 100%; background: var(--input-bg); border: 2px solid transparent; padding: 16px 16px 16px 45px; border-radius: 16px; color: var(--text); font-size: 0.95rem; transition: all 0.3s; font-family: 'Ubuntu', sans-serif; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); }
         .lock-input::placeholder { color: var(--text-muted); opacity: 0.7; }
         .lock-input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 4px rgba(0, 242, 255, 0.1); }
         .input-group:focus-within i { color: var(--accent); }
-        
         .lock-input.password { letter-spacing: 3px; font-weight: bold; }
         .lock-input.password::placeholder { letter-spacing: normal; font-weight: normal; }
-
         .btn-login { width: 100%; background: linear-gradient(135deg, var(--accent), var(--success)); color: #fff; border: none; padding: 16px; border-radius: 16px; font-weight: 800; font-size: 1rem; cursor: pointer; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3); margin-top: 10px; margin-bottom: 20px; transition: transform 0.2s, box-shadow 0.2s; letter-spacing: 0.5px; }
         .btn-login:active { transform: translateY(2px); box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2); }
-
         .btn-forgot { background: none; border: none; color: var(--text-muted); font-family: 'Ubuntu'; font-size: 0.85rem; cursor: pointer; font-weight: 600; transition: color 0.2s; padding: 10px; }
         .btn-forgot:hover, .btn-forgot:active { color: var(--accent); }
-
         .auth-view { width: 100%; display: flex; flex-direction: column; align-items: center; animation: fadeIn 0.4s ease forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -118,7 +109,7 @@
         .bell-btn:active { background: var(--hover-bg); }
         .badge { position:absolute; top:-5px; right:-5px; background:var(--danger); color:white; font-size:0.6rem; font-weight:bold; border-radius:50%; width:18px; height:18px; display:flex; align-items:center; justify-content:center; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
 
-        /* MENU LATERAL MELHORADO */
+        /* MENU LATERAL */
         .sidebar { position: fixed; top: 0; right: -100%; width: 85%; max-width: 380px; height: 100%; background: var(--card); z-index: 3000; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); padding: 30px 24px; border-left: 1px solid var(--accent); box-shadow: -15px 0 40px rgba(0,0,0,0.7); display: flex; flex-direction: column; overflow-y: auto; }
         [data-theme="light"] .sidebar { box-shadow: -15px 0 40px rgba(0,0,0,0.1); }
         .sidebar.open { right: 0; }
@@ -157,7 +148,7 @@
         .mini-card span { display: block; font-size: 0.65rem; color: var(--text-muted); font-weight: 500; margin-bottom: 4px;}
         .mini-card strong { font-size: 0.95rem; color: var(--text); }
 
-        /* LISTA DE OPERAÇÕES MODERNA */
+        /* LISTA DE OPERAÇÕES */
         main { padding: 0 22px 22px; }
         .section-header { display: flex; justify-content: space-between; align-items: center; margin: 20px 0 15px; }
         .section-header h3 { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; margin: 0; letter-spacing: 1px;}
@@ -188,7 +179,6 @@
         
         .btn-ver-comp { display: inline-block; background: rgba(0, 242, 255, 0.1); color: var(--accent); border: 1px solid var(--accent); padding: 4px 10px; border-radius: 8px; font-size: 0.65rem; margin-top: 6px; cursor: pointer; font-weight: 800; text-transform: uppercase; }
         
-        /* Bank Badges para Resumo e Extrato */
         .bank-badge { padding: 3px 6px; border-radius: 6px; font-size: 0.6rem; font-weight: 800; display: inline-flex; align-items: center; gap: 4px; text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.2);}
 
         /* BARRAS INFERIORES E BOTÕES */
@@ -221,29 +211,36 @@
         .label-mini { font-size: 0.65rem; color: var(--accent); font-weight: 800; margin-bottom: 5px; display: block; text-transform: uppercase; letter-spacing: 0.5px;}
         .hidden { display: none !important; }
 
-        .bloco-parcelas, .resumo-quitacao, .bloco-comprovante { background: var(--hover-bg); padding: 16px; border-radius: 14px; border: 1px dashed var(--accent); margin-bottom: 16px; }
-        .bloco-comprovante { border: 1px solid var(--border); }
+        /* RESUMO DO CONTRATO - NOVA UI (Mini Dashboards) */
+        .resumo-quitacao { background: linear-gradient(145deg, var(--card), var(--bg)); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); position: relative; overflow: hidden; }
+        .resumo-quitacao::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent), var(--success)); }
+        #resumoTitulo { font-size: 1.05rem; color: var(--text); margin: 0 0 15px 0; display: flex; align-items: center; gap: 10px; font-weight: 700; }
         
-        /* NOVO RESUMO DO CONTRATO (Clean & Modern) */
-        .resumo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px 10px; }
-        .resumo-item { font-size: 0.75rem; color: var(--text-muted); }
-        .resumo-item span { display: block; margin-bottom: 2px; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.5px;}
-        .resumo-item strong { color: var(--text); display: block; font-size: 0.95rem; }
-        .resumo-item.highlight strong { color: var(--accent); }
-        .resumo-item.danger strong { color: var(--danger); }
-        .resumo-item.success strong { color: var(--success); }
+        .resumo-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .resumo-mini-card { background: var(--input-bg); padding: 12px 15px; border-radius: 12px; display: flex; flex-direction: column; gap: 4px; border: 1px solid rgba(255,255,255,0.02); transition: transform 0.2s; }
+        .resumo-mini-card:hover { transform: translateY(-2px); }
+        .resumo-mini-card span { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+        .resumo-mini-card strong { font-size: 1.1rem; color: var(--text); font-weight: 800; letter-spacing: 0.5px; }
+        .resumo-mini-card.paid strong { color: var(--success); }
+        .resumo-mini-card.remain strong { color: var(--danger); }
+        .resumo-mini-card.installment strong { color: var(--accent); }
 
-        /* Container protegido para gráficos */
+        .resumo-footer { margin-top: 15px; background: rgba(0,0,0,0.2); padding: 10px 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: var(--text-muted); border: 1px solid var(--border); }
+        .resumo-footer div { display: flex; align-items: center; gap: 6px; }
+        .resumo-footer strong { color: var(--text); font-weight: 700; }
+        
+        .contract-progress-bg { width: 100%; height: 6px; background: var(--bg); border-radius: 10px; margin-top: 15px; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.3); }
+        .contract-progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--success)); border-radius: 10px; transition: width 1s ease-in-out; }
+        .contract-progress-text { display: flex; justify-content: space-between; font-size: 0.65rem; color: var(--text-muted); margin-top: 4px; font-weight: 600; }
+
+        /* MODAIS EXTRAS */
         .grafico-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
         .grafico-title { font-size: 0.75rem; color: var(--accent); text-transform: uppercase; margin: 0 0 15px 0; text-align: center; letter-spacing: 1px; font-weight: 800; }
-        
         .btn-toggle-meses { flex: 1; padding: 10px; background: var(--input-bg); border: 1px solid var(--border); border-radius: 10px; color: var(--text-muted); font-weight: 800; font-size: 0.75rem; cursor: pointer; }
         .btn-toggle-meses.active { background: rgba(0,242,255,0.1); border-color: var(--accent); color: var(--accent); }
-
         .comprovante-img-preview { width: 100%; max-height: 400px; object-fit: contain; border-radius: 12px; background: var(--bg); border: 1px solid var(--border); }
         .item-notificacao { padding: 12px; border-bottom: 1px solid var(--border); }
         .item-notificacao:last-child { border-bottom: none; }
-        
         .btn-meta-action { flex: 1; padding: 12px; border-radius: 10px; border: none; font-weight: 800; color: #fff; cursor: pointer; font-size: 0.85rem;}
         .btn-meta-add { background: var(--success); }
         .btn-meta-rem { background: var(--danger); }
@@ -258,7 +255,7 @@
     <div id="ios-prompt" class="hidden" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--card); border: 2px solid var(--accent); padding: 20px; border-radius: 16px; z-index: 100000; width: 90%; max-width: 350px; box-shadow: 0 10px 40px rgba(0,0,0,0.7); text-align: center;">
         <h3 style="margin: 0 0 10px 0; color: var(--text); font-size: 1.1rem;"><i class="fa-brands fa-apple" style="margin-right: 5px;"></i> Instalar no iPhone</h3>
         <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px; line-height: 1.5;">
-            O Safari não instala apps automaticamente. Para ter o <b>MeuCaixa</b> no celular, toque em <i class="fa-solid fa-arrow-up-from-bracket" style="color: var(--accent); margin: 0 4px;"></i> <b>Compartilhar</b> e selecione <br><br><b>"Adicionar à Tela de Início"</b> <i class="fa-regular fa-square-plus" style="margin: 0 4px;"></i>.
+            O Safari não instala apps automaticamente. Para ter o <b>MeuCaixa</b> no celular e ativar todos os recursos, toque em <i class="fa-solid fa-arrow-up-from-bracket" style="color: var(--accent); margin: 0 4px;"></i> <b>Compartilhar</b> na barra do Safari e selecione <br><br><b>"Adicionar à Tela de Início"</b> <i class="fa-regular fa-square-plus" style="margin: 0 4px;"></i>.
         </p>
         <button onclick="document.getElementById('ios-prompt').style.display='none'" style="background: var(--accent); color: #fff; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 800; cursor: pointer; width: 100%;">ENTENDI</button>
     </div>
@@ -386,7 +383,7 @@
                 <span id="currentCurrencyDisplay" style="font-size: 0.75rem; color: var(--text-muted); font-weight: bold;">R$</span>
             </div>
             
-            <div class="menu-group-title">Sistema & Relatórios</div>
+            <div class="menu-group-title">Sistema & Dados</div>
             <div class="menu-item" onclick="gerarPDFoficial()">
                 <div><i class="fa-solid fa-file-pdf" style="color: var(--danger)"></i> <span>Baixar Extrato PDF</span></div>
             </div>
@@ -458,7 +455,7 @@
         <div class="action-buttons">
             <button class="action-btn" onclick="abrirModalGraficos()"><i class="fa-solid fa-chart-pie" style="margin-right: 4px;"></i> GRÁFICOS DETALHADOS</button>
             <button class="action-btn" onclick="abrirModalRelatorios()"><i class="fa-solid fa-file-invoice" style="margin-right: 4px;"></i> RELATÓRIOS PDF</button>
-            <button class="action-btn" onclick="abrirLeitorExtrato()" style="width: 100%; border-color: var(--success); color: var(--success); background: rgba(16, 185, 129, 0.1);"><i class="fa-solid fa-wand-magic-sparkles" style="margin-right: 4px;"></i> LEITOR IA DE EXTRATOS (AUTOMÁTICO)</button>
+            <button class="action-btn" onclick="abrirLeitorExtrato()" style="width: 100%; border-color: var(--success); color: var(--success); background: rgba(16, 185, 129, 0.1);"><i class="fa-solid fa-wand-magic-sparkles" style="margin-right: 4px;"></i> LEITOR IA DE EXTRATOS</button>
         </div>
     </section>
 
@@ -472,8 +469,8 @@
         </div>
         
         <div id="blocoResumoGeral" class="resumo-quitacao hidden">
-            <h4 id="resumoTitulo" style="display: flex; align-items: center; gap: 8px; margin-bottom: 15px; color: var(--text);">Resumo do Contrato</h4>
-            <div id="resumoConteudo" class="resumo-grid"></div>
+            <h4 id="resumoTitulo" style="display: flex; align-items: center; gap: 8px; margin-bottom: 15px; color: var(--text);">Resumo</h4>
+            <div id="resumoConteudo"></div>
         </div>
 
         <span class="label-mini">Tipo</span>
@@ -698,7 +695,8 @@
             <h2 style="margin:0; font-size:1.15rem; color: var(--text);">Visualizar Anexo</h2>
             <i class="fa-solid fa-xmark" style="font-size:1.4rem; color:var(--text-muted); cursor:pointer;" onclick="closeViewComprovante()"></i>
         </div>
-        <div id="comprovanteContent" style="text-align:center;"></div>
+        <div id="comprovanteContent" style="text-align:center;">
+            </div>
     </div>
 
     <div class="modal" id="modalLeitorExtrato">
@@ -707,7 +705,7 @@
             <i class="fa-solid fa-xmark" style="font-size:1.4rem; color:var(--text-muted); cursor:pointer;" onclick="closeModal()"></i>
         </div>
         <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.4;">
-            Anexe um <b>print de tela ou PDF</b> do seu extrato bancário (Pix, compras, etc). A IA lerá o arquivo e gerará botões para adicionar as compras!
+            Anexe um <b>print de tela ou PDF</b> do seu extrato bancário (Pix, compras, etc). A IA lerá o arquivo e gerará um relatório detalhado!
         </p>
         
         <input type="file" id="extratoInput" accept="image/*,application/pdf" style="display: none;" onchange="processarExtratoImagem(event)">
@@ -747,7 +745,7 @@
 
     <script>
         // ----------------------------------------------------------------------------------
-        // BANCO DE DADOS INFINITO (INDEXEDDB) - RESOLVE O PROBLEMA DOS COMPROVANTES GRANDES
+        // BANCO DE DADOS INFINITO (INDEXEDDB)
         // ----------------------------------------------------------------------------------
         let db;
         let registros = [];
@@ -774,12 +772,11 @@
                 if (request.result) {
                     registros = request.result;
                 } else {
-                    // Se estiver vazio, tenta migrar do localStorage (Primeira vez)
                     const oldDb = localStorage.getItem('foton_db');
                     if (oldDb) {
                         registros = JSON.parse(oldDb);
-                        salvarDB(); // Salva na nova DB
-                        localStorage.removeItem('foton_db'); // Apaga a antiga
+                        salvarDB(); 
+                        localStorage.removeItem('foton_db'); 
                     }
                 }
                 iniciarApp();
@@ -1170,7 +1167,7 @@
         const opcoesSubmenu = {
             "Receita": ["💰 Salário", "🚀 Freelance", "✨ Rendimentos", "🛠️ Serviço", "📦 Produto"],
             "Fixo": ["🏠 Aluguel", "⚡ Energia", "🌐 Internet", "🎬 Streamings", "🏫 Mensalidade"],
-            "Variavel": ["🛒 Mercado", "🍕 Alimentação", "⛽ Combustível", "🚗 Transporte", "💊 Saúde", "🐾 Pets", "🛍️ Compras", "👗 Roupas"],
+            "Variavel": ["🛒 Mercado", "🍕 Alimentação", "⛽ Combustível", "🚗 Transporte", "💊 Saúde", "🐾 Pets"],
             "Divida": ["🏢 Financiamento", "💳 Cartão", "🤝 Empréstimo", "🧾 Boleto"],
             "Reserva": ["🏦 Investimentos", "📦 Caixinha", "🛡️ Reserva Emergência", "🪙 Cripto"]
         };
@@ -1218,6 +1215,7 @@
             renderizar(); 
         }
 
+        // LÓGICA DE DETECÇÃO DE BANCOS PARA BADGE E ICONE
         function getBankBadge(bancoNome) {
             if (!bancoNome || bancoNome === 'Outros / Nenhum') return '';
             
@@ -1254,13 +1252,33 @@
             };
 
             let style = badges[bancoNome];
+            if (!style) {
+                const d = bancoNome.toLowerCase();
+                if (d.includes('nubank')) style = badges["Nubank"];
+                else if (d.includes('santander')) style = badges["Santander"];
+                else if (d.includes('bradesco')) style = badges["Bradesco"];
+                else if (d.includes('itau') || d.includes('itaú')) style = badges["Itaú"];
+                else if (d.includes('banco do brasil') || d.includes('bb')) style = badges["Banco do Brasil"];
+                else if (d.includes('caixa')) style = badges["Caixa Econômica"];
+                else if (d.includes('inter')) style = badges["Banco Inter"];
+                else if (d.includes('c6')) style = badges["C6 Bank"];
+                else if (d.includes('pagbank') || d.includes('pagseguro')) style = badges["PagBank"];
+                else if (d.includes('picpay')) style = badges["PicPay"];
+                else if (d.includes('mercado pago')) style = badges["Mercado Pago"];
+                else if (d.includes('sicoob')) style = badges["Sicoob"];
+                else if (d.includes('sicredi')) style = badges["Sicredi"];
+                else if (d.includes('xp')) style = badges["XP Investimentos"];
+                else if (d.includes('bmg')) style = badges["Banco Bmg"];
+            }
+
             if (style) {
-                return `<span class="bank-badge" style="background:${style.bg}; color:${style.color};"><i class="fa-solid ${style.icon}"></i> ${bancoNome}</span>`;
+                let finalName = Object.keys(badges).find(k => badges[k] === style) || bancoNome;
+                return `<span class="bank-badge" style="background:${style.bg}; color:${style.color};"><i class="fa-solid ${style.icon}"></i> ${finalName}</span>`;
             }
             return `<span class="bank-badge" style="background:var(--input-bg); color:var(--text); border: 1px solid var(--border);"><i class="fa-solid fa-building-columns"></i> ${bancoNome}</span>`;
         }
 
-        // VERIFICAR NOTIFICAÇÕES
+        // VERIFICAR NOTIFICAÇÕES E ALERTAR
         function verificarNotificacoes() {
             let pendingList = [];
             let hoje = new Date();
@@ -1310,6 +1328,7 @@
                         </div>`;
                     });
                     listaContainer.innerHTML = html;
+                    
                     sessionStorage.setItem('hasPendingAlert', 'true');
                 } else {
                     badge.classList.add('hidden');
@@ -1331,12 +1350,11 @@
             if (corpo) corpo.innerHTML = '';
             
             let sRec=0, sGas=0, sDiv=0, sRes=0;
-            let saldoRolagem = 0; // Rolagem de meses anteriores
+            let saldoRolagem = 0; 
 
             const ordenados = [...registros].sort((a, b) => new Date(b.data) - new Date(a.data));
             const registrosDoMes = ordenados.filter(r => r.data.startsWith(prefixoMes));
             
-            // Calculo da rolagem do saldo (Tudo antes do mes atual)
             const dataVisObj = new Date(dataVisualizacao.getFullYear(), dataVisualizacao.getMonth(), 1);
             registros.forEach((r) => {
                 const opDate = new Date(r.data + "T12:00:00");
@@ -1358,7 +1376,7 @@
                 const isPago = vP >= vT && vT > 0;
 
                 if(r.tipo === 'Receita') { if(isPago) sRec += vT; } 
-                else if(r.tipo === 'Divida') { sDiv += falta; sGas += vP; } // Adicionado vP ao sGas para debitar do saldo 
+                else if(r.tipo === 'Divida') { sDiv += falta; sGas += vP; } 
                 else if(r.tipo === 'Reserva') { sRes += vT; } 
                 else { sGas += vP; }
 
@@ -1403,7 +1421,7 @@
                             if(o < h) { statusColor = 'var(--danger)'; statusText = 'ATRASADO'; }
                         }
 
-                        // Exclusivo para dívida mostrar Lançado/Vence
+                        // DATAS (Somente Dívida mostra as duas datas)
                         let datasInfo = '';
                         let dtLanc = (r.dataLancamento || r.data).split('-').reverse().join('/');
                         let dtVenc = r.data.split('-').reverse().join('/');
@@ -1453,7 +1471,6 @@
             if (document.getElementById('totalReserva')) document.getElementById('totalReserva').innerText = ocultarBits(sRes);
             if (document.getElementById('totalSaldo')) document.getElementById('totalSaldo').innerText = ocultarBits(totalSaldoFinal); 
             
-            // Badge Rolagem de Saldo
             const rBadge = document.getElementById('saldoRolagemBadge');
             if(rBadge && saldoRolagem !== 0) {
                 rBadge.classList.remove('hidden');
@@ -1491,15 +1508,15 @@
             if(!catSelect) return;
 
             if(val.includes('ifood') || val.includes('mcdonalds') || val.includes('burger king') || val.includes('pizza')) {
-                catSelect.value = Array.from(catSelect.options).find(o => o.value.includes('Alimentação'))?.value || catSelect.value;
+                catSelect.value = Array.from(catSelect.options).find(o => o.value.toLowerCase().includes('alimentação'))?.value || catSelect.value;
             } else if(val.includes('uber') || val.includes('99') || val.includes('ônibus') || val.includes('metro')) {
-                catSelect.value = Array.from(catSelect.options).find(o => o.value.includes('Transporte'))?.value || catSelect.value;
+                catSelect.value = Array.from(catSelect.options).find(o => o.value.toLowerCase().includes('transporte'))?.value || catSelect.value;
             } else if(val.includes('posto') || val.includes('ipiranga') || val.includes('shell')) {
-                catSelect.value = Array.from(catSelect.options).find(o => o.value.includes('Combustível'))?.value || catSelect.value;
+                catSelect.value = Array.from(catSelect.options).find(o => o.value.toLowerCase().includes('combustível'))?.value || catSelect.value;
             } else if(val.includes('netflix') || val.includes('spotify') || val.includes('amazon')) {
                 document.getElementById('tipo').value = 'Fixo';
                 atualizarSubmenu();
-                setTimeout(() => document.getElementById('submenu').value = Array.from(document.getElementById('submenu').options).find(o => o.value.includes('Streaming'))?.value, 50);
+                setTimeout(() => document.getElementById('submenu').value = Array.from(document.getElementById('submenu').options).find(o => o.value.toLowerCase().includes('streaming'))?.value, 50);
             }
         });
 
@@ -1513,9 +1530,8 @@
                 if (document.getElementById('editIndex')) document.getElementById('editIndex').value = idx;
                 if (document.getElementById('tipo')) document.getElementById('tipo').value = r.tipo;
                 
-                atualizarSubmenu(); // Isso muda a tela baseada no tipo
+                atualizarSubmenu(); 
                 
-                // Setamos a categoria salva
                 setTimeout(() => {
                     if (document.getElementById('submenu') && r.categoria) {
                         document.getElementById('submenu').value = r.categoria;
@@ -1535,6 +1551,7 @@
                 if (document.getElementById('txtNomeArqComp')) document.getElementById('txtNomeArqComp').innerText = r.comprovante ? "Comprovante salvo (Anexar novo)" : "Selecionar arquivo...";
                 document.getElementById('btnExcluir')?.classList.remove('hidden');
 
+                // RESUMO INTELIGENTE E PRECISO (Correção do Bug)
                 if (r.desc.includes('(') && r.tipo === 'Divida') {
                     resumo?.classList.remove('hidden');
                     if (document.getElementById('resumoTitulo')) document.getElementById('resumoTitulo').innerHTML = `Resumo do Contrato ${getBankBadge(r.banco)}`;
@@ -1542,6 +1559,7 @@
                     const getBaseName = (name) => name.replace(/\(\d+\/\d+\)/, '').trim();
                     const baseDesc = getBaseName(r.desc);
                     
+                    // O Filtro EXATO garante que só vai somar as parcelas iguais
                     const vinc = registros.filter(reg =>
                         reg.tipo === 'Divida' &&
                         reg.banco === r.banco && 
@@ -1556,26 +1574,32 @@
                     
                     if (document.getElementById('resumoConteudo')) {
                         document.getElementById('resumoConteudo').innerHTML = `
-                            <div class="resumo-card-container">
+                            <div class="resumo-grid">
                                 <div class="resumo-mini-card">
                                     <span>Total do Contrato</span>
                                     <strong>${ocultarBits(tV)}</strong>
                                 </div>
-                                <div class="resumo-mini-card success">
+                                <div class="resumo-mini-card paid">
                                     <span>Total Pago</span>
                                     <strong>${ocultarBits(tP)}</strong>
                                 </div>
-                                <div class="resumo-mini-card danger">
+                                <div class="resumo-mini-card remain">
                                     <span>Restante / Falta</span>
                                     <strong>${ocultarBits(tV-tP)}</strong>
                                 </div>
-                                <div class="resumo-mini-card highlight">
+                                <div class="resumo-mini-card installment">
                                     <span>Valor da Parcela</span>
                                     <strong>${ocultarBits(r.valor)}</strong>
                                 </div>
                             </div>
-                            <div style="margin-top: 12px; font-size: 0.8rem; color: var(--text-muted); text-align: center; background: var(--bg); padding: 8px; border-radius: 8px; border: 1px dashed var(--border);">
-                                Faltam <strong>${pendentes.length}</strong> parcelas pendentes | Vencimento Fixo: Dia <strong>${diaVenc}</strong>
+                            
+                            <div class="contract-progress-bg">
+                                <div class="contract-progress-fill" style="width: ${tV > 0 ? (tP/tV)*100 : 0}%"></div>
+                            </div>
+
+                            <div class="resumo-footer">
+                                <div><i class="fa-solid fa-layer-group" style="color: var(--text-muted);"></i> Faltam <strong>${pendentes.length} parc.</strong></div>
+                                <div><i class="fa-regular fa-calendar-check" style="color: var(--accent);"></i> Vencimento: <strong>Dia ${diaVenc}</strong></div>
                             </div>
                         `;
                     }
@@ -1612,6 +1636,13 @@
                 const gridDatas = document.getElementById('blocoDatas');
                 if(gridDatas) gridDatas.style.gridTemplateColumns = isDivida ? '1fr 1fr' : '1fr';
                 
+            }
+        }
+
+        function definirDescricao() { 
+            const sub = document.getElementById('submenu')?.value;
+            if (document.getElementById('desc') && sub) {
+                document.getElementById('desc').value = sub.split(' ').slice(1).join(' ');
             }
         }
         
@@ -1777,7 +1808,7 @@
                 let status = (parseFloat(r.pago) >= v && v > 0) ? "PAGO" : "PENDENTE";
                 let cor = r.tipo === 'Receita' ? 'green' : 'red';
                 if(r.tipo === 'Receita' && status === 'PAGO') totalEntradas += v;
-                if(r.tipo !== 'Receita' && r.tipo !== 'Reserva') totalSaidas += v; // conta a saida global
+                if(r.tipo !== 'Receita' && r.tipo !== 'Reserva') totalSaidas += v; 
                 
                 html += `<tr>
                     <td style="padding:10px; border-bottom:1px solid #eee;">${r.data.split('-').reverse().join('/')}</td>
@@ -1803,12 +1834,11 @@
             }).save();
         }
 
-        // RELATÓRIOS NORMAIS (De Imagens)
         function abrirModalRelatorios() {
             gerarPDFoficial();
         }
         
-        // LEITOR IA DE EXTRATOS (Imagem Tesseract e PDF.js)
+        // LEITOR IA DE EXTRATOS
         function abrirLeitorExtrato() {
             document.getElementById('modalLeitorExtrato')?.classList.add('open');
             if (document.getElementById('overlay')) document.getElementById('overlay').style.display = 'block';
@@ -1879,7 +1909,6 @@
                         saidas += valor;
                     }
                     
-                    // IA ADICIONA BOTÃO DE LANÇAR AUTOMATICO!
                     listaHtml += `
                     <div style="background:var(--bg); padding:10px; border-radius:10px; margin-bottom:8px; border:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
                         <span style="font-size:0.75rem; color:var(--text); flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-right:10px;">${descLida}</span>
