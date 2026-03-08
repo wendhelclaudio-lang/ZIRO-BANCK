@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -835,34 +836,33 @@
                 <div class="menu-group-title">Sistema & Dados</div>
                 
                 <div class="menu-item" onclick="gerarPDFoficial()">
-            
-                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--danger);
-                    background: rgba(239, 68, 68, 0.1);"><i class="fa-solid fa-file-pdf"></i></div><span>Baixar Extrato PDF</span></div>
+                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--danger); background: rgba(239, 68, 68, 0.1);"><i class="fa-solid fa-file-pdf"></i></div><span>Baixar Extrato PDF</span></div>
                     <i class="fa-solid fa-chevron-right menu-chevron"></i>
                 </div>
                 
-                <div class="menu-item" onclick="exportarDados()">
-                    
+                <div class="menu-item" onclick="exportarBackupCompleto()">
+                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--accent); background: rgba(0, 242, 255, 0.1);"><i class="fa-solid fa-database"></i></div><span>Salvar Backup (Completo)</span></div>
+                    <i class="fa-solid fa-chevron-right menu-chevron"></i>
+                </div>
+
+                <div class="menu-item" onclick="exportarDadosCSV()">
                     <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--success); background: rgba(16, 185, 129, 0.1);"><i class="fa-solid fa-file-excel"></i></div><span>Exportar Planilha (CSV)</span></div>
                     <i class="fa-solid fa-chevron-right menu-chevron"></i>
                 </div>
                 
-                <input type="file" id="fileInput" accept=".csv, text/csv, application/vnd.ms-excel, application/csv, text/plain, */*" style="display: none;" onchange="importarDados(event)">
+                <input type="file" id="fileInput" accept=".json, application/json, .csv, text/csv, text/plain, */*" style="display: none;" onchange="importarDados(event)">
          
                 <div class="menu-item" onclick="document.getElementById('fileInput').click()"> 
-                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--accent);
-                    background: rgba(0, 242, 255, 0.1);"><i class="fa-solid fa-file-import"></i></div><span>Importar Backup</span></div>
+                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--warning); background: rgba(245, 158, 11, 0.1);"><i class="fa-solid fa-file-import"></i></div><span>Importar Backup</span></div>
                     <i class="fa-solid fa-chevron-right menu-chevron"></i>
                 </div>
                 
                 <div class="menu-item" onclick="limparMesAtual()">
-                    
                     <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--warning); background: rgba(245, 158, 11, 0.1);"><i class="fa-solid fa-calendar-xmark"></i></div><span>Limpar Mês Atual</span></div>
                 </div>
                 
                 <div class="menu-item" onclick="limparTerminal()">
-                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--danger);
-                    background: rgba(239, 68, 68, 0.1);"><i class="fa-solid fa-trash"></i></div><span>Zerar Banco de Dados</span></div>
+                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--danger); background: rgba(239, 68, 68, 0.1);"><i class="fa-solid fa-trash"></i></div><span>Zerar Banco de Dados</span></div>
                 </div>
 
                 <div class="menu-item btn-logout-menu" onclick="sairApp()">
@@ -2509,9 +2509,6 @@
             closeAll(); 
             renderizar();
             showToast("Operação Salva com Sucesso!", "success");
-
-            // ATIVANDO O BACKUP AUTOMÁTICO AQUI
-            exportarBackupAutomatico();
         }
 
         function excluirRegistro() { 
@@ -2799,63 +2796,82 @@
             showToast("Dados preenchidos. Salve a operação!", "success");
         }
 
-        function exportarDados() { 
+        // NOVA FUNÇÃO DE EXPORTAÇÃO PARA CSV (Somente texto, para Excel)
+        function exportarDadosCSV() { 
             if(registros.length === 0) return showToast("Nenhum dado para exportar.", "error");
             let csv = "Tipo,Descricao,Categoria,Valor Total,Valor Pago,Data Vencimento,Data Lancamento,Banco,Forma\n"; 
             registros.forEach(r => { csv += `${r.tipo},${r.desc.replace(/,/g, '')},${r.categoria||''},${r.valor},${r.pago},${r.data},${r.dataLancamento||r.data},${r.banco||''},${r.forma||''}\n`; });
-            const blob = new Blob([csv], { type: 'text/csv' }); 
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' }); 
             const a = document.createElement('a'); 
             a.href = URL.createObjectURL(blob); 
-            a.download = 'Backup_MeuCaixa.csv'; 
+            a.download = 'Planilha_MeuCaixa.csv'; 
             a.click();
-            closeAll(); showToast("Backup baixado!", "success"); 
+            closeAll(); showToast("Planilha baixada!", "success"); 
         }
 
-        // NOVA FUNÇÃO: BACKUP AUTOMÁTICO SILENCIOSO
-        function exportarBackupAutomatico() { 
-            if(registros.length === 0) return; 
-            let csv = "Tipo,Descricao,Categoria,Valor Total,Valor Pago,Data Vencimento,Data Lancamento,Banco,Forma\n"; 
-            registros.forEach(r => { 
-                csv += `${r.tipo},${r.desc.replace(/,/g, '')},${r.categoria||''},${r.valor},${r.pago},${r.data},${r.dataLancamento||r.data},${r.banco||''},${r.forma||''}\n`; 
-            }); 
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' }); 
+        // NOVA FUNÇÃO DE BACKUP COMPLETO EM JSON (INCLUI AS IMAGENS)
+        function exportarBackupCompleto() {
+            if(registros.length === 0) return showToast("Nenhum dado para fazer backup.", "error");
+            const backupData = JSON.stringify(registros);
+            const blob = new Blob([backupData], { type: 'application/json' }); 
             const a = document.createElement('a'); 
             a.href = URL.createObjectURL(blob); 
             
             let dataAtual = new Date();
             let dataFormatada = dataAtual.toISOString().split('T')[0];
-            let horaFormatada = dataAtual.getHours() + "h" + dataAtual.getMinutes();
             
-            a.download = `Backup_Automatico_${dataFormatada}_${horaFormatada}.csv`; 
-            a.click(); 
+            a.download = `Backup_MeuCaixa_${dataFormatada}.json`; 
+            a.click();
+            closeAll(); showToast("Backup COMPLETO salvo!", "success"); 
         }
 
+        // NOVA FUNÇÃO DE IMPORTAÇÃO INTELIGENTE (Aceita JSON com imagens ou CSV antigo)
         function importarDados(e) { 
             const f = e.target.files[0];
             if(!f) return; 
             const r = new FileReader(); 
             r.onload = function(ev) { 
-                const lines = ev.target.result.split('\n');
-                let novos = [];
-                for(let i=1; i<lines.length; i++){ 
-                    const c = lines[i].split(',');
-                    if(c.length>=5) {
-                        let obj = { tipo: c[0], desc: c[1], valor: parseFloat(c[3]||c[2]), pago: parseFloat(c[4]||c[3]), data: (c[5]||c[4]).trim() };
-                        if (c.length >= 9) {
-                            obj.categoria = c[2].trim();
-                            obj.dataLancamento = c[6].trim(); obj.banco = c[7].trim(); obj.forma = c[8].trim() || null;
-                        } else if (c.length >= 8) {
-                            obj.valor = parseFloat(c[2]);
-                            obj.pago = parseFloat(c[3]); obj.data = c[4].trim(); obj.dataLancamento = c[5].trim(); obj.banco = c[6].trim(); obj.forma = c[7].trim() || null;
-                        }
-                        novos.push(obj);
+                try {
+                    // Tenta ler como JSON (Formato novo com as imagens embutidas)
+                    const novos = JSON.parse(ev.target.result);
+                    if(Array.isArray(novos) && novos.length > 0){ 
+                        registros = novos;
+                        salvarDB(); renderizar(); closeAll(); showToast("Backup Restaurado com Sucesso!", "success"); 
+                    } else {
+                        throw new Error("Formato inválido");
                     }
-                } 
-                if(novos.length > 0){ registros = novos;
-                salvarDB(); renderizar(); closeAll(); showToast("Backup Importado!", "success"); } 
+                } catch (err) {
+                    // Fallback: Tenta ler como o arquivo CSV antigo
+                    importarCSV(ev.target.result);
+                }
             };
             r.readAsText(f);
-            e.target.value = ""; // Reseta o input para permitir importar o mesmo arquivo novamente
+            e.target.value = ""; 
+        }
+
+        function importarCSV(texto) {
+            const lines = texto.split('\n');
+            let novos = [];
+            for(let i=1; i<lines.length; i++){ 
+                const c = lines[i].split(',');
+                if(c.length>=5) {
+                    let obj = { tipo: c[0], desc: c[1], valor: parseFloat(c[3]||c[2]), pago: parseFloat(c[4]||c[3]), data: (c[5]||c[4]).trim() };
+                    if (c.length >= 9) {
+                        obj.categoria = c[2].trim();
+                        obj.dataLancamento = c[6].trim(); obj.banco = c[7].trim(); obj.forma = c[8].trim() || null;
+                    } else if (c.length >= 8) {
+                        obj.valor = parseFloat(c[2]);
+                        obj.pago = parseFloat(c[3]); obj.data = c[4].trim(); obj.dataLancamento = c[5].trim(); obj.banco = c[6].trim(); obj.forma = c[7].trim() || null;
+                    }
+                    novos.push(obj);
+                }
+            } 
+            if(novos.length > 0){ 
+                registros = novos;
+                salvarDB(); renderizar(); closeAll(); showToast("Backup CSV antigo importado (Sem as imagens).", "success"); 
+            } else {
+                showToast("Erro ao ler o arquivo de backup.", "error");
+            }
         }
         
         function toggleFantasma() { modoFantasma = !modoFantasma;
@@ -2864,7 +2880,7 @@
         function ocultarBits(v) { return modoFantasma ? appConfig.moeda + " ••••" : formatarMoeda(v);
         }
 
-        // NOVA FUNÇÃO: LIMPAR MÊS ATUAL
+        // FUNÇÃO: LIMPAR MÊS ATUAL
         function limparMesAtual() {
             if(confirm("Atenção! Deseja apagar TODOS os lançamentos exibidos neste mês?")) {
                 const prefixoMes = `${dataVisualizacao.getFullYear()}-${String(dataVisualizacao.getMonth() + 1).padStart(2, '0')}`;
