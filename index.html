@@ -1155,7 +1155,7 @@
                     <i class="fa-solid fa-cloud-arrow-up"></i>
                 </div>
                 <span class="dropzone-title">Comprovante de Pagamento</span>
-                <span class="dropzone-subtitle" id="txtNomeArqComp">Toque para selecionar ou arrastar arquivo...</span>
+                <span class="dropzone-subtitle" id="txtNomeArqComp">Toque para anexar o comprovante...</span>
             </div>
             <input type="hidden" id="comprovanteBase64">
         </div>
@@ -2377,7 +2377,7 @@
             const file = event.target.files[0];
             if(!file) {
                 if (document.getElementById('comprovanteBase64')) document.getElementById('comprovanteBase64').value = "";
-                if (document.getElementById('txtNomeArqComp')) document.getElementById('txtNomeArqComp').innerText = "Toque para selecionar ou arrastar arquivo...";
+                if (document.getElementById('txtNomeArqComp')) document.getElementById('txtNomeArqComp').innerText = "Toque para anexar o comprovante...";
                 return;
             }
             if(file.size > 2000000) { 
@@ -2422,7 +2422,7 @@
                 if (document.getElementById('formaRecebimento')) document.getElementById('formaRecebimento').value = r.forma || "Pix";
                 if (document.getElementById('comprovanteBase64')) document.getElementById('comprovanteBase64').value = r.comprovante || "";
                 if (document.getElementById('txtNomeArqComp')) document.getElementById('txtNomeArqComp').innerText = r.comprovante ?
-                "Comprovante salvo (Toque para trocar)" : "Toque para selecionar ou arrastar arquivo...";
+                "Comprovante salvo (Toque para trocar)" : "Toque para anexar o comprovante...";
                 document.getElementById('btnExcluir')?.classList.remove('hidden');
 
                 const lblValor = document.getElementById('lblValorMain');
@@ -3055,7 +3055,7 @@
             if (document.getElementById('selectPago')) document.getElementById('selectPago').value = "0";
             if (document.getElementById('comprovanteInput')) document.getElementById('comprovanteInput').value = "";
             if (document.getElementById('comprovanteBase64')) document.getElementById('comprovanteBase64').value = "";
-            if (document.getElementById('txtNomeArqComp')) document.getElementById('txtNomeArqComp').innerText = "Toque para selecionar ou arrastar arquivo...";
+            if (document.getElementById('txtNomeArqComp')) document.getElementById('txtNomeArqComp').innerText = "Toque para anexar o comprovante...";
         }
         
         function iniciarApp() {
