@@ -451,11 +451,65 @@
             box-shadow: 0 0 10px rgba(16, 185, 129, 0.1);
         }
 
-        .bloco-parcelas, .bloco-comprovante { background: var(--hover-bg);
+        .bloco-parcelas { background: var(--hover-bg);
             padding: 16px; border-radius: 14px; border: 1px dashed var(--accent); margin-bottom: 16px;
         }
-        .bloco-comprovante { border: 1px solid var(--border);
+
+        /* NOVO COMPROVANTE PREMIUM */
+        .premium-dropzone {
+            background: linear-gradient(145deg, var(--input-bg), rgba(0,0,0,0.02));
+            border: 2px dashed var(--border);
+            border-radius: 18px;
+            padding: 25px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 20px;
         }
+        .premium-dropzone:hover, .premium-dropzone:active {
+            border-color: var(--accent);
+            background: rgba(0, 242, 255, 0.05);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        .dropzone-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        .dropzone-content .icon-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(0, 242, 255, 0.1);
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 4px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .premium-dropzone:hover .icon-circle {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.4);
+        }
+        .dropzone-title {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--text);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .dropzone-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
         .comprovante-img-preview { width: 100%; max-height: 400px; object-fit: contain; border-radius: 12px; background: var(--bg);
             border: 1px solid var(--border); }
         .btn-meta-action { flex: 1; padding: 12px; border-radius: 10px;
@@ -1094,17 +1148,14 @@
             </div>
         </div>
         
-        <div class="bloco-comprovante">
-            <span class="label-mini"><i class="fa-solid fa-receipt"></i> Comprovante 
-            de Pagamento</span>
-            <div style="display: flex;
-                gap: 8px;">
-                <input type="file" id="comprovanteInput" accept="image/*,.pdf" style="display: none;" onchange="handleComprovante(event)">
-                <button class="btn-google" style="margin:0;
-                width:100%; max-width:100%; justify-content: flex-start; color: var(--text-muted);" onclick="document.getElementById('comprovanteInput').click()" id="btnComprovanteText">
-                    <i class="fa-solid fa-image" style="color: var(--text-muted);
-                    font-size: 1rem;"></i> <span id="txtNomeArqComp">Selecionar arquivo...</span>
-                </button>
+        <div class="premium-dropzone" onclick="document.getElementById('comprovanteInput').click()">
+            <input type="file" id="comprovanteInput" accept="image/*,.pdf" style="display: none;" onchange="handleComprovante(event)">
+            <div class="dropzone-content">
+                <div class="icon-circle">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                </div>
+                <span class="dropzone-title">Comprovante de Pagamento</span>
+                <span class="dropzone-subtitle" id="txtNomeArqComp">Toque para selecionar ou arrastar arquivo...</span>
             </div>
             <input type="hidden" id="comprovanteBase64">
         </div>
@@ -2326,7 +2377,7 @@
             const file = event.target.files[0];
             if(!file) {
                 if (document.getElementById('comprovanteBase64')) document.getElementById('comprovanteBase64').value = "";
-                if (document.getElementById('txtNomeArqComp')) document.getElementById('txtNomeArqComp').innerText = "Selecionar arquivo...";
+                if (document.getElementById('txtNomeArqComp')) document.getElementById('txtNomeArqComp').innerText = "Toque para selecionar ou arrastar arquivo...";
                 return;
             }
             if(file.size > 2000000) { 
@@ -2371,7 +2422,7 @@
                 if (document.getElementById('formaRecebimento')) document.getElementById('formaRecebimento').value = r.forma || "Pix";
                 if (document.getElementById('comprovanteBase64')) document.getElementById('comprovanteBase64').value = r.comprovante || "";
                 if (document.getElementById('txtNomeArqComp')) document.getElementById('txtNomeArqComp').innerText = r.comprovante ?
-                "Comprovante salvo (Anexar novo)" : "Selecionar arquivo...";
+                "Comprovante salvo (Toque para trocar)" : "Toque para selecionar ou arrastar arquivo...";
                 document.getElementById('btnExcluir')?.classList.remove('hidden');
 
                 const lblValor = document.getElementById('lblValorMain');
@@ -3004,7 +3055,7 @@
             if (document.getElementById('selectPago')) document.getElementById('selectPago').value = "0";
             if (document.getElementById('comprovanteInput')) document.getElementById('comprovanteInput').value = "";
             if (document.getElementById('comprovanteBase64')) document.getElementById('comprovanteBase64').value = "";
-            if (document.getElementById('txtNomeArqComp')) document.getElementById('txtNomeArqComp').innerText = "Selecionar arquivo...";
+            if (document.getElementById('txtNomeArqComp')) document.getElementById('txtNomeArqComp').innerText = "Toque para selecionar ou arrastar arquivo...";
         }
         
         function iniciarApp() {
