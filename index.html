@@ -27,74 +27,101 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     
     <style>
-        /* VARIÁVEIS E TEMAS */
+        /* VARIÁVEIS DE TEMAS */
         :root { --bg: #030712; --card: #111827; --accent: #00f2ff; --text: #f3f4f6; --text-muted: #94a3b8; --border: #1f2937; --input-bg: #1f2937; --hover-bg: rgba(255,255,255,0.05); --success: #10b981; --danger: #ef4444; --warning: #f59e0b; --reserve: #8b5cf6; }
         [data-theme="light"] { --bg: #f8fafc; --card: #ffffff; --accent: #0284c7; --text: #0f172a; --text-muted: #64748b; --border: #e2e8f0; --input-bg: #f1f5f9; --hover-bg: rgba(0,0,0,0.05); --success: #059669; --danger: #dc2626; --warning: #d97706; --reserve: #7c3aed; }
-        [data-theme="nubank"] { --bg: #f0f1f5; --card: #ffffff; --accent: #820ad1; --text: #111111; --text-muted: #757575; --border: #e0e0e0; --input-bg: #f5f5f5; --hover-bg: rgba(130, 10, 209, 0.05); --success: #00a868; --danger: #e92929; --warning: #ff9800; --reserve: #820ad1; }
-        
-        * { box-sizing: border-box; outline: none; transition: background-color 0.3s, color 0.3s, border-color 0.3s; }
-        body { font-family: 'Ubuntu', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 0; overflow-x: hidden; font-size: 0.95rem; }
+        [data-theme="nubank"] { --bg: #f0f1f5; --card: #ffffff; --accent: #820ad1; --text: #111111; --text-muted: #757575; --border: #e0e0e0; --input-bg: #f5f5f5; --success: #00a868; --danger: #e92929; --warning: #ff9800; --reserve: #820ad1; }
+        [data-theme="santander"] { --bg: #f5f5f5; --card: #ffffff; --accent: #ec0000; --text: #222222; --text-muted: #666666; --border: #cccccc; --input-bg: #eeeeee; --success: #107c10; --danger: #cc0000; --warning: #ff7300; --reserve: #444444; }
+        [data-theme="itau"] { --bg: #f0f1f3; --card: #ffffff; --accent: #ec7000; --text: #002959; --text-muted: #6c7a89; --border: #dcdde1; --input-bg: #f5f6f8; --success: #008f39; --danger: #da291c; --warning: #ec7000; --reserve: #002959; }
+        [data-theme="bradesco"] { --bg: #ffffff; --card: #f9f9f9; --accent: #cc092f; --text: #333333; --text-muted: #777777; --border: #e6e6e6; --input-bg: #ffffff; --success: #008000; --danger: #cc092f; --warning: #f2a900; --reserve: #444444; }
 
-        /* TELA DE LOGIN ESTILO PREMIUM */
-        #lock-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, var(--bg) 0%, var(--card) 100%); z-index: 99999; display: flex; justify-content: center; align-items: center; padding: 20px; transition: opacity 0.5s ease, visibility 0.5s; }
-        .login-card { background: var(--card); border: 1px solid var(--border); border-radius: 28px; padding: 40px 30px; width: 100%; max-width: 380px; box-shadow: 0 30px 60px rgba(0,0,0,0.4); display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; overflow: hidden; }
-        
-        .login-logo { font-size: 3.5rem; color: var(--accent); margin-bottom: 10px; filter: drop-shadow(0 5px 15px rgba(0,242,255,0.3)); }
-        .lock-title { font-size: 1.8rem; margin: 0 0 5px 0; color: var(--text); font-weight: 800; }
-        .lock-subtitle { font-size: 0.85rem; color: var(--text-muted); margin: 0 0 30px 0; line-height: 1.4; }
+        * { box-sizing: border-box; outline: none; transition: background-color 0.3s, color 0.3s, border-color 0.3s; }
+        body { font-family: 'Ubuntu', system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 0; overflow-x: hidden; font-size: 0.95rem; }
+
+        /* TELA DE BLOQUEIO PREMIUM */
+        #lock-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(3, 7, 18, 0.85); backdrop-filter: blur(20px); z-index: 99999; display: flex; justify-content: center; align-items: center; padding: 20px; transition: opacity 0.5s ease, visibility 0.5s; }
+        [data-theme="light"] #lock-screen, [data-theme="santander"] #lock-screen, [data-theme="itau"] #lock-screen, [data-theme="bradesco"] #lock-screen, [data-theme="nubank"] #lock-screen { background: rgba(255, 255, 255, 0.85); }
+        .login-card { background: var(--card); border: 1px solid var(--border); border-radius: 28px; padding: 40px 30px; width: 100%; max-width: 380px; box-shadow: 0 30px 60px rgba(0,0,0,0.4); display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .lock-avatar { width: 80px; height: 80px; border-radius: 22px; background: linear-gradient(135deg, var(--accent), #0a192f); display: flex; align-items: center; justify-content: center; font-size: 2.8rem; color: white; margin-bottom: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); background-size: cover; background-position: center; }
+        .lock-title { font-size: 1.6rem; margin: 0 0 8px 0; color: var(--text); font-weight: 800; }
+        .lock-subtitle { font-size: 0.85rem; color: var(--text-muted); margin: 0 0 30px 0; line-height: 1.4; font-weight: 400; }
         
         .input-group { position: relative; width: 100%; margin-bottom: 16px; text-align: left; }
-        .input-group i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.1rem; pointer-events: none; }
-        .lock-input { width: 100%; background: var(--input-bg); border: 2px solid transparent; padding: 16px 16px 16px 45px; border-radius: 16px; color: var(--text); font-size: 0.95rem; transition: all 0.3s; font-family: 'Ubuntu', sans-serif; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); }
-        .lock-input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 4px rgba(0, 242, 255, 0.1); }
+        .input-group i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.1rem; }
+        .lock-input { width: 100%; background: var(--input-bg); border: 2px solid transparent; padding: 16px 16px 16px 45px; border-radius: 16px; color: var(--text); font-size: 0.95rem; transition: all 0.3s; font-family: 'Ubuntu', sans-serif; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); text-align: center; letter-spacing: 2px;}
+        .lock-input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(0, 242, 255, 0.1); }
         
-        .btn-login { width: 100%; background: linear-gradient(135deg, var(--accent), var(--success)); color: #fff; border: none; padding: 16px; border-radius: 16px; font-weight: 800; font-size: 1rem; cursor: pointer; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3); margin-top: 10px; margin-bottom: 15px; transition: transform 0.2s; }
-        .btn-login:active { transform: translateY(2px); }
-        .btn-outline { background: transparent; border: 2px solid var(--border); color: var(--text); width: 100%; padding: 16px; border-radius: 16px; font-weight: 700; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 10px; transition: 0.2s; }
-        .btn-outline:hover { background: var(--hover-bg); border-color: var(--accent); color: var(--accent); }
-        .btn-google { background: #fff; color: #333; border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .btn-google:hover { background: #f1f5f9; color: #000; border-color: transparent;}
-        
-        .auth-view { width: 100%; display: flex; flex-direction: column; align-items: center; animation: fadeIn 0.4s ease forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+        .btn-action { width: 100%; padding: 16px; border-radius: 16px; font-weight: 800; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 15px; border: none; transition: transform 0.2s; }
+        .btn-action:active { transform: scale(0.97); }
+        .btn-google { background: #fff; color: #444; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .btn-login { background: linear-gradient(135deg, var(--accent), var(--success)); color: #fff; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3); }
+        .btn-guest { background: transparent; color: var(--text); border: 2px solid var(--border); }
+        .btn-forgot { background: none; border: none; color: var(--text-muted); font-size: 0.85rem; cursor: pointer; font-weight: 600; text-decoration: underline; margin-top: 10px;}
 
-        /* QR CODE LOGIN VIEW */
+        .auth-view { width: 100%; display: flex; flex-direction: column; align-items: center; animation: fadeIn 0.4s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .qr-container { background: white; padding: 15px; border-radius: 16px; margin: 20px 0; box-shadow: 0 10px 25px rgba(0,242,255,0.2); border: 3px solid var(--accent); }
 
-        /* HEADER & SIDEBAR GERAIS (Igual ao seu) */
+        /* TOAST */
+        #toast-container { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 100000; display: flex; flex-direction: column; gap: 10px; pointer-events: none; width: 90%; max-width: 350px;}
+        .toast { background: var(--card); color: var(--text); padding: 16px 20px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 15px; font-weight: 500; font-size: 0.9rem; animation: slideUp 0.3s ease forwards; border-left: 5px solid var(--accent); }
+        .toast.success { border-left-color: var(--success); }
+        .toast.error { border-left-color: var(--danger); }
+        .toast.warning { border-left-color: var(--warning); }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* HEADER E COMPONENTES */
         header { background: var(--bg); padding: 18px 22px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
         .profile-section { display: flex; align-items: center; gap: 14px; cursor: pointer; }
-        .avatar { width: 44px; height: 44px; border-radius: 14px; background: linear-gradient(135deg, var(--accent), #0a192f); display: flex; align-items: center; justify-content: center; font-weight: bold; color: #ffffff; border: 2px solid var(--border); font-size: 1.3rem; overflow: hidden; background-size: cover; background-position: center; }
+        .avatar { width: 44px; height: 44px; border-radius: 14px; background: linear-gradient(135deg, var(--accent), #0a192f); display: flex; align-items: center; justify-content: center; font-weight: bold; color: #ffffff; border: 2px solid var(--border); font-size: 1.3rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2); overflow: hidden; background-size: cover; background-position: center; }
         .user-info span { font-size: 0.65rem; color: var(--text-muted); letter-spacing: 1px; display: block; text-transform: uppercase; margin-bottom: 2px; }
         .user-info strong { font-size: 0.95rem; color: var(--text); }
-        .sidebar { position: fixed; top: 0; right: -100%; width: 85%; max-width: 400px; height: 100%; background: var(--card); z-index: 3000; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: -20px 0 50px rgba(0,0,0,0.5); overflow-y: auto; padding: 30px 24px; }
+        .bell-btn { background:none; border:1px solid var(--border); color:var(--text); padding:8px 10px; border-radius:10px; cursor:pointer; position:relative; display: flex; align-items: center; justify-content: center; height: 38px; width: 38px; }
+        .badge { position:absolute; top:-5px; right:-5px; background:var(--danger); color:white; font-size:0.6rem; font-weight:bold; border-radius:50%; width:18px; height:18px; display:flex; align-items:center; justify-content:center; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+
+        /* MENU LATERAL E DASHBOARD (Resumo para economizar linhas) */
+        .sidebar { position: fixed; top: 0; right: -100%; width: 85%; max-width: 400px; height: 100%; background: var(--card); z-index: 3000; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: -20px 0 50px rgba(0,0,0,0.5); overflow-y: auto; padding: 30px 24px; border-left: 1px solid var(--accent); }
         .sidebar.open { right: 0; }
-
-        /* UI APP PRINCIPAL */
+        .sidebar-header { text-align: center; margin-bottom: 30px; }
+        .menu-item { padding: 12px 15px; border-radius: 16px; display: flex; align-items: center; gap: 15px; font-size: 0.95rem; cursor: pointer; color: var(--text); font-weight: 600; margin-bottom: 8px; transition: all 0.2s ease; }
+        .menu-item:hover { background: var(--hover-bg); }
+        .menu-item i { color: var(--accent); width: 25px; text-align: center; font-size: 1.1rem; }
+        
         .month-selector { display: flex; justify-content: space-between; align-items: center; padding: 22px 22px 0; }
-        .month-selector button { background: var(--hover-bg); border: 1px solid var(--border); color: var(--text); width: 38px; height: 38px; border-radius: 10px; font-size: 1rem; cursor: pointer; }
-        .month-selector span { font-size: 0.95rem; font-weight: 800; text-transform: uppercase; color: var(--accent); letter-spacing: 1.2px; }
-        .balance-card { padding: 18px 22px 5px; text-align: center;}
-        .balance-card h1 { font-size: 2.8rem; margin: 5px 0 0; font-weight: 800; color: var(--text); }
+        .month-selector button { background: var(--hover-bg); border: 1px solid var(--border); color: var(--text); width: 38px; height: 38px; border-radius: 10px; cursor: pointer; }
+        .month-selector span { font-size: 0.95rem; font-weight: 800; text-transform: uppercase; color: var(--accent); }
+        .balance-card { padding: 18px 22px 5px; text-align: center; }
+        .balance-card h1 { font-size: 2.8rem; margin: 8px 0 0; font-weight: 800; color: var(--text); }
         .quick-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 20px 22px; }
-        .mini-card { background: var(--card); padding: 16px; border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .mini-card { background: var(--card); padding: 16px; border-radius: 16px; border: 1px solid var(--border); cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
 
-        /* MODAL NOVA OPERAÇÃO - DESIGN ABSURDO */
-        .modal { position: fixed; bottom: -100%; left: 0; width: 100%; height: 95%; background: var(--bg); border-radius: 35px 35px 0 0; z-index: 2000; padding: 25px 22px 100px; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); overflow-y: auto; border-top: 1px solid var(--border); box-shadow: 0 -15px 50px rgba(0,0,0,0.7); }
+        main { padding: 0 22px 22px; }
+        .transaction-item { background: var(--card); padding: 16px; border-radius: 18px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.02);}
+        .icon-box { width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; background: var(--bg); border: 1px solid var(--border); font-size: 1.05rem; }
+        .details { flex: 1; margin-left: 14px; overflow: hidden; text-align: left; }
+        .details strong { display: block; font-size: 0.95rem; color: var(--text); margin-bottom: 3px; }
+        .details span.txt-sub { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; }
+        .amount-section { text-align: right; min-width: 90px; padding-left: 10px; }
+        .amount-section strong { display: block; font-size: 0.95rem; color: var(--text); margin-bottom: 3px;}
+        .status-text { font-size: 0.65rem; font-weight: 800; text-transform: uppercase; }
+
+        /* BARRAS, MODAIS E EXTRAS */
+        .bottom-charts { padding: 22px; background: var(--card); border-top: 1px solid var(--border); margin-bottom: 100px; border-radius: 24px 24px 0 0; }
+        .action-buttons { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
+        .action-btn { flex: 1; min-width: 45%; padding: 12px; background: rgba(0,242,255,0.1); border: 1px solid var(--accent); border-radius: 10px; color: var(--accent); font-weight: 800; font-size: 0.7rem; cursor: pointer; display: flex; align-items: center; justify-content: center;}
+        
+        .fab { position: fixed; bottom: 30px; right: 22px; width: 65px; height: 65px; border-radius: 22px; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; box-shadow: 0 15px 30px rgba(0, 242, 255, 0.3); border: none; z-index: 1000; cursor: pointer; transition: transform 0.2s;}
+        .fab:active { transform: scale(0.95); }
+        .modal { position: fixed; bottom: -100%; left: 0; width: 100%; height: 95%; background: var(--bg); border-radius: 35px 35px 0 0; z-index: 2000; padding: 25px 22px 100px; transition: 0.4s; overflow-y: auto; border-top: 1px solid var(--border); }
         .modal.open { bottom: 0; }
         .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; z-index: 1500; backdrop-filter: blur(5px); }
+        .hidden { display: none !important; }
 
-        .form-group { margin-bottom: 18px; background: var(--card); padding: 15px; border-radius: 18px; border: 1px solid var(--border); }
-        .form-group.highlight { border-color: rgba(0,242,255,0.3); background: rgba(0,242,255,0.02); }
+        input, select { width: 100%; background: var(--input-bg); border: 1px solid var(--border); padding: 16px; border-radius: 12px; color: var(--text); font-family: 'Ubuntu', sans-serif; font-size: 1rem; margin-bottom: 15px;}
+        input:focus, select:focus { border-color: var(--accent); }
         
-        .label-mini { font-size: 0.65rem; color: var(--text-muted); font-weight: 800; margin-bottom: 8px; display: block; text-transform: uppercase; letter-spacing: 1px;}
-        .label-mini.accent { color: var(--accent); }
-        
-        input, select { width: 100%; background: var(--input-bg); border: none; padding: 14px 16px; border-radius: 12px; color: var(--text); font-family: 'Ubuntu', sans-serif; font-size: 1rem; font-weight: 500; }
-        input:focus, select:focus { box-shadow: inset 0 0 0 2px var(--accent); }
-        
-        /* O NOVO TOGGLE SWITCH (Estilo iOS) */
-        .toggle-container { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; }
+        /* TOGGLE SWITCH ESTILO iOS */
+        .toggle-container { display: flex; justify-content: space-between; align-items: center; background: var(--card); padding: 15px; border-radius: 16px; border: 1px solid var(--border); margin-bottom: 15px; }
         .toggle-switch { position: relative; width: 52px; height: 30px; }
         .toggle-switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--input-bg); border: 2px solid var(--border); transition: .4s; border-radius: 34px; }
@@ -102,17 +129,16 @@
         input:checked + .slider { background-color: var(--success); border-color: var(--success); }
         input:checked + .slider:before { transform: translateX(22px); background-color: white; }
 
-        .btn-confirm { background: linear-gradient(90deg, var(--accent), var(--success)); color: #ffffff; width: 100%; padding: 18px; border-radius: 16px; border: none; font-weight: 800; font-family: 'Ubuntu', sans-serif; font-size: 1.1rem; cursor: pointer; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2); transition: transform 0.2s;}
-        .btn-confirm:active { transform: scale(0.97); }
-
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .hidden { display: none !important; }
-        .fab { position: fixed; bottom: 30px; right: 22px; width: 65px; height: 65px; border-radius: 22px; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; box-shadow: 0 15px 30px rgba(0, 242, 255, 0.3); border: none; z-index: 1000; cursor: pointer; }
-
-        /* TOAST */
-        #toast-container { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 100000; display: flex; flex-direction: column; gap: 10px; pointer-events: none; width: 90%; max-width: 350px;}
-        .toast { background: var(--card); color: var(--text); padding: 16px 20px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 15px; font-weight: 500; border-left: 5px solid var(--accent); animation: slideUp 0.3s forwards; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .btn-confirm { background: linear-gradient(90deg, var(--accent), var(--success)); color: #fff; width: 100%; padding: 18px; border-radius: 16px; border: none; font-weight: 800; font-size: 1.1rem; cursor: pointer; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2); }
+        .btn-delete { background: transparent; border: 1px solid var(--danger); color: var(--danger); width: 100%; padding: 16px; border-radius: 16px; font-weight: 800; cursor: pointer; margin-top: 15px; }
+        
+        /* METAS E COMPONENTES EXTRAS */
+        .meta-dashboard-card { background: linear-gradient(160deg, #111827 0%, #030712 100%); border: 1px solid rgba(0, 242, 255, 0.2); border-radius: 24px; padding: 25px; margin-bottom: 25px; text-align: center; }
+        .meta-progress-fill-glow { height: 14px; width: 0%; border-radius: 20px; background: linear-gradient(90deg, #ef4444, #f59e0b, #10b981, #00f2ff); transition: width 1.5s; box-shadow: 0 0 15px rgba(0, 242, 255, 0.6); }
+        .theme-selector { background: var(--input-bg); padding: 15px; border-radius: 16px; display: none; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .theme-selector.open { display: grid; }
+        .theme-btn { padding: 12px; border-radius: 10px; cursor: pointer; border: 1px solid var(--border); background: var(--card); color: var(--text); text-align: center; font-weight: bold; }
+        #pdf-container { position: absolute; left: -9999px; top: -9999px; width: 800px; background: white; color: black; z-index: -1; }
     </style>
 </head>
 <body>
@@ -122,40 +148,39 @@
     <div id="lock-screen">
         <div class="login-card">
             
-            <div id="viewLogin" class="auth-view">
-                <i class="fa-solid fa-layer-group login-logo"></i>
+            <div id="viewPrincipal" class="auth-view">
+                <div class="lock-avatar"><i class="fa-solid fa-fingerprint"></i></div>
                 <h2 class="lock-title">MeuCaixa</h2>
                 <p class="lock-subtitle">Inteligência Financeira na Nuvem.</p>
                 
-                <button class="btn-outline btn-google" onclick="iniciarLoginGoogle()">
-                    <svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/></svg>
+                <div id="loginLocalArea" style="display: none; width: 100%;">
+                    <div class="input-group">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="inputSenha" class="lock-input" placeholder="Seu PIN Local" inputmode="numeric" onkeypress="if(event.key === 'Enter') checkLogin()">
+                    </div>
+                    <button class="btn-action btn-login" onclick="checkLogin()">ENTRAR OFFLINE</button>
+                    <div style="margin: 15px 0; width: 100%; display: flex; align-items: center; gap: 10px; color: var(--text-muted); font-size: 0.7rem;">
+                        <div style="flex: 1; height: 1px; background: var(--border);"></div> OU <div style="flex: 1; height: 1px; background: var(--border);"></div>
+                    </div>
+                </div>
+
+                <button class="btn-action btn-google" onclick="iniciarLoginGoogle()" id="btnGoogleAuth">
+                    <svg viewBox="0 0 48 48" width="22px"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/></svg>
                     Acessar com Google
                 </button>
                 
-                <button class="btn-outline btn-guest" onclick="mostrarViewQR()">
+                <button class="btn-action btn-guest" onclick="mostrarViewQR()" id="btnQRCode">
                     <i class="fa-solid fa-qrcode" style="color: var(--accent);"></i> Entrar via QR Code
                 </button>
-
-                <div style="margin: 15px 0; width: 100%; display: flex; align-items: center; gap: 10px; color: var(--text-muted); font-size: 0.7rem;">
-                    <div style="flex: 1; height: 1px; background: var(--border);"></div> LOCAL <div style="flex: 1; height: 1px; background: var(--border);"></div>
-                </div>
-
-                <div class="input-group">
-                    <i class="fa-solid fa-lock"></i>
-                    <input type="password" id="inputSenha" class="lock-input" placeholder="PIN Offline" inputmode="numeric" onkeypress="if(event.key === 'Enter') checkLogin()">
-                </div>
-                <button class="btn-login" onclick="checkLogin()">ENTRAR OFFLINE</button>
+                
+                <button class="btn-action btn-guest" onclick="entrarSemLogin()" id="btnOfflineLivre">Continuar Offline (Sem Senha)</button>
             </div>
 
             <div id="viewQR" class="auth-view hidden">
                 <h2 class="lock-title">Conexão Rápida</h2>
-                <p class="lock-subtitle">Escaneie com a câmera do seu celular para abrir o app instantaneamente.</p>
-                
+                <p class="lock-subtitle">Escaneie com a câmera do celular para abrir o app na mesma rede.</p>
                 <div class="qr-container" id="qrcodeBox"></div>
-                
-                <button class="btn-outline btn-guest" onclick="voltarViewLogin()" style="margin-top: 20px;">
-                    <i class="fa-solid fa-arrow-left"></i> Voltar
-                </button>
+                <button class="btn-forgot" onclick="voltarViewLogin()" style="margin-top: 20px;"><i class="fa-solid fa-arrow-left"></i> Voltar ao início</button>
             </div>
 
         </div>
@@ -166,23 +191,75 @@
             <div class="avatar" id="headerAvatar">WC</div>
             <div class="user-info"><span>MEUCAIXA</span><strong id="headerUserName">WENDEL</strong></div>
         </div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <button class="bell-btn" onclick="abrirNotificacoes()">
+                <i class="fa-solid fa-bell"></i>
+                <span id="badgeNotificacao" class="badge hidden">0</span>
+            </button>
+            <button onclick="toggleFantasma()" style="background:none; border:1px solid var(--border); color:var(--text); padding:8px 10px; border-radius:10px;"><i id="eyeIcon" class="fa-solid fa-eye"></i></button>
+        </div>
     </header>
 
     <div class="sidebar" id="profileSidebar">
-        <button onclick="fazerLogout()" style="background:var(--danger); color:white; width:100%; padding:15px; border-radius:12px; border:none; font-weight:bold; margin-top:20px;">SAIR DA CONTA</button>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+            <h3 style="margin:0;">Configurações</h3>
+            <i class="fa-solid fa-xmark" style="font-size: 1.4rem; cursor: pointer;" onclick="toggleSidebar()"></i>
+        </div>
+        <div class="sidebar-header">
+            <div class="avatar" id="sidebarAvatar" style="width: 80px; height: 80px; font-size: 2.2rem; margin: 0 auto 15px;">WC</div>
+            <h2 id="sidebarUserName" style="margin:0; font-size: 1.2rem; color: var(--text);">WENDEL CARNEIRO</h2>
+            <span id="statusConexao" style="background: rgba(245, 158, 11, 0.1); color: var(--warning); padding: 4px 10px; border-radius: 8px; font-size: 0.7rem; font-weight: bold; display: inline-block; margin-top: 10px;">OFFLINE LOCAL</span>
+        </div>
+        
+        <div style="margin-top: 20px;">
+            <div class="menu-item" onclick="mudarNome()"><i class="fa-solid fa-user-pen"></i> Editar Nome</div>
+            <div class="menu-item" onclick="configurarSenha()"><i class="fa-solid fa-lock" style="color: var(--warning)"></i> Proteger App (Criar PIN)</div>
+            <div class="menu-item" onclick="abrirGestaoMetas()"><i class="fa-solid fa-bullseye fa-beat" style="color: var(--success)"></i> Painel de Metas</div>
+            <div class="menu-item" onclick="document.getElementById('themeOptions').classList.toggle('open')"><i class="fa-solid fa-palette"></i> Temas e Bancos</div>
+            
+            <div class="theme-selector" id="themeOptions">
+                <div class="theme-btn" onclick="mudarTema('dark')">Escuro</div>
+                <div class="theme-btn" onclick="mudarTema('light')">Claro</div>
+                <div class="theme-btn" onclick="mudarTema('nubank')">Nubank</div>
+                <div class="theme-btn" onclick="mudarTema('santander')">Santander</div>
+                <div class="theme-btn" onclick="mudarTema('itau')">Itaú</div>
+                <div class="theme-btn" onclick="mudarTema('bradesco')">Bradesco</div>
+            </div>
+
+            <div class="menu-item" onclick="gerarPDFoficial()"><i class="fa-solid fa-file-pdf" style="color: var(--danger)"></i> Baixar Extrato PDF</div>
+            <div class="menu-item" onclick="exportarDados()"><i class="fa-solid fa-file-excel" style="color: var(--success)"></i> Salvar Backup (CSV)</div>
+            <div class="menu-item" onclick="limparTerminal()"><i class="fa-solid fa-trash" style="color: var(--danger)"></i> Apagar Tudo</div>
+            
+            <div class="menu-item" style="border: 1px solid rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.05); margin-top: 20px;" onclick="fazerLogout()">
+                <i class="fa-solid fa-power-off" style="color: var(--danger);"></i> <span style="color: var(--danger);">Sair e Bloquear</span>
+            </div>
+        </div>
     </div>
 
     <div id="mainContainer" class="hidden">
         <div class="month-selector">
             <button onclick="mudarMes(-1)"><i class="fa-solid fa-chevron-left"></i></button>
-            <span id="mesDisplay">MÊS</span>
+            <span id="mesDisplay">MÊS ANO</span>
             <button onclick="mudarMes(1)"><i class="fa-solid fa-chevron-right"></i></button>
         </div>
+
         <div class="balance-card">
-            <small>Saldo Disponível</small>
+            <small>Saldo Disponível do Mês</small>
             <h1 id="totalSaldo">R$ 0,00</h1>
         </div>
-        <main id="tabelaCorpo" style="padding: 20px;"></main>
+
+        <div class="quick-stats">
+            <div class="mini-card" onclick="filtrarExtrato('Receita')"><span>Entradas</span><strong id="totalReceitas" style="color:var(--success)">R$ 0,00</strong></div>
+            <div class="mini-card" onclick="filtrarExtrato('Gasto')"><span>Gastos & Dívidas</span><strong id="totalGastos" style="color:var(--danger)">R$ 0,00</strong></div>
+        </div>
+
+        <main>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin: 10px 0 15px;">
+                <h3 style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; margin: 0;">Lançamentos</h3>
+                <button id="btnVoltar" class="hidden" onclick="filtrarExtrato('Tudo')" style="background: transparent; color: var(--accent); border: 1px solid var(--accent); padding: 4px 10px; border-radius: 8px; font-size: 0.7rem; font-weight: bold; cursor: pointer;">VOLTAR</button>
+            </div>
+            <div id="tabelaCorpo" style="padding-bottom: 100px;"></div>
+        </main>
     </div>
 
     <button class="fab hidden" id="fabAdd" onclick="openModal()"><i class="fa-solid fa-plus"></i></button>
@@ -191,41 +268,35 @@
     <div class="modal" id="modalForm">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px;">
             <h2 id="modalTitle" style="margin:0; font-size:1.3rem; font-weight: 800;">Lançamento</h2>
-            <i class="fa-solid fa-xmark" onclick="closeAll()" style="cursor:pointer; font-size: 1.5rem; background: var(--input-bg); width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; border-radius: 50%;"></i>
+            <i class="fa-solid fa-xmark" onclick="closeAll()" style="cursor:pointer; font-size: 1.2rem; background: var(--input-bg); width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; border-radius: 50%;"></i>
         </div>
 
-        <div class="form-group highlight">
-            <span class="label-mini accent">Tipo de Lançamento</span>
-            <select id="tipo" onchange="atualizarSubmenu()" style="font-size: 1.1rem; font-weight: 700; color: var(--accent); background: transparent; padding: 5px 0;">
-                <option value="Receita">Dinheiro Entrando (Receita)</option>
-                <option value="Fixo">Gasto Fixo Mensal</option>
-                <option value="Variavel">Gasto Variável / Ocasional</option>
-                <option value="Divida">Dívida / Parcelamento</option>
-                <option value="Reserva">Investimento / Reserva</option>
-            </select>
-        </div>
+        <span class="label-mini" style="color: var(--accent);">Tipo de Movimentação</span>
+        <select id="tipo" onchange="atualizarSubmenu()" style="font-size: 1.1rem; font-weight: 700; color: var(--accent); margin-bottom: 20px;">
+            <option value="Receita">Dinheiro Entrando (Receita)</option>
+            <option value="Fixo">Gasto Fixo Mensal</option>
+            <option value="Variavel">Gasto Variável / Ocasional</option>
+            <option value="Divida">Dívida / Fatura / Parcela</option>
+            <option value="Reserva">Investimento / Reserva</option>
+        </select>
 
-        <div class="form-group">
-            <span class="label-mini">Categoria Exata</span>
-            <select id="submenu" onchange="definirDescricao()"></select>
-        </div>
+        <span class="label-mini">Categoria Exata</span>
+        <select id="submenu" onchange="definirDescricao()"></select>
 
-        <div class="form-group">
-            <span class="label-mini">Nome / Descrição</span>
-            <input type="text" id="desc" placeholder="Ex: Conta de Luz da Casa">
-        </div>
+        <span class="label-mini">Nome / Descrição</span>
+        <input type="text" id="desc" placeholder="Ex: Conta de Luz de Casa">
 
         <div class="grid-2">
-            <div class="form-group">
+            <div>
                 <span class="label-mini">Valor (R$)</span>
                 <input type="number" id="valor" placeholder="0,00" step="0.01" style="font-size: 1.2rem; font-weight: 800; color: var(--text);">
             </div>
             
-            <div class="form-group" style="display: flex; flex-direction: column; justify-content: center;">
+            <div style="display: flex; flex-direction: column; justify-content: center;">
                 <div class="toggle-container">
                     <div>
                         <span class="label-mini" style="margin-bottom: 2px;">Situação</span>
-                        <strong id="lblStatusToggle" style="font-size: 0.9rem; color: var(--warning);">Pendente</strong>
+                        <strong id="lblStatusToggle" style="font-size: 0.85rem; color: var(--warning);">Pendente</strong>
                     </div>
                     <label class="toggle-switch">
                         <input type="checkbox" id="checkPago" onchange="toggleDatas()">
@@ -235,22 +306,22 @@
             </div>
         </div>
 
-        <div class="grid-2" id="boxDatasContainer">
-            <div class="form-group">
-                <span class="label-mini" style="color: var(--danger);"><i class="fa-regular fa-calendar"></i> Vencimento</span>
+        <div class="grid-2" style="margin-top: 15px;">
+            <div>
+                <span class="label-mini" style="color: var(--warning);"><i class="fa-regular fa-calendar"></i> Vencimento</span>
                 <input type="date" id="dataVencimento" style="color: var(--text);">
             </div>
-            <div class="form-group hidden" id="boxDataPagamento">
+            <div id="boxDataPagamento" class="hidden">
                 <span class="label-mini" style="color: var(--success);"><i class="fa-solid fa-check-double"></i> Data Pagamento</span>
                 <input type="date" id="dataPagamento" style="color: var(--text);">
             </div>
         </div>
 
-        <div class="form-group hidden" id="boxRepetirFixo" style="border-color: var(--accent); background: rgba(0,242,255,0.05);">
-            <div class="toggle-container">
+        <div id="boxRepetirFixo" class="hidden" style="border: 1px solid var(--accent); background: rgba(0,242,255,0.05); padding: 15px; border-radius: 16px; margin-bottom: 15px;">
+            <div class="toggle-container" style="background: transparent; border: none; padding: 0; margin: 0;">
                 <div>
-                    <span class="label-mini accent"><i class="fa-solid fa-rotate-right"></i> Conta Recorrente?</span>
-                    <span style="font-size: 0.75rem; color: var(--text-muted);">Lançar meses futuros</span>
+                    <span class="label-mini" style="color: var(--accent);"><i class="fa-solid fa-rotate-right"></i> Conta Recorrente?</span>
+                    <span style="font-size: 0.75rem; color: var(--text-muted);">Gerar para meses futuros</span>
                 </div>
                 <label class="toggle-switch">
                     <input type="checkbox" id="checkRepetirFixo" onchange="toggleQtdFixo()">
@@ -263,24 +334,35 @@
             </div>
         </div>
 
-        <div class="form-group hidden" id="boxParcelamento" style="border-color: var(--warning); background: rgba(245,158,11,0.05);">
-            <span class="label-mini" style="color: var(--warning);"><i class="fa-solid fa-layer-group"></i> Configurar Parcelamento</span>
+        <div id="boxParcelamento" class="hidden" style="border: 1px solid var(--danger); background: rgba(239,68,68,0.05); padding: 15px; border-radius: 16px; margin-bottom: 15px;">
+            <span class="label-mini" style="color: var(--danger);"><i class="fa-solid fa-layer-group"></i> Configurar Parcelamento</span>
             <div class="grid-2" style="margin-top: 10px;">
                 <div><span class="label-mini">Total de Parcelas</span><input type="number" id="parcelas" value="1" min="1"></div>
                 <div><span class="label-mini">Já Pagas</span><input type="number" id="parcelasPagas" value="0" min="0"></div>
             </div>
-            <span style="font-size: 0.7rem; color: var(--text-muted); display: block; margin-top: 5px;">O valor inserido acima será dividido pelas parcelas.</span>
+            <span style="font-size: 0.7rem; color: var(--text-muted); display: block; margin-top: 5px;">O valor total será dividido pelas parcelas.</span>
         </div>
         
         <input type="hidden" id="editIndex">
         <button class="btn-confirm" onclick="salvar()"><i class="fa-solid fa-cloud-arrow-up"></i> SALVAR LANÇAMENTO</button>
-        <button id="btnExcluir" class="btn-action hidden" style="background: transparent; color: var(--danger); border: 1px solid var(--danger); margin-top: 15px; width: 100%; max-width: 100%;" onclick="excluirRegistro()"><i class="fa-solid fa-trash"></i> APAGAR</button>
+        <button id="btnExcluir" class="btn-delete hidden" onclick="excluirRegistro()"><i class="fa-solid fa-trash"></i> APAGAR PERMANENTEMENTE</button>
     </div>
+
+    <div class="modal" id="modalNotificacoes" style="z-index: 2500; background: var(--bg);">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <h2 style="margin:0; font-size:1.15rem; color: var(--warning);"><i class="fa-solid fa-bell fa-shake"></i> Central de Alertas</h2>
+            <i class="fa-solid fa-xmark" style="font-size:1.4rem; color:var(--text-muted); cursor:pointer;" onclick="closeModal()"></i>
+        </div>
+        <div id="listaNotificacoes"></div>
+    </div>
+    
+    <div id="pdf-container"></div>
 
     <script>
         // ----------------------------------------------------
-        // 1. CONFIGURAÇÕES E BANCO DE DADOS
+        // 1. CONFIGURAÇÕES E BANCO DE DADOS BLINDADO
         // ----------------------------------------------------
+        // A CHAVE CORRETA E LIMPA
         const firebaseConfig = {
             apiKey: "AIzaSyD2TXAC0o5t8vTsH2jzLqZ9QoReHU5y0Mo",
             authDomain: "meucaixa-d8d24.firebaseapp.com",
@@ -292,73 +374,144 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const provider = new firebase.auth.GoogleAuthProvider();
+        provider.setCustomParameters({ prompt: 'select_account' });
 
-        let registros = JSON.parse(localStorage.getItem('foton_db')) || [];
-        let dataVisualizacao = new Date();
-        let appConfig = JSON.parse(localStorage.getItem('meucaixa_config')) || { nome: "WENDEL CARNEIRO", senhaHash: "1234" };
-
-        function showToast(m, t="success") { 
-            const c = document.getElementById('toast-container'); 
-            const n = document.createElement('div'); 
-            n.className = `toast ${t}`; 
-            n.innerHTML = `<i class="fa-solid fa-${t==='success'?'check-circle':'triangle-exclamation'}"></i> <span>${m}</span>`; 
-            c.appendChild(n); 
-            setTimeout(() => n.remove(), 3000); 
+        // SISTEMA DE DADOS PROTEGIDO CONTRA FALHAS DO INDEXEDDB
+        let db;
+        let registros = [];
+        
+        try {
+            const requestDB = indexedDB.open("MeuCaixaApp", 1);
+            requestDB.onupgradeneeded = function(e) {
+                db = e.target.result;
+                if (!db.objectStoreNames.contains("financeiro")) { db.createObjectStore("financeiro"); }
+            };
+            requestDB.onsuccess = function(e) {
+                db = e.target.result;
+                carregarDB();
+            };
+            requestDB.onerror = function(e) {
+                console.warn("IndexedDB falhou. Usando LocalStorage.");
+                carregarLocalStorage();
+            };
+        } catch (e) {
+            carregarLocalStorage();
         }
 
+        function carregarDB() {
+            try {
+                const tx = db.transaction("financeiro", "readonly");
+                const store = tx.objectStore("financeiro");
+                const request = store.get("registros_lista");
+                request.onsuccess = function() {
+                    if (request.result) registros = request.result;
+                    else carregarLocalStorage(true);
+                    iniciarApp();
+                };
+                request.onerror = () => { carregarLocalStorage(); iniciarApp(); }
+            } catch(e) { carregarLocalStorage(); iniciarApp(); }
+        }
+
+        function carregarLocalStorage(salvarNoDB = false) {
+            const oldDb = localStorage.getItem('foton_db');
+            if (oldDb) {
+                registros = JSON.parse(oldDb);
+                if (salvarNoDB) salvarDados();
+            }
+            if(!db) iniciarApp();
+        }
+
+        function salvarDados() {
+            localStorage.setItem('foton_db', JSON.stringify(registros));
+            if(db) {
+                try {
+                    const tx = db.transaction("financeiro", "readwrite");
+                    const store = tx.objectStore("financeiro");
+                    store.put(registros, "registros_lista");
+                } catch(e) {}
+            }
+        }
+
+        // Variáveis de Controle
+        let modoFantasma = false, filtroAtual = "Tudo", subFiltro = "Pendente", dataVisualizacao = new Date();
+        // REMOVIDO A SENHA "1234" QUE TE TRAVAVA
+        let appConfig = JSON.parse(localStorage.getItem('meucaixa_config')) || { nome: "WENDEL CARNEIRO", moeda: "R$", senhaHash: null };
+
         // ----------------------------------------------------
-        // 2. NOVA LÓGICA DE CATEGORIAS INTELIGENTES
+        // 2. CATEGORIAS INTELIGENTES E SUPER COMPLETAS
         // ----------------------------------------------------
         const opcoesSubmenu = {
-            "Receita": ["💰 Salário", "🚀 Freelance", "📈 Rendimentos/Dividendos", "🎁 Presente/Bônus", "💵 Restituição/Cashback", "🛒 Venda de Produtos", "🛠️ Serviços Prestados"],
-            "Fixo": ["🏠 Aluguel / Condomínio", "⚡ Energia Elétrica", "💧 Água e Esgoto", "🌐 Internet / Celular", "🛡️ Seguro (Vida/Casa/Carro)", "📺 Assinaturas (Netflix, Spotify)", "🏋️ Academia / Clube", "📚 Mensalidade (Escola/Facul)", "🧹 Limpeza / Serviços"],
-            "Variavel": ["🛒 Supermercado", "🍕 Delivery / Restaurante", "⛽ Combustível / Transporte", "🚗 App (Uber/99)", "💊 Farmácia / Saúde", "🐾 Pets (Ração/Vet)", "✂️ Estética / Beleza", "👕 Roupas / Compras", "🎉 Lazer / Festas", "🛠️ Manutenção Casa/Carro"],
-            "Divida": ["💳 Fatura Cartão de Crédito", "🏢 Financiamento (Casa/Carro)", "🤝 Empréstimo Pessoal", "🧾 Boleto Avulso", "🏛️ Impostos (IPVA/IPTU)"],
-            "Reserva": ["🏦 CDB / Tesouro Direto", "📈 Ações / FIIs", "🪙 Criptomoedas", "📦 Caixinha de Emergência", "✈️ Fundo para Viagem"]
+            "Receita": ["💰 Salário", "🚀 Freelance / Extra", "📈 Rendimentos/Dividendos", "🎁 Presente/Bônus", "💵 Restituição/Cashback", "🛒 Venda de Produtos", "🛠️ Serviços Prestados"],
+            "Fixo": ["🏠 Aluguel / Condomínio", "⚡ Energia Elétrica", "💧 Água e Esgoto", "🌐 Internet / Celular", "🛡️ Seguro (Vida/Casa/Carro)", "📺 Assinaturas (Netflix/Spotify)", "🏋️ Academia / Clube", "📚 Mensalidade (Escola/Faculdade)", "🧹 Limpeza / Funciona."],
+            "Variavel": ["🛒 Supermercado / Feira", "🍕 Delivery / Restaurante", "⛽ Combustível / Transporte", "🚗 App (Uber/99)", "💊 Farmácia / Saúde", "🐾 Pets (Ração/Vet)", "✂️ Estética / Beleza / Cabelo", "👕 Roupas / Acessórios", "🛍️ Compras Online (Shopee/Amazon)", "🎉 Lazer / Festas / Bar", "🛠️ Manutenção Casa/Carro"],
+            "Divida": ["💳 Fatura Cartão de Crédito", "🏢 Financiamento (Casa/Carro)", "🤝 Empréstimo Pessoal", "🧾 Boleto Avulso", "⚖️ Acordo / Renegociação", "🏛️ Impostos (IPVA/IPTU/IR)"],
+            "Reserva": ["🏦 CDB / Tesouro Direto", "📈 Ações / FIIs", "🪙 Criptomoedas", "📦 Caixinha de Emergência", "✈️ Fundo para Viagem", "🎯 Aporte para Meta"]
         };
 
         // ----------------------------------------------------
-        // 3. LOGIN E TELA DE ENTRADA (QR CODE INCLUSO)
+        // 3. LOGIN DO GOOGLE E QR CODE (ANTI-TRAVAMENTO)
         // ----------------------------------------------------
-        auth.getRedirectResult().then(res => { if(res.user) entrarApp(res.user); }).catch(console.error);
-        auth.onAuthStateChanged(u => { if(u) entrarApp(u); else if(sessionStorage.getItem('isLoggedIn')) liberarApp(); });
-
-        function iniciarLoginGoogle() { auth.signInWithRedirect(provider); }
-        function entrarSemLogin() { sessionStorage.setItem('isLoggedIn', 'true'); liberarApp(); }
-        function entrarApp(u) { appConfig.nome = u.displayName; localStorage.setItem('meucaixa_config', JSON.stringify(appConfig)); sessionStorage.setItem('isLoggedIn', 'true'); liberarApp(); }
-        function fazerLogout() { auth.signOut().then(() => { sessionStorage.removeItem('isLoggedIn'); location.reload(); }); }
         
+        function iniciarApp() {
+            carregarConfig();
+            const lockScreen = document.getElementById('lock-screen');
+            const localArea = document.getElementById('loginLocalArea');
+            const btnGuest = document.getElementById('btnOfflineLivre');
+            const subtitle = document.getElementById('loginSubtitle');
+
+            // Lógica para mostrar tela de PIN apenas se o usuário tiver configurado um!
+            if(appConfig.senhaHash && appConfig.senhaHash !== "google_auth") {
+                localArea.style.display = 'flex';
+                btnGuest.style.display = 'none';
+                subtitle.innerText = "Este app está protegido. Insira sua senha.";
+            } else {
+                localArea.style.display = 'none';
+                btnGuest.style.display = 'flex';
+                subtitle.innerText = "Inteligência Financeira na Nuvem.";
+            }
+
+            // Ouve o Firebase e libera a tela se logado
+            auth.onAuthStateChanged((user) => {
+                if (user) {
+                    appConfig.nome = user.displayName || "Usuário";
+                    appConfig.fotoPerfil = user.photoURL;
+                    appConfig.senhaHash = "google_auth";
+                    salvarConfig();
+                    sessionStorage.setItem('isLoggedIn', 'true');
+                    liberarApp();
+                } else if (sessionStorage.getItem('isLoggedIn') === 'true') {
+                    liberarApp();
+                } else {
+                    lockScreen.classList.remove('hidden');
+                    lockScreen.style.opacity = '1';
+                }
+            });
+        }
+
+        // Pega o retorno do Google de forma segura
+        auth.getRedirectResult().catch(e => {
+            alert("Falha no Google: " + e.message);
+            document.getElementById('btnGoogleAuth').innerHTML = '<i class="fa-brands fa-google"></i> Entrar com Google';
+        });
+
+        function iniciarLoginGoogle() {
+            document.getElementById('btnGoogleAuth').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Conectando...';
+            auth.signInWithRedirect(provider).catch(e => {
+                alert("Erro ao abrir login: " + e.message);
+                document.getElementById('btnGoogleAuth').innerHTML = '<i class="fa-brands fa-google"></i> Entrar com Google';
+            });
+        }
+
         function checkLogin() {
-            if(document.getElementById('inputSenha').value === appConfig.senhaHash || !appConfig.senhaHash) {
+            if(document.getElementById('inputSenha').value === appConfig.senhaHash) {
                 entrarSemLogin();
             } else { showToast("PIN Incorreto", "error"); }
         }
 
-        // --- SISTEMA MÁGICO DE QR CODE ---
-        function mostrarViewQR() {
-            document.getElementById('viewLogin').classList.add('hidden');
-            document.getElementById('viewQR').classList.remove('hidden');
-            
-            const qrBox = document.getElementById('qrcodeBox');
-            qrBox.innerHTML = ""; // Limpa anterior
-            
-            // Pega a URL atual do site para gerar o QR Code
-            let urlAtual = window.location.href;
-            
-            // Usa a biblioteca qrcode.js para desenhar no HTML
-            new QRCode(qrBox, {
-                text: urlAtual,
-                width: 200,
-                height: 200,
-                colorDark : "#030712",
-                colorLight : "#ffffff",
-                correctLevel : QRCode.CorrectLevel.H
-            });
-        }
-
-        function voltarViewLogin() {
-            document.getElementById('viewQR').classList.add('hidden');
-            document.getElementById('viewLogin').classList.remove('hidden');
+        function entrarSemLogin() {
+            sessionStorage.setItem('isLoggedIn', 'true');
+            liberarApp();
+            showToast("Acesso Liberado!", "success");
         }
 
         function liberarApp() {
@@ -372,14 +525,44 @@
             }, 500);
         }
 
+        function fazerLogout() {
+            if(auth.currentUser) { auth.signOut().then(() => { sessionStorage.clear(); location.reload(); }); }
+            else { sessionStorage.clear(); location.reload(); }
+        }
+
+        function configurarSenha() {
+            if(appConfig.senhaHash && appConfig.senhaHash !== "google_auth") {
+                if(confirm("Deseja REMOVER a senha do aplicativo?")) {
+                    appConfig.senhaHash = null; salvarConfig(); closeAll(); showToast("Senha removida.");
+                }
+            } else {
+                let nova = prompt("Crie uma Senha ou PIN numérico:");
+                if(nova && nova.trim().length > 0) {
+                    appConfig.senhaHash = nova.trim(); salvarConfig(); closeAll(); showToast("Senha ativada com sucesso!");
+                }
+            }
+        }
+
+        // --- SISTEMA DE QR CODE PARA PC ---
+        function mostrarViewQR() {
+            document.getElementById('viewPrincipal').classList.add('hidden');
+            document.getElementById('viewQR').classList.remove('hidden');
+            const qrBox = document.getElementById('qrcodeBox');
+            qrBox.innerHTML = ""; 
+            new QRCode(qrBox, { text: window.location.href, width: 200, height: 200, colorDark : "#030712", colorLight : "#ffffff", correctLevel : QRCode.CorrectLevel.H });
+        }
+        function voltarViewLogin() {
+            document.getElementById('viewQR').classList.add('hidden');
+            document.getElementById('viewPrincipal').classList.remove('hidden');
+        }
+
         // ----------------------------------------------------
-        // 4. LÓGICA DO MODAL PREMIUM (DATAS E REPETIÇÃO)
+        // 4. LÓGICA DO NOVO FORMULÁRIO DE LANÇAMENTO (MODAL)
         // ----------------------------------------------------
         function openModal(idx = null) {
             document.getElementById('modalForm').classList.add('open');
             document.getElementById('overlay').style.display = 'block';
             
-            // Setar data de hoje por padrão
             let hoje = new Date().toISOString().split('T')[0];
             document.getElementById('dataVencimento').value = hoje;
             document.getElementById('dataPagamento').value = hoje;
@@ -394,9 +577,8 @@
                 document.getElementById('desc').value = r.desc;
                 document.getElementById('valor').value = r.valor;
                 document.getElementById('dataVencimento').value = r.data;
-                document.getElementById('dataPagamento').value = r.dataPagamento || r.data;
+                if(r.dataPagamento) document.getElementById('dataPagamento').value = r.dataPagamento;
                 
-                // Toggle state
                 const isP = (parseFloat(r.pago) >= parseFloat(r.valor) && parseFloat(r.valor) > 0);
                 document.getElementById('checkPago').checked = isP;
                 toggleDatas();
@@ -407,9 +589,11 @@
                 document.getElementById('desc').value = ""; 
                 document.getElementById('valor').value = ""; 
                 document.getElementById('checkPago').checked = false;
+                document.getElementById('checkRepetirFixo').checked = false;
                 document.getElementById('btnExcluir').classList.add('hidden');
                 atualizarSubmenu();
                 toggleDatas();
+                toggleQtdFixo();
             }
         }
 
@@ -420,11 +604,7 @@
             opcoesSubmenu[t].forEach(opt => sub.innerHTML += `<option value="${opt}">${opt}</option>`);
             
             const isEdit = document.getElementById('editIndex').value !== "";
-            
-            // Mostra Parcelas só se for Dívida Nova
             document.getElementById('boxParcelamento').classList.toggle('hidden', t !== 'Divida' || isEdit);
-            
-            // Mostra "Repetir Gasto Fixo" só se for Fixo Novo
             document.getElementById('boxRepetirFixo').classList.toggle('hidden', t !== 'Fixo' || isEdit);
             
             definirDescricao();
@@ -441,7 +621,7 @@
             const boxPag = document.getElementById('boxDataPagamento');
             
             if(isPago) {
-                lbl.innerText = "Sim, já paguei/recebi";
+                lbl.innerText = "Efetuado";
                 lbl.style.color = "var(--success)";
                 boxPag.classList.remove('hidden');
             } else {
@@ -457,69 +637,57 @@
         }
 
         function salvar() {
-            const t = document.getElementById('tipo').value;
-            const cat = document.getElementById('submenu').value;
-            const desc = document.getElementById('desc').value;
-            const vT = parseFloat(document.getElementById('valor').value) || 0;
-            const dtVenc = document.getElementById('dataVencimento').value;
-            const dtPag = document.getElementById('dataPagamento').value;
-            const isPago = document.getElementById('checkPago').checked;
-            const idx = document.getElementById('editIndex').value;
+            const t = document.getElementById('tipo').value, cat = document.getElementById('submenu').value;
+            const desc = document.getElementById('desc').value, vT = parseFloat(document.getElementById('valor').value) || 0;
+            const dtVenc = document.getElementById('dataVencimento').value, dtPag = document.getElementById('dataPagamento').value;
+            const isPago = document.getElementById('checkPago').checked, idx = document.getElementById('editIndex').value;
 
-            if(!desc || vT <= 0 || !dtVenc) return showToast("Preencha Valor, Descrição e Vencimento!", "error");
+            if(!desc || vT <= 0 || !dtVenc) return showToast("Preencha Valor, Descrição e Data!", "error");
 
             let valorPago = isPago ? vT : 0;
-            let dataSalvamentoPagamento = isPago ? dtPag : null;
+            let dtSavePag = isPago ? dtPag : null;
 
             if(idx !== "") {
-                // Modo Edição
-                registros[idx] = { ...registros[idx], tipo: t, categoria: cat, desc, valor: vT, pago: valorPago, data: dtVenc, dataPagamento: dataSalvamentoPagamento };
+                let wasNotPaid = (parseFloat(registros[idx].pago) || 0) === 0;
+                registros[idx] = { ...registros[idx], tipo: t, categoria: cat, desc, valor: vT, pago: valorPago, data: dtVenc, dataPagamento: dtSavePag };
+                if (wasNotPaid && isPago) { if(t==='Receita') playIncomeSound(); else playNotificationSound(); triggerConfetti(); }
             } else {
-                // Modo Novo Lançamento
-                
-                // Lógica 1: É Gasto Fixo Recorrente?
+                // SE FOR GASTO FIXO RECORRENTE
                 if (t === 'Fixo' && document.getElementById('checkRepetirFixo').checked) {
                     const meses = parseInt(document.getElementById('inputMesesFixo').value) || 1;
-                    let baseData = new Date(dtVenc + "T12:00:00");
-                    
+                    let baseD = new Date(dtVenc + "T12:00:00");
                     for (let i = 0; i < meses; i++) {
-                        let novaData = new Date(baseData.getFullYear(), baseData.getMonth() + i, baseData.getDate()).toISOString().split('T')[0];
-                        // Só marca como pago o primeiro mês (o atual), os do futuro entram como pendente
+                        let nD = new Date(baseD.getFullYear(), baseD.getMonth() + i, baseD.getDate()).toISOString().split('T')[0];
                         let pagoLoop = (i === 0 && isPago) ? vT : 0;
-                        let dtPagLoop = (i === 0 && isPago) ? dtPag : null;
-                        
-                        registros.push({ tipo: t, categoria: cat, desc: `${desc} (Mês ${i+1})`, valor: vT, pago: pagoLoop, data: novaData, dataPagamento: dtPagLoop });
+                        registros.push({ tipo: t, categoria: cat, desc: `${desc} (Mês ${i+1})`, valor: vT, pago: pagoLoop, data: nD, dataPagamento: (i===0 && isPago)?dtPag:null });
                     }
                 } 
-                // Lógica 2: É Dívida Parcelada?
+                // SE FOR DÍVIDA PARCELADA
                 else if (t === 'Divida' && parseInt(document.getElementById('parcelas').value) > 1) {
-                    const p = parseInt(document.getElementById('parcelas').value);
-                    const pP = parseInt(document.getElementById('parcelasPagas').value);
-                    const vParc = vT / p; 
-                    let baseData = new Date(dtVenc + "T12:00:00");
-                    
+                    const p = parseInt(document.getElementById('parcelas').value), pP = parseInt(document.getElementById('parcelasPagas').value);
+                    const vParc = vT / p; let baseD = new Date(dtVenc + "T12:00:00");
                     for (let i = 1; i <= p; i++) {
-                        let novaData = new Date(baseData.getFullYear(), baseData.getMonth() + (i - 1), baseData.getDate()).toISOString().split('T')[0];
+                        let nD = new Date(baseD.getFullYear(), baseD.getMonth() + (i - 1), baseD.getDate()).toISOString().split('T')[0];
                         let jaPago = (i <= pP) || (i === 1 && isPago);
-                        
-                        registros.push({ tipo: t, categoria: cat, desc: `${desc} (${i}/${p})`, valor: vParc, pago: jaPago ? vParc : 0, data: novaData, dataPagamento: jaPago ? novaData : null });
+                        registros.push({ tipo: t, categoria: cat, desc: `${desc} (${i}/${p})`, valor: vParc, pago: jaPago ? vParc : 0, data: nD, dataPagamento: jaPago?nD:null });
                     }
                 } 
-                // Lógica 3: Lançamento Simples
+                // LANÇAMENTO NORMAL
                 else {
-                    registros.push({ tipo: t, categoria: cat, desc, valor: vT, pago: valorPago, data: dtVenc, dataPagamento: dataSalvamentoPagamento });
+                    registros.push({ tipo: t, categoria: cat, desc, valor: vT, pago: valorPago, data: dtVenc, dataPagamento: dtSavePag });
+                    if(isPago) { if(t==='Receita') playIncomeSound(); else playNotificationSound(); triggerConfetti(); }
                 }
             }
-            
-            localStorage.setItem('foton_db', JSON.stringify(registros));
-            closeAll(); renderizar(); showToast("Lançamento Registrado!");
+            salvarDados(); closeAll(); renderizar(); showToast("Lançamento Registrado!");
         }
 
         // ----------------------------------------------------
-        // 5. RENDERIZAÇÃO E UTILITÁRIOS (RESUMIDOS)
+        // 5. RENDERIZAÇÃO E UTILITÁRIOS DA UI
         // ----------------------------------------------------
-        function renderizar() {
+        function renderizar(filtro = "Tudo") {
+            filtroAtual = filtro;
             document.getElementById('headerUserName').innerText = appConfig.nome.split(" ")[0];
+            document.getElementById('sidebarUserName').innerText = appConfig.nome;
             document.getElementById('mesDisplay').innerText = dataVisualizacao.toLocaleDateString('pt-BR', {month:'long', year:'numeric'}).toUpperCase();
             
             const prefixo = `${dataVisualizacao.getFullYear()}-${String(dataVisualizacao.getMonth() + 1).padStart(2, '0')}`;
@@ -530,29 +698,30 @@
 
             regsMes.forEach(r => {
                 const v = parseFloat(r.valor);
-                const isPago = parseFloat(r.pago) > 0;
+                const isP = parseFloat(r.pago) > 0;
                 
-                if(r.tipo === 'Receita') { if(isPago) sRec += v; } else { sGas += (isPago ? v : 0); }
+                if(r.tipo === 'Receita') { if(isP) sRec += v; } else { sGas += (isP ? v : 0); }
                 
-                let icon = r.tipo === 'Receita' ? 'fa-arrow-up' : 'fa-arrow-down';
-                let color = r.tipo === 'Receita' ? 'var(--success)' : 'var(--danger)';
-                if(!isPago) color = 'var(--warning)';
+                if(filtro === "Tudo" || r.tipo === filtro || (filtro === "Gasto" && r.tipo !== "Receita")) {
+                    let icon = r.tipo === 'Receita' ? 'fa-arrow-up' : 'fa-arrow-down';
+                    let color = r.tipo === 'Receita' ? 'var(--success)' : 'var(--danger)';
+                    if(!isP) color = 'var(--warning)';
 
-                let dataFormat = r.data.split('-').reverse().join('/');
-                let lblSt = isPago ? `<span style="color:var(--success); font-size:0.65rem; font-weight:bold;">PAGO</span>` : `<span style="color:var(--warning); font-size:0.65rem; font-weight:bold;">VENCE DIA ${r.data.split('-')[2]}</span>`;
+                    let txtSt = isP ? `<span style="color:var(--success); font-size:0.65rem; font-weight:800;">PAGO</span>` : `<span style="color:var(--warning); font-size:0.65rem; font-weight:800;">VENCE DIA ${r.data.split('-')[2]}</span>`;
 
-                corpo.innerHTML += `
-                    <div class="transaction-item" onclick="openModal(${registros.indexOf(r)})">
-                        <div class="icon-box" style="color:${color};"><i class="fa-solid ${icon}"></i></div>
-                        <div style="flex:1">
-                            <strong style="color:var(--text); font-size:0.95rem; display:block;">${r.desc}</strong>
-                            <small style="color:var(--text-muted);">${r.categoria.split(' ').slice(1).join(' ')}</small>
-                        </div>
-                        <div style="text-align:right;">
-                            <strong style="color:var(--text); font-size:0.95rem; display:block;">${ocultarBits(v)}</strong>
-                            ${lblSt}
-                        </div>
-                    </div>`;
+                    corpo.innerHTML += `
+                        <div class="transaction-item" onclick="openModal(${registros.indexOf(r)})">
+                            <div class="icon-box" style="color:${color};"><i class="fa-solid ${icon}"></i></div>
+                            <div style="flex:1; margin-left: 12px; overflow: hidden;">
+                                <strong style="color:var(--text); font-size:0.95rem; display:block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${r.desc}</strong>
+                                <small style="color:var(--text-muted);">${r.categoria ? r.categoria.split(' ').slice(1).join(' ') : r.tipo}</small>
+                            </div>
+                            <div style="text-align:right;">
+                                <strong style="color:var(--text); font-size:0.95rem; display:block;">${ocultarBits(v)}</strong>
+                                ${txtSt}
+                            </div>
+                        </div>`;
+                }
             });
 
             document.getElementById('totalReceitas').innerText = ocultarBits(sRec);
@@ -560,15 +729,30 @@
             document.getElementById('totalSaldo').innerText = ocultarBits(sRec - sGas);
         }
 
+        // FUNÇÕES AUXILIARES DE SISTEMA
+        function salvarConfig() { localStorage.setItem('meucaixa_config', JSON.stringify(appConfig)); }
+        function carregarConfig() { if(appConfig.nome) { document.getElementById('headerUserName').innerText = appConfig.nome.split(" ")[0]; } }
+        function mudarTema(t) { document.documentElement.setAttribute('data-theme', t); localStorage.setItem('meucaixa_theme', t); closeAll(); renderizar(); }
+        function mudarNome() { let n = prompt("Novo Nome:"); if(n) { appConfig.nome = n; salvarConfig(); carregarConfig(); closeAll(); } }
         function mudarMes(d) { dataVisualizacao.setMonth(dataVisualizacao.getMonth() + d); renderizar(); }
         function toggleSidebar() { document.getElementById('profileSidebar').classList.toggle('open'); }
-        function closeAll() { document.getElementById('modalForm').classList.remove('open'); document.getElementById('profileSidebar').classList.remove('open'); document.getElementById('overlay').style.display = 'none'; }
-        function excluirRegistro() { if(confirm("Apagar?")) { registros.splice(document.getElementById('editIndex').value, 1); localStorage.setItem('foton_db', JSON.stringify(registros)); closeAll(); renderizar(); } }
+        function closeAll() { document.querySelectorAll('.modal').forEach(m => m.classList.remove('open')); document.getElementById('profileSidebar').classList.remove('open'); document.getElementById('overlay').style.display = 'none'; }
+        function excluirRegistro() { if(confirm("Apagar operação definitivamente?")) { registros.splice(document.getElementById('editIndex').value, 1); salvarDados(); closeAll(); renderizar(); showToast("Apagado.", "success");} }
         function ocultarBits(v) { return modoFantasma ? "R$ ••••" : "R$ " + parseFloat(v).toLocaleString('pt-BR', {minimumFractionDigits:2}); }
-        function toggleFantasma() { modoFantasma = !modoFantasma; renderizar(); }
+        function toggleFantasma() { modoFantasma = !modoFantasma; document.getElementById('eyeIcon').className = modoFantasma ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'; renderizar(); }
+        function limparTerminal() { if(confirm("Atenção! Apagar TODOS os dados de todos os meses?")) { registros = []; salvarDados(); location.reload(); } }
+        function exportarDados() { let csv="Tipo,Categoria,Descricao,Valor,DataVencimento\n"; registros.forEach(r=>csv+=`${r.tipo},${r.categoria||''},${r.desc},${r.valor},${r.data}\n`); const blob=new Blob([csv], {type:'text/csv'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='Backup_MeuCaixa.csv'; a.click(); closeAll(); }
         
+        // Efeitos Sonoros 
+        function playIncomeSound() { try { const ctx = new (window.AudioContext || window.webkitAudioContext)(); const osc = ctx.createOscillator(); const gain = ctx.createGain(); osc.type = 'triangle'; osc.frequency.setValueAtTime(987.77, ctx.currentTime); osc.frequency.setValueAtTime(1318.51, ctx.currentTime + 0.1); gain.gain.setValueAtTime(0, ctx.currentTime); gain.gain.linearRampToValueAtTime(0.1, ctx.currentTime + 0.05); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5); osc.connect(gain); gain.connect(ctx.destination); osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.5); } catch(e){} }
+        function playNotificationSound() { try { const ctx = new (window.AudioContext || window.webkitAudioContext)(); const osc = ctx.createOscillator(); const gain = ctx.createGain(); osc.type = 'sine'; osc.frequency.setValueAtTime(1200, ctx.currentTime); osc.frequency.setValueAtTime(1500, ctx.currentTime + 0.1); gain.gain.setValueAtTime(0, ctx.currentTime); gain.gain.linearRampToValueAtTime(0.1, ctx.currentTime + 0.05); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4); osc.connect(gain); gain.connect(ctx.destination); osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.5); } catch(e){} }
+        function triggerConfetti() { try { confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } }); } catch(e) {} }
+
         window.onload = () => { 
             const t = localStorage.getItem('meucaixa_theme'); if(t) document.documentElement.setAttribute('data-theme', t);
+            // Inicia o app chamando a inteligência blindada
+            // Só chama depois de tentar ler os dados
+            setTimeout(iniciarApp, 300);
         };
     </script>
 </body>
