@@ -767,7 +767,7 @@
         <div class="sidebar-scroll-area">
             <div class="sidebar-top-bar">
                 <h3>Configurações</h3>
-      
+       
                 <button class="close-sidebar-btn" onclick="toggleSidebar()"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
@@ -842,12 +842,12 @@
                 </div>
                 
                 <div class="menu-item" onclick="exportarDados()">
-                   
+                    
                     <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--success); background: rgba(16, 185, 129, 0.1);"><i class="fa-solid fa-file-excel"></i></div><span>Exportar Planilha (CSV)</span></div>
                     <i class="fa-solid fa-chevron-right menu-chevron"></i>
                 </div>
                 
-                <input type="file" id="fileInput" accept=".csv" style="display: none;" onchange="importarDados(event)">
+                <input type="file" id="fileInput" accept=".csv, text/csv, application/vnd.ms-excel, application/csv, text/plain, */*" style="display: none;" onchange="importarDados(event)">
          
                 <div class="menu-item" onclick="document.getElementById('fileInput').click()"> 
                     <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--accent);
@@ -968,7 +968,7 @@
             </div>
             <div id="blocoBanco" class="hidden">
                 <span class="label-mini">Instituição / Banco</span>
-      
+       
                 <select id="banco">
                     <option value="">Outros / Nenhum</option>
                     <optgroup label="Bancos Digitais">
@@ -1007,7 +1007,7 @@
                         <option value="BTG Pactual">BTG Pactual</option>
                         <option value="Banco BV">Banco BV</option>
                         <option value="Sicoob">Sicoob</option>
-                      
+                       
                         <option value="Sicredi">Sicredi</option>
                         <option value="Banrisul">Banrisul</option>
                         <option value="Banco do Nordeste">Banco do Nordeste</option>
@@ -1022,7 +1022,7 @@
             <select id="formaRecebimento">
                 <option value="Pix">Pix</option>
                 <option value="Dinheiro">Dinheiro</option>
-               
+                
                 <option value="Cartão">Cartão</option>
                 <option value="Outros">Outros</option>
             </select>
@@ -1133,7 +1133,7 @@
                     </div>
                     <div class="meta-stat-box danger">
                         <span>Quanto Falta</span>
-                   
+                    
                         <strong id="txtGestaoFalta">R$ 0,00</strong>
                     </div>
                 </div>
@@ -2051,7 +2051,7 @@
                         let isAtrasado = p.diffDays < 0;
                         let cardClass = isAtrasado ? 'atrasado' : 'pendente';
                         let iconClass = isAtrasado ? 'fa-triangle-exclamation fa-beat-fade' : 'fa-clock';
-      
+       
                         
                         let tagHtml = "";
                         if (isAtrasado) {
@@ -2072,7 +2072,7 @@
                         <div class="notif-card ${cardClass}" onclick="openModal(${p.realIdx})">
                             <div class="notif-icon"><i class="fa-solid ${iconClass}"></i></div>
                             <div class="notif-content">
-           
+            
                                 <h4 class="notif-title">${p.desc}</h4>
                                 <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 2px;">Vencimento: ${dataFormatada}</div>
                                 ${tagHtml}
@@ -2213,7 +2213,7 @@
                                 class="fa-solid ${icon}"></i></div>
                                 <div class="details">
                                     <strong>
-                              
+                                      
                                         <span class="txt-desc">${r.desc}</span> 
                                         ${bankBadgeHtml}
                                     </strong>
@@ -2360,7 +2360,7 @@
                         document.getElementById('resumoConteudo').innerHTML = `
                             <div class="resumo-grid">
                                 <div class="resumo-mini-card">
-      
+       
                                     <span>Total do Contrato</span>
                                     <strong>${ocultarBits(tV)}</strong>
                                 
@@ -2509,6 +2509,9 @@
             closeAll(); 
             renderizar();
             showToast("Operação Salva com Sucesso!", "success");
+
+            // ATIVANDO O BACKUP AUTOMÁTICO AQUI
+            exportarBackupAutomatico();
         }
 
         function excluirRegistro() { 
@@ -2774,7 +2777,7 @@
             if(chartLeitorInstance) chartLeitorInstance.destroy();
             const canvasLeitor = document.getElementById('chartLeitor');
             if (canvasLeitor) {
-           
+            
                 const ctx = canvasLeitor.getContext('2d');
                 let fontColor = getComputedStyle(document.body).getPropertyValue('--text-muted').trim() || '#999';
                 chartLeitorInstance = new Chart(ctx, {
@@ -2808,6 +2811,25 @@
             closeAll(); showToast("Backup baixado!", "success"); 
         }
 
+        // NOVA FUNÇÃO: BACKUP AUTOMÁTICO SILENCIOSO
+        function exportarBackupAutomatico() { 
+            if(registros.length === 0) return; 
+            let csv = "Tipo,Descricao,Categoria,Valor Total,Valor Pago,Data Vencimento,Data Lancamento,Banco,Forma\n"; 
+            registros.forEach(r => { 
+                csv += `${r.tipo},${r.desc.replace(/,/g, '')},${r.categoria||''},${r.valor},${r.pago},${r.data},${r.dataLancamento||r.data},${r.banco||''},${r.forma||''}\n`; 
+            }); 
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' }); 
+            const a = document.createElement('a'); 
+            a.href = URL.createObjectURL(blob); 
+            
+            let dataAtual = new Date();
+            let dataFormatada = dataAtual.toISOString().split('T')[0];
+            let horaFormatada = dataAtual.getHours() + "h" + dataAtual.getMinutes();
+            
+            a.download = `Backup_Automatico_${dataFormatada}_${horaFormatada}.csv`; 
+            a.click(); 
+        }
+
         function importarDados(e) { 
             const f = e.target.files[0];
             if(!f) return; 
@@ -2833,6 +2855,7 @@
                 salvarDB(); renderizar(); closeAll(); showToast("Backup Importado!", "success"); } 
             };
             r.readAsText(f);
+            e.target.value = ""; // Reseta o input para permitir importar o mesmo arquivo novamente
         }
         
         function toggleFantasma() { modoFantasma = !modoFantasma;
@@ -2840,6 +2863,22 @@
         }
         function ocultarBits(v) { return modoFantasma ? appConfig.moeda + " ••••" : formatarMoeda(v);
         }
+
+        // NOVA FUNÇÃO: LIMPAR MÊS ATUAL
+        function limparMesAtual() {
+            if(confirm("Atenção! Deseja apagar TODOS os lançamentos exibidos neste mês?")) {
+                const prefixoMes = `${dataVisualizacao.getFullYear()}-${String(dataVisualizacao.getMonth() + 1).padStart(2, '0')}`;
+                
+                // Filtra mantendo apenas os registros que NÃO são deste mês
+                registros = registros.filter(r => !r.data.startsWith(prefixoMes));
+                
+                salvarDB();
+                renderizar();
+                closeAll();
+                showToast("Lançamentos do mês apagados.", "success");
+            }
+        }
+
         function limparTerminal() { if(confirm("Atenção! Deseja apagar TODOS os dados de todos os meses?")) { const tx = db.transaction("financeiro", "readwrite");
             tx.objectStore("financeiro").clear(); tx.oncomplete = () => location.reload(); } }
         function resetForm() { 
