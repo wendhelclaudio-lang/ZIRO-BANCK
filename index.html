@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -463,7 +462,7 @@
             border: none; font-weight: 800; color: #fff; cursor: pointer; font-size: 0.85rem;}
         
         /* ---------------------------------------------------
-           NOVO DASHBOARD PREMIUM DE METAS (JAW-DROPPING)
+            NOVO DASHBOARD PREMIUM DE METAS (JAW-DROPPING)
         ----------------------------------------------------- */
         .meta-dashboard-card {
             background: linear-gradient(160deg, #111827 0%, #030712 100%);
@@ -619,7 +618,7 @@
         }
 
         /* ---------------------------------------------------
-           NOVOS ESTILOS PARA CARDS DE NOTIFICAÇÃO (SUPER PREMIUM)
+            NOVOS ESTILOS PARA CARDS DE NOTIFICAÇÃO (SUPER PREMIUM)
         ----------------------------------------------------- */
         .notif-card {
             background: var(--input-bg);
@@ -957,6 +956,7 @@
             <option value="Variavel">Gasto Variável</option>
           
             <option value="Divida">Dívida / Boleto</option>
+            <option value="Juros">💸 Dinheiro a Juros</option>
             <option value="Reserva">Patrimônio</option>
         </select>
 
@@ -973,22 +973,22 @@
                     <option value="">Outros / Nenhum</option>
                     <optgroup label="Bancos Digitais">
                         <option value="Nubank">Nubank</option>
-                   
+                    
                         <option value="Banco Inter">Banco Inter</option>
                         <option value="C6 Bank">C6 Bank</option>
                         <option value="PagBank">PagBank</option>
                         <option value="PicPay">PicPay</option>
-               
+                
                         <option value="Neon">Neon</option>
                         <option value="Next">Next</option>
                         <option value="Mercado Pago">Mercado Pago</option>
                         <option value="Banco Pan">Banco Pan</option>
-           
+            
                         <option value="Will Bank">Will Bank</option>
                         <option value="Agibank">Agibank</option>
                         <option value="Sofisa Direto">Sofisa Direto</option>
                         <option value="Digio">Digio</option>
-       
+        
                         <option value="Banco Bmg">Banco Bmg</option>
                         <option value="XP Investimentos">XP Investimentos</option>
                         <option value="Rico">Rico</option>
@@ -1007,7 +1007,7 @@
                         <option value="BTG Pactual">BTG Pactual</option>
                         <option value="Banco BV">Banco BV</option>
                         <option value="Sicoob">Sicoob</option>
-                       
+                        
                         <option value="Sicredi">Sicredi</option>
                         <option value="Banrisul">Banrisul</option>
                         <option value="Banco do Nordeste">Banco do Nordeste</option>
@@ -1065,6 +1065,27 @@
             </div>
         </div>
 
+        <div id="blocoJuros" class="bloco-parcelas hidden" style="border-color: #f97316;">
+            <span class="label-mini" style="color: #f97316; margin-bottom: 10px; display: block;"><i class="fa-solid fa-calculator"></i> Cálculo de Juros Inteligente</span>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom: 10px;">
+                <div><span class="label-mini">Taxa de Juros (%)</span><input type="number" id="taxaJuros" value="20" min="0" oninput="calcularJuros()"></div>
+                <div><span class="label-mini">Frequência</span>
+                    <select id="freqJuros" onchange="calcularJuros()">
+                        <option value="Diario">Diário</option>
+                        <option value="Semanal" selected>Semanal</option>
+                        <option value="Mensal">Mensal</option>
+                    </select>
+                </div>
+            </div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                <div><span class="label-mini">Qtd. Parcelas</span><input type="number" id="qtdParcelasJuros" value="4" min="1" oninput="calcularJuros()"></div>
+                <div><span class="label-mini">Pagas Hoje</span><input type="number" id="pagasJuros" value="0" min="0"></div>
+            </div>
+            <div id="resumoJurosDisplay" style="margin-top: 15px; padding: 12px; background: rgba(249, 115, 22, 0.1); border-radius: 8px; border: 1px dashed #f97316; font-size: 0.85rem; color: var(--text);">
+                Total Pagar: <strong>R$ 0,00</strong> (Juros: R$ 0,00)<br>
+                Ficará: <strong style="color: #f97316;">1x de R$ 0,00</strong>
+            </div>
+        </div>
         <div id="blocoParcelamento" class="bloco-parcelas hidden">
             <div style="display:grid;
                 grid-template-columns: 1fr 1fr; gap:10px;">
@@ -1191,7 +1212,7 @@
                         <option value="reserva">🛡️ Reserva de Emergência</option>
                         <option value="viagem">✈️ Viagem / Férias</option>
                         <option value="veiculo">🚗 Trocar de Veículo</option>
-               
+                
                         <option value="imovel">🏠 Casa Própria / Reforma</option>
                         <option value="casamento">💍 Casamento / Festa</option>
                         <option value="educacao">📚 Estudos / Faculdade</option>
@@ -1217,7 +1238,7 @@
                     <span class="label-mini" style="color: #fff;">FREQUÊNCIA DE APORTE IDEAL</span>
                     <select id="periodoMeta" style="background: var(--input-bg);">
                         <option value="Semanal">Por Semana</option>
-                   
+                    
                         <option value="Quinzenal">Por Quinzena</option>
                         <option value="Mensal">Por Mês</option>
                         <option value="Anual">Por Ano</option>
@@ -1726,7 +1747,7 @@
         }
 
         /* =========================================================================
-           NOVA IA E LÓGICA DO DASHBOARD DE METAS
+            NOVA IA E LÓGICA DO DASHBOARD DE METAS
         ========================================================================= */
         function abrirGestaoMetas() {
             document.getElementById('modalGestaoMetas')?.classList.add('open');
@@ -1899,15 +1920,37 @@
             }
         }
 
-        // --- AS CATEGORIAS FORAM ATUALIZADAS AQUI PARA INCLUIR SUAS NECESSIDADES E SURPRESAS ---
+        // --- AS CATEGORIAS ATUALIZADAS COM A OPÇÃO JUROS ---
         const opcoesSubmenu = {
             "Receita": ["💰 Salário", "🚀 Freelance", "✨ Rendimentos", "🛠️ Serviço", "📦 Produto", "🎁 Presente/Bônus"],
             "Fixo": ["🏠 Aluguel", "⚡ Energia", "💧 Água", "🌐 Internet", "🎬 Streamings", "📚 Educação (Escola/Faculdade)", "🏥 Plano de Saúde", "🏋️ Academia"],
      
             "Variavel": ["🛒 Mercado", "🍕 Alimentação", "⛽ Combustível", "🚗 App/Transporte", "💊 Farmácia/Saúde", "🐾 Pets", "✂️ Estética & Barbeiro", "🛍️ Compras (Shopee/E-commerce)", "🔧 Manutenção (Casa/TV/Carro)", "🎓 Cursos Extras", "🎉 Lazer & Saídas"],
             "Divida": ["💳 Fatura do Cartão", "🏢 Financiamento", "🤝 Empréstimo", "🧾 Boleto Avulso", "⚖️ Acordo / Serasa", "🏛️ Impostos (IPVA/IPTU)"],
+            "Juros": ["🦈 Agiota", "💼 Capital de Giro", "🏦 Empréstimo Pessoal", "💳 Cheque Especial", "🤝 Amigo / Parente"],
             "Reserva": ["🏦 Investimentos", "📦 Caixinha", "🛡️ Reserva Emergência", "🪙 Criptomoedas", "🎯 Férias/Projetos"]
         };
+
+        // EVENTOS GLOBAIS
+        document.getElementById('valor').addEventListener('input', function() {
+            if(document.getElementById('tipo').value === 'Juros') calcularJuros();
+        });
+
+        window.calcularJuros = function() {
+            const principal = parseFloat(document.getElementById('valor').value) || 0;
+            const taxa = parseFloat(document.getElementById('taxaJuros').value) || 0;
+            const parcelas = parseInt(document.getElementById('qtdParcelasJuros').value) || 1;
+
+            const jurosTotal = principal * (taxa / 100);
+            const total = principal + jurosTotal;
+            const valParcela = total / parcelas;
+
+            document.getElementById('resumoJurosDisplay').innerHTML = `
+                Total Pagar: <strong style="color: var(--danger);">R$ ${total.toFixed(2)}</strong> (Juros: R$ ${jurosTotal.toFixed(2)})<br>
+                Ficará: <strong style="color: #f97316;">${parcelas}x de R$ ${valParcela.toFixed(2)}</strong>
+            `;
+        }
+
         function mudarMes(delta) { dataVisualizacao.setMonth(dataVisualizacao.getMonth() + delta); renderizar(); }
         function formatarMesAno(d) { const meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
         return `${meses[d.getMonth()]} ${d.getFullYear()}`; }
@@ -2024,7 +2067,7 @@
                 let isPago = vP >= vT && vT > 0;
                 
         
-                if(!isPago && (r.tipo === 'Divida' || r.tipo === 'Fixo' || r.tipo === 'Variavel')) {
+                if(!isPago && (r.tipo === 'Divida' || r.tipo === 'Juros' || r.tipo === 'Fixo' || r.tipo === 'Variavel')) {
                     let dataOperacao = new Date(r.data + "T12:00:00");
                     dataOperacao.setHours(0,0,0,0);
                     const msPerDay = 1000 * 60 * 60 * 24;
@@ -2136,12 +2179,12 @@
                 const isPago = vP >= vT && vT > 0;
 
                 if(r.tipo === 'Receita') { if(isPago) sRec += vT; } 
-                else if(r.tipo === 'Divida') { sDiv += falta; sGas += vP; } 
+                else if(r.tipo === 'Divida' || r.tipo === 'Juros') { sDiv += falta; sGas += vP; } 
                 else if(r.tipo === 'Reserva') { sRes += vT; } 
          
                 else { sGas += vP; }
 
-                let exibir = (filtroAtual === "Tudo") || (filtroAtual === r.tipo) || (filtroAtual === "Gasto" && (r.tipo === "Fixo" || r.tipo === "Variavel"));
+                let exibir = (filtroAtual === "Tudo") || (filtroAtual === r.tipo) || (filtroAtual === "Gasto" && (r.tipo === "Fixo" || r.tipo === "Variavel")) || (filtroAtual === "Divida" && r.tipo === "Juros");
                 if (filtroAtual !== "Tudo") {
                     if (subFiltro === "Pendente" && isPago) exibir = false;
    
@@ -2168,8 +2211,8 @@
                     
                     agrupados[dataGrupo].forEach(r => {
              
-                        let icon = r.tipo === 'Receita' ? 'fa-arrow-up' : (r.tipo === 'Divida' ? 'fa-barcode' : (r.tipo === 'Reserva' ? 'fa-vault' : 'fa-arrow-down'));
-                        let color = r.tipo === 'Receita' ? 'var(--success)' : (r.tipo === 'Divida' ? 'var(--danger)' : (r.tipo === 'Reserva' ? 'var(--reserve)' : 'var(--warning)'));
+                        let icon = r.tipo === 'Receita' ? 'fa-arrow-up' : (r.tipo === 'Divida' ? 'fa-barcode' : (r.tipo === 'Juros' ? 'fa-handshake-angle' : (r.tipo === 'Reserva' ? 'fa-vault' : 'fa-arrow-down')));
+                        let color = r.tipo === 'Receita' ? 'var(--success)' : (r.tipo === 'Divida' ? 'var(--danger)' : (r.tipo === 'Juros' ? '#f97316' : (r.tipo === 'Reserva' ? 'var(--reserve)' : 'var(--warning)')));
                        
                         let extraInfo = r.forma ? ` • ${r.forma}` : '';
                         
@@ -2177,7 +2220,7 @@
                         let statusText = r.isPago ? 
                         (r.tipo === 'Receita' ? 'RECEBIDO' : 'LIQUIDADO') : 'PENDENTE';
                         
-                        if(!r.isPago && (r.tipo === 'Divida' ||
+                        if(!r.isPago && (r.tipo === 'Divida' || r.tipo === 'Juros' ||
                         r.tipo === 'Fixo' || r.tipo === 'Variavel')) {
                             let h = new Date();
                             h.setHours(0,0,0,0);
@@ -2186,15 +2229,17 @@
                             }
                         }
 
-                        // Lançamento/Vencimento EXCLUSIVO para Dívida
-                        let datasInfo = '';
+                        // Lançamento/Vencimento e HORÁRIO EXCLUSIVO
                         let dtLanc = (r.dataLancamento || r.data).split('-').reverse().join('/');
                         let dtVenc = r.data.split('-').reverse().join('/');
-                        if (r.tipo === 'Divida') {
-                            datasInfo = `Lançado: ${dtLanc} • Vence: ${dtVenc}`;
+                        let horaTag = r.hora ? ` <i class="fa-regular fa-clock" style="margin-left:4px;"></i> ${r.hora}` : '';
+                        
+                        let datasInfo = `Data: ${dtVenc}${horaTag}`;
+                        if (r.tipo === 'Divida' || r.tipo === 'Juros') {
+                            datasInfo = `Lançado: ${dtLanc}${horaTag} • Vence: ${dtVenc}`;
                         }
 
-                        let bankBadgeHtml = r.tipo === 'Divida' ?
+                        let bankBadgeHtml = (r.tipo === 'Divida' || r.tipo === 'Juros') ?
                         getBankBadge(r.banco) : '';
 
                         let recAction = '';
@@ -2219,8 +2264,7 @@
                                     </strong>
             
                                     <span class="txt-sub">${labelCategoria}${extraInfo}</span>
-                                    ${datasInfo ?
-                                    `<span style="font-size: 0.65rem; color: var(--text-muted); opacity: 0.8; margin-top: 2px;">${datasInfo}</span>` : ''}
+                                    ${datasInfo ? `<span style="font-size: 0.65rem; color: var(--text-muted); opacity: 0.8; margin-top: 2px; display: block;">${datasInfo}</span>` : ''}
                                     ${recAction}
                                 </div>
                       
@@ -2331,21 +2375,22 @@
                 document.getElementById('btnExcluir')?.classList.remove('hidden');
 
                 const lblValor = document.getElementById('lblValorMain');
-                if (r.desc.match(/\(\d+\/\d+\)/) && r.tipo === 'Divida') {
+                if (r.desc.match(/\(\d+\/\d+\)/) && (r.tipo === 'Divida' || r.tipo === 'Juros')) {
                     if(lblValor) lblValor.innerText = "Valor da Parcela Atual (R$)";
                     document.getElementById('blocoParcelamento')?.classList.add('hidden');
+                    document.getElementById('blocoJuros')?.classList.add('hidden');
                 } else {
-                    if(lblValor) lblValor.innerText = "Valor (R$)";
+                    if(lblValor) lblValor.innerText = r.tipo === 'Juros' ? "Valor Emprestado (R$)" : "Valor (R$)";
                 }
 
-                if (r.desc.match(/\(\d+\/\d+\)/) && r.tipo === 'Divida') {
+                if (r.desc.match(/\(\d+\/\d+\)/) && (r.tipo === 'Divida' || r.tipo === 'Juros')) {
                     resumo?.classList.remove('hidden');
                     if (document.getElementById('resumoTitulo')) document.getElementById('resumoTitulo').innerHTML = `Resumo do Contrato ${getBankBadge(r.banco)}`;
                     
                     const getBaseName = (name) => name.replace(/\(\d+\/\d+\)/, '').trim();
                     const baseDesc = getBaseName(r.desc);
                     const vinc = registros.filter(reg =>
-                        reg.tipo === 'Divida' &&
+                        (reg.tipo === 'Divida' || reg.tipo === 'Juros') &&
                         reg.banco === r.banco && 
                         reg.categoria === r.categoria && 
              
@@ -2395,7 +2440,7 @@
                                 <div><i class="fa-regular fa-calendar-check" style="color: var(--accent);"></i> Vencimento: <strong>Dia ${diaVenc}</strong></div>
                             </div>
                         `;
-           
+            
                     }
                 } else { 
                     resumo?.classList.add('hidden'); 
@@ -2419,8 +2464,11 @@
                 opcoesSubmenu[t].forEach(opt => sub.innerHTML += `<option value="${opt}">${opt}</option>`);
                 
                 const isEdit = document.getElementById('editIndex')?.value !== "";
-                const isDivida = t === 'Divida';
-                document.getElementById('blocoParcelamento')?.classList.toggle('hidden', !isDivida || isEdit);
+                const isDivida = t === 'Divida' || t === 'Juros';
+                const isJuros = t === 'Juros';
+
+                document.getElementById('blocoParcelamento')?.classList.toggle('hidden', !isDivida || isJuros || isEdit);
+                document.getElementById('blocoJuros')?.classList.toggle('hidden', !isJuros || isEdit);
                 document.getElementById('blocoRecebimento')?.classList.toggle('hidden', t !== 'Receita');
                 
                 document.getElementById('blocoBanco')?.classList.toggle('hidden', !isDivida);
@@ -2437,6 +2485,7 @@
                 '1fr 1fr' : '1fr';
                 
                 if(!isEdit) definirDescricao();
+                if(isJuros) calcularJuros();
             }
         }
 
@@ -2454,8 +2503,8 @@
             const forma = document.getElementById('formaRecebimento')?.value;
             
             const cat = document.getElementById('submenu')?.value || "";
-            const bancoSel = t === 'Divida' ? (document.getElementById('banco')?.value || "") : "";
-            const dataLanc = t === 'Divida' ?
+            const bancoSel = (t === 'Divida' || t === 'Juros') ? (document.getElementById('banco')?.value || "") : "";
+            const dataLanc = (t === 'Divida' || t === 'Juros') ?
             (document.getElementById('dataLancamento')?.value || dBase) : dBase;
             
             const isP = document.getElementById('selectPago')?.value === "1";
@@ -2464,17 +2513,20 @@
             vT : 0;
 
             if(!desc || vT <= 0 || !dBase) return showToast("Preencha todos os campos!", "error");
+            
+            const horaAtual = new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
             let isReceita = (t === 'Receita');
             let triggerWin = false;
+            
             if(editIdx !== "") { 
                 let wasNotPaid = (parseFloat(registros[editIdx].pago) || 0) === 0;
                 registros[editIdx] = { ...registros[editIdx], tipo: t, desc, categoria: cat, valor: vT, pago: valorPago, data: dBase, dataLancamento: dataLanc, banco: bancoSel, forma: isReceita ?
-                forma : null, comprovante: compB64 || registros[editIdx].comprovante }; 
+                forma : null, comprovante: compB64 || registros[editIdx].comprovante, hora: registros[editIdx].hora || horaAtual }; 
                 
                 if (wasNotPaid && isP) {
                     if (isReceita) { setTimeout(playIncomeSound, 400);
                     triggerConfetti(); }
-                    else if (t === 'Divida') { triggerWin = true;
+                    else if (t === 'Divida' || t === 'Juros') { triggerWin = true;
                     }
                     else { setTimeout(playNotificationSound, 400);
                     triggerConfetti(); }
@@ -2485,14 +2537,50 @@
                     const vParc = vT / p; let dObj = new Date(dBase + "T12:00:00");
                     for (let i = 1; i <= p; i++) {
                         let nD = new Date(dObj.getFullYear(), dObj.getMonth() + (i - 1), dObj.getDate()).toISOString().split('T')[0];
-                        registros.push({ tipo: t, desc: `${desc} (${i}/${p})`, categoria: cat, valor: vParc, pago: (i <= pP) ? vParc : 0, data: nD, dataLancamento: dataLanc, banco: bancoSel, comprovante: i===1 ? compB64 : null });
+                        registros.push({ tipo: t, desc: `${desc} (${i}/${p})`, categoria: cat, valor: vParc, pago: (i <= pP) ? vParc : 0, data: nD, dataLancamento: dataLanc, banco: bancoSel, comprovante: i===1 ? compB64 : null, hora: horaAtual });
                     }
+                    if(isP) { triggerWin = true; }
+                } else if (t === 'Juros' && parseInt(document.getElementById('qtdParcelasJuros')?.value) >= 1) {
+                    const principal = vT;
+                    const taxa = parseFloat(document.getElementById('taxaJuros').value) || 0;
+                    const parcelas = parseInt(document.getElementById('qtdParcelasJuros').value) || 1;
+                    const pagas = parseInt(document.getElementById('pagasJuros').value) || 0;
+                    const freq = document.getElementById('freqJuros').value;
+
+                    const jurosTotal = principal * (taxa / 100);
+                    const totalComJuros = principal + jurosTotal;
+                    const vParc = totalComJuros / parcelas;
+                    let dObj = new Date(dBase + "T12:00:00");
+
+                    for(let i = 1; i <= parcelas; i++) {
+                        let nD = new Date(dObj);
+                        if (i > 1) {
+                            if (freq === 'Diario') nD.setDate(nD.getDate() + (i - 1));
+                            else if (freq === 'Semanal') nD.setDate(nD.getDate() + ((i - 1) * 7));
+                            else if (freq === 'Mensal') nD.setMonth(nD.getMonth() + (i - 1));
+                        }
+                        let dataStr = nD.toISOString().split('T')[0];
+
+                        registros.push({
+                            tipo: t,
+                            desc: `${desc} (${i}/${parcelas})`,
+                            categoria: cat,
+                            valor: vParc,
+                            pago: (i <= pagas) ? vParc : 0,
+                            data: dataStr,
+                            dataLancamento: dataLanc,
+                            banco: bancoSel,
+                            comprovante: i === 1 ? compB64 : null,
+                            hora: horaAtual
+                        });
+                    }
+                    if (isP) { triggerWin = true; }
                 } else { 
-                    registros.push({ tipo: t, desc, categoria: cat, valor: vT, pago: valorPago, data: dBase, dataLancamento: dataLanc, banco: bancoSel, forma: isReceita ? forma : null, comprovante: compB64 });
+                    registros.push({ tipo: t, desc, categoria: cat, valor: vT, pago: valorPago, data: dBase, dataLancamento: dataLanc, banco: bancoSel, forma: isReceita ? forma : null, comprovante: compB64, hora: horaAtual });
                     if(isP) {
                         if (isReceita) { setTimeout(playIncomeSound, 400);
                         triggerConfetti(); }
-                        else if (t === 'Divida') { triggerWin = true;
+                        else if (t === 'Divida' || t === 'Juros') { triggerWin = true;
                         }
                         else { setTimeout(playNotificationSound, 400);
                         triggerConfetti(); }
@@ -2540,7 +2628,7 @@
             
             const regsMes = registros.filter(r => r.data.startsWith(prefixoMes));
             regsMes.forEach(r => {
-                if(r.tipo === 'Fixo' || r.tipo === 'Variavel' || r.tipo === 'Divida') {
+                if(r.tipo === 'Fixo' || r.tipo === 'Variavel' || r.tipo === 'Divida' || r.tipo === 'Juros') {
                     let cat = r.categoria || r.tipo;
                     if(cat.includes(' ')) cat = cat.split(' ').slice(1).join(' ');
                     
@@ -2897,11 +2985,18 @@
 
         function limparTerminal() { if(confirm("Atenção! Deseja apagar TODOS os dados de todos os meses?")) { const tx = db.transaction("financeiro", "readwrite");
             tx.objectStore("financeiro").clear(); tx.oncomplete = () => location.reload(); } }
+        
         function resetForm() { 
             if (document.getElementById('editIndex')) document.getElementById('editIndex').value = "";
             if (document.getElementById('valor')) document.getElementById('valor').value = "";
             if (document.getElementById('parcelas')) document.getElementById('parcelas').value = "1"; 
             if (document.getElementById('parcelasPagas')) document.getElementById('parcelasPagas').value = "0"; 
+            
+            if (document.getElementById('taxaJuros')) document.getElementById('taxaJuros').value = "20";
+            if (document.getElementById('qtdParcelasJuros')) document.getElementById('qtdParcelasJuros').value = "4";
+            if (document.getElementById('pagasJuros')) document.getElementById('pagasJuros').value = "0";
+            if (document.getElementById('freqJuros')) document.getElementById('freqJuros').value = "Semanal";
+            
             if (document.getElementById('desc')) document.getElementById('desc').value = "";
             if (document.getElementById('banco')) document.getElementById('banco').value = ""; 
             if (document.getElementById('dataLancamento')) document.getElementById('dataLancamento').value = new Date().toISOString().split('T')[0]; 
