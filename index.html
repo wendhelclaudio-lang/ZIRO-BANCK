@@ -91,7 +91,7 @@
             box-shadow: 0 0 0 4px rgba(0, 242, 255, 0.1); }
         .input-group:focus-within i { color: var(--accent);
         }
-        .btn-login { width: 100%; background: linear-gradient(135deg, var(--accent), var(--success)); color: var(--text); border: none;
+        .btn-login { width: 100%; background: linear-gradient(135deg, var(--accent), var(--success)); color: #fff; border: none;
             padding: 16px; border-radius: 16px; font-weight: 800; font-size: 1rem; cursor: pointer; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3); margin-top: 10px;
             margin-bottom: 20px; transition: transform 0.2s; }
         .btn-login:active { transform: translateY(2px);
@@ -513,7 +513,7 @@
         .comprovante-img-preview { width: 100%; max-height: 400px; object-fit: contain; border-radius: 12px; background: var(--bg);
             border: 1px solid var(--border); }
         .btn-meta-action { flex: 1; padding: 12px; border-radius: 10px;
-            border: none; font-weight: 800; color: var(--text); cursor: pointer; font-size: 0.85rem;}
+            border: none; font-weight: 800; color: #fff; cursor: pointer; font-size: 0.85rem;}
         
         /* ---------------------------------------------------
             NOVO DASHBOARD PREMIUM DE METAS (JAW-DROPPING)
@@ -554,7 +554,7 @@
         .meta-progress-text {
             font-size: 3rem;
             font-weight: 800;
-            color: var(--text);
+            color: #fff;
             margin: 0;
             line-height: 1;
             text-shadow: 0 0 20px rgba(255,255,255,0.2);
@@ -657,7 +657,7 @@
             border: 1px solid rgba(16,185,129,0.3);
             color: var(--success);
         }
-        .btn-meta-quick.deposit:active { background: var(--success); color: var(--text);
+        .btn-meta-quick.deposit:active { background: var(--success); color: #fff;
             transform: scale(0.95); }
 
         .btn-meta-quick.withdraw {
@@ -665,7 +665,7 @@
             border: 1px solid rgba(239,68,68,0.2);
             color: var(--danger);
         }
-        .btn-meta-quick.withdraw:active { background: var(--danger); color: var(--text);
+        .btn-meta-quick.withdraw:active { background: var(--danger); color: #fff;
             transform: scale(0.95); }
 
         .btn-meta-quick i { font-size: 1.4rem;
@@ -717,9 +717,9 @@
         .notif-days { font-size: 0.7rem; font-weight: 800; display: inline-flex;
             align-items: center; gap: 4px; padding: 4px 8px; border-radius: 6px; width: fit-content; text-transform: uppercase;
             letter-spacing: 0.5px;}
-        .notif-card.atrasado .notif-days { background: var(--danger); color: var(--text);
+        .notif-card.atrasado .notif-days { background: var(--danger); color: #fff;
         }
-        .notif-card.pendente .notif-days { background: var(--warning); color: var(--text); text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        .notif-card.pendente .notif-days { background: var(--warning); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.2);
         }
         
         .notif-value-box { text-align: right;
@@ -731,7 +731,7 @@
         }
         .notif-card.atrasado .notif-action { color: var(--danger); border-color: rgba(239, 68, 68, 0.3);
         }
-        .notif-card.atrasado:hover .notif-action { background: var(--danger); color: var(--text);
+        .notif-card.atrasado:hover .notif-action { background: var(--danger); color: #fff;
         }
         
         .notif-header-glow { display: flex;
@@ -744,45 +744,7 @@
         #pdf-container { position: absolute;
             left: -9999px; top: -9999px; width: 800px; background: white; color: black; z-index: -1;
         }
-    
-        /* --- PREMIUM GLASSMORPHISM --- */
-        .login-card, .sidebar, .mini-card, .transaction-item, .modal, .grafico-card, .meta-dashboard-card, .meta-panel-home, header, .bottom-charts {
-            background: color-mix(in srgb, var(--card) 80%, transparent) !important;
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid color-mix(in srgb, var(--border) 50%, transparent) !important;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05) !important;
-        }
-        
-        .mini-card:hover, .transaction-item:hover {
-            transform: translateY(-3px) scale(1.01);
-            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.1) !important;
-            border-color: var(--accent) !important;
-        }
-        
-        body {
-            background-image: radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--accent) 15%, transparent), var(--bg) 50%);
-            background-attachment: fixed;
-        }
-        
-        h1, h2, h3 {
-            letter-spacing: -0.5px;
-        }
-        
-        /* Ajuste do dashboard de metas para o tema claro */
-        [data-theme="light"] .meta-dashboard-card,
-        [data-theme="santander"] .meta-dashboard-card,
-        [data-theme="itau"] .meta-dashboard-card,
-        [data-theme="bradesco"] .meta-dashboard-card,
-        [data-theme="nubank"] .meta-dashboard-card {
-            background: color-mix(in srgb, var(--card) 80%, transparent) !important;
-        }
-        [data-theme="light"] .meta-progress-text, [data-theme="santander"] .meta-progress-text, [data-theme="bradesco"] .meta-progress-text {
-            color: var(--text);
-            text-shadow: none;
-        }
-
-</style>
+    </style>
 </head>
 <body>
 
@@ -794,7 +756,7 @@
             O Safari 
             não instala apps automaticamente. Para ter o <b>MeuCaixa</b> no celular, toque em <i class="fa-solid fa-arrow-up-from-bracket" style="color: var(--accent); margin: 0 4px;"></i> <b>Compartilhar</b> e selecione <br><br><b>"Adicionar à Tela de Início"</b> <i class="fa-regular fa-square-plus" style="margin: 0 4px;"></i>.
         </p>
-        <button onclick="document.getElementById('ios-prompt').style.display='none'" style="background: var(--accent); color: var(--text); border: none; padding: 12px 20px; border-radius: 10px; font-weight: 800; cursor: pointer; width: 100%;">ENTENDI</button>
+        <button onclick="document.getElementById('ios-prompt').style.display='none'" style="background: var(--accent); color: #fff; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 800; cursor: pointer; width: 100%;">ENTENDI</button>
     </div>
 
     <div id="lock-screen" class="hidden">
@@ -1207,12 +1169,12 @@
         <div style="height: 120px;
             background: linear-gradient(to bottom, rgba(0,242,255,0.15), var(--bg)); position: relative; display: flex; justify-content: space-between;
             padding: 20px 25px;">
-            <h2 style="margin:0; font-size:1.8rem; color: var(--text); font-weight: 900; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            <h2 style="margin:0; font-size:1.3rem; color: #fff;
             z-index: 2; font-weight: 800; display: flex; align-items: center; gap: 10px;">
                 <i class="fa-solid fa-trophy" style="color: #f59e0b;"></i> Dashboard de Metas
             </h2>
             <i class="fa-solid fa-xmark" style="font-size:1.5rem;
-            color:var(--text); cursor:pointer; z-index: 2; background: rgba(0,0,0,0.5); width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center;
+            color:#fff; cursor:pointer; z-index: 2; background: rgba(0,0,0,0.5); width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center;
             justify-content: center;" onclick="closeModal()"></i>
         </div>
 
@@ -1274,7 +1236,7 @@
             animation: fadeIn 0.3s ease;">
                 <span class="label-mini" style="color: var(--accent);" id="lblAcaoRapida">QUAL VALOR DESEJA GUARDAR?</span>
                 <input type="number" id="valorMovimentacaoMeta" placeholder="R$ 0,00" step="0.01" style="font-size: 1.5rem;
-                font-weight: 800; color: var(--text); background: transparent; border: none; border-bottom: 2px solid var(--accent); border-radius: 0; box-shadow: none; padding: 10px 5px;
+                font-weight: 800; color: #fff; background: transparent; border: none; border-bottom: 2px solid var(--accent); border-radius: 0; box-shadow: none; padding: 10px 5px;
                 margin-bottom: 15px;">
                 <div style="display: flex;
                     gap: 10px;">
@@ -1289,13 +1251,13 @@
             border-top: 1px dashed var(--border); margin: 30px 0;">
 
             <h4 style="font-size: 0.9rem;
-            color: var(--text); margin: 0 0 20px 0; display: flex; align-items: center;
+            color: #fff; margin: 0 0 20px 0; display: flex; align-items: center;
             gap: 8px;"><i class="fa-solid fa-sliders"></i> Configurações do Objetivo</h4>
             
             <div style="display:grid;
                 grid-template-columns: 1fr; gap:15px; margin-bottom: 15px;">
                 <div>
-                    <span class="label-mini" style="color: var(--text);">O QUE VOCÊ QUER ALCANÇAR?</span>
+                    <span class="label-mini" style="color: #fff;">O QUE VOCÊ QUER ALCANÇAR?</span>
                     <select id="tipoMeta" style="font-weight: bold;
                     background: var(--input-bg);">
                         <option value="reserva">🛡️ Reserva de Emergência</option>
@@ -1324,7 +1286,7 @@
                 </div>
           
                 <div>
-                    <span class="label-mini" style="color: var(--text);">FREQUÊNCIA DE APORTE IDEAL</span>
+                    <span class="label-mini" style="color: #fff;">FREQUÊNCIA DE APORTE IDEAL</span>
                     <select id="periodoMeta" style="background: var(--input-bg);">
                         <option value="Semanal">Por Semana</option>
                     
@@ -1336,11 +1298,11 @@
      
             </div>
             
-            <span class="label-mini" style="color: var(--text);">DÊ UM NOME (OPCIONAL)</span>
+            <span class="label-mini" style="color: #fff;">DÊ UM NOME (OPCIONAL)</span>
             <input type="text" id="descMetaInput" placeholder="Ex: Viagem para a Europa..." style="background: var(--input-bg);">
             
             <button class="btn-confirm" style="background: linear-gradient(90deg, #00f2ff, #0284c7);
-            color: var(--text); font-weight: 800; border-radius: 12px; padding: 16px; margin-top: 10px;" onclick="salvarConfiguracaoMeta()">SALVAR E ATUALIZAR DASHBOARD</button>
+            color: #fff; font-weight: 800; border-radius: 12px; padding: 16px; margin-top: 10px;" onclick="salvarConfiguracaoMeta()">SALVAR E ATUALIZAR DASHBOARD</button>
             <button class="btn-delete" style="border-color: rgba(239, 68, 68, 0.3);
             color: var(--danger); font-weight: 800; border-radius: 12px; padding: 16px; margin-top: 15px;" onclick="zerarMetaCompleta()">EXCLUIR META ATUAL</button>
         </div>
@@ -2939,7 +2901,7 @@
                             <strong style="color:${cor};
                             font-size:0.85rem;">${formatarMoeda(valor)}</strong>
                             <button onclick="preencherIA('${descLida}', ${valor}, '${tipo}')" style="background:var(--accent);
-                            border:none; color:var(--text); border-radius:6px; padding:4px 8px; font-size:0.6rem; cursor:pointer; font-weight:bold;">+ LANÇAR</button>
+                            border:none; color:#fff; border-radius:6px; padding:4px 8px; font-size:0.6rem; cursor:pointer; font-weight:bold;">+ LANÇAR</button>
                         </div></div>`;
                 }
             });
