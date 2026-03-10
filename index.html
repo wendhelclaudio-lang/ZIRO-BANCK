@@ -759,6 +759,17 @@
         <button onclick="document.getElementById('ios-prompt').style.display='none'" style="background: var(--accent); color: #fff; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 800; cursor: pointer; width: 100%;">ENTENDI</button>
     </div>
 
+    <div id="android-install-prompt" class="hidden" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--card); border: 2px solid var(--success); padding: 20px; border-radius: 16px; z-index: 100000; width: 90%; max-width: 350px; box-shadow: 0 10px 40px rgba(0,0,0,0.7); text-align: center;">
+        <h3 style="margin: 0 0 10px 0; color: var(--text); font-size: 1.1rem;"><i class="fa-brands fa-android" style="margin-right: 5px; color: #3DDC84;"></i> Instalar Aplicativo</h3>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px; line-height: 1.5;">
+            Baixe o <b>MeuCaixa</b> diretamente no seu celular para uma experiência mais rápida e como um app nativo!
+        </p>
+        <div style="display: flex; gap: 10px;">
+            <button onclick="installApp()" style="background: var(--success); color: #fff; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 800; cursor: pointer; flex: 2;"><i class="fa-solid fa-download"></i> BAIXAR AGORA</button>
+            <button onclick="document.getElementById('android-install-prompt').classList.add('hidden')" style="background: transparent; color: var(--text-muted); border: 1px solid var(--border); padding: 12px 10px; border-radius: 10px; font-weight: 800; cursor: pointer; flex: 1;">DEPOIS</button>
+        </div>
+    </div>
+
     <div id="lock-screen" class="hidden">
         <div class="login-card">
             <div class="lock-avatar" id="loginAvatar"><i class="fa-solid fa-fingerprint"></i></div>
@@ -774,8 +785,8 @@
                 <button class="btn-login" onclick="efetuarCadastro()">CADASTRAR E ENTRAR</button>
             </div>
 
-            <div id="viewLogin" class="auth-view hidden">
-                <h2 class="lock-title" id="txtWelcomeBack">Bem-vindo(a) de volta!</h2>
+            <div id="viewLogin" class="auth-view hidden" style="justify-content: center; height: 100%;">
+                <h2 class="lock-title" id="txtWelcomeBack">Olá, WENDEL!</h2>
                 <p class="lock-subtitle">Que bom ter você de volta.
                 Digite sua senha.</p>
                 <div class="input-group"><i class="fa-solid fa-key"></i><input type="password" id="inputSenha" class="lock-input password" placeholder="Sua senha secreta" onkeypress="if(event.key === 'Enter') checkLogin()"></div>
@@ -3065,6 +3076,32 @@
             const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
             const isStandalone = ('standalone' in window.navigator) && window.navigator.standalone;
             if (isIos && !isStandalone) { setTimeout(() => { const prompt = document.getElementById('ios-prompt'); if(prompt) prompt.classList.remove('hidden'); }, 2000);
+            }
+        }
+
+        
+        // LÓGICA DE INSTALAÇÃO (ANDROID / PWA DIRECT INSTALL)
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent the mini-infobar from appearing on mobile
+            e.preventDefault();
+            // Stash the event so it can be triggered later.
+            deferredPrompt = e;
+            // Update UI notify the user they can install the PWA
+            document.getElementById('android-install-prompt')?.classList.remove('hidden');
+        });
+
+        function installApp() {
+            const installModal = document.getElementById('android-install-prompt');
+            if (installModal) installModal.classList.add('hidden');
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('Usuário aceitou a instalação');
+                    }
+                    deferredPrompt = null;
+                });
             }
         }
 
