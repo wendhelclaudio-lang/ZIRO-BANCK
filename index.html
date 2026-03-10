@@ -949,7 +949,7 @@
     </div>
 
     <div class="balance-card">
-        <small>Saldo Disponível do Mês</small>
+        <small>Saldo Exato da Conta</small>
         <h1 id="totalSaldo">R$ 0,00</h1>
     </div>
 
@@ -1029,6 +1029,9 @@
             <option value="Divida">Dívida / Boleto</option>
             <option value="Juros">💸 Dinheiro a Juros</option>
             <option value="Reserva">Patrimônio</option>
+            <!-- Tipos ocultos para uso interno da IA -->
+            <option value="Ajuste" style="display:none;">Saldo Anterior do Banco</option>
+            <option value="AjusteNeg" style="display:none;">Saldo Negativo Anterior</option>
         </select>
 
         <div id="gridCategoriaBanco" style="display:grid;
@@ -1409,7 +1412,7 @@
                 <button class="btn-confirm" onclick="document.getElementById('extratoInput').click()" style="background: linear-gradient(135deg, var(--success), #059669); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); width: 100%; margin: 0;">
                     <i class="fa-solid fa-cloud-arrow-up fa-bounce"></i> CARREGAR EXTRATO PDF
                 </button>
-                <button class="btn-confirm" onclick="aprovarConhecidosIA()" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9); box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3); width: 100%; margin-top: 10px; border-radius: 10px; margin-bottom: 0;"><i class="fa-solid fa-robot fa-bounce"></i> APROVAR LANÇAMENTOS CONHECIDOS</button>
+                
             </div>
         </div>
 
@@ -2005,7 +2008,9 @@
             "Variavel": ["🛒 Mercado", "🍕 Alimentação", "⛽ Combustível", "🚗 App/Transporte", "💊 Farmácia/Saúde", "🐾 Pets", "✂️ Estética & Barbeiro", "🛍️ Compras (Shopee/E-commerce)", "🔧 Manutenção (Casa/TV/Carro)", "🎓 Cursos Extras", "🎉 Lazer & Saídas"],
             "Divida": ["💳 Fatura do Cartão", "🏢 Financiamento", "🤝 Empréstimo", "🧾 Boleto Avulso", "⚖️ Acordo / Serasa", "🏛️ Impostos (IPVA/IPTU)"],
             "Juros": ["🦈 Agiota", "💼 Capital de Giro", "🏦 Empréstimo Pessoal", "💳 Cheque Especial", "🤝 Amigo / Parente"],
-            "Reserva": ["🏦 Investimentos", "📦 Caixinha", "🛡️ Reserva Emergência", "🪙 Criptomoedas", "🎯 Férias/Projetos"]
+            "Reserva": ["🏦 Investimentos", "📦 Caixinha", "🛡️ Reserva Emergência", "🪙 Criptomoedas", "🎯 Férias/Projetos"],
+            "Ajuste": ["🏦 Saldo Inicial do Banco", "⚖️ Correção Positiva"],
+            "AjusteNeg": ["🏦 Saldo Inicial Negativo", "⚖️ Correção Negativa"]
         };
 
         // EVENTOS GLOBAIS
@@ -2241,10 +2246,38 @@
             const prefixoMes = `${dataVisualizacao.getFullYear()}-${String(dataVisualizacao.getMonth() + 1).padStart(2, '0')}`;
             const corpo = document.getElementById('tabelaCorpo'); 
             if (corpo) corpo.innerHTML = '';
-            // LÓGICA DE SALDO ISOLADO POR MÊS
+            
             let sRec=0, sGas=0, sDiv=0, sRes=0;
-            const ordenados = [...registros].sort((a, b) => new Date(b.data) - new Date(a.data));
-            const registrosDoMes = ordenados.filter(r => r.data.startsWith(prefixoMes));
+            let saldoAcumuladoGlobal = 0; // O SEGREDO ESTÁ AQUI
+
+            // Calcula o Saldo Global acumulando todos os meses até o atual
+            registros.forEach(r => {
+                const vT = parseFloat(r.valor) || 0;
+                const vP = parseFloat(r.pago) || 0;
+                const isPago = vP >= vT && vT > 0;
+                const mesRegistro = (r.data && typeof r.data === 'string') ? r.data.substring(0, 7) : '0000-00';
+                
+                // Soma TUDO até o mês atual selecionado na tela
+                if (mesRegistro <= prefixoMes && isPago) {
+                    if (r.tipo === 'Receita' || r.tipo === 'Ajuste') {
+                        saldoAcumuladoGlobal += vT;
+                    } else if (r.tipo === 'AjusteNeg') {
+                        saldoAcumuladoGlobal -= vT;
+                    } else if (r.tipo === 'Reserva') {
+                        // PATRIMÔNIO É IGNORADO NO SALDO DA CONTA (Ele é apenas virtual/visual)
+                    } else {
+                        // Despesas Fixas, Variáveis e Dívidas (subtrai o valor PAGO)
+                        saldoAcumuladoGlobal -= vP; 
+                    }
+                }
+            });
+
+            const ordenados = [...registros].sort((a, b) => {
+                let da = a.data ? new Date(a.data) : new Date(0);
+                let db = b.data ? new Date(b.data) : new Date(0);
+                return db - da;
+            });
+            const registrosDoMes = ordenados.filter(r => r.data && typeof r.data === 'string' && r.data.startsWith(prefixoMes));
             let agrupados = {};
             
             registrosDoMes.forEach((r) => {
@@ -2252,13 +2285,13 @@
                 const vT = parseFloat(r.valor) || 0;
                 const vP = parseFloat(r.pago) || 0;
                 const falta = vT - vP;
-            
                 const isPago = vP >= vT && vT > 0;
 
+                // Cartões visuais menores
                 if(r.tipo === 'Receita') { if(isPago) sRec += vT; } 
                 else if(r.tipo === 'Divida' || r.tipo === 'Juros') { sDiv += falta; sGas += vP; } 
                 else if(r.tipo === 'Reserva') { sRes += vT; } 
-         
+                else if(r.tipo === 'Ajuste' || r.tipo === 'AjusteNeg') { /* Ignora */ }
                 else { sGas += vP; }
 
                 let exibir = (filtroAtual === "Tudo") || (filtroAtual === r.tipo) || (filtroAtual === "Gasto" && (r.tipo === "Fixo" || r.tipo === "Variavel")) || (filtroAtual === "Divida" && r.tipo === "Juros");
@@ -2287,15 +2320,14 @@
                     corpo.innerHTML += `<div class="date-group-header">${dataGrupo}</div>`;
                     
                     agrupados[dataGrupo].forEach(r => {
-             
-                        let icon = r.tipo === 'Receita' ? 'fa-arrow-up' : (r.tipo === 'Divida' ? 'fa-barcode' : (r.tipo === 'Juros' ? 'fa-handshake-angle' : (r.tipo === 'Reserva' ? 'fa-vault' : 'fa-arrow-down')));
-                        let color = r.tipo === 'Receita' ? 'var(--success)' : (r.tipo === 'Divida' ? 'var(--danger)' : (r.tipo === 'Juros' ? '#f97316' : (r.tipo === 'Reserva' ? 'var(--reserve)' : 'var(--warning)')));
+                        let icon = r.tipo === 'Receita' ? 'fa-arrow-up' : (r.tipo === 'Divida' ? 'fa-barcode' : (r.tipo === 'Juros' ? 'fa-handshake-angle' : (r.tipo === 'Reserva' ? 'fa-vault' : (r.tipo === 'Ajuste' || r.tipo === 'AjusteNeg' ? 'fa-building-columns' : 'fa-arrow-down'))));
+                        let color = r.tipo === 'Receita' || r.tipo === 'Ajuste' ? 'var(--success)' : (r.tipo === 'Divida' || r.tipo === 'AjusteNeg' ? 'var(--danger)' : (r.tipo === 'Juros' ? '#f97316' : (r.tipo === 'Reserva' ? 'var(--reserve)' : 'var(--warning)')));
                        
                         let extraInfo = r.forma ? ` • ${r.forma}` : '';
                         
                         let statusColor = r.isPago ? (r.tipo === 'Receita' ? 'var(--success)' : 'var(--success)') : 'var(--warning)';
                         let statusText = r.isPago ? 
-                        (r.tipo === 'Receita' ? 'RECEBIDO' : 'LIQUIDADO') : 'PENDENTE';
+                        (r.tipo === 'Receita' ? 'RECEBIDO' : (r.tipo === 'Ajuste' || r.tipo === 'AjusteNeg' ? 'COMPUTADO' : 'LIQUIDADO')) : 'PENDENTE';
                         
                         if(!r.isPago && (r.tipo === 'Divida' || r.tipo === 'Juros' ||
                         r.tipo === 'Fixo' || r.tipo === 'Variavel')) {
@@ -2356,8 +2388,8 @@
                 });
             }
 
-            // SALDO DO MÊS ATUAL ISOLADO
-            const totalSaldoFinal = sRec - sGas - sRes;
+            // SALDO DA CONTA EXATO ACUMULADO
+            const totalSaldoFinal = saldoAcumuladoGlobal;
             if (document.getElementById('totalReceitas')) document.getElementById('totalReceitas').innerText = ocultarBits(sRec);
             if (document.getElementById('totalGastos')) document.getElementById('totalGastos').innerText = ocultarBits(sGas);
             if (document.getElementById('totalDividas')) document.getElementById('totalDividas').innerText = ocultarBits(sDiv);
@@ -2382,8 +2414,8 @@
             let hojeIA = new Date();
             hojeIA.setHours(0,0,0,0);
             
-            if(dataVisualizacao) {
-                const prefixoMesIA = `${dataVisualizacao.getFullYear()}-${String(dataVisualizacao.getMonth() + 1).padStart(2, '0')}`;
+            if(window.dataVisualizacao) {
+                const prefixoMesIA = `${window.dataVisualizacao.getFullYear()}-${String(window.dataVisualizacao.getMonth() + 1).padStart(2, '0')}`;
                 
                 registros.forEach(r => {
                     if(r.data.startsWith(prefixoMesIA)) {
@@ -3031,9 +3063,7 @@
 
                 if (isEntrada) {
                     entradas += valorAbsoluto;
-                    if (isAutoTransf) {
-                        acao = "TRANSF. PRÓPRIA (RECEITA)";
-                    }
+                    if (isAutoTransf) acao = "TRANSF. PRÓPRIA (RECEITA)";
                 } else {
                     saidas += valorAbsoluto;
                 }
@@ -3054,6 +3084,41 @@
             }
         });
 
+        const matchSaldoAnterior = normalizedText.match(/Saldo anterior.*?(\-?\d{1,3}(?:\.\d{3})*,\d{2})/i);
+        if (matchSaldoAnterior) {
+            let saldoAnteriorLido = parseFloat(matchSaldoAnterior[1].replace(/\./g, '').replace(',', '.'));
+            if (saldoAnteriorLido !== 0) {
+                let isPositivo = saldoAnteriorLido > 0;
+                let valAbsoluto = Math.abs(saldoAnteriorLido);
+                let corS = isPositivo ? "var(--success)" : "var(--danger)";
+                
+                // Procuramos a menor data no extrato para lançar o saldo inicial antes de tudo
+                let menorData = new Date().toLocaleDateString('pt-BR');
+                if (transacoes.length > 0) {
+                    let dts = transacoes.map(t => new Date(t.data.split('/').reverse().join('-')));
+                    let minD = new Date(Math.min.apply(null, dts));
+                    menorData = minD.toLocaleDateString('pt-BR');
+                }
+                
+                // Cria o cartão visível para o usuário poder clicar em LANÇAR e ter controle total.
+                let tipoSaldo = isPositivo ? "Ajuste" : "AjusteNeg";
+                
+                transacoes.unshift({
+                    id: 'ID_SALDO_' + Math.floor(Math.random() * 900000),
+                    data: menorData,
+                    favorecido: "Saldo Anterior do Extrato",
+                    acao: "SALDO DO MÊS PASSADO",
+                    valor: valAbsoluto,
+                    tipo: tipoSaldo,
+                    cat: "🏦 Saldo em Conta",
+                    banco: "Santander",
+                    cor: isPositivo ? "var(--success)" : "var(--danger)",
+                    isEntrada: isPositivo,
+                    isSafe: true
+                });
+            }
+        }
+
         let listaHtml = "";
         transacoes.forEach(t => {
             if (learningMap[t.favorecido.toUpperCase()]) {
@@ -3068,7 +3133,7 @@
             let badgeBancoHtml = t.banco ? getBankBadge(t.banco) : '<span class="bank-badge" style="background:var(--input-bg); color:var(--text-muted); border: 1px dashed var(--border); margin-left:8px;"><i class="fa-solid fa-building-columns"></i> Banco Indefinido</span>';
 
             listaHtml += `
-            <div id="card_${t.id}" style="background:${bgSafe}; padding:18px; border-radius:16px; margin-bottom:14px; border:1px solid ${borderSafe}; box-shadow: 0 8px 20px rgba(0,0,0,0.1); display:flex; flex-direction:column; gap:12px; position:relative; transition: all 0.3s;">
+            <div id="card_${t.id}" class="ia-card-item" data-fav="${t.favorecido}" data-cat="${t.cat}" data-isentrada="${t.isEntrada}" style="background:${bgSafe}; padding:18px; border-radius:16px; margin-bottom:14px; border:1px solid ${borderSafe}; box-shadow: 0 8px 20px rgba(0,0,0,0.1); display:flex; flex-direction:column; gap:12px; position:relative; transition: all 0.3s;">
                 <div style="display:flex; justify-content:space-between; align-items:flex-start;">
                     <div style="flex:1;">
                         <span style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; display:flex; align-items:center; gap:6px;">
@@ -3092,31 +3157,16 @@
                         <option value="Variavel" ${t.tipo==='Variavel'?'selected':''}>Gasto Variável</option>
                         <option value="Divida" ${t.tipo==='Divida'?'selected':''}>Dívida/Boleto</option>
                         <option value="Reserva" ${t.tipo==='Reserva'?'selected':''}>Reserva/Patrimônio</option>
+                        <option value="Ajuste" ${t.tipo==='Ajuste'?'selected':''} style="display:none;">Saldo Anterior (Conta)</option>
+                        <option value="AjusteNeg" ${t.tipo==='AjusteNeg'?'selected':''} style="display:none;">Saldo Anterior (Negativo)</option>
                     </select>
                     
-                    <button onclick="abrirSplit('${t.id}')" style="background: rgba(245, 158, 11, 0.1); color:var(--warning); border: 1px solid var(--warning); border-radius:10px; padding:10px 14px; font-size:0.75rem; font-weight:800; cursor:pointer; margin-right: 8px; transition: 0.2s;" onmouseover="this.style.background='var(--warning)'; this.style.color='#fff';" title="Separar itens desta compra"><i class="fa-solid fa-arrows-split-up-and-left"></i> SEPARAR COMPRA</button>
+                    
                     <button onclick="commitVault('${t.id}', '${t.data.split('/').reverse().join('-')}', ${t.valor}, '${t.banco}', '${t.cat}')" style="background: linear-gradient(135deg, var(--accent), #0284c7); color:#fff; border:none; border-radius:10px; padding:10px 18px; font-size:0.75rem; font-weight:800; cursor:pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 15px rgba(0,242,255,0.3); display:flex; align-items:center; gap:6px;">
                         <i class="fa-solid fa-rocket"></i> LANÇAR
                     </button>
                 
                 </div>
-                <div id="split_${t.id}" class="split-panel">
-                    
-                    <div style="font-size: 0.9rem; margin-bottom: 5px; font-weight: 800; color: var(--warning);"><i class="fa-solid fa-arrows-split-up-and-left"></i> Separar Itens da Nota Fiscal</div>
-                    <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0; margin-bottom: 12px; line-height: 1.4;">
-                        <i class="fa-solid fa-lightbulb" style="color: var(--warning);"></i> <b>Por que usar?</b> Gastou R$ 600 no atacadão, mas R$ 200 foi um liquidificador? Separe os valores aqui para o seu gráfico de "Alimentação" não ficar bagunçado! (Total: <b>${formatarMoeda(t.valor)}</b>)
-                    </p>
-    
-                    <div style="display:flex; gap: 10px; margin-bottom: 10px;">
-                        <input type="text" id="split_desc1_${t.id}" placeholder="Ex: Compras de Alimentos" style="flex:2; padding:8px; font-size:0.85rem; margin-bottom:0;">
-                        <input type="number" id="split_val1_${t.id}" placeholder="Valor 1" style="flex:1; padding:8px; font-size:0.85rem; margin-bottom:0;" oninput="calcSplit('${t.id}', ${t.valor})">
-                    </div>
-                    <div style="display:flex; gap: 10px; margin-bottom: 15px;">
-                        <input type="text" id="split_desc2_${t.id}" placeholder="Ex: Fone de Ouvido" style="flex:2; padding:8px; font-size:0.85rem; margin-bottom:0;">
-                        <input type="number" id="split_val2_${t.id}" placeholder="Restante (Auto)" style="flex:1; padding:8px; font-size:0.85rem; margin-bottom:0; background: rgba(0,0,0,0.2);" readonly>
-                    </div>
-                    <button onclick="confirmarSplit('${t.id}', '${t.data.split('/').reverse().join('-')}', '${t.banco}', '${t.cat}')" style="width:100%; padding: 12px; background: linear-gradient(135deg, var(--accent), #0284c7); color: white; border: none; border-radius: 10px; font-weight: 800; cursor: pointer; font-size: 0.8rem;"><i class="fa-solid fa-check"></i> CONFIRMAR DIVISÃO E SALVAR</button>
-    
                 </div>
             </div>`;
         });
@@ -3166,36 +3216,63 @@
                 }
             });
 
-            insightsHtml = `<div style="background: linear-gradient(145deg, rgba(3, 7, 18, 0.8), rgba(17, 24, 39, 0.9)); border: 1px solid var(--accent); border-radius: 16px; padding: 20px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0, 242, 255, 0.1);">
-                <h4 style="margin: 0 0 15px 0; color: var(--accent); font-size: 1.05rem; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-brain"></i> Smart Insights (IA)</h4>
-                <div style="display: flex; flex-direction: column; gap: 12px;">`;
+            insightsHtml = `
+            <div style="background: linear-gradient(160deg, #111827 0%, #030712 100%); border: 1px solid rgba(0, 242, 255, 0.2); border-radius: 20px; padding: 22px; margin-bottom: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.5), inset 0 2px 10px rgba(0, 242, 255, 0.05); position: relative; overflow: hidden;">
+                <div style="position: absolute; top: -30px; right: -30px; width: 120px; height: 120px; background: rgba(0, 242, 255, 0.15); filter: blur(50px); border-radius: 50%; pointer-events: none;"></div>
+                
+                <h4 style="margin: 0 0 20px 0; color: #fff; font-size: 1.15rem; display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: 0.5px;">
+                    <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--accent);"></i> Smart Insights
+                </h4>
+                
+                <div style="display: grid; grid-template-columns: 1fr; gap: 14px;">`;
 
             if (vilaoCat) {
                 let pct = saidas > 0 ? ((vilaoValor / saidas) * 100).toFixed(1) : 0;
-                insightsHtml += `<div onclick="filtrarExtratoIA('categoria', \`${vilaoCat}\`)" style="cursor: pointer; display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.02); padding: 10px; border-radius: 10px; border-left: 3px solid var(--warning); transition: background 0.2s;" onmouseover="this.style.background='rgba(245, 158, 11, 0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.02)'">
-                    <div style="background: rgba(245, 158, 11, 0.1); color: var(--warning); width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;"><i class="fa-solid fa-chart-pie"></i></div>
-                    <div style="flex: 1;"><span style="display: block; font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;">Maior Categoria de Gasto</span><strong style="color: var(--text); font-size: 0.9rem;">${vilaoCat}</strong></div>
-                    <div style="text-align: right;"><strong style="color: var(--warning); display: block; font-size: 0.95rem;">${formatarMoeda(vilaoValor)}</strong><span style="font-size: 0.65rem; color: var(--text-muted);">${pct}% das saídas</span></div>
-                </div>`;
+                insightsHtml += `
+                    <div onclick="filtrarExtratoIA('categoria', '${vilaoCat}')" style="cursor: pointer; background: rgba(255,255,255,0.03); border: 1px solid rgba(245, 158, 11, 0.2); padding: 16px; border-radius: 16px; display: flex; align-items: center; gap: 15px; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(245, 158, 11, 0.08)'; this.style.transform='translateY(-2px)'; this.style.borderColor='rgba(245, 158, 11, 0.4)';" onmouseout="this.style.background='rgba(255,255,255,0.03)'; this.style.transform='translateY(0)'; this.style.borderColor='rgba(245, 158, 11, 0.2)';">
+                        <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(245, 158, 11, 0.15); color: var(--warning); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; box-shadow: 0 4px 10px rgba(245, 158, 11, 0.2);"><i class="fa-solid fa-chart-pie"></i></div>
+                        <div style="flex: 1; overflow: hidden;">
+                            <span style="display: block; font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 1px; margin-bottom: 2px;">Maior Foco de Gasto</span>
+                            <strong style="color: #fff; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;">${vilaoCat}</strong>
+                        </div>
+                        <div style="text-align: right;">
+                            <strong style="color: var(--warning); font-size: 1.1rem; display: block;">${formatarMoeda(vilaoValor)}</strong>
+                            <span style="font-size: 0.65rem; background: rgba(245, 158, 11, 0.2); color: var(--warning); padding: 3px 8px; border-radius: 8px; font-weight: 800; display: inline-block; margin-top: 4px;">${pct}% do total</span>
+                        </div>
+                    </div>`;
             }
 
             if (maiorSaida.valor > 0) {
-                insightsHtml += `<div onclick="filtrarExtratoIA('favorecido', \`${maiorSaida.favorecido}\`)" style="cursor: pointer; display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.02); padding: 10px; border-radius: 10px; border-left: 3px solid var(--danger); transition: background 0.2s;" onmouseover="this.style.background='rgba(239, 68, 68, 0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.02)'">
-                    <div style="background: rgba(239, 68, 68, 0.1); color: var(--danger); width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;"><i class="fa-solid fa-circle-exclamation"></i></div>
-                    <div style="flex: 1; overflow: hidden;"><span style="display: block; font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;" title="Clique para filtrar">Maior Transação (Vilão) 🔍</span><strong style="color: var(--text); font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;">${maiorSaida.favorecido}</strong></div>
-                    <div style="text-align: right;"><strong style="color: var(--danger); display: block; font-size: 0.95rem;">${formatarMoeda(maiorSaida.valor)}</strong></div>
-                </div>`;
+                insightsHtml += `
+                    <div onclick="filtrarExtratoIA('favorecido', '${maiorSaida.favorecido}')" style="cursor: pointer; background: rgba(255,255,255,0.03); border: 1px solid rgba(239, 68, 68, 0.2); padding: 16px; border-radius: 16px; display: flex; align-items: center; gap: 15px; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(239, 68, 68, 0.08)'; this.style.transform='translateY(-2px)'; this.style.borderColor='rgba(239, 68, 68, 0.4)';" onmouseout="this.style.background='rgba(255,255,255,0.03)'; this.style.transform='translateY(0)'; this.style.borderColor='rgba(239, 68, 68, 0.2)';">
+                        <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(239, 68, 68, 0.15); color: var(--danger); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; box-shadow: 0 4px 10px rgba(239, 68, 68, 0.2);"><i class="fa-solid fa-circle-exclamation fa-fade"></i></div>
+                        <div style="flex: 1; overflow: hidden;">
+                            <span style="display: block; font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 1px; margin-bottom: 2px;">Maior Transação (Vilão)</span>
+                            <strong style="color: #fff; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;">${maiorSaida.favorecido}</strong>
+                        </div>
+                        <div style="text-align: right;">
+                            <strong style="color: var(--danger); font-size: 1.1rem; display: block;">${formatarMoeda(maiorSaida.valor)}</strong>
+                            <span style="font-size: 0.65rem; color: var(--text-muted); font-weight: 600; display: inline-block; margin-top: 4px;">Clique para isolar <i class="fa-solid fa-arrow-right"></i></span>
+                        </div>
+                    </div>`;
             }
 
             if (subsCount > 0) {
-                insightsHtml += `<div onclick="filtrarExtratoIA('assinatura', 'subs')" style="cursor: pointer; display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.02); padding: 10px; border-radius: 10px; border-left: 3px solid var(--reserve); transition: background 0.2s;" onmouseover="this.style.background='rgba(139, 92, 246, 0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.02)'">
-                    <div style="background: rgba(139, 92, 246, 0.1); color: var(--reserve); width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;"><i class="fa-solid fa-repeat"></i></div>
-                    <div style="flex: 1;"><span style="display: block; font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;">Assinaturas Encontradas</span><strong style="color: var(--text); font-size: 0.9rem;">${subsCount} serviço(s) detectado(s)</strong></div>
-                    <div style="text-align: right;"><strong style="color: var(--reserve); display: block; font-size: 0.95rem;">${formatarMoeda(subsTotal)}</strong><span style="font-size: 0.65rem; color: var(--text-muted);">Total Recorrente</span></div>
-                </div>`;
+                insightsHtml += `
+                    <div onclick="filtrarExtratoIA('assinatura', 'subs')" style="cursor: pointer; background: rgba(255,255,255,0.03); border: 1px solid rgba(139, 92, 246, 0.2); padding: 16px; border-radius: 16px; display: flex; align-items: center; gap: 15px; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(139, 92, 246, 0.08)'; this.style.transform='translateY(-2px)'; this.style.borderColor='rgba(139, 92, 246, 0.4)';" onmouseout="this.style.background='rgba(255,255,255,0.03)'; this.style.transform='translateY(0)'; this.style.borderColor='rgba(139, 92, 246, 0.2)';">
+                        <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(139, 92, 246, 0.15); color: var(--reserve); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; box-shadow: 0 4px 10px rgba(139, 92, 246, 0.2);"><i class="fa-solid fa-repeat"></i></div>
+                        <div style="flex: 1; overflow: hidden;">
+                            <span style="display: block; font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 1px; margin-bottom: 2px;">Assinaturas Recorrentes</span>
+                            <strong style="color: #fff; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;">${subsCount} serviço(s) detectado(s)</strong>
+                        </div>
+                        <div style="text-align: right;">
+                            <strong style="color: var(--reserve); font-size: 1.1rem; display: block;">${formatarMoeda(subsTotal)}</strong>
+                            <span style="font-size: 0.65rem; color: var(--text-muted); font-weight: 600; display: inline-block; margin-top: 4px;">Total mensal</span>
+                        </div>
+                    </div>`;
             }
             insightsHtml += `</div></div>`;
-
+            
             infoResumo = `
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom: 10px;">
                 <div onclick="filtrarExtratoIA('entrada', '')" style="cursor: pointer; background: rgba(16, 185, 129, 0.1); padding: 15px 10px; border-radius: 16px; border: 1px solid var(--success); text-align: center; box-shadow: 0 4px 10px rgba(16,185,129,0.1); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
@@ -3233,42 +3310,46 @@
 window.filtroAtivoIA = { tipo: null, valor: null };
 window.filtrarExtratoIA = function(tipo, valor) {
     let limparBtn = document.getElementById('btnLimparFiltroIA');
-    if (window.filtroAtivoIA.tipo === tipo && window.filtroAtivoIA.valor === valor) {
-        document.querySelectorAll('[id^="card_ID_"]').forEach(el => el.style.display = 'flex');
+    
+    if (window.filtroAtivoIA && window.filtroAtivoIA.tipo === tipo && window.filtroAtivoIA.valor === valor) {
+        // Desativar filtro (mostrar tudo)
+        document.querySelectorAll('.ia-card-item').forEach(el => el.style.display = 'flex');
         window.filtroAtivoIA = { tipo: null, valor: null };
         if(limparBtn) limparBtn.style.display = 'none';
     } else {
-        document.querySelectorAll('[id^="card_ID_"]').forEach(el => {
+        // Ativar filtro
+        document.querySelectorAll('.ia-card-item').forEach(el => {
             let show = false;
-            if (tipo === 'favorecido') {
-                let input = el.querySelector('input[id^="fav_"]');
-                if (input && input.value.trim() === valor.trim()) show = true;
-            } else if (tipo === 'categoria') {
-                if (el.innerText.includes(valor)) show = true;
-            } else if (tipo === 'assinatura') {
-                let input = el.querySelector('input[id^="fav_"]');
-                if (input) {
-                    let desc = input.value.toLowerCase();
-                    let subs = ['netflix', 'spotify', 'amazon', 'prime video', 'hbo', 'disney', 'smartfit', 'gympass', 'tim', 'vivo', 'claro', 'apple', 'google', 'youtube'];
-                    if (subs.some(kw => desc.includes(kw))) show = true;
-                }
-            } else if (tipo === 'entrada') {
-                if (el.innerHTML.includes('var(--success)') || el.innerHTML.includes('var(--reserve)')) show = true;
-            } else if (tipo === 'saida') {
-                if (el.innerHTML.includes('var(--danger)') || el.innerHTML.includes('var(--warning)')) show = true;
+            let cFav = el.getAttribute('data-fav') || "";
+            let cCat = el.getAttribute('data-cat') || "";
+            let isEntrada = el.getAttribute('data-isentrada') === 'true';
+            
+            if (tipo === 'favorecido' && cFav.trim() === valor.trim()) show = true;
+            if (tipo === 'categoria' && cCat.trim() === valor.trim()) show = true;
+            if (tipo === 'assinatura') {
+                let descL = cFav.toLowerCase();
+                let subs = ['netflix', 'spotify', 'amazon', 'prime video', 'hbo', 'disney', 'smartfit', 'gympass', 'tim', 'vivo', 'claro', 'apple', 'google', 'youtube'];
+                if (subs.some(kw => descL.includes(kw))) show = true;
             }
+            if (tipo === 'entrada' && isEntrada) show = true;
+            if (tipo === 'saida' && !isEntrada) show = true;
+            
             el.style.display = show ? 'flex' : 'none';
         });
+        
         window.filtroAtivoIA = { tipo, valor };
         
+        // Criar ou exibir botão de limpar filtro
         if(!limparBtn) {
             limparBtn = document.createElement('div');
             limparBtn.id = 'btnLimparFiltroIA';
             limparBtn.innerHTML = '<i class="fa-solid fa-filter-circle-xmark"></i> LIMPAR FILTRO ATIVO';
-            limparBtn.style = 'background: var(--danger); color: white; padding: 10px 15px; border-radius: 12px; font-size: 0.75rem; font-weight: 800; cursor: pointer; text-align: center; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4); display: flex; align-items: center; justify-content: center; gap: 8px;';
-            limparBtn.onclick = () => window.filtrarExtratoIA(window.filtroAtivoIA.tipo, window.filtroAtivoIA.valor);
+            limparBtn.style = 'background: var(--danger); color: white; padding: 14px 15px; border-radius: 12px; font-size: 0.8rem; font-weight: 800; cursor: pointer; text-align: center; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4); display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s;';
+            limparBtn.onmouseover = () => { limparBtn.style.transform = 'scale(0.98)'; };
+            limparBtn.onmouseout = () => { limparBtn.style.transform = 'scale(1)'; };
+            limparBtn.onclick = () => window.filtrarExtratoIA(window.filtroAtivoIA.tipo, window.filtroAtivoIA.valor); // Toggle off
             let leitorLista = document.getElementById('leitorLista');
-            let firstCard = leitorLista.querySelector('[id^="card_ID_"]');
+            let firstCard = leitorLista.querySelector('.ia-card-item');
             if(firstCard) leitorLista.insertBefore(limparBtn, firstCard);
         }
         limparBtn.style.display = 'flex';
@@ -3276,100 +3357,14 @@ window.filtrarExtratoIA = function(tipo, valor) {
 };
 
 // --- AUTOMAÇÃO EM MASSA (DIRETO NO HISTÓRICO) ---
-window.aprovarConhecidosIA = function() {
-    let aprovados = 0;
-    document.querySelectorAll('[id^="card_ID_"]').forEach(card => {
-        if(card.style.opacity === '0.4') return; 
-        
-        let id = card.id.replace('card_', '');
-        let inputDesc = document.getElementById('fav_' + id);
-        let selectTipo = document.getElementById('tipo_' + id);
-        
-        if(inputDesc && selectTipo && learningMap && learningMap[inputDesc.value.toUpperCase()]) {
-            let learnedTipo = learningMap[inputDesc.value.toUpperCase()];
-            
-            // TRAVA DE SEGURANÇA: Nunca transformar uma Saída real em Receita, e vice-versa.
-            let isOriginalReceita = selectTipo.querySelector('option[value="Receita"]').selected;
-            
-            if (isOriginalReceita && learnedTipo !== 'Receita' && learnedTipo !== 'Reserva') {
-                return; // Ignora
-            }
-            if (!isOriginalReceita && (learnedTipo === 'Receita' || learnedTipo === 'Reserva')) {
-                return; // Ignora
-            }
-            
-            selectTipo.value = learnedTipo;
-
-            let btn = card.querySelector('button[onclick^="commitVault"]');
-            if(btn) { 
-                btn.click(); 
-                aprovados++; 
-            }
-        }
-    });
-    if(aprovados > 0) {
-        if(typeof triggerConfetti === 'function') triggerConfetti();
-        if(typeof playIncomeSound === 'function') playIncomeSound();
-        showToast(`SUCESSO: ${aprovados} lançamentos salvos direto no histórico!`, "success");
-    } else {
-        showToast("Nenhum lançamento novo conhecido para automatizar.", "warning");
-    }
-};
-
-// --- DIVISÃO INTELIGENTE ---
-window.abrirSplit = function(id) {
-    let panel = document.getElementById('split_' + id);
-    if(panel) panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
-};
-
-window.calcSplit = function(id, total) {
-    let val1 = parseFloat(document.getElementById('split_val1_' + id).value) || 0;
-    let val2 = total - val1;
-    document.getElementById('split_val2_' + id).value = val2 > 0 ? val2.toFixed(2) : 0;
-};
-
-window.confirmarSplit = function(id, dataISO, banco, cat) {
-    let val1 = parseFloat(document.getElementById('split_val1_' + id).value);
-    let val2 = parseFloat(document.getElementById('split_val2_' + id).value);
-    let originalDesc = document.getElementById('fav_' + id).value;
-    let desc1 = document.getElementById('split_desc1_' + id).value || (originalDesc + " (Parte 1)");
-    let desc2 = document.getElementById('split_desc2_' + id).value || (originalDesc + " (Parte 2)");
-    
-    if(!val1 || !val2 || val1 <= 0 || val2 <= 0) return showToast("Preencha os valores da divisão.", "error");
-    
-    let tipoInput = document.getElementById('tipo_' + id).value;
-    const horaAtual = new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
-    
-    registros.push({ tipo: tipoInput, desc: desc1, categoria: cat, valor: val1, pago: val1, data: dataISO, dataLancamento: dataISO, banco: banco, forma: null, comprovante: null, hora: horaAtual });
-    registros.push({ tipo: tipoInput, desc: desc2, categoria: cat, valor: val2, pago: val2, data: dataISO, dataLancamento: dataISO, banco: banco, forma: null, comprovante: null, hora: horaAtual });
-    
-    salvarDB();
-    renderizar();
-    
-    let card = document.getElementById('card_' + id);
-    if(card) {
-        card.style.opacity = '0.4';
-        card.style.border = '1px solid var(--success)';
-        let btns = card.querySelectorAll('button');
-        btns.forEach(b => b.disabled = true);
-        let splitPanel = document.getElementById('split_' + id);
-        if(splitPanel) splitPanel.style.display = 'none';
-        
-        let mainBtn = card.querySelector('button[onclick^="commitVault"]');
-        if(mainBtn) {
-            mainBtn.innerHTML = '<i class="fa-solid fa-check-double"></i> SALVO (DIVIDIDO)';
-            mainBtn.style.background = 'var(--success)';
-        }
-    }
-    if(typeof triggerConfetti === 'function') triggerConfetti();
-    showToast("Transação dividida e salva direto no histórico!", "success");
-};
-
 // --- ONE-CLICK SAVE (SALVAMENTO DIRETO) ---
 window.commitVault = function(id, dataISO, valor, bancoInferido, catInferida) {
     const descInput = document.getElementById('fav_' + id).value;
     const tipoInput = document.getElementById('tipo_' + id).value;
     const horaAtual = new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+    
+
+
     
     if(!learningMap) learningMap = {};
     learningMap[descInput.toUpperCase()] = tipoInput;
