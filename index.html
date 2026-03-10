@@ -1384,48 +1384,56 @@
         <div id="comprovanteContent" style="text-align:center;"></div>
     </div>
 
-    <div class="modal" id="modalLeitorExtrato">
-        <div style="display:flex;
-            justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <h2 style="margin:0; font-size:1.15rem;
-            color: var(--success);"><i class="fa-solid fa-wand-magic-sparkles"></i> Leitor IA</h2>
-            <i class="fa-solid fa-xmark" style="font-size:1.4rem;
-            color:var(--text-muted); cursor:pointer;" onclick="closeModal()"></i>
+    
+    <div class="modal" id="modalLeitorExtrato" style="background: rgba(3, 7, 18, 0.95); backdrop-filter: blur(20px); border: 1px solid var(--accent); box-shadow: 0 0 30px rgba(0, 242, 255, 0.1); z-index: 3000;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <h2 style="margin:0; font-size:1.15rem; color: var(--accent); display:flex; align-items:center; gap:8px;">
+                <i class="fa-solid fa-microchip"></i> ZIRO-BANCK VAULT V3
+            </h2>
+            <i class="fa-solid fa-xmark" style="font-size:1.4rem; color:var(--text-muted); cursor:pointer;" onclick="closeModal()"></i>
         </div>
-        <p style="font-size: 0.85rem;
-        color: var(--text-muted); margin-bottom: 20px; line-height: 1.4;">
-            Anexe um <b>print de tela ou PDF</b> do seu extrato bancário. A IA lerá o arquivo e gerará botões para adicionar as compras!
-        </p>
-        
-        <input type="file" id="extratoInput" accept="image/*,application/pdf" style="display: none;" onchange="processarExtratoImagem(event)">
-        <button class="btn-confirm" onclick="document.getElementById('extratoInput').click()" style="background: var(--success);
-        margin-bottom: 20px;">
-            <i class="fa-solid fa-file-arrow-up"></i> SELECIONAR EXTRATO
-        </button>
 
-        <div id="leitorLoading" class="hidden" style="text-align:center;
-            padding:20px; color:var(--success);">
-            <i class="fa-solid fa-spinner fa-spin" style="font-size: 2rem;
-            margin-bottom:10px;"></i>
-            <p style="font-size: 0.9rem;
-            font-weight: bold;">Analisando dados...</p>
+        <input type="file" id="extratoInput" accept="image/*,application/pdf" style="display: none;" onchange="processarExtratoImagem(event)">
+
+        <div id="leitorUploadArea">
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.4;">
+                Motor de Inteligência Financeira. Anexe o extrato do seu banco em PDF para que a IA analise e categorize seus lançamentos automaticamente. Processamento 100% privado.
+            </p>
+            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                <button class="btn-confirm" onclick="document.getElementById('extratoInput').click()" style="background: linear-gradient(135deg, var(--success), #059669); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); width: 100%; margin: 0;">
+                    <i class="fa-solid fa-cloud-arrow-up fa-bounce"></i> CARREGAR EXTRATO PDF
+                </button>
+            </div>
+        </div>
+
+        <div id="leitorRestoreArea" class="hidden" style="background: rgba(0, 242, 255, 0.05); border: 1px dashed var(--accent); padding: 25px 20px; border-radius: 16px; margin-bottom: 20px; text-align: center; box-shadow: inset 0 0 20px rgba(0,242,255,0.05);">
+            <i class="fa-solid fa-clock-rotate-left" style="font-size: 2.5rem; color: var(--accent); margin-bottom: 12px;"></i>
+            <h4 style="color: var(--text); margin: 0 0 8px 0; font-size: 1.15rem;">Sessão em Andamento</h4>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.4;">Você possui um extrato carregado anteriormente com lançamentos pendentes de aprovação.</p>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="continuarExtrato()" style="flex: 2; background: linear-gradient(135deg, var(--accent), #0284c7); color: #fff; border: none; padding: 12px; border-radius: 10px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 10px rgba(0,242,255,0.2);"><i class="fa-solid fa-play"></i> CONTINUAR EXTRATO</button>
+                <button onclick="novoExtrato()" style="flex: 1; background: transparent; color: var(--text-muted); border: 1px solid var(--border); padding: 12px; border-radius: 10px; font-weight: 800; cursor: pointer;"><i class="fa-solid fa-trash"></i> NOVO</button>
+            </div>
+        </div>
+
+        <div id="leitorLoading" class="hidden" style="text-align:center; padding:20px; color:var(--accent);">
+            <i class="fa-solid fa-microchip fa-flip" style="font-size: 2rem; margin-bottom:10px;"></i>
+            <p style="font-size: 0.9rem; font-weight: bold; letter-spacing: 1px;">EXTRAINDO DADOS...</p>
         </div>
 
         <div id="leitorResult" class="hidden">
-            <div class="grafico-card" style="padding: 15px;
-                margin-bottom: 15px;">
-                <span class="label-mini" style="text-align: center;">Resumo Lido</span>
-                <div style="position: relative;
-                    height: 180px; width: 100%;">
+            <div class="grafico-card" style="padding: 15px; margin-bottom: 15px; background: rgba(0,0,0,0.5); border: 1px solid var(--border);">
+                <span class="label-mini" style="text-align: center; color: var(--accent);">Fluxo Financeiro Encontrado</span>
+                <div style="position: relative; height: 180px; width: 100%;">
                     <canvas id="chartLeitor"></canvas>
                 </div>
             </div>
-            <h4 style="font-size: 0.85rem;
-            color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px;">Operações Identificadas:</h4>
+
+            <h4 style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px;">Reconciliação Editável:</h4>
             <div id="leitorLista"></div>
         </div>
     </div>
-    
+
     <div id="pdf-container"></div>
 
     <script>
@@ -2846,107 +2854,350 @@
         function abrirLeitorExtrato() {
             document.getElementById('modalLeitorExtrato')?.classList.add('open');
             if (document.getElementById('overlay')) document.getElementById('overlay').style.display = 'block';
-            document.getElementById('leitorLoading')?.classList.add('hidden');
-            document.getElementById('leitorResult')?.classList.add('hidden');
-        }
-
-        async function processarExtratoImagem(event) {
-            const file = event.target.files[0];
-            if(!file) return;
-            document.getElementById('leitorLoading')?.classList.remove('hidden');
-            document.getElementById('leitorResult')?.classList.add('hidden');
-            try {
-                if (file.type === "application/pdf") {
-                    const fileReader = new FileReader();
-                    fileReader.onload = async function() {
-                        const typedarray = new Uint8Array(this.result);
-                        const pdf = await pdfjsLib.getDocument(typedarray).promise;
-                        let fullText = "";
-                        for(let i = 1; i <= pdf.numPages; i++) {
-                            const page = await pdf.getPage(i);
-                            const textContent = await page.getTextContent();
-                            fullText += textContent.items.map(item => item.str).join(' ') + "\n";
-                        }
-                        analisarTextoExtrato(fullText);
-                        document.getElementById('leitorLoading')?.classList.add('hidden');
-                    };
-                    fileReader.readAsArrayBuffer(file);
-                } else {
-                    const { data: { text } } = await Tesseract.recognize(file, 'por');
-                    analisarTextoExtrato(text);
-                    document.getElementById('leitorLoading')?.classList.add('hidden');
-                }
-            } catch(e) {
-                showToast("Erro ao analisar arquivo.", "error");
-                document.getElementById('leitorLoading')?.classList.add('hidden');
+            
+            // Lógica de Retenção de Estado (Pausar e Continuar)
+            let listaNode = document.getElementById('leitorLista');
+            if(listaNode && listaNode.innerHTML.trim().length > 0) {
+                document.getElementById('leitorUploadArea').classList.add('hidden');
+                document.getElementById('leitorResult').classList.add('hidden');
+                document.getElementById('leitorLoading').classList.add('hidden');
+                document.getElementById('leitorRestoreArea').classList.remove('hidden');
+            } else {
+                document.getElementById('leitorRestoreArea').classList.add('hidden');
+                document.getElementById('leitorResult').classList.add('hidden');
+                document.getElementById('leitorLoading').classList.add('hidden');
+                document.getElementById('leitorUploadArea').classList.remove('hidden');
             }
         }
         
-        function analisarTextoExtrato(text) {
-            const lines = text.split('\n');
-            let entradas = 0, saidas = 0, listaHtml = "";
-            const moneyRegex = /(?:R\$|RS|\$)?\s*(\d{1,3}(?:\.\d{3})*,\d{2})/i;
-            lines.forEach(line => {
-                const match = line.match(moneyRegex);
-                if(match) {
-                    const valor = parseFloat(match[1].replace(/\./g, '').replace(',', '.'));
-                    const lineLower = line.toLowerCase();
-              
-                    const descLida = line.replace(match[0], '').trim().substring(0, 30) || 'Operação';
-                    
-                    let tipo = "Variavel";
-                    let cor = "var(--danger)";
-                    
- 
-                    if(lineLower.includes('recebido') || lineLower.includes('entrada') || lineLower.includes('depósito') || lineLower.includes('transferência') || lineLower.includes('rendimento') || lineLower.includes('salário')) {
-                        tipo = "Receita"; cor = "var(--success)"; entradas += valor;
-                    } else { saidas += valor; }
-            
-                    
-                    listaHtml += `<div style="background:var(--bg); padding:10px; border-radius:10px; margin-bottom:8px;
-                        border:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
-                        <span style="font-size:0.75rem;
-                        color:var(--text); flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-right:10px;">${descLida}</span>
-                        <div style="display:flex;
-                        gap:10px; align-items:center;">
-                            <strong style="color:${cor};
-                            font-size:0.85rem;">${formatarMoeda(valor)}</strong>
-                            <button onclick="preencherIA('${descLida}', ${valor}, '${tipo}')" style="background:var(--accent);
-                            border:none; color:#fff; border-radius:6px; padding:4px 8px; font-size:0.6rem; cursor:pointer; font-weight:bold;">+ LANÇAR</button>
-                        </div></div>`;
-                }
-            });
-            
-            if(entradas === 0 && saidas === 0) listaHtml = "<p style='color:var(--text-muted); text-align:center; font-size: 0.85rem;'>Nenhum valor financeiro claro foi identificado.</p>";
-            if (document.getElementById('leitorLista')) document.getElementById('leitorLista').innerHTML = listaHtml;
-            document.getElementById('leitorResult')?.classList.remove('hidden');
-            
-            if(chartLeitorInstance) chartLeitorInstance.destroy();
-            const canvasLeitor = document.getElementById('chartLeitor');
-            if (canvasLeitor) {
-            
-                const ctx = canvasLeitor.getContext('2d');
-                let fontColor = getComputedStyle(document.body).getPropertyValue('--text-muted').trim() || '#999';
-                chartLeitorInstance = new Chart(ctx, {
-                    type: 'doughnut',
-                    data: { labels: ['Entradas', 'Saídas'], datasets: [{ data: [entradas, saidas], 
-                    backgroundColor: ['#10b981', '#ef4444'], borderWidth: 0 }] },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: fontColor, font: {size: 11} } } }, cutout: '70%' }
-                });
+        function continuarExtrato() {
+            document.getElementById('leitorRestoreArea').classList.add('hidden');
+            document.getElementById('leitorUploadArea').classList.add('hidden');
+            document.getElementById('leitorResult').classList.remove('hidden');
+        }
+
+        function novoExtrato() {
+            document.getElementById('leitorLista').innerHTML = "";
+            document.getElementById('extratoInput').value = "";
+            document.getElementById('leitorRestoreArea').classList.add('hidden');
+            document.getElementById('leitorResult').classList.add('hidden');
+            document.getElementById('leitorUploadArea').classList.remove('hidden');
+            document.getElementById('extratoInput').click();
+        }
+
+        
+
+// --- ZIRO-BANCK VAULT V3 ENGINE ---
+var learningMap = JSON.parse(localStorage.getItem('ziro_learning')) || {};
+
+function analisarTextoExtrato(text) {
+    let normalizedText = text.replace(/\n/g, ' ').replace(/\s{2,}/g, ' ');
+    let blocos = normalizedText.split(/(?=\d{2}\/\d{2}\/\d{4})/);
+
+    let entradas = 0, saidas = 0;
+    let transacoes = [];
+    let saldoFinalLido = null;
+
+    const matchSaldo = normalizedText.match(/(?:Saldo dispon[ií]vel|Saldo atual|Saldo final|Saldo em conta).*?(\d{1,3}(?:\.\d{3})*,\d{2})/i);
+    if (matchSaldo) {
+        saldoFinalLido = parseFloat(matchSaldo[1].replace(/\./g, '').replace(',', '.'));
+    }
+
+    blocos.forEach((bloco) => {
+        if(bloco.length < 15) return;
+        if(bloco.toLowerCase().includes('saldo anterior') || bloco.toLowerCase().includes('saldo de conta')) return;
+
+        const dateMatch = bloco.match(/^(\d{2}\/\d{2}\/\d{4})/);
+        if (!dateMatch) return;
+        let dataCru = dateMatch[1];
+
+        const valoresRegex = /(-?\d{1,3}(?:\.\d{3})*,\d{2})/g;
+        let valores = [...bloco.matchAll(valoresRegex)];
+
+        if (valores.length > 0) {
+            let valorCruStr = valores[0][1];
+            let valorNumerico = parseFloat(valorCruStr.replace(/\./g, '').replace(',', '.'));
+            let valorAbsoluto = Math.abs(valorNumerico);
+            if(valorAbsoluto === 0) return;
+
+            let descBruta = bloco.replace(dataCru, '').replace(valorCruStr, '');
+            if (valores.length > 1) {
+                descBruta = descBruta.replace(valores[1][1], '');
             }
+            descBruta = descBruta.replace(/\b\d{6,}\b/g, '');
+
+            let isEntrada = valorNumerico > 0;
+            let acao = "OUTROS";
+            let descLower = descBruta.toLowerCase();
+
+            if (descLower.includes('recebido') || descLower.includes('ted recebida')) {
+                isEntrada = true;
+                acao = descLower.includes('pix') ? "PIX RECEBIDO" : "TED RECEBIDA";
+            } else if (descLower.includes('enviado')) {
+                isEntrada = false;
+                acao = "PIX ENVIADO";
+            } else if (descLower.includes('compra cartao') || descLower.includes('compra cartão')) {
+                isEntrada = false;
+                acao = "CARTÃO";
+            } else if (descLower.includes('devolvido')) {
+                acao = "DEVOLUÇÃO";
+            }
+            if (valorNumerico < 0) isEntrada = false;
+
+            let bancoInferido = "";
+            if (descLower.includes("nubank") || descLower.includes("nu pagamentos")) bancoInferido = "Nubank";
+            else if (descLower.includes("picpay")) bancoInferido = "PicPay";
+            else if (descLower.includes("caixa economica") || descLower.includes("caixa econômica")) bancoInferido = "Caixa Econômica";
+            else if (descLower.includes("mercado pago") || descLower.includes("mercadopago")) bancoInferido = "Mercado Pago";
+            else if (descLower.includes("pagseguro") || descLower.includes("pagbank")) bancoInferido = "PagBank";
+            else if (descLower.includes("inter")) bancoInferido = "Banco Inter";
+            else if (descLower.includes("itau") || descLower.includes("itaú")) bancoInferido = "Itaú";
+            else if (descLower.includes("bradesco")) bancoInferido = "Bradesco";
+            else if (descLower.includes("santander")) bancoInferido = "Santander";
+            else if (descLower.includes("banco do brasil")) bancoInferido = "Banco do Brasil";
+            else if (descLower.includes("c6 bank") || descLower.includes("c6")) bancoInferido = "C6 Bank";
+            else if (descLower.includes("sicoob")) bancoInferido = "Sicoob";
+
+            let favorecido = descBruta
+                .replace(/PIX RECEBIDO/i, '').replace(/PIX ENVIADO/i, '')
+                .replace(/TED RECEBIDA/i, '').replace(/PIX DEVOLVIDO/i, '')
+                .replace(/COMPRA CARTAO DEB MC \d{2}\/\d{2}/i, '').trim();
+            favorecido = favorecido.replace(/\s+/g, ' ').substring(0, 35).trim();
+            if(favorecido.length < 2) favorecido = "Lançamento Genérico";
+
+            const nomeTitular = document.getElementById('headerUserName') ? document.getElementById('headerUserName').innerText.toUpperCase() : "USUÁRIO";
+            let isAutoTransf = favorecido.toUpperCase().includes(nomeTitular.split(' ')[0]);
+            
+            let tipoLancamento = isEntrada ? "Receita" : "Variavel";
+            let catInferida = "";
+            
+            if (!isEntrada) {
+                if (descLower.includes('uber') || descLower.includes('99app')) { tipoLancamento = 'Variavel'; catInferida = '🚗 App/Transporte'; }
+                else if (descLower.includes('ifood') || descLower.includes('restaurante') || descLower.includes('burguer') || descLower.includes('padaria')) { tipoLancamento = 'Variavel'; catInferida = '🍕 Alimentação'; }
+                else if (descLower.includes('supermercado') || descLower.includes('mercearia') || descLower.includes('atacadao') || descLower.includes('assai')) { tipoLancamento = 'Variavel'; catInferida = '🛒 Mercado'; }
+                else if (descLower.includes('posto') || descLower.includes('combustivel')) { tipoLancamento = 'Variavel'; catInferida = '⛽ Combustível'; }
+                else if (descLower.includes('farmacia') || descLower.includes('drogaria')) { tipoLancamento = 'Variavel'; catInferida = '💊 Farmácia/Saúde'; }
+                else if (descLower.includes('telefonica') || descLower.includes('claro') || descLower.includes('tim') || descLower.includes('vivo')) { tipoLancamento = 'Fixo'; catInferida = '🌐 Internet'; }
+                else if (descLower.includes('shopee') || descLower.includes('shpp') || descLower.includes('mercado livre') || descLower.includes('amazon')) { tipoLancamento = 'Variavel'; catInferida = '🛍️ Compras (Shopee/E-commerce)'; }
+            }
+
+            let cor = isEntrada ? "var(--success)" : "var(--danger)";
+
+            if (isEntrada && isAutoTransf) {
+                tipoLancamento = "Reserva";
+                acao = "TRANSF. INTERNA";
+                cor = "var(--reserve)";
+            } else if (isEntrada) {
+                entradas += valorAbsoluto;
+            } else {
+                saidas += valorAbsoluto;
+            }
+
+            transacoes.push({
+                id: 'ID_' + dataCru.replace(/\//g, '') + '_' + Math.floor(Math.random() * 900000 + 100000),
+                data: dataCru,
+                favorecido: favorecido,
+                acao: acao,
+                valor: valorAbsoluto,
+                tipo: tipoLancamento,
+                cat: catInferida,
+                banco: bancoInferido,
+                cor: cor,
+                isEntrada: isEntrada,
+                isSafe: descBruta.length >= 5
+            });
+        }
+    });
+
+    let listaHtml = "";
+    transacoes.forEach(t => {
+        if (learningMap[t.favorecido.toUpperCase()]) {
+            t.tipo = learningMap[t.favorecido.toUpperCase()];
+            if(t.tipo === 'Fixo') t.cor = "var(--warning)";
+            if(t.tipo === 'Divida') t.cor = "var(--danger)";
         }
 
-        window.preencherIA = function(desc, valor, tipo) {
-            closeAll();
-            openModal();
-            if (document.getElementById('desc')) document.getElementById('desc').value = desc;
-            if (document.getElementById('valor')) document.getElementById('valor').value = valor;
-            if (document.getElementById('tipo')) document.getElementById('tipo').value = tipo;
-            atualizarSubmenu();
-            showToast("Dados preenchidos. Salve a operação!", "success");
-        }
+        let bgSafe = t.isSafe ? "var(--card)" : "rgba(245, 158, 11, 0.1)";
+        let borderSafe = t.isSafe ? "var(--border)" : "var(--warning)";
+        
+        let badgeBancoHtml = t.banco ? getBankBadge(t.banco) : '<span class="bank-badge" style="background:var(--input-bg); color:var(--text-muted); border: 1px dashed var(--border); margin-left:8px;"><i class="fa-solid fa-building-columns"></i> Banco Indefinido</span>';
 
-        // NOVA FUNÇÃO DE EXPORTAÇÃO PARA CSV (Somente texto, para Excel)
+        listaHtml += `
+        <div id="card_${t.id}" style="background:${bgSafe}; padding:18px; border-radius:16px; margin-bottom:14px; border:1px solid ${borderSafe}; box-shadow: 0 8px 20px rgba(0,0,0,0.1); display:flex; flex-direction:column; gap:12px; position:relative; transition: all 0.3s;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div style="flex:1;">
+                    <span style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; display:flex; align-items:center; gap:6px;">
+                        <i class="fa-regular fa-calendar"></i> ${t.data}
+                    </span>
+                    <div style="margin-top:6px; margin-bottom: 6px;">
+                        <input type="text" id="fav_${t.id}" value="${t.favorecido}" style="background:transparent; border:none; border-bottom:1px dashed var(--accent); color:var(--text); font-weight:800; font-size:1.05rem; padding:4px 0; width:100%; border-radius:0; box-shadow:none;">
+                    </div>
+                    ${badgeBancoHtml}
+                </div>
+                <div style="text-align:right; display:flex; flex-direction:column; gap:4px;">
+                    <strong style="color:${t.cor}; font-size:1.25rem;">${formatarMoeda(t.valor)}</strong>
+                    <span style="font-size:0.65rem; font-weight: 800; background:var(--input-bg); padding:4px 8px; border-radius:6px; color:var(--text-muted); align-self:flex-end;"><i class="fa-solid fa-tag"></i> ${t.acao}</span>
+                </div>
+            </div>
+            
+            <div style="display:flex; justify-content:space-between; align-items:center; border-top: 1px dashed var(--border); padding-top: 12px; margin-top: 4px;">
+                <select id="tipo_${t.id}" style="padding: 8px 10px; font-size: 0.75rem; border-radius: 8px; background: var(--input-bg); color: var(--text); border: 1px solid var(--border); width: auto; margin:0; font-weight:bold;">
+                    <option value="Receita" ${t.tipo==='Receita'?'selected':''}>Receita</option>
+                    <option value="Fixo" ${t.tipo==='Fixo'?'selected':''}>Gasto Fixo</option>
+                    <option value="Variavel" ${t.tipo==='Variavel'?'selected':''}>Gasto Variável</option>
+                    <option value="Divida" ${t.tipo==='Divida'?'selected':''}>Dívida/Boleto</option>
+                    <option value="Reserva" ${t.tipo==='Reserva'?'selected':''}>Reserva/Patrimônio</option>
+                </select>
+                
+                <button onclick="commitVault('${t.id}', '${t.data.split('/').reverse().join('-')}', ${t.valor}, '${t.banco}', '${t.cat}')" style="background: linear-gradient(135deg, var(--accent), #0284c7); color:#fff; border:none; border-radius:10px; padding:10px 18px; font-size:0.75rem; font-weight:800; cursor:pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 15px rgba(0,242,255,0.3); display:flex; align-items:center; gap:6px;">
+                    <i class="fa-solid fa-rocket"></i> LANÇAR
+                </button>
+            </div>
+        </div>`;
+    });
+
+    let checkSumHtml = "";
+    if (saldoFinalLido !== null) {
+        let isExato = Math.abs((entradas - saidas) - saldoFinalLido) < 1.0;
+        let icon = isExato ? 'fa-shield-check' : 'fa-triangle-exclamation';
+        let color = isExato ? 'var(--success)' : 'var(--warning)';
+        
+        checkSumHtml = `
+        <div style="background: rgba(16, 185, 129, 0.05); border: 1px solid ${color}; padding: 12px; border-radius: 12px; margin-bottom: 15px; display:flex; justify-content:center; align-items:center; gap:10px;">
+            <i class="fa-solid ${icon}" style="font-size:1.5rem; color:${color};"></i>
+            <div style="text-align:left;">
+                <span style="display:block; font-weight:800; font-size: 0.85rem; text-transform:uppercase; color:${color};">Check-sum ${isExato ? 'Validado' : 'Aproximado'}</span>
+                <span style="font-size:0.75rem; color:var(--text-muted);">Saldo Bancário Confirmado: ${formatarMoeda(saldoFinalLido)}</span>
+            </div>
+        </div>`;
+    }
+
+    if(transacoes.length === 0) {
+        document.getElementById('leitorLista').innerHTML = "<div style='text-align:center; padding: 30px;'><i class='fa-solid fa-triangle-exclamation' style='font-size:2.5rem; color:var(--warning); margin-bottom:15px;'></i><p style='color:var(--text-muted); font-size:0.95rem;'>Nenhuma transação válida foi extraída. Verifique se o PDF contém o histórico correto.</p></div>";
+    } else {
+        let infoResumo = `
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom: 10px;">
+            <div style="background: rgba(16, 185, 129, 0.1); padding: 15px 10px; border-radius: 16px; border: 1px solid var(--success); text-align: center; box-shadow: 0 4px 10px rgba(16,185,129,0.1);">
+                <span style="font-size: 0.65rem; color: var(--success); font-weight: 800; text-transform: uppercase; display:block; margin-bottom:5px;"><i class="fa-solid fa-arrow-up"></i> Entradas (${transacoes.filter(t=>t.isEntrada && t.tipo !== 'Reserva').length})</span>
+                <strong style="color: var(--success); font-size: 1.2rem;">${formatarMoeda(entradas)}</strong>
+            </div>
+            <div style="background: rgba(239, 68, 68, 0.1); padding: 15px 10px; border-radius: 16px; border: 1px solid var(--danger); text-align: center; box-shadow: 0 4px 10px rgba(239,68,68,0.1);">
+                <span style="font-size: 0.65rem; color: var(--danger); font-weight: 800; text-transform: uppercase; display:block; margin-bottom:5px;"><i class="fa-solid fa-arrow-down"></i> Saídas (${transacoes.filter(t=>!t.isEntrada).length})</span>
+                <strong style="color: var(--danger); font-size: 1.2rem;">${formatarMoeda(saidas)}</strong>
+            </div>
+        </div>
+        <div style="font-size: 0.65rem; color: var(--text-muted); text-align: center; margin-bottom: 20px; padding: 0 10px; line-height: 1.4;">
+            <i class="fa-solid fa-circle-info"></i> <b>Nota da IA:</b> Se as saídas superam as entradas, significa que você pagou contas usando um saldo que já estava na conta antes deste extrato começar.
+        </div>`;
+        document.getElementById('leitorLista').innerHTML = checkSumHtml + infoResumo + listaHtml;
+    }
+    
+    document.getElementById('leitorResult').classList.remove('hidden');
+    
+    if(window.chartLeitorInstance) window.chartLeitorInstance.destroy();
+    const canvasLeitor = document.getElementById('chartLeitor');
+    if (canvasLeitor && transacoes.length > 0) {
+        const ctx = canvasLeitor.getContext('2d');
+        let fontColor = getComputedStyle(document.body).getPropertyValue('--text-muted').trim() || '#999';
+        window.chartLeitorInstance = new Chart(ctx, {
+            type: 'doughnut',
+            data: { labels: ['Entradas', 'Saídas'], datasets: [{ data: [entradas, saidas], backgroundColor: ['#10b981', '#ef4444'], borderWidth: 0 }] },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: fontColor, font: {size: 11, family: "'Ubuntu', sans-serif"} } } }, cutout: '75%' }
+        });
+    }
+}
+
+window.commitVault = function(id, dataISO, valor, bancoInferido, catInferida) {
+    const descInput = document.getElementById('fav_' + id).value;
+    const tipoInput = document.getElementById('tipo_' + id).value;
+    
+    // Modificação Visual para marcar como LANÇADO (Feedback imediato)
+    let card = document.getElementById('card_' + id);
+    if(card) {
+        card.style.opacity = '0.4';
+        card.style.border = '1px solid var(--success)';
+        let btns = card.getElementsByTagName('button');
+        if(btns.length > 0) {
+            btns[0].innerHTML = '<i class="fa-solid fa-check-double"></i> LANÇADO';
+            btns[0].style.background = 'var(--success)';
+            btns[0].disabled = true;
+        }
+    }
+
+    
+    learningMap[descInput.toUpperCase()] = tipoInput;
+    localStorage.setItem('ziro_learning', JSON.stringify(learningMap));
+    
+    closeAll();
+    openModal();
+    
+    if (document.getElementById('desc')) document.getElementById('desc').value = descInput;
+    if (document.getElementById('valor')) document.getElementById('valor').value = valor;
+    if (document.getElementById('tipo')) document.getElementById('tipo').value = tipoInput;
+    if (document.getElementById('data')) document.getElementById('data').value = dataISO;
+    if (document.getElementById('dataLancamento')) document.getElementById('dataLancamento').value = dataISO;
+    
+    atualizarSubmenu(); 
+    
+    setTimeout(() => {
+        if (catInferida && document.getElementById('submenu')) {
+            let opts = Array.from(document.getElementById('submenu').options);
+            let match = opts.find(o => o.value === catInferida);
+            if(match) document.getElementById('submenu').value = catInferida;
+        }
+        
+        if (bancoInferido && document.getElementById('banco')) {
+            document.getElementById('banco').value = bancoInferido;
+        }
+        
+        if (document.getElementById('blocoBanco') && bancoInferido !== 'undefined' && bancoInferido !== '') {
+            document.getElementById('blocoBanco').classList.remove('hidden');
+        } else if (tipoInput === 'Divida') {
+            document.getElementById('blocoBanco').classList.remove('hidden');
+        }
+    }, 150);
+    
+    if(document.getElementById('formaRecebimento') && tipoInput === 'Receita') {
+        document.getElementById('formaRecebimento').value = 'Pix';
+    }
+    
+    showToast("Transação enviada para o painel! Salve a operação.", "success");
+}
+
+window.processarExtratoImagem = async function(event) {
+    const file = event.target.files[0];
+    if(!file) return;
+    document.getElementById('leitorLoading').classList.remove('hidden');
+    document.getElementById('leitorResult').classList.add('hidden');
+    try {
+        if (file.type === "application/pdf") {
+            const fileReader = new FileReader();
+            fileReader.onload = async function() {
+                const typedarray = new Uint8Array(this.result);
+                const pdf = await pdfjsLib.getDocument(typedarray).promise;
+                let fullText = "";
+                for(let i = 1; i <= pdf.numPages; i++) {
+                    const page = await pdf.getPage(i);
+                    const textContent = await page.getTextContent();
+                    fullText += textContent.items.map(item => item.str).join(' ') + "\n";
+                }
+                analisarTextoExtrato(fullText);
+                document.getElementById('leitorLoading').classList.add('hidden');
+            };
+            fileReader.readAsArrayBuffer(file);
+        } else {
+            const { data: { text } } = await Tesseract.recognize(file, 'por');
+            analisarTextoExtrato(text);
+            document.getElementById('leitorLoading').classList.add('hidden');
+        }
+    } catch(e) {
+        showToast("Erro ao analisar arquivo. Tente novamente.", "error");
+        document.getElementById('leitorLoading').classList.add('hidden');
+    }
+}
+
+
+        // NOVA FUNÇÃO DE EXPORTAÇÃO PARA CSV
         function exportarDadosCSV() { 
             if(registros.length === 0) return showToast("Nenhum dado para exportar.", "error");
             let csv = "Tipo,Descricao,Categoria,Valor Total,Valor Pago,Data Vencimento,Data Lancamento,Banco,Forma\n"; 
