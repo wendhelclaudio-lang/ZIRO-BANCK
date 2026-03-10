@@ -38,4 +38,4 @@ Sendo uma aplicação estática (Front-end) que roda no lado do cliente, rodar e
 
 1. Clone este repositório:
 ```bash
-git clone [https://github.com/wendhelclaudio-lang/ZIRO-BANCK.git](https://github.com/wendhelclaudio-lang/ZIRO-BANCK.git)
+(https://github.com/wendhelclaudio-lang/ZIRO-BANCK.git)
