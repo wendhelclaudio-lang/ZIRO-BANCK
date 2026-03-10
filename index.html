@@ -744,7 +744,12 @@
         #pdf-container { position: absolute;
             left: -9999px; top: -9999px; width: 800px; background: white; color: black; z-index: -1;
         }
-    </style>
+    
+    /* PREMIUM FEATURES STYLES */
+    .split-panel { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; margin-top: 15px; display: none; border: 1px dashed var(--accent); }
+    .forecast-banner { background: linear-gradient(90deg, #ef4444, #f97316); color: white; padding: 12px 20px; border-radius: 12px; margin-bottom: 20px; font-weight: bold; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3); font-size: 0.85rem; }
+    
+</style>
 </head>
 <body>
 
@@ -964,6 +969,7 @@
             cursor: pointer;"><i class="fa-solid fa-chevron-left"></i> VOLTAR</button>
         </div>
         
+        <div id="forecastBannerArea"></div>
         <div id="subFiltros" class="submenu-divida hidden">
             <button class="sub-btn active" id="btnPendente" onclick="setSubFiltro('Pendente')">PENDENTES</button>
             <button class="sub-btn" id="btnPago" onclick="setSubFiltro('Pago')">LIQUIDADAS</button>
@@ -1403,6 +1409,7 @@
                 <button class="btn-confirm" onclick="document.getElementById('extratoInput').click()" style="background: linear-gradient(135deg, var(--success), #059669); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); width: 100%; margin: 0;">
                     <i class="fa-solid fa-cloud-arrow-up fa-bounce"></i> CARREGAR EXTRATO PDF
                 </button>
+                <button class="btn-confirm" onclick="aprovarConhecidosIA()" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9); box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3); width: 100%; margin-top: 10px; border-radius: 10px; margin-bottom: 0;"><i class="fa-solid fa-robot fa-bounce"></i> APROVAR LANÇAMENTOS CONHECIDOS</button>
             </div>
         </div>
 
@@ -2350,7 +2357,7 @@
             }
 
             // SALDO DO MÊS ATUAL ISOLADO
-            const totalSaldoFinal = sRec - sGas;
+            const totalSaldoFinal = sRec - sGas - sRes;
             if (document.getElementById('totalReceitas')) document.getElementById('totalReceitas').innerText = ocultarBits(sRec);
             if (document.getElementById('totalGastos')) document.getElementById('totalGastos').innerText = ocultarBits(sGas);
             if (document.getElementById('totalDividas')) document.getElementById('totalDividas').innerText = ocultarBits(sDiv);
@@ -2367,7 +2374,47 @@
                 if (document.getElementById('metaFaltaDisplay')) document.getElementById('metaFaltaDisplay').innerText = `Falta: ${formatarMoeda(falta)}`;
             }
 
+            
             verificarNotificacoes();
+            
+            // PREVISÃO
+            let sRecIA = 0, sGasIA = 0, fVencerIA = 0;
+            let hojeIA = new Date();
+            hojeIA.setHours(0,0,0,0);
+            
+            if(dataVisualizacao) {
+                const prefixoMesIA = `${dataVisualizacao.getFullYear()}-${String(dataVisualizacao.getMonth() + 1).padStart(2, '0')}`;
+                
+                registros.forEach(r => {
+                    if(r.data.startsWith(prefixoMesIA)) {
+                        let v = parseFloat(r.valor) || 0;
+                        let p = parseFloat(r.pago) || 0;
+                        let isPago = p >= v && v > 0;
+                        
+                        if(r.tipo === 'Receita' && isPago) sRecIA += v;
+                        else if(r.tipo !== 'Receita' && r.tipo !== 'Reserva') {
+                            sGasIA += p;
+                            if(!isPago && (r.tipo === 'Fixo' || r.tipo === 'Divida' || r.tipo === 'Juros')) {
+                                let dt = new Date(r.data + "T12:00:00");
+                                dt.setHours(0,0,0,0);
+                                if(dt >= hojeIA) fVencerIA += (v - p);
+                            }
+                        }
+                    }
+                });
+                
+                let saldoAtualIA = sRecIA - sGasIA;
+                let bannerAreaIA = document.getElementById('forecastBannerArea');
+                if(bannerAreaIA) {
+                    if(fVencerIA > 0 && (saldoAtualIA - fVencerIA) < 0) {
+                        let falta = fVencerIA - saldoAtualIA;
+                        bannerAreaIA.innerHTML = `<div class="forecast-banner"><i class="fa-solid fa-crystal-ball fa-beat"></i> ALERTA PREDITIVO: O saldo atual não cobrirá as contas fixas pendentes no mês. Faltarão R$ ${falta.toFixed(2)}.</div>`;
+                    } else {
+                        bannerAreaIA.innerHTML = '';
+                    }
+                }
+            }
+    
         }
 
         function viewComprovante(idx) {
@@ -2982,12 +3029,11 @@
 
                 let cor = isEntrada ? "var(--success)" : "var(--danger)";
 
-                if (isEntrada && isAutoTransf) {
-                    tipoLancamento = "Reserva";
-                    acao = "TRANSF. INTERNA";
-                    cor = "var(--reserve)";
-                } else if (isEntrada) {
+                if (isEntrada) {
                     entradas += valorAbsoluto;
+                    if (isAutoTransf) {
+                        acao = "TRANSF. PRÓPRIA (RECEITA)";
+                    }
                 } else {
                     saidas += valorAbsoluto;
                 }
@@ -3048,9 +3094,29 @@
                         <option value="Reserva" ${t.tipo==='Reserva'?'selected':''}>Reserva/Patrimônio</option>
                     </select>
                     
+                    <button onclick="abrirSplit('${t.id}')" style="background: rgba(245, 158, 11, 0.1); color:var(--warning); border: 1px solid var(--warning); border-radius:10px; padding:10px 14px; font-size:0.75rem; font-weight:800; cursor:pointer; margin-right: 8px; transition: 0.2s;" onmouseover="this.style.background='var(--warning)'; this.style.color='#fff';" title="Separar itens desta compra"><i class="fa-solid fa-arrows-split-up-and-left"></i> SEPARAR COMPRA</button>
                     <button onclick="commitVault('${t.id}', '${t.data.split('/').reverse().join('-')}', ${t.valor}, '${t.banco}', '${t.cat}')" style="background: linear-gradient(135deg, var(--accent), #0284c7); color:#fff; border:none; border-radius:10px; padding:10px 18px; font-size:0.75rem; font-weight:800; cursor:pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 15px rgba(0,242,255,0.3); display:flex; align-items:center; gap:6px;">
                         <i class="fa-solid fa-rocket"></i> LANÇAR
                     </button>
+                
+                </div>
+                <div id="split_${t.id}" class="split-panel">
+                    
+                    <div style="font-size: 0.9rem; margin-bottom: 5px; font-weight: 800; color: var(--warning);"><i class="fa-solid fa-arrows-split-up-and-left"></i> Separar Itens da Nota Fiscal</div>
+                    <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0; margin-bottom: 12px; line-height: 1.4;">
+                        <i class="fa-solid fa-lightbulb" style="color: var(--warning);"></i> <b>Por que usar?</b> Gastou R$ 600 no atacadão, mas R$ 200 foi um liquidificador? Separe os valores aqui para o seu gráfico de "Alimentação" não ficar bagunçado! (Total: <b>${formatarMoeda(t.valor)}</b>)
+                    </p>
+    
+                    <div style="display:flex; gap: 10px; margin-bottom: 10px;">
+                        <input type="text" id="split_desc1_${t.id}" placeholder="Ex: Compras de Alimentos" style="flex:2; padding:8px; font-size:0.85rem; margin-bottom:0;">
+                        <input type="number" id="split_val1_${t.id}" placeholder="Valor 1" style="flex:1; padding:8px; font-size:0.85rem; margin-bottom:0;" oninput="calcSplit('${t.id}', ${t.valor})">
+                    </div>
+                    <div style="display:flex; gap: 10px; margin-bottom: 15px;">
+                        <input type="text" id="split_desc2_${t.id}" placeholder="Ex: Fone de Ouvido" style="flex:2; padding:8px; font-size:0.85rem; margin-bottom:0;">
+                        <input type="number" id="split_val2_${t.id}" placeholder="Restante (Auto)" style="flex:1; padding:8px; font-size:0.85rem; margin-bottom:0; background: rgba(0,0,0,0.2);" readonly>
+                    </div>
+                    <button onclick="confirmarSplit('${t.id}', '${t.data.split('/').reverse().join('-')}', '${t.banco}', '${t.cat}')" style="width:100%; padding: 12px; background: linear-gradient(135deg, var(--accent), #0284c7); color: white; border: none; border-radius: 10px; font-weight: 800; cursor: pointer; font-size: 0.8rem;"><i class="fa-solid fa-check"></i> CONFIRMAR DIVISÃO E SALVAR</button>
+    
                 </div>
             </div>`;
         });
@@ -3106,7 +3172,7 @@
 
             if (vilaoCat) {
                 let pct = saidas > 0 ? ((vilaoValor / saidas) * 100).toFixed(1) : 0;
-                insightsHtml += `<div style="display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.02); padding: 10px; border-radius: 10px; border-left: 3px solid var(--warning);">
+                insightsHtml += `<div onclick="filtrarExtratoIA('categoria', \`${vilaoCat}\`)" style="cursor: pointer; display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.02); padding: 10px; border-radius: 10px; border-left: 3px solid var(--warning); transition: background 0.2s;" onmouseover="this.style.background='rgba(245, 158, 11, 0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.02)'">
                     <div style="background: rgba(245, 158, 11, 0.1); color: var(--warning); width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;"><i class="fa-solid fa-chart-pie"></i></div>
                     <div style="flex: 1;"><span style="display: block; font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;">Maior Categoria de Gasto</span><strong style="color: var(--text); font-size: 0.9rem;">${vilaoCat}</strong></div>
                     <div style="text-align: right;"><strong style="color: var(--warning); display: block; font-size: 0.95rem;">${formatarMoeda(vilaoValor)}</strong><span style="font-size: 0.65rem; color: var(--text-muted);">${pct}% das saídas</span></div>
@@ -3114,15 +3180,15 @@
             }
 
             if (maiorSaida.valor > 0) {
-                insightsHtml += `<div style="display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.02); padding: 10px; border-radius: 10px; border-left: 3px solid var(--danger);">
+                insightsHtml += `<div onclick="filtrarExtratoIA('favorecido', \`${maiorSaida.favorecido}\`)" style="cursor: pointer; display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.02); padding: 10px; border-radius: 10px; border-left: 3px solid var(--danger); transition: background 0.2s;" onmouseover="this.style.background='rgba(239, 68, 68, 0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.02)'">
                     <div style="background: rgba(239, 68, 68, 0.1); color: var(--danger); width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;"><i class="fa-solid fa-circle-exclamation"></i></div>
-                    <div style="flex: 1; overflow: hidden;"><span style="display: block; font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;">Maior Transação (Vilão)</span><strong style="color: var(--text); font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;">${maiorSaida.favorecido}</strong></div>
+                    <div style="flex: 1; overflow: hidden;"><span style="display: block; font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;" title="Clique para filtrar">Maior Transação (Vilão) 🔍</span><strong style="color: var(--text); font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;">${maiorSaida.favorecido}</strong></div>
                     <div style="text-align: right;"><strong style="color: var(--danger); display: block; font-size: 0.95rem;">${formatarMoeda(maiorSaida.valor)}</strong></div>
                 </div>`;
             }
 
             if (subsCount > 0) {
-                insightsHtml += `<div style="display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.02); padding: 10px; border-radius: 10px; border-left: 3px solid var(--reserve);">
+                insightsHtml += `<div onclick="filtrarExtratoIA('assinatura', 'subs')" style="cursor: pointer; display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.02); padding: 10px; border-radius: 10px; border-left: 3px solid var(--reserve); transition: background 0.2s;" onmouseover="this.style.background='rgba(139, 92, 246, 0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.02)'">
                     <div style="background: rgba(139, 92, 246, 0.1); color: var(--reserve); width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;"><i class="fa-solid fa-repeat"></i></div>
                     <div style="flex: 1;"><span style="display: block; font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;">Assinaturas Encontradas</span><strong style="color: var(--text); font-size: 0.9rem;">${subsCount} serviço(s) detectado(s)</strong></div>
                     <div style="text-align: right;"><strong style="color: var(--reserve); display: block; font-size: 0.95rem;">${formatarMoeda(subsTotal)}</strong><span style="font-size: 0.65rem; color: var(--text-muted);">Total Recorrente</span></div>
@@ -3132,11 +3198,11 @@
 
             infoResumo = `
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom: 10px;">
-                <div style="background: rgba(16, 185, 129, 0.1); padding: 15px 10px; border-radius: 16px; border: 1px solid var(--success); text-align: center; box-shadow: 0 4px 10px rgba(16,185,129,0.1);">
+                <div onclick="filtrarExtratoIA('entrada', '')" style="cursor: pointer; background: rgba(16, 185, 129, 0.1); padding: 15px 10px; border-radius: 16px; border: 1px solid var(--success); text-align: center; box-shadow: 0 4px 10px rgba(16,185,129,0.1); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
                     <span style="font-size: 0.65rem; color: var(--success); font-weight: 800; text-transform: uppercase; display:block; margin-bottom:5px;"><i class="fa-solid fa-arrow-up"></i> Entradas (${transacoes.filter(t=>t.isEntrada && t.tipo !== 'Reserva').length})</span>
                     <strong style="color: var(--success); font-size: 1.2rem;">${formatarMoeda(entradas)}</strong>
                 </div>
-                <div style="background: rgba(239, 68, 68, 0.1); padding: 15px 10px; border-radius: 16px; border: 1px solid var(--danger); text-align: center; box-shadow: 0 4px 10px rgba(239,68,68,0.1);">
+                <div onclick="filtrarExtratoIA('saida', '')" style="cursor: pointer; background: rgba(239, 68, 68, 0.1); padding: 15px 10px; border-radius: 16px; border: 1px solid var(--danger); text-align: center; box-shadow: 0 4px 10px rgba(239,68,68,0.1); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
                     <span style="font-size: 0.65rem; color: var(--danger); font-weight: 800; text-transform: uppercase; display:block; margin-bottom:5px;"><i class="fa-solid fa-arrow-down"></i> Saídas (${transacoes.filter(t=>!t.isEntrada).length})</span>
                     <strong style="color: var(--danger); font-size: 1.2rem;">${formatarMoeda(saidas)}</strong>
                 </div>
@@ -3162,62 +3228,204 @@
         }
     }
 
-    window.commitVault = function(id, dataISO, valor, bancoInferido, catInferida) {
-        const descInput = document.getElementById('fav_' + id).value;
-        const tipoInput = document.getElementById('tipo_' + id).value;
-        
-        learningMap[descInput.toUpperCase()] = tipoInput;
-        localStorage.setItem('ziro_learning', JSON.stringify(learningMap));
-        
-        let card = document.getElementById('card_' + id);
-        if(card) {
-            card.style.opacity = '0.4';
-            card.style.border = '1px solid var(--success)';
-            let btns = card.getElementsByTagName('button');
-            if(btns.length > 0) {
-                btns[0].innerHTML = '<i class="fa-solid fa-check-double"></i> LANÇADO';
-                btns[0].style.background = 'var(--success)';
-                btns[0].disabled = true;
+    
+// --- FILTROS DE IA ---
+window.filtroAtivoIA = { tipo: null, valor: null };
+window.filtrarExtratoIA = function(tipo, valor) {
+    let limparBtn = document.getElementById('btnLimparFiltroIA');
+    if (window.filtroAtivoIA.tipo === tipo && window.filtroAtivoIA.valor === valor) {
+        document.querySelectorAll('[id^="card_ID_"]').forEach(el => el.style.display = 'flex');
+        window.filtroAtivoIA = { tipo: null, valor: null };
+        if(limparBtn) limparBtn.style.display = 'none';
+    } else {
+        document.querySelectorAll('[id^="card_ID_"]').forEach(el => {
+            let show = false;
+            if (tipo === 'favorecido') {
+                let input = el.querySelector('input[id^="fav_"]');
+                if (input && input.value.trim() === valor.trim()) show = true;
+            } else if (tipo === 'categoria') {
+                if (el.innerText.includes(valor)) show = true;
+            } else if (tipo === 'assinatura') {
+                let input = el.querySelector('input[id^="fav_"]');
+                if (input) {
+                    let desc = input.value.toLowerCase();
+                    let subs = ['netflix', 'spotify', 'amazon', 'prime video', 'hbo', 'disney', 'smartfit', 'gympass', 'tim', 'vivo', 'claro', 'apple', 'google', 'youtube'];
+                    if (subs.some(kw => desc.includes(kw))) show = true;
+                }
+            } else if (tipo === 'entrada') {
+                if (el.innerHTML.includes('var(--success)') || el.innerHTML.includes('var(--reserve)')) show = true;
+            } else if (tipo === 'saida') {
+                if (el.innerHTML.includes('var(--danger)') || el.innerHTML.includes('var(--warning)')) show = true;
             }
+            el.style.display = show ? 'flex' : 'none';
+        });
+        window.filtroAtivoIA = { tipo, valor };
+        
+        if(!limparBtn) {
+            limparBtn = document.createElement('div');
+            limparBtn.id = 'btnLimparFiltroIA';
+            limparBtn.innerHTML = '<i class="fa-solid fa-filter-circle-xmark"></i> LIMPAR FILTRO ATIVO';
+            limparBtn.style = 'background: var(--danger); color: white; padding: 10px 15px; border-radius: 12px; font-size: 0.75rem; font-weight: 800; cursor: pointer; text-align: center; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4); display: flex; align-items: center; justify-content: center; gap: 8px;';
+            limparBtn.onclick = () => window.filtrarExtratoIA(window.filtroAtivoIA.tipo, window.filtroAtivoIA.valor);
+            let leitorLista = document.getElementById('leitorLista');
+            let firstCard = leitorLista.querySelector('[id^="card_ID_"]');
+            if(firstCard) leitorLista.insertBefore(limparBtn, firstCard);
         }
-        
-        closeAll();
-        openModal();
-        
-        if (document.getElementById('desc')) document.getElementById('desc').value = descInput;
-        if (document.getElementById('valor')) document.getElementById('valor').value = valor;
-        if (document.getElementById('tipo')) document.getElementById('tipo').value = tipoInput;
-        if (document.getElementById('data')) document.getElementById('data').value = dataISO;
-        if (document.getElementById('dataLancamento')) document.getElementById('dataLancamento').value = dataISO;
-        
-        atualizarSubmenu(); 
-        
-        setTimeout(() => {
-            if (catInferida && document.getElementById('submenu')) {
-                let opts = Array.from(document.getElementById('submenu').options);
-                let match = opts.find(o => o.value === catInferida);
-                if(match) document.getElementById('submenu').value = catInferida;
-            }
-            
-            if (bancoInferido && document.getElementById('banco')) {
-                document.getElementById('banco').value = bancoInferido;
-            }
-            
-            if (document.getElementById('blocoBanco') && bancoInferido && bancoInferido !== 'undefined') {
-                document.getElementById('blocoBanco').classList.remove('hidden');
-            } else if (tipoInput === 'Divida') {
-                document.getElementById('blocoBanco').classList.remove('hidden');
-            }
-        }, 150);
-        
-        if(document.getElementById('formaRecebimento') && tipoInput === 'Receita') {
-            document.getElementById('formaRecebimento').value = 'Pix';
-        }
-        
-        showToast("Transação enviada para o painel! Salve a operação.", "success");
+        limparBtn.style.display = 'flex';
     }
+};
 
-    window.processarExtratoImagem = async function(event) {
+// --- AUTOMAÇÃO EM MASSA (DIRETO NO HISTÓRICO) ---
+window.aprovarConhecidosIA = function() {
+    let aprovados = 0;
+    document.querySelectorAll('[id^="card_ID_"]').forEach(card => {
+        if(card.style.opacity === '0.4') return; 
+        
+        let id = card.id.replace('card_', '');
+        let inputDesc = document.getElementById('fav_' + id);
+        let selectTipo = document.getElementById('tipo_' + id);
+        
+        if(inputDesc && selectTipo && learningMap && learningMap[inputDesc.value.toUpperCase()]) {
+            let learnedTipo = learningMap[inputDesc.value.toUpperCase()];
+            
+            // TRAVA DE SEGURANÇA: Nunca transformar uma Saída real em Receita, e vice-versa.
+            let isOriginalReceita = selectTipo.querySelector('option[value="Receita"]').selected;
+            
+            if (isOriginalReceita && learnedTipo !== 'Receita' && learnedTipo !== 'Reserva') {
+                return; // Ignora
+            }
+            if (!isOriginalReceita && (learnedTipo === 'Receita' || learnedTipo === 'Reserva')) {
+                return; // Ignora
+            }
+            
+            selectTipo.value = learnedTipo;
+
+            let btn = card.querySelector('button[onclick^="commitVault"]');
+            if(btn) { 
+                btn.click(); 
+                aprovados++; 
+            }
+        }
+    });
+    if(aprovados > 0) {
+        if(typeof triggerConfetti === 'function') triggerConfetti();
+        if(typeof playIncomeSound === 'function') playIncomeSound();
+        showToast(`SUCESSO: ${aprovados} lançamentos salvos direto no histórico!`, "success");
+    } else {
+        showToast("Nenhum lançamento novo conhecido para automatizar.", "warning");
+    }
+};
+
+// --- DIVISÃO INTELIGENTE ---
+window.abrirSplit = function(id) {
+    let panel = document.getElementById('split_' + id);
+    if(panel) panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+};
+
+window.calcSplit = function(id, total) {
+    let val1 = parseFloat(document.getElementById('split_val1_' + id).value) || 0;
+    let val2 = total - val1;
+    document.getElementById('split_val2_' + id).value = val2 > 0 ? val2.toFixed(2) : 0;
+};
+
+window.confirmarSplit = function(id, dataISO, banco, cat) {
+    let val1 = parseFloat(document.getElementById('split_val1_' + id).value);
+    let val2 = parseFloat(document.getElementById('split_val2_' + id).value);
+    let originalDesc = document.getElementById('fav_' + id).value;
+    let desc1 = document.getElementById('split_desc1_' + id).value || (originalDesc + " (Parte 1)");
+    let desc2 = document.getElementById('split_desc2_' + id).value || (originalDesc + " (Parte 2)");
+    
+    if(!val1 || !val2 || val1 <= 0 || val2 <= 0) return showToast("Preencha os valores da divisão.", "error");
+    
+    let tipoInput = document.getElementById('tipo_' + id).value;
+    const horaAtual = new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+    
+    registros.push({ tipo: tipoInput, desc: desc1, categoria: cat, valor: val1, pago: val1, data: dataISO, dataLancamento: dataISO, banco: banco, forma: null, comprovante: null, hora: horaAtual });
+    registros.push({ tipo: tipoInput, desc: desc2, categoria: cat, valor: val2, pago: val2, data: dataISO, dataLancamento: dataISO, banco: banco, forma: null, comprovante: null, hora: horaAtual });
+    
+    salvarDB();
+    renderizar();
+    
+    let card = document.getElementById('card_' + id);
+    if(card) {
+        card.style.opacity = '0.4';
+        card.style.border = '1px solid var(--success)';
+        let btns = card.querySelectorAll('button');
+        btns.forEach(b => b.disabled = true);
+        let splitPanel = document.getElementById('split_' + id);
+        if(splitPanel) splitPanel.style.display = 'none';
+        
+        let mainBtn = card.querySelector('button[onclick^="commitVault"]');
+        if(mainBtn) {
+            mainBtn.innerHTML = '<i class="fa-solid fa-check-double"></i> SALVO (DIVIDIDO)';
+            mainBtn.style.background = 'var(--success)';
+        }
+    }
+    if(typeof triggerConfetti === 'function') triggerConfetti();
+    showToast("Transação dividida e salva direto no histórico!", "success");
+};
+
+// --- ONE-CLICK SAVE (SALVAMENTO DIRETO) ---
+window.commitVault = function(id, dataISO, valor, bancoInferido, catInferida) {
+    const descInput = document.getElementById('fav_' + id).value;
+    const tipoInput = document.getElementById('tipo_' + id).value;
+    const horaAtual = new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+    
+    if(!learningMap) learningMap = {};
+    learningMap[descInput.toUpperCase()] = tipoInput;
+    localStorage.setItem('ziro_learning', JSON.stringify(learningMap));
+    
+    if(tipoInput === 'Receita' && valor >= 1000 && appConfig && appConfig.metaMensal > 0) {
+        let suggest = (valor * 0.20).toFixed(2);
+        let confirmacao = confirm(`💰 ROTEAMENTO MÁGICO (50/30/20) DETECTADO!
+
+Bela entrada de R$ ${valor}! A IA sugere blindar 20% deste valor (R$ ${suggest}) jogando direto para sua Meta "${appConfig.descMeta || 'Principal'}".
+
+Deseja alocar esse valor direto no cofre agora?`);
+        if(confirmacao) {
+            appConfig.metaAcumulado = (parseFloat(appConfig.metaAcumulado) || 0) + parseFloat(suggest);
+            salvarConfig();
+            if(typeof atualizarUIGestaoMetas === 'function') atualizarUIGestaoMetas();
+            showToast(`R$ ${suggest} interceptados e adicionados à sua meta!`, "success");
+        }
+    }
+    
+    registros.push({
+        tipo: tipoInput,
+        desc: descInput,
+        categoria: catInferida || tipoInput,
+        valor: parseFloat(valor),
+        pago: parseFloat(valor), 
+        data: dataISO,
+        dataLancamento: dataISO,
+        banco: bancoInferido && bancoInferido !== 'undefined' ? bancoInferido : '',
+        forma: tipoInput === 'Receita' ? 'Pix' : null,
+        comprovante: null,
+        hora: horaAtual
+    });
+    
+    salvarDB();
+    renderizar();
+    
+    let card = document.getElementById('card_' + id);
+    if(card) {
+        card.style.opacity = '0.4';
+        card.style.border = '1px solid var(--success)';
+        let btns = card.querySelectorAll('button');
+        btns.forEach(b => {
+            if(b.innerHTML.includes('LANÇAR')) {
+                b.innerHTML = '<i class="fa-solid fa-check-double"></i> SALVO NO HISTÓRICO';
+                b.style.background = 'var(--success)';
+            }
+            b.disabled = true;
+        });
+        let splitPanel = document.getElementById('split_' + id);
+        if(splitPanel) splitPanel.style.display = 'none';
+    }
+    showToast("Salvo com sucesso!", "success");
+};
+
+window.processarExtratoImagem = async function(event) {
         const file = event.target.files[0];
         if(!file) return;
         document.getElementById('leitorLoading').classList.remove('hidden');
