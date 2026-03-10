@@ -1,17 +1,11 @@
-{
-  "name": "MeuCaixa - Gestão Financeira",
-  "short_name": "MeuCaixa",
-  "description": "Comando de Ativos e Gestão Pessoal",
-  "start_url": "./index.html",
-  "display": "standalone",
-  "background_color": "#030712",
-  "theme_color": "#030712",
-  "icons": [
-    {
-      "src": "./icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    }
-  ]
-}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+    <rect width="512" height="512" fill="#0a0f1e" rx="115"/>
+    <defs>
+        <linearGradient id="pg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#00f2ff"/>
+            <stop offset="100%" stop-color="#10b981"/>
+        </linearGradient>
+    </defs>
+    <path d="M256 100 L400 256 L256 412 L112 256 Z" stroke="url(#pg)" stroke-width="24" fill="rgba(0, 242, 255, 0.05)"/>
+    <circle cx="256" cy="256" r="50" fill="url(#pg)"/>
+</svg>
