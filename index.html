@@ -1004,6 +1004,9 @@
                             <span><strong>Acesso principal</strong></span>
                         </div>
                         <div class="input-group"><i class="fa-solid fa-key"></i><input type="password" id="inputSenha" class="lock-input password" placeholder="Senha Secreta" onkeypress="if(event.key === 'Enter') checkLogin()"></div>
+                        <div style="text-align: right; width: 100%; margin-top: -8px; margin-bottom: 12px;">
+                            <button type="button" class="btn-forgot" onclick="recuperarSenha()" style="padding: 0; color: var(--accent); font-family: \'Ubuntu\', sans-serif; font-size: 0.8rem; text-decoration: none;">Esqueci minha senha</button>
+                        </div>
                         <button class="btn-login" onclick="checkLogin()">ENTRAR NO MEUCAIXA</button>
                         
                         <div class="auth-divider"><span>Confiança em cada acesso</span></div>
