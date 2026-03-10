@@ -116,7 +116,7 @@
         .brand-chip { display: inline-flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 18px;
             background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); backdrop-filter: blur(10px); }
         .brand-mark { width: 42px; height: 42px; border-radius: 14px; display: flex; align-items: center; justify-content: center;
-            background: linear-gradient(135deg, var(--accent), var(--success)); color: #fff; font-size: 1.2rem; box-shadow: 0 12px 24px rgba(0,242,255,0.22); }
+            background: linear-gradient(135deg, var(--accent), var(--success)); color: var(--text); font-size: 1.2rem; box-shadow: 0 12px 24px rgba(0,242,255,0.22); }
         .brand-chip strong { display: block; font-size: 0.95rem; letter-spacing: 0.6px; }
         .brand-chip span { display: block; font-size: 0.68rem; color: rgba(255,255,255,0.72); text-transform: uppercase; letter-spacing: 1.4px; }
         .secure-tag { padding: 9px 14px; border-radius: 14px; background: rgba(16,185,129,0.14); color: #d1fae5; border: 1px solid rgba(16,185,129,0.25);
@@ -128,7 +128,7 @@
         .showcase-stat { padding: 18px; border-radius: 20px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
             backdrop-filter: blur(10px); box-shadow: inset 0 1px 0 rgba(255,255,255,0.05); }
         .showcase-stat span { display: block; font-size: 0.72rem; color: rgba(255,255,255,0.68); text-transform: uppercase; letter-spacing: 1.1px; margin-bottom: 10px; font-weight: 700; }
-        .showcase-stat strong { display: block; font-size: 1.35rem; color: #fff; font-weight: 800; margin-bottom: 6px; }
+        .showcase-stat strong { display: block; font-size: 1.35rem; color: var(--text); font-weight: 800; margin-bottom: 6px; }
         .showcase-stat small { font-size: 0.82rem; color: rgba(255,255,255,0.72); line-height: 1.5; }
         .showcase-footer { display: flex; flex-wrap: wrap; gap: 12px; position: relative; z-index: 1; margin-top: 28px; }
         .showcase-pill { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 999px;
@@ -163,7 +163,7 @@
         @keyframes rotateGlow { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
         .lock-avatar-text {
-            font-size: 1.4rem; font-weight: 800; color: #ffffff; letter-spacing: 0.5px; font-family: 'Ubuntu', sans-serif;
+            font-size: 1.4rem; font-weight: 800; color: var(--text); letter-spacing: 0.5px; font-family: 'Ubuntu', sans-serif;
             background: linear-gradient(90deg, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
         .logo-m-icon { width: 50px; height: 50px; z-index: 2; filter: drop-shadow(0 0 8px rgba(0,242,255,0.6)); }
@@ -199,7 +199,7 @@
             box-shadow: 0 0 0 5px rgba(0, 242, 255, 0.09); transform: translateY(-1px); }
         .input-group:focus-within i { color: var(--accent);
         }
-        .btn-login { width: 100%; background: linear-gradient(135deg, var(--accent), var(--success)); color: #fff; border: none;
+        .btn-login { width: 100%; background: linear-gradient(135deg, var(--accent), var(--success)); color: var(--text); border: none;
             padding: 17px; border-radius: 18px; font-weight: 800; font-size: 0.98rem; cursor: pointer; box-shadow: 0 15px 32px rgba(16, 185, 129, 0.26); margin-top: 10px;
             margin-bottom: 18px; transition: transform 0.2s, box-shadow 0.2s; letter-spacing: 0.4px; }
         .btn-login:hover { transform: translateY(-1px); box-shadow: 0 18px 35px rgba(16,185,129,0.30); }
@@ -274,14 +274,14 @@
             from { opacity: 0; transform: translateY(16px) scale(0.985); }
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
-        @media (max-width: 960px) {
+        @media (max-width: 1px) {
             .login-card { grid-template-columns: 1fr; max-width: 480px; min-height: auto; }
             .login-showcase { padding: 28px 24px 22px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
             .auth-panel { padding: 28px 24px 34px; }
             .login-card.recurring-mode .auth-panel { min-height: auto; padding: 38px 24px; }
             .showcase-copy h1 { font-size: 2.2rem; }
         }
-        @media (max-width: 560px) {
+        @media (max-width: 1px) {
             #lock-screen { padding: 10px; align-items: flex-start; overflow-y: auto; display: block; }
             .login-card { border-radius: 24px; margin: 0 auto; height: auto; min-height: 100%; overflow: visible; display: flex; flex-direction: column; }
             .login-showcase { padding: 30px 20px 20px; border-bottom: 1px solid rgba(255,255,255,0.08); flex: none; }
@@ -316,7 +316,7 @@
         .profile-section { display: flex;
             align-items: center; gap: 14px; cursor: pointer; }
         .avatar { width: 44px; height: 44px;
-            border-radius: 14px; background: linear-gradient(135deg, var(--accent), #0a192f); display: flex; align-items: center; justify-content: center; font-weight: bold; color: #ffffff; border: 2px solid var(--border);
+            border-radius: 14px; background: linear-gradient(135deg, var(--accent), #0a192f); display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--text); border: 2px solid var(--border);
             font-size: 1.3rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2); overflow: hidden; background-size: cover; background-position: center;
         }
         .user-info span { font-size: 0.65rem; color: var(--text-muted); letter-spacing: 1px; display: block;
@@ -505,7 +505,7 @@
 
         /* MODAIS GERAIS */
         .fab { position: fixed;
-            bottom: 30px; right: 22px; width: 60px; height: 60px; border-radius: 20px; background: var(--accent); color: #ffffff; display: flex; align-items: center; justify-content: center;
+            bottom: 30px; right: 22px; width: 60px; height: 60px; border-radius: 20px; background: var(--accent); color: var(--text); display: flex; align-items: center; justify-content: center;
             font-size: 1.6rem; box-shadow: 0 10px 25px rgba(0,0,0,0.2); border: none; z-index: 1000; cursor: pointer; transition: transform 0.2s;
         }
         .fab:active { transform: scale(0.95);
@@ -528,7 +528,7 @@
             box-shadow: 0 0 0 2px rgba(0,0,0,0.05); }
         
         .btn-confirm { background: var(--accent);
-            color: #ffffff; width: 100%; padding: 16px; border-radius: 12px; border: none; font-weight: 800; font-family: 'Ubuntu', sans-serif; margin-top: 10px; cursor: pointer;
+            color: var(--text); width: 100%; padding: 16px; border-radius: 12px; border: none; font-weight: 800; font-family: 'Ubuntu', sans-serif; margin-top: 10px; cursor: pointer;
             font-size: 0.95rem; transition: transform 0.1s;}
         .btn-confirm:active { transform: scale(0.98);
         }
@@ -702,7 +702,7 @@
         .comprovante-img-preview { width: 100%; max-height: 400px; object-fit: contain; border-radius: 12px; background: var(--bg);
             border: 1px solid var(--border); }
         .btn-meta-action { flex: 1; padding: 12px; border-radius: 10px;
-            border: none; font-weight: 800; color: #fff; cursor: pointer; font-size: 0.85rem;}
+            border: none; font-weight: 800; color: var(--text); cursor: pointer; font-size: 0.85rem;}
         
         /* ---------------------------------------------------
             NOVO DASHBOARD PREMIUM DE METAS (JAW-DROPPING)
@@ -743,7 +743,7 @@
         .meta-progress-text {
             font-size: 3rem;
             font-weight: 800;
-            color: #fff;
+            color: var(--text);
             margin: 0;
             line-height: 1;
             text-shadow: 0 0 20px rgba(255,255,255,0.2);
@@ -846,7 +846,7 @@
             border: 1px solid rgba(16,185,129,0.3);
             color: var(--success);
         }
-        .btn-meta-quick.deposit:active { background: var(--success); color: #fff;
+        .btn-meta-quick.deposit:active { background: var(--success); color: var(--text);
             transform: scale(0.95); }
 
         .btn-meta-quick.withdraw {
@@ -854,7 +854,7 @@
             border: 1px solid rgba(239,68,68,0.2);
             color: var(--danger);
         }
-        .btn-meta-quick.withdraw:active { background: var(--danger); color: #fff;
+        .btn-meta-quick.withdraw:active { background: var(--danger); color: var(--text);
             transform: scale(0.95); }
 
         .btn-meta-quick i { font-size: 1.4rem;
@@ -906,9 +906,9 @@
         .notif-days { font-size: 0.7rem; font-weight: 800; display: inline-flex;
             align-items: center; gap: 4px; padding: 4px 8px; border-radius: 6px; width: fit-content; text-transform: uppercase;
             letter-spacing: 0.5px;}
-        .notif-card.atrasado .notif-days { background: var(--danger); color: #fff;
+        .notif-card.atrasado .notif-days { background: var(--danger); color: var(--text);
         }
-        .notif-card.pendente .notif-days { background: var(--warning); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        .notif-card.pendente .notif-days { background: var(--warning); color: var(--text); text-shadow: 0 1px 2px rgba(0,0,0,0.2);
         }
         
         .notif-value-box { text-align: right;
@@ -920,7 +920,7 @@
         }
         .notif-card.atrasado .notif-action { color: var(--danger); border-color: rgba(239, 68, 68, 0.3);
         }
-        .notif-card.atrasado:hover .notif-action { background: var(--danger); color: #fff;
+        .notif-card.atrasado:hover .notif-action { background: var(--danger); color: var(--text);
         }
         
         .notif-header-glow { display: flex;
@@ -933,7 +933,142 @@
         #pdf-container { position: absolute;
             left: -9999px; top: -9999px; width: 800px; background: white; color: black; z-index: -1;
         }
-    </style>
+    
+/* NEW PREMIUM LOGIN OVERRIDES FIX (Permite ocultar a tela) */
+#lock-screen:not(.hidden) {
+    background: #020617 !important;
+    display: flex !important; justify-content: center !important; align-items: center !important;
+}
+.login-glare {
+    position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(0,242,255,0.08) 0%, transparent 60%);
+    top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; animation: pulseGlow 4s infinite alternate;
+}
+.new-premium-login {
+    background: rgba(10, 15, 30, 0.45) !important;
+    backdrop-filter: blur(25px) !important;
+    -webkit-backdrop-filter: blur(25px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 24px !important;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.8), inset 0 1px 1px rgba(255,255,255,0.1) !important;
+    max-width: 420px !important;
+    width: 90% !important;
+    padding: 40px !important;
+    display: block !important;
+    min-height: auto !important;
+    margin: auto !important;
+    z-index: 10;
+    position: relative;
+}
+.new-auth-panel {
+    background: transparent !important;
+    padding: 0 !important;
+    width: 100%;
+    min-height: auto !important;
+}
+.new-avatar-container {
+    margin-bottom: 30px !important;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.new-premium-svg {
+    width: 70px; height: 70px; filter: drop-shadow(0 0 15px rgba(0,242,255,0.3));
+}
+#loginAvatar {
+    width: 80px !important; height: 80px !important; border-radius: 50% !important;
+    display: flex; align-items: center; justify-content: center;
+    background-size: cover !important; background-position: center !important;
+    border: 1px solid rgba(0,242,255,0.3) !important;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5) !important;
+    background-color: rgba(0,0,0,0.3) !important;
+}
+.new-title {
+    color: var(--text) !important; font-size: 1.8rem !important; font-weight: 400 !important; text-align: center !important; margin: 0 0 5px 0 !important;
+}
+.new-subtitle {
+    color: var(--text-muted) !important; font-size: 0.85rem !important; text-align: center !important; margin: 0 0 30px 0 !important; letter-spacing: 0.5px !important;
+}
+.new-input-wrap {
+    position: relative; margin-bottom: 20px;
+}
+.new-input-wrap i {
+    position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted); transition: color 0.3s;
+}
+.new-input {
+    width: 100%; background: rgba(255,255,255,0.03) !important; border: 1px solid rgba(255,255,255,0.06) !important; border-radius: 14px !important;
+    padding: 16px 16px 16px 45px !important; color: var(--text) !important; font-size: 0.95rem !important; transition: all 0.3s !important; outline: none !important;
+    box-shadow: none !important;
+    box-sizing: border-box;
+}
+.new-input:focus {
+    background: rgba(255,255,255,0.06) !important; border-color: rgba(0,242,255,0.5) !important; box-shadow: 0 0 15px rgba(0,242,255,0.1) !important;
+}
+.new-input-wrap:focus-within i { color: #00f2ff !important; }
+
+.new-btn {
+    width: 100% !important; background: linear-gradient(90deg, #00f2ff, #10b981) !important; border: none !important; padding: 16px !important; border-radius: 14px !important;
+    color: #000 !important; font-weight: 700 !important; font-size: 1rem !important; text-transform: uppercase !important; letter-spacing: 1px !important; cursor: pointer !important;
+    transition: transform 0.2s, box-shadow 0.2s !important; box-shadow: 0 10px 20px rgba(16,185,129,0.2) !important; margin-top: 10px !important;
+}
+.new-btn:hover { transform: translateY(-2px) !important; box-shadow: 0 15px 25px rgba(16,185,129,0.3) !important; }
+.new-btn:active { transform: translateY(1px) !important; }
+
+@media (max-width: 560px) {
+    .new-premium-login {
+        padding: 30px !important;
+        border-radius: 20px !important;
+    }
+}
+
+/* GLASSMORPHISM & PREMIUM TWEAKS */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+body, input, select, button {
+    font-family: 'Poppins', sans-serif !important;
+}
+.sidebar, .mini-card, .transaction-item, .modal, .grafico-card, .meta-dashboard-card, .meta-panel-home {
+    background: rgba(var(--card-rgb, 17, 24, 39), 0.45) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(120, 120, 120, 0.2) !important;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2) !important;
+}
+[data-theme="light"] { --card-rgb: 255, 255, 255; }
+[data-theme="nubank"] { --card-rgb: 255, 255, 255; }
+[data-theme="santander"] { --card-rgb: 255, 255, 255; }
+[data-theme="itau"] { --card-rgb: 255, 255, 255; }
+[data-theme="bradesco"] { --card-rgb: 249, 249, 249; }
+:root { --card-rgb: 17, 24, 39; }
+
+/* Correcao de Legibilidade */
+h1, h2, h3, h4, h5, h6, strong {
+    color: var(--text) !important;
+}
+p, span:not(.bank-badge):not(.badge):not(.status-badge), div {
+    color: inherit;
+}
+.text-muted, small, .txt-sub, .label-mini, .menu-group-title {
+    color: var(--text-muted) !important;
+}
+#modalGestaoMetas h2 {
+    color: var(--text) !important;
+    text-shadow: 0px 4px 15px rgba(0,0,0,0.3);
+    font-size: 1.6rem !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.5px;
+}
+#txtGestaoProgresso {
+    font-size: 3.5rem !important;
+    text-shadow: 0px 5px 15px rgba(0,0,0,0.4);
+}
+.meta-badge-motivational {
+    color: #000 !important;
+    font-size: 0.8rem;
+    padding: 6px 18px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+.fa-xmark {
+    color: var(--text) !important;
+}
+
+</style>
 
     <script>
     (function() {
@@ -972,143 +1107,67 @@
             O Safari 
             não instala apps automaticamente. Para ter o <b>MeuCaixa</b> no celular, toque em <i class="fa-solid fa-arrow-up-from-bracket" style="color: var(--accent); margin: 0 4px;"></i> <b>Compartilhar</b> e selecione <br><br><b>"Adicionar à Tela de Início"</b> <i class="fa-regular fa-square-plus" style="margin: 0 4px;"></i>.
         </p>
-        <button onclick="document.getElementById('ios-prompt').style.display='none'" style="background: var(--accent); color: #fff; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 800; cursor: pointer; width: 100%;">ENTENDI</button>
+        <button onclick="document.getElementById('ios-prompt').style.display='none'" style="background: var(--accent); color: var(--text); border: none; padding: 12px 20px; border-radius: 10px; font-weight: 800; cursor: pointer; width: 100%;">ENTENDI</button>
     </div>
 
     <div id="lock-screen" class="hidden">
-        <div class="login-card">
-            <div class="login-showcase">
-                <div class="brand-top">
-                    <div class="brand-chip">
-                        <div class="brand-mark"><i class="fa-solid fa-building-columns"></i></div>
-                        <div>
-                            <span>Plataforma financeira</span>
-                            <strong>MeuCaixa Private</strong>
-                        </div>
+    <div class="login-glare"></div>
+    <div class="login-card new-premium-login">
+        <div class="auth-panel new-auth-panel">
+            <div class="auth-panel-inner">
+                <div class="lock-avatar-container new-avatar-container">
+                    <div class="new-logo-wrapper" id="loginAvatar">
+                        <svg viewBox="0 0 100 100" class="new-premium-svg">
+                            <defs>
+                                <linearGradient id="pg" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#00f2ff"/>
+                                    <stop offset="100%" stop-color="#10b981"/>
+                                </linearGradient>
+                            </defs>
+                            <path d="M50 10 L85 50 L50 90 L15 50 Z" stroke="url(#pg)" stroke-width="4" fill="rgba(0, 242, 255, 0.05)"/>
+                            <circle cx="50" cy="50" r="12" fill="url(#pg)"/>
+                        </svg>
                     </div>
-                    <div class="secure-tag"><i class="fa-solid fa-shield-halved"></i> Ambiente Protegido</div>
+                    <div class="lock-avatar-text" id="loginAvatarText" style="margin-top:15px;font-size:1.6rem;letter-spacing:6px;text-transform:uppercase;font-weight:300;color:var(--text);">V A U L T</div>
                 </div>
 
-                <div class="showcase-copy">
-                    <h1>Seu banco pessoal, elegante, seguro e pronto para decisão.</h1>
-                    <p>Uma experiência premium para controlar saldo, lançamentos, metas e compromissos com a mesma presença visual de um app bancário de alto padrão.</p>
-
-                    <div class="showcase-grid">
-                        <div class="showcase-stat">
-                            <span>Proteção</span>
-                            <strong>Camada segura</strong>
-                            <small>Área de acesso privada com foco em confiança, clareza e aparência institucional.</small>
-                        </div>
-                        <div class="showcase-stat">
-                            <span>Visão financeira</span>
-                            <strong>Painel executivo</strong>
-                            <small>Indicadores, histórico e organização visual pensados para uso diário com agilidade.</small>
-                        </div>
-                        <div class="showcase-stat">
-                            <span>Experiência</span>
-                            <strong>Visual bancário</strong>
-                            <small>Interface refinada, moderna e pronta para impressionar logo no primeiro acesso.</small>
-                        </div>
-                        <div class="showcase-stat">
-                            <span>Controle</span>
-                            <strong>Fluxo centralizado</strong>
-                            <small>Cadastre, acompanhe e avance com segurança em um só lugar.</small>
-                        </div>
-                    </div>
+                <div id="viewCadastro" class="auth-view hidden">
+                    <h2 class="new-title">Inicializar</h2>
+                    <p class="new-subtitle">Crie suas credenciais de acesso privado.</p>
+                    <div class="new-input-wrap"><i class="fa-solid fa-user"></i><input type="text" id="cadNome" class="new-input" placeholder="Seu Nome"></div>
+                    <div class="new-input-wrap"><i class="fa-solid fa-envelope"></i><input type="email" id="cadEmail" class="new-input" placeholder="E-mail Privado"></div>
+                    <div class="new-input-wrap"><i class="fa-solid fa-key"></i><input type="password" id="cadSenha" class="new-input password" placeholder="Senha Mestra" onkeypress="if(event.key === 'Enter') efetuarCadastro()"></div>
+                    <button class="new-btn" onclick="efetuarCadastro()">Autorizar</button>
                 </div>
 
-                <div class="showcase-footer">
-                    <div class="showcase-pill"><i class="fa-solid fa-lock"></i> Criptografia visual premium</div>
-                    <div class="showcase-pill"><i class="fa-solid fa-chart-line"></i> Gestão inteligente</div>
-                    <div class="showcase-pill"><i class="fa-solid fa-bell"></i> Alertas e compromissos</div>
+                <div id="viewLogin" class="auth-view hidden">
+                    <h2 class="new-title" id="txtWelcomeBack" style="text-transform:uppercase; font-weight:300; letter-spacing:2px; font-size:1.2rem;">Bem-vindo</h2>
+                    <p class="new-subtitle" style="margin-bottom:30px;">Autenticação Necessária</p>
+                    
+                    <div class="new-input-wrap" style="margin-bottom:10px;">
+                        <i class="fa-solid fa-fingerprint"></i>
+                        <input type="password" id="inputSenha" class="new-input password" placeholder="Senha Mestra" onkeypress="if(event.key === 'Enter') checkLogin()">
+                    </div>
+                    <div style="text-align: right; margin-bottom: 25px;">
+                        <button type="button" class="btn-forgot" onclick="recuperarSenha()" style="color:var(--text-muted); font-size:0.75rem; letter-spacing:1px; text-transform:uppercase; background:transparent; border:none; cursor:pointer;">Recuperar Acesso</button>
+                    </div>
+                    <button class="new-btn" onclick="checkLogin()">Desbloquear</button>
                 </div>
-            </div>
 
-            <div class="auth-panel">
-                <div class="auth-panel-inner">
-                    <div class="lock-avatar-container">
-                            <div class="lock-avatar" id="loginAvatar">
-                                <svg class="logo-m-icon" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-                                    <defs>
-                                        <linearGradient id="mGrad2" x1="0%" y1="100%" x2="100%" y2="0%">
-                                            <stop offset="0%" stop-color="#00f2ff"/>
-                                            <stop offset="100%" stop-color="#10b981"/>
-                                        </linearGradient>
-                                    </defs>
-                                    <path d="M140 360 L140 200 L256 300 L372 200 L372 360" fill="none" stroke="url(#mGrad2)" stroke-width="48" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M256 120 L256 260 M200 170 L256 120 L312 170" fill="none" stroke="#00f2ff" stroke-width="32" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </div>
-                            <div class="lock-avatar-text" id="loginAvatarText">MeuCaixa</div>
-                        </div>
-
-                    <div id="viewCadastro" class="auth-view hidden">
-                        <div class="auth-mini-badge"><i class="fa-solid fa-gem"></i> Onboarding Premium</div>
-                        <h2 class="lock-title">Criar Conta</h2>
-                        <p class="lock-subtitle">Abra seu acesso ao MeuCaixa com uma apresentação de nível bancário, pronta para acompanhar sua jornada financeira desde o primeiro clique.</p>
-                        <div class="auth-helper-row">
-                            <span>Conta local protegida</span>
-                            <span><strong>Setup inicial</strong></span>
-                        </div>
-                        <div class="input-group"><i class="fa-solid fa-user"></i><input type="text" id="cadNome" class="lock-input" placeholder="Como devemos te chamar?"></div>
-                        <div class="input-group"><i class="fa-solid fa-envelope"></i><input type="email" id="cadEmail" class="lock-input" placeholder="Seu melhor e-mail"></div>
-                        <div class="input-group"><i class="fa-solid fa-lock"></i><input type="password" id="cadSenha" 
-                        class="lock-input password" placeholder="Crie uma senha forte" onkeypress="if(event.key === 'Enter') efetuarCadastro()"></div>
-                        <button class="btn-login" onclick="efetuarCadastro()">CADASTRAR E ENTRAR</button>
-                        <div class="auth-divider"><span>Seu acesso começa seguro</span></div>
-                        <div class="auth-trust-row">
-                            <div class="trust-item"><i class="fa-solid fa-user-shield"></i><span>Perfil protegido</span></div>
-                            <div class="trust-item"><i class="fa-solid fa-bolt"></i><span>Acesso rápido</span></div>
-                            <div class="trust-item"><i class="fa-solid fa-medal"></i><span>Visual premium</span></div>
-                        </div>
-                    </div>
-
-                    <div id="viewLogin" class="auth-view hidden">
-                        <div class="auth-mini-badge"><i class="fa-solid fa-shield-heart"></i> Área Segura</div>
-                        <h2 class="lock-title" id="txtWelcomeBack">Olá, WENDEL!</h2>
-                        <p class="lock-subtitle">Digite sua senha secreta para acessar seu ambiente financeiro privado com rapidez, discrição e presença premium.</p>
-                        <div class="auth-helper-row">
-                            <span>Ambiente verificado</span>
-                            <span><strong>Acesso principal</strong></span>
-                        </div>
-                        <div class="input-group"><i class="fa-solid fa-key"></i><input type="password" id="inputSenha" class="lock-input password" placeholder="Senha Secreta" onkeypress="if(event.key === 'Enter') checkLogin()"></div>
-                        <div style="text-align: right; width: 100%; margin-top: -8px; margin-bottom: 12px;">
-                            <button type="button" class="btn-forgot" onclick="recuperarSenha()" style="padding: 0; color: var(--accent); font-family: \'Ubuntu\', sans-serif; font-size: 0.8rem; text-decoration: none;">Esqueci minha senha</button>
-                        </div>
-                        <button class="btn-login" onclick="checkLogin()">ENTRAR NO MEUCAIXA</button>
-                        
-                        <div class="auth-divider"><span>Confiança em cada acesso</span></div>
-                        <div class="auth-trust-row">
-                            <div class="trust-item"><i class="fa-solid fa-fingerprint"></i><span>Identidade visual forte</span></div>
-                            <div class="trust-item"><i class="fa-solid fa-shield-halved"></i><span>Entrada protegida</span></div>
-                            <div class="trust-item"><i class="fa-solid fa-circle-check"></i><span>Fluxo intuitivo</span></div>
-                        </div>
-                    </div>
-
-                    <div id="viewRecuperar" class="auth-view hidden">
-                        <div class="auth-mini-badge"><i class="fa-solid fa-life-ring"></i> Recuperação Assistida</div>
-                        <h2 class="lock-title">Recuperar Senha</h2>
-                        <p class="lock-subtitle">Recupere seu acesso com segurança e volte ao seu painel premium sem complicação.</p>
-                        <div class="auth-helper-row">
-                            <span>Confirmação necessária</span>
-                            <span><strong>Suporte local</strong></span>
-                        </div>
-                        <div class="input-group"><i class="fa-solid fa-envelope"></i><input type="email" id="recEmail" class="lock-input" placeholder="Confirme seu e-mail cadastrado"></div>
-                        <button class="btn-login" onclick="enviarCodigoRecuperacao()">ENVIAR CÓDIGO</button>
-                        <button class="btn-forgot" onclick="mostrarViewLogin()"><i class="fa-solid fa-arrow-left"></i> Voltar ao Login</button>
-                        <div class="auth-divider"><span>Processo validado</span></div>
-                        <div class="auth-trust-row">
-                            <div class="trust-item"><i class="fa-solid fa-envelope-circle-check"></i><span>Validação por e-mail</span></div>
-                            <div class="trust-item"><i class="fa-solid fa-shield"></i><span>Retorno seguro</span></div>
-                            <div class="trust-item"><i class="fa-solid fa-clock-rotate-left"></i><span>Recuperação rápida</span></div>
-                        </div>
-                    </div>
+                <div id="viewRecuperar" class="auth-view hidden">
+                    <h2 class="new-title">Recuperação</h2>
+                    <p class="new-subtitle">Identifique seu e-mail para continuar.</p>
+                    <div class="new-input-wrap"><i class="fa-solid fa-envelope"></i><input type="email" id="recEmail" class="new-input" placeholder="E-mail Verificado"></div>
+                    <button class="new-btn" onclick="enviarCodigoRecuperacao()">Enviar Código</button>
+                    <button class="btn-forgot" style="margin-top:15px; width:100%; text-align:center; color:var(--text-muted); background:transparent; border:none; cursor:pointer; font-size:0.8rem; text-transform:uppercase; letter-spacing:1px;" onclick="mostrarViewLogin()">Voltar</button>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
     <header>
+
         <div class="profile-section" onclick="toggleSidebar()">
             <div class="avatar" id="headerAvatar">MC</div>
             <div class="user-info">
@@ -1482,12 +1541,12 @@
         <div style="height: 120px;
             background: linear-gradient(to bottom, rgba(0,242,255,0.15), var(--bg)); position: relative; display: flex; justify-content: space-between;
             padding: 20px 25px;">
-            <h2 style="margin:0; font-size:1.3rem; color: #fff;
+            <h2 style="margin:0; font-size:1.3rem; color: var(--text);
             z-index: 2; font-weight: 800; display: flex; align-items: center; gap: 10px;">
                 <i class="fa-solid fa-trophy" style="color: #f59e0b;"></i> Dashboard de Metas
             </h2>
             <i class="fa-solid fa-xmark" style="font-size:1.5rem;
-            color:#fff; cursor:pointer; z-index: 2; background: rgba(0,0,0,0.5); width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center;
+            color:var(--text); cursor:pointer; z-index: 2; background: rgba(0,0,0,0.5); width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center;
             justify-content: center;" onclick="closeModal()"></i>
         </div>
 
@@ -1549,7 +1608,7 @@
             animation: fadeIn 0.3s ease;">
                 <span class="label-mini" style="color: var(--accent);" id="lblAcaoRapida">QUAL VALOR DESEJA GUARDAR?</span>
                 <input type="number" id="valorMovimentacaoMeta" placeholder="R$ 0,00" step="0.01" style="font-size: 1.5rem;
-                font-weight: 800; color: #fff; background: transparent; border: none; border-bottom: 2px solid var(--accent); border-radius: 0; box-shadow: none; padding: 10px 5px;
+                font-weight: 800; color: var(--text); background: transparent; border: none; border-bottom: 2px solid var(--accent); border-radius: 0; box-shadow: none; padding: 10px 5px;
                 margin-bottom: 15px;">
                 <div style="display: flex;
                     gap: 10px;">
@@ -1564,13 +1623,13 @@
             border-top: 1px dashed var(--border); margin: 30px 0;">
 
             <h4 style="font-size: 0.9rem;
-            color: #fff; margin: 0 0 20px 0; display: flex; align-items: center;
+            color: var(--text); margin: 0 0 20px 0; display: flex; align-items: center;
             gap: 8px;"><i class="fa-solid fa-sliders"></i> Configurações do Objetivo</h4>
             
             <div style="display:grid;
                 grid-template-columns: 1fr; gap:15px; margin-bottom: 15px;">
                 <div>
-                    <span class="label-mini" style="color: #fff;">O QUE VOCÊ QUER ALCANÇAR?</span>
+                    <span class="label-mini" style="color: var(--text);">O QUE VOCÊ QUER ALCANÇAR?</span>
                     <select id="tipoMeta" style="font-weight: bold;
                     background: var(--input-bg);">
                         <option value="reserva">🛡️ Reserva de Emergência</option>
@@ -1599,7 +1658,7 @@
                 </div>
           
                 <div>
-                    <span class="label-mini" style="color: #fff;">FREQUÊNCIA DE APORTE IDEAL</span>
+                    <span class="label-mini" style="color: var(--text);">FREQUÊNCIA DE APORTE IDEAL</span>
                     <select id="periodoMeta" style="background: var(--input-bg);">
                         <option value="Semanal">Por Semana</option>
                     
@@ -1611,11 +1670,11 @@
      
             </div>
             
-            <span class="label-mini" style="color: #fff;">DÊ UM NOME (OPCIONAL)</span>
+            <span class="label-mini" style="color: var(--text);">DÊ UM NOME (OPCIONAL)</span>
             <input type="text" id="descMetaInput" placeholder="Ex: Viagem para a Europa..." style="background: var(--input-bg);">
             
             <button class="btn-confirm" style="background: linear-gradient(90deg, #00f2ff, #0284c7);
-            color: #fff; font-weight: 800; border-radius: 12px; padding: 16px; margin-top: 10px;" onclick="salvarConfiguracaoMeta()">SALVAR E ATUALIZAR DASHBOARD</button>
+            color: var(--text); font-weight: 800; border-radius: 12px; padding: 16px; margin-top: 10px;" onclick="salvarConfiguracaoMeta()">SALVAR E ATUALIZAR DASHBOARD</button>
             <button class="btn-delete" style="border-color: rgba(239, 68, 68, 0.3);
             color: var(--danger); font-weight: 800; border-radius: 12px; padding: 16px; margin-top: 15px;" onclick="zerarMetaCompleta()">EXCLUIR META ATUAL</button>
         </div>
@@ -1941,7 +2000,7 @@
                 let lTxt = document.getElementById("loginAvatarText"); if(lTxt) lTxt.style.display = "none";
  else {
                 av.style.backgroundImage = "none";
-                av.innerHTML = '<svg class="logo-m-icon" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="mGrad2" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#00f2ff"/><stop offset="100%" stop-color="#10b981"/></linearGradient></defs><path d="M140 360 L140 200 L256 300 L372 200 L372 360" fill="none" stroke="url(#mGrad2)" stroke-width="48" stroke-linecap="round" stroke-linejoin="round"/><path d="M256 120 L256 260 M200 170 L256 120 L312 170" fill="none" stroke="#00f2ff" stroke-width="32" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+                av.innerHTML = '<svg viewBox="0 0 100 100" class="new-premium-svg"><defs><linearGradient id="pg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00f2ff"/><stop offset="100%" stop-color="#10b981"/></linearGradient></defs><path d="M50 10 L85 50 L50 90 L15 50 Z" stroke="url(#pg)" stroke-width="4" fill="rgba(0, 242, 255, 0.05)"/><circle cx="50" cy="50" r="12" fill="url(#pg)"/></svg>';
             }
                 let lTxt2 = document.getElementById("loginAvatarText"); if(lTxt2) lTxt2.style.display = "block";
 
@@ -3272,7 +3331,7 @@
                             <strong style="color:${cor};
                             font-size:0.85rem;">${formatarMoeda(valor)}</strong>
                             <button onclick="preencherIA('${descLida}', ${valor}, '${tipo}')" style="background:var(--accent);
-                            border:none; color:#fff; border-radius:6px; padding:4px 8px; font-size:0.6rem; cursor:pointer; font-weight:bold;">+ LANÇAR</button>
+                            border:none; color:var(--text); border-radius:6px; padding:4px 8px; font-size:0.6rem; cursor:pointer; font-weight:bold;">+ LANÇAR</button>
                         </div></div>`;
                 }
             });
