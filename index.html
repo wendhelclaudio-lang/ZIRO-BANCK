@@ -55,15 +55,15 @@
         }
 
         /* TELA DE BLOQUEIO */
-        #lock-screen { position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+        #lock-screen { position: absolute; /* Using absolute prevents layout breaking when mobile keyboard opens */
+            top: 0; left: 0; width: 100%; min-height: 100vh; height: auto;
             background:
-                radial-gradient(circle at 15% 20%, rgba(0,242,255,0.16), transparent 22%),
-                radial-gradient(circle at 85% 82%, rgba(16,185,129,0.12), transparent 20%),
-                radial-gradient(circle at 50% 50%, rgba(255,255,255,0.04), transparent 38%),
-                linear-gradient(135deg, #020617 0%, #031127 35%, #041a33 70%, #020617 100%);
+                radial-gradient(circle at 20% 30%, rgba(0, 242, 255, 0.15), transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(16, 185, 129, 0.15), transparent 40%),
+                linear-gradient(135deg, #030712 0%, #0a1128 50%, #0f172a 100%);
             backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px); z-index: 99999;
-            display: flex; justify-content: center; align-items: center; padding: 22px; transition: opacity 0.5s ease, visibility 0.5s; overflow: hidden;
+            display: flex; justify-content: center; align-items: center; padding: 20px; transition: opacity 0.5s ease, visibility 0.5s; 
+            overflow-x: hidden;
         }
         #lock-screen::before, #lock-screen::after { content: '';
             position: absolute; border-radius: 50%; filter: blur(30px); opacity: 0.55; pointer-events: none; }
@@ -142,28 +142,26 @@
                 radial-gradient(circle at 50% 0%, rgba(0,242,255,0.10), transparent 26%);
             pointer-events: none; }
         .auth-panel-inner { width: 100%; max-width: 390px; position: relative; z-index: 1; }
-        .lock-avatar-container {
-            display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 auto 24px auto; gap: 12px;
+                .lock-avatar-container {
+            display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 auto 24px auto; gap: 16px;
         }
         .lock-avatar { 
-            width: 110px; height: 110px; border-radius: 50%;
-            background: #0B192C; 
-            border: 2px solid rgba(0, 242, 255, 0.8); display: flex; flex-direction: column; align-items: center; justify-content: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(0,242,255,0.4), inset 0 0 15px rgba(0,242,255,0.2);
-            position: relative; background-size: cover; background-position: center; font-weight: 800; overflow: hidden;
-            animation: floatIcon 4s ease-in-out infinite; flex-shrink: 0;
+            width: 96px; height: 96px; border-radius: 28px;
+            background: linear-gradient(135deg, #050b14 0%, #0a1326 100%);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6), inset 0 2px 10px rgba(0,242,255,0.2), inset 0 -2px 10px rgba(0,0,0,0.8);
+            position: relative; font-weight: 800; overflow: visible;
+            border: 1px solid rgba(0,242,255,0.3);
+            flex-shrink: 0;
         }
-        @keyframes floatIcon { 0%, 100% { transform: translateY(0); box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(0,242,255,0.4), inset 0 0 15px rgba(0,242,255,0.2); } 50% { transform: translateY(-8px); box-shadow: 0 18px 40px rgba(0,0,0,0.6), 0 0 30px rgba(0,242,255,0.6), inset 0 0 25px rgba(0,242,255,0.4); } }
-        .lock-avatar i { font-size: 3.5rem; animation: pulseGlow 2s infinite ease-in-out; position: relative; z-index: 2; }
-        .lock-avatar .icon-chart {
-            background: linear-gradient(135deg, #00f2ff 0%, #0284c7 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 12px rgba(0,242,255,0.8)); opacity: 0.9;
-        }
-        .lock-avatar .fingerprint-bg {
-            position: absolute; font-size: 4.5rem; color: rgba(0, 242, 255, 0.15); top: 50%; left: 50%; transform: translate(-50%, -45%); z-index: 1; pointer-events: none; -webkit-text-fill-color: initial;
+        .lock-avatar::after {
+            content: ''; position: absolute; inset: -4px; border-radius: 32px; border: 1px solid rgba(16,185,129,0.3); pointer-events: none;
         }
         .lock-avatar-text {
-            font-size: 1.2rem; font-weight: 800; color: #ffffff; letter-spacing: 1px; font-family: 'Ubuntu', sans-serif; text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            font-size: 1.3rem; font-weight: 800; color: #ffffff; letter-spacing: 0.5px; font-family: 'Ubuntu', sans-serif;
+            background: linear-gradient(90deg, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
+        .logo-diamond-icon { width: 56px; height: 56px; z-index: 2; filter: drop-shadow(0 0 10px rgba(0,242,255,0.5)); }
         #lock-screen {
              background:
                 radial-gradient(circle at 20% 30%, rgba(255, 110, 127, 0.15), transparent 40%),
@@ -271,21 +269,41 @@
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
         @media (max-width: 960px) {
-            .login-card { grid-template-columns: 1fr; max-width: 480px; min-height: auto; }
-            .login-showcase { padding: 28px 24px 22px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+            .login-card { display: flex; flex-direction: column-reverse; max-width: 480px; min-height: auto; }
+            .login-showcase { padding: 28px 24px 22px; border-right: none; border-top: 1px solid rgba(255,255,255,0.08); }
             .auth-panel { padding: 28px 24px 34px; }
             .login-card.recurring-mode .auth-panel { min-height: auto; padding: 38px 24px; }
             .showcase-copy h1 { font-size: 2.2rem; }
         }
         @media (max-width: 560px) {
-            #lock-screen { padding: 14px; align-items: flex-start; overflow-y: auto; display: block; }
-            .login-card { border-radius: 28px; margin: 0 auto; height: auto; min-height: auto; overflow: hidden; margin-bottom: 20px; }
-            .login-showcase { padding: 22px 20px 20px; }
-            .auth-panel { padding: 24px 20px 28px; }
+            body { position: relative; }
+            #lock-screen {
+                position: absolute; /* Changed from fixed to absolute to flow naturally with mobile scrolling and keyboard */
+                min-height: 100vh;
+                height: auto;
+                padding: 15px; 
+                display: block; /* Removes flex center trapping */
+                overflow-y: visible; 
+            }
+            .login-card { 
+                border-radius: 24px; 
+                margin: 0 auto 30px auto; 
+                height: auto; 
+                min-height: auto; 
+                overflow: hidden; 
+                display: flex; 
+                flex-direction: column-reverse; /* Form ALWAYS goes to the top on mobile */
+            }
+            .login-showcase { padding: 30px 20px 30px; border-top: 1px solid rgba(255,255,255,0.08); }
+            .auth-panel { padding: 30px 20px 40px; }
+            .login-card.recurring-mode .auth-panel { padding: 30px 20px 40px; min-height: auto; }
             .showcase-grid, .auth-trust-row { grid-template-columns: 1fr; }
-            .brand-top { align-items: flex-start; flex-direction: column; }
-            .showcase-copy h1 { font-size: 1.9rem; }
-            .lock-title { font-size: 1.7rem; }
+            .brand-top { align-items: flex-start; flex-direction: column; gap: 12px; }
+            .showcase-copy h1 { font-size: 1.8rem; margin-bottom: 12px; }
+            .lock-title { font-size: 1.6rem; }
+            
+            /* FORCE INPUTS TO PREVENT IOS/ANDROID AUTO-ZOOM WHICH BREAKS THE SCREEN */
+            input, select, .lock-input { font-size: 16px !important; }
         }
 
         /* TOAST */
@@ -932,7 +950,7 @@
 
     <script>
     (function() {
-        const iconSvg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%230B192C' rx='110'/%3E%3Ccircle cx='256' cy='256' r='200' fill='none' stroke='%2300f2ff' stroke-width='20' opacity='0.8'/%3E%3Cpath d='M180 380v-80m50 80v-130m50 130v-180m50 180v-230' stroke='url(%23grad)' stroke-width='35' stroke-linecap='round'/%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2300f2ff'/%3E%3Cstop offset='100%25' stop-color='%230284c7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M150 220a120 120 0 0 1 212 0 M190 180a80 80 0 0 1 132 0' fill='none' stroke='%2300f2ff' stroke-width='15' stroke-linecap='round' opacity='0.3'/%3E%3C/svg%3E";
+        const iconSvg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs%3E%3ClinearGradient id='luxGrad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2300f2ff'/%3E%3Cstop offset='50%25' stop-color='%230ea5e9'/%3E%3Cstop offset='100%25' stop-color='%2310b981'/%3E%3C/linearGradient%3E%3Cfilter id='glow' x='-20%25' y='-20%25' width='140%25' height='140%25'%3E%3CfeGaussianBlur stdDeviation='15' result='blur'/%3E%3CfeComposite in='SourceGraphic' in2='blur' operator='over'/%3E%3C/filter%3E%3C/defs%3E%3Crect width='512' height='512' fill='%23040b16' rx='120'/%3E%3Cpath d='M160 256 L256 160 L352 256 L256 352 Z' fill='none' stroke='url(%23luxGrad)' stroke-width='40' stroke-linejoin='round' filter='url(%23glow)'/%3E%3Ccircle cx='256' cy='256' r='28' fill='%2300f2ff' filter='url(%23glow)'/%3E%3C/svg%3E";
         const manifest = {
             "name": "MeuCaixa Private",
             "short_name": "MeuCaixa",
@@ -1023,8 +1041,7 @@
                 <div class="auth-panel-inner">
                     <div class="lock-avatar-container">
                             <div class="lock-avatar" id="loginAvatar">
-                                <i class="fa-solid fa-fingerprint fingerprint-bg"></i>
-                                <i class="fa-solid fa-chart-simple icon-chart"></i>
+                                <svg class="logo-diamond-icon" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="luxGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00f2ff"/><stop offset="50%" stop-color="#0ea5e9"/><stop offset="100%" stop-color="#10b981"/></linearGradient></defs><path d="M160 256 L256 160 L352 256 L256 352 Z" fill="none" stroke="url(#luxGrad)" stroke-width="40" stroke-linejoin="round"/><circle cx="256" cy="256" r="28" fill="#00f2ff"/></svg>
                             </div>
                             <div class="lock-avatar-text" id="loginAvatarText">MeuCaixa</div>
                         </div>
@@ -1928,7 +1945,7 @@
                 let lTxt = document.getElementById("loginAvatarText"); if(lTxt) lTxt.style.display = "none";
  else {
                 av.style.backgroundImage = "none";
-                av.innerHTML = '<i class="fa-solid fa-fingerprint fingerprint-bg"></i><i class="fa-solid fa-chart-simple icon-chart"></i>';
+                av.innerHTML = '<svg class="logo-diamond-icon" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="luxGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00f2ff"/><stop offset="50%" stop-color="#0ea5e9"/><stop offset="100%" stop-color="#10b981"/></linearGradient></defs><path d="M160 256 L256 160 L352 256 L256 352 Z" fill="none" stroke="url(#luxGrad)" stroke-width="40" stroke-linejoin="round"/><circle cx="256" cy="256" r="28" fill="#00f2ff"/></svg>';
             }
                 let lTxt2 = document.getElementById("loginAvatarText"); if(lTxt2) lTxt2.style.display = "block";
 
