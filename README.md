@@ -44,4 +44,4 @@ Como é uma aplicação estática (Front-end), rodar este projeto é muito simpl
 
 1. Clone este repositório:
 ```bash
-git clone [https://github.com/wendhelclaudio-lang/ZIRO-BANCK.git](https://github.com/wendhelclaudio-lang/ZIRO-BANCK.git)
+git clone https://github.com/wendhelclaudio-lang/ZIRO-BANCK.git
