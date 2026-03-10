@@ -114,7 +114,7 @@
         .brand-chip { display: inline-flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 18px;
             background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); backdrop-filter: blur(10px); }
         .brand-mark { width: 42px; height: 42px; border-radius: 14px; display: flex; align-items: center; justify-content: center;
-            background: linear-gradient(135deg, var(--accent), var(--success)); color: var(--text); font-size: 1.2rem; box-shadow: 0 12px 24px rgba(0,242,255,0.22); }
+            background: linear-gradient(135deg, var(--accent), var(--success)); color: #fff; font-size: 1.2rem; box-shadow: 0 12px 24px rgba(0,242,255,0.22); }
         .brand-chip strong { display: block; font-size: 0.95rem; letter-spacing: 0.6px; }
         .brand-chip span { display: block; font-size: 0.68rem; color: rgba(255,255,255,0.72); text-transform: uppercase; letter-spacing: 1.4px; }
         .secure-tag { padding: 9px 14px; border-radius: 14px; background: rgba(16,185,129,0.14); color: #d1fae5; border: 1px solid rgba(16,185,129,0.25);
@@ -126,7 +126,7 @@
         .showcase-stat { padding: 18px; border-radius: 20px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
             backdrop-filter: blur(10px); box-shadow: inset 0 1px 0 rgba(255,255,255,0.05); }
         .showcase-stat span { display: block; font-size: 0.72rem; color: rgba(255,255,255,0.68); text-transform: uppercase; letter-spacing: 1.1px; margin-bottom: 10px; font-weight: 700; }
-        .showcase-stat strong { display: block; font-size: 1.35rem; color: var(--text); font-weight: 800; margin-bottom: 6px; }
+        .showcase-stat strong { display: block; font-size: 1.35rem; color: #fff; font-weight: 800; margin-bottom: 6px; }
         .showcase-stat small { font-size: 0.82rem; color: rgba(255,255,255,0.72); line-height: 1.5; }
         .showcase-footer { display: flex; flex-wrap: wrap; gap: 12px; position: relative; z-index: 1; margin-top: 28px; }
         .showcase-pill { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 999px;
@@ -173,7 +173,7 @@
             box-shadow: 0 0 0 5px rgba(0, 242, 255, 0.09); transform: translateY(-1px); }
         .input-group:focus-within i { color: var(--accent);
         }
-        .btn-login { width: 100%; background: linear-gradient(135deg, var(--accent), var(--success)); color: var(--text); border: none;
+        .btn-login { width: 100%; background: linear-gradient(135deg, var(--accent), var(--success)); color: #fff; border: none;
             padding: 17px; border-radius: 18px; font-weight: 800; font-size: 0.98rem; cursor: pointer; box-shadow: 0 15px 32px rgba(16, 185, 129, 0.26); margin-top: 10px;
             margin-bottom: 18px; transition: transform 0.2s, box-shadow 0.2s; letter-spacing: 0.4px; }
         .btn-login:hover { transform: translateY(-1px); box-shadow: 0 18px 35px rgba(16,185,129,0.30); }
@@ -248,14 +248,14 @@
             from { opacity: 0; transform: translateY(16px) scale(0.985); }
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
-        @media (max-width: 1px) {
+        @media (max-width: 960px) {
             .login-card { grid-template-columns: 1fr; max-width: 480px; min-height: auto; }
             .login-showcase { padding: 28px 24px 22px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
             .auth-panel { padding: 28px 24px 34px; }
             .login-card.recurring-mode .auth-panel { min-height: auto; padding: 38px 24px; }
             .showcase-copy h1 { font-size: 2.2rem; }
         }
-        @media (max-width: 1px) {
+        @media (max-width: 560px) {
             #lock-screen { padding: 14px; }
             .login-card { border-radius: 28px; }
             .login-showcase { padding: 22px 20px 20px; }
@@ -289,7 +289,7 @@
         .profile-section { display: flex;
             align-items: center; gap: 14px; cursor: pointer; }
         .avatar { width: 44px; height: 44px;
-            border-radius: 14px; background: linear-gradient(135deg, var(--accent), #0a192f); display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--text); border: 2px solid var(--border);
+            border-radius: 14px; background: linear-gradient(135deg, var(--accent), #0a192f); display: flex; align-items: center; justify-content: center; font-weight: bold; color: #ffffff; border: 2px solid var(--border);
             font-size: 1.3rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2); overflow: hidden; background-size: cover; background-position: center;
         }
         .user-info span { font-size: 0.65rem; color: var(--text-muted); letter-spacing: 1px; display: block;
@@ -478,7 +478,7 @@
 
         /* MODAIS GERAIS */
         .fab { position: fixed;
-            bottom: 30px; right: 22px; width: 60px; height: 60px; border-radius: 20px; background: var(--accent); color: var(--text); display: flex; align-items: center; justify-content: center;
+            bottom: 30px; right: 22px; width: 60px; height: 60px; border-radius: 20px; background: var(--accent); color: #ffffff; display: flex; align-items: center; justify-content: center;
             font-size: 1.6rem; box-shadow: 0 10px 25px rgba(0,0,0,0.2); border: none; z-index: 1000; cursor: pointer; transition: transform 0.2s;
         }
         .fab:active { transform: scale(0.95);
@@ -501,7 +501,7 @@
             box-shadow: 0 0 0 2px rgba(0,0,0,0.05); }
         
         .btn-confirm { background: var(--accent);
-            color: var(--text); width: 100%; padding: 16px; border-radius: 12px; border: none; font-weight: 800; font-family: 'Ubuntu', sans-serif; margin-top: 10px; cursor: pointer;
+            color: #ffffff; width: 100%; padding: 16px; border-radius: 12px; border: none; font-weight: 800; font-family: 'Ubuntu', sans-serif; margin-top: 10px; cursor: pointer;
             font-size: 0.95rem; transition: transform 0.1s;}
         .btn-confirm:active { transform: scale(0.98);
         }
@@ -675,7 +675,7 @@
         .comprovante-img-preview { width: 100%; max-height: 400px; object-fit: contain; border-radius: 12px; background: var(--bg);
             border: 1px solid var(--border); }
         .btn-meta-action { flex: 1; padding: 12px; border-radius: 10px;
-            border: none; font-weight: 800; color: var(--text); cursor: pointer; font-size: 0.85rem;}
+            border: none; font-weight: 800; color: #fff; cursor: pointer; font-size: 0.85rem;}
         
         /* ---------------------------------------------------
             NOVO DASHBOARD PREMIUM DE METAS (JAW-DROPPING)
@@ -716,7 +716,7 @@
         .meta-progress-text {
             font-size: 3rem;
             font-weight: 800;
-            color: var(--text);
+            color: #fff;
             margin: 0;
             line-height: 1;
             text-shadow: 0 0 20px rgba(255,255,255,0.2);
@@ -819,7 +819,7 @@
             border: 1px solid rgba(16,185,129,0.3);
             color: var(--success);
         }
-        .btn-meta-quick.deposit:active { background: var(--success); color: var(--text);
+        .btn-meta-quick.deposit:active { background: var(--success); color: #fff;
             transform: scale(0.95); }
 
         .btn-meta-quick.withdraw {
@@ -827,7 +827,7 @@
             border: 1px solid rgba(239,68,68,0.2);
             color: var(--danger);
         }
-        .btn-meta-quick.withdraw:active { background: var(--danger); color: var(--text);
+        .btn-meta-quick.withdraw:active { background: var(--danger); color: #fff;
             transform: scale(0.95); }
 
         .btn-meta-quick i { font-size: 1.4rem;
@@ -879,9 +879,9 @@
         .notif-days { font-size: 0.7rem; font-weight: 800; display: inline-flex;
             align-items: center; gap: 4px; padding: 4px 8px; border-radius: 6px; width: fit-content; text-transform: uppercase;
             letter-spacing: 0.5px;}
-        .notif-card.atrasado .notif-days { background: var(--danger); color: var(--text);
+        .notif-card.atrasado .notif-days { background: var(--danger); color: #fff;
         }
-        .notif-card.pendente .notif-days { background: var(--warning); color: var(--text); text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        .notif-card.pendente .notif-days { background: var(--warning); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.2);
         }
         
         .notif-value-box { text-align: right;
@@ -893,7 +893,7 @@
         }
         .notif-card.atrasado .notif-action { color: var(--danger); border-color: rgba(239, 68, 68, 0.3);
         }
-        .notif-card.atrasado:hover .notif-action { background: var(--danger); color: var(--text);
+        .notif-card.atrasado:hover .notif-action { background: var(--danger); color: #fff;
         }
         
         .notif-header-glow { display: flex;
@@ -906,63 +906,7 @@
         #pdf-container { position: absolute;
             left: -9999px; top: -9999px; width: 800px; background: white; color: black; z-index: -1;
         }
-    
-/* GLASSMORPHISM & PREMIUM TWEAKS */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
-body, input, select, button {
-    font-family: 'Poppins', sans-serif !important;
-}
-.login-card, .auth-panel, .sidebar, .mini-card, .transaction-item, .modal, .grafico-card, .meta-dashboard-card, .meta-panel-home {
-    background: rgba(var(--card-rgb, 17, 24, 39), 0.45) !important;
-    backdrop-filter: blur(20px) !important;
-    -webkit-backdrop-filter: blur(20px) !important;
-    border: 1px solid rgba(120, 120, 120, 0.2) !important;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2) !important;
-}
-[data-theme="light"] { --card-rgb: 255, 255, 255; }
-[data-theme="nubank"] { --card-rgb: 255, 255, 255; }
-[data-theme="santander"] { --card-rgb: 255, 255, 255; }
-[data-theme="itau"] { --card-rgb: 255, 255, 255; }
-[data-theme="bradesco"] { --card-rgb: 249, 249, 249; }
-:root { --card-rgb: 17, 24, 39; }
-
-/* 3. Correcao de Legibilidade das Metas e Temas Inteligentes */
-/* Forçar contraste dinâmico baseado no tema atual */
-h1, h2, h3, h4, h5, h6, strong {
-    color: var(--text) !important;
-}
-p, span:not(.bank-badge):not(.badge):not(.status-badge), div {
-    color: inherit;
-}
-.text-muted, small, .txt-sub, .label-mini, .menu-group-title {
-    color: var(--text-muted) !important;
-}
-
-/* Dashboard de Metas - Destaque absoluto */
-#modalGestaoMetas h2 {
-    color: var(--text) !important;
-    text-shadow: 0px 4px 15px rgba(0,0,0,0.3);
-    font-size: 1.6rem !important;
-    font-weight: 900 !important;
-    letter-spacing: 0.5px;
-}
-#txtGestaoProgresso {
-    font-size: 3.5rem !important;
-    text-shadow: 0px 5px 15px rgba(0,0,0,0.4);
-}
-.meta-badge-motivational {
-    color: #000 !important; /* Mantém contraste na badge gradient */
-    font-size: 0.8rem;
-    padding: 6px 18px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-}
-
-/* Fix específico de ícones de fechar em modais */
-.fa-xmark {
-    color: var(--text) !important;
-}
-
-</style>
+    </style>
 </head>
 <body>
 
@@ -974,7 +918,7 @@ p, span:not(.bank-badge):not(.badge):not(.status-badge), div {
             O Safari 
             não instala apps automaticamente. Para ter o <b>MeuCaixa</b> no celular, toque em <i class="fa-solid fa-arrow-up-from-bracket" style="color: var(--accent); margin: 0 4px;"></i> <b>Compartilhar</b> e selecione <br><br><b>"Adicionar à Tela de Início"</b> <i class="fa-regular fa-square-plus" style="margin: 0 4px;"></i>.
         </p>
-        <button onclick="document.getElementById('ios-prompt').style.display='none'" style="background: var(--accent); color: var(--text); border: none; padding: 12px 20px; border-radius: 10px; font-weight: 800; cursor: pointer; width: 100%;">ENTENDI</button>
+        <button onclick="document.getElementById('ios-prompt').style.display='none'" style="background: var(--accent); color: #fff; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 800; cursor: pointer; width: 100%;">ENTENDI</button>
     </div>
 
     <div id="lock-screen" class="hidden">
@@ -1060,9 +1004,6 @@ p, span:not(.bank-badge):not(.badge):not(.status-badge), div {
                             <span><strong>Acesso principal</strong></span>
                         </div>
                         <div class="input-group"><i class="fa-solid fa-key"></i><input type="password" id="inputSenha" class="lock-input password" placeholder="Senha Secreta" onkeypress="if(event.key === 'Enter') checkLogin()"></div>
-                        <div style="text-align: right; width: 100%; margin-top: -8px; margin-bottom: 12px;">
-                            <button type="button" class="btn-forgot" onclick="recuperarSenha()" style="padding: 0; color: var(--accent); font-family: \'Ubuntu\', sans-serif; font-size: 0.8rem; text-decoration: none;">Esqueci minha senha</button>
-                        </div>
                         <button class="btn-login" onclick="checkLogin()">ENTRAR NO MEUCAIXA</button>
                         
                         <div class="auth-divider"><span>Confiança em cada acesso</span></div>
@@ -1470,12 +1411,12 @@ p, span:not(.bank-badge):not(.badge):not(.status-badge), div {
         <div style="height: 120px;
             background: linear-gradient(to bottom, rgba(0,242,255,0.15), var(--bg)); position: relative; display: flex; justify-content: space-between;
             padding: 20px 25px;">
-            <h2 style="margin:0; font-size:1.3rem; color: var(--text);
+            <h2 style="margin:0; font-size:1.3rem; color: #fff;
             z-index: 2; font-weight: 800; display: flex; align-items: center; gap: 10px;">
                 <i class="fa-solid fa-trophy" style="color: #f59e0b;"></i> Dashboard de Metas
             </h2>
             <i class="fa-solid fa-xmark" style="font-size:1.5rem;
-            color:var(--text); cursor:pointer; z-index: 2; background: rgba(0,0,0,0.5); width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center;
+            color:#fff; cursor:pointer; z-index: 2; background: rgba(0,0,0,0.5); width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center;
             justify-content: center;" onclick="closeModal()"></i>
         </div>
 
@@ -1537,7 +1478,7 @@ p, span:not(.bank-badge):not(.badge):not(.status-badge), div {
             animation: fadeIn 0.3s ease;">
                 <span class="label-mini" style="color: var(--accent);" id="lblAcaoRapida">QUAL VALOR DESEJA GUARDAR?</span>
                 <input type="number" id="valorMovimentacaoMeta" placeholder="R$ 0,00" step="0.01" style="font-size: 1.5rem;
-                font-weight: 800; color: var(--text); background: transparent; border: none; border-bottom: 2px solid var(--accent); border-radius: 0; box-shadow: none; padding: 10px 5px;
+                font-weight: 800; color: #fff; background: transparent; border: none; border-bottom: 2px solid var(--accent); border-radius: 0; box-shadow: none; padding: 10px 5px;
                 margin-bottom: 15px;">
                 <div style="display: flex;
                     gap: 10px;">
@@ -1552,13 +1493,13 @@ p, span:not(.bank-badge):not(.badge):not(.status-badge), div {
             border-top: 1px dashed var(--border); margin: 30px 0;">
 
             <h4 style="font-size: 0.9rem;
-            color: var(--text); margin: 0 0 20px 0; display: flex; align-items: center;
+            color: #fff; margin: 0 0 20px 0; display: flex; align-items: center;
             gap: 8px;"><i class="fa-solid fa-sliders"></i> Configurações do Objetivo</h4>
             
             <div style="display:grid;
                 grid-template-columns: 1fr; gap:15px; margin-bottom: 15px;">
                 <div>
-                    <span class="label-mini" style="color: var(--text);">O QUE VOCÊ QUER ALCANÇAR?</span>
+                    <span class="label-mini" style="color: #fff;">O QUE VOCÊ QUER ALCANÇAR?</span>
                     <select id="tipoMeta" style="font-weight: bold;
                     background: var(--input-bg);">
                         <option value="reserva">🛡️ Reserva de Emergência</option>
@@ -1587,7 +1528,7 @@ p, span:not(.bank-badge):not(.badge):not(.status-badge), div {
                 </div>
           
                 <div>
-                    <span class="label-mini" style="color: var(--text);">FREQUÊNCIA DE APORTE IDEAL</span>
+                    <span class="label-mini" style="color: #fff;">FREQUÊNCIA DE APORTE IDEAL</span>
                     <select id="periodoMeta" style="background: var(--input-bg);">
                         <option value="Semanal">Por Semana</option>
                     
@@ -1599,11 +1540,11 @@ p, span:not(.bank-badge):not(.badge):not(.status-badge), div {
      
             </div>
             
-            <span class="label-mini" style="color: var(--text);">DÊ UM NOME (OPCIONAL)</span>
+            <span class="label-mini" style="color: #fff;">DÊ UM NOME (OPCIONAL)</span>
             <input type="text" id="descMetaInput" placeholder="Ex: Viagem para a Europa..." style="background: var(--input-bg);">
             
             <button class="btn-confirm" style="background: linear-gradient(90deg, #00f2ff, #0284c7);
-            color: var(--text); font-weight: 800; border-radius: 12px; padding: 16px; margin-top: 10px;" onclick="salvarConfiguracaoMeta()">SALVAR E ATUALIZAR DASHBOARD</button>
+            color: #fff; font-weight: 800; border-radius: 12px; padding: 16px; margin-top: 10px;" onclick="salvarConfiguracaoMeta()">SALVAR E ATUALIZAR DASHBOARD</button>
             <button class="btn-delete" style="border-color: rgba(239, 68, 68, 0.3);
             color: var(--danger); font-weight: 800; border-radius: 12px; padding: 16px; margin-top: 15px;" onclick="zerarMetaCompleta()">EXCLUIR META ATUAL</button>
         </div>
@@ -3254,7 +3195,7 @@ p, span:not(.bank-badge):not(.badge):not(.status-badge), div {
                             <strong style="color:${cor};
                             font-size:0.85rem;">${formatarMoeda(valor)}</strong>
                             <button onclick="preencherIA('${descLida}', ${valor}, '${tipo}')" style="background:var(--accent);
-                            border:none; color:var(--text); border-radius:6px; padding:4px 8px; font-size:0.6rem; cursor:pointer; font-weight:bold;">+ LANÇAR</button>
+                            border:none; color:#fff; border-radius:6px; padding:4px 8px; font-size:0.6rem; cursor:pointer; font-weight:bold;">+ LANÇAR</button>
                         </div></div>`;
                 }
             });
