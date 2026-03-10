@@ -60,10 +60,9 @@
         #lock-screen { position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background:
-                radial-gradient(circle at 15% 20%, rgba(0,242,255,0.16), transparent 22%),
-                radial-gradient(circle at 85% 82%, rgba(16,185,129,0.12), transparent 20%),
-                radial-gradient(circle at 50% 50%, rgba(255,255,255,0.04), transparent 38%),
-                linear-gradient(135deg, #020617 0%, #031127 35%, #041a33 70%, #020617 100%);
+                radial-gradient(circle at 20% 30%, rgba(255, 126, 103, 0.15), transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(110, 198, 255, 0.15), transparent 40%),
+                linear-gradient(135deg, #0B1021 0%, #1B1833 50%, #020617 100%);
             backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px); z-index: 99999;
             display: flex; justify-content: center; align-items: center; padding: 22px; transition: opacity 0.5s ease, visibility 0.5s; overflow: hidden;
         }
@@ -141,24 +140,17 @@
                 radial-gradient(circle at 50% 0%, rgba(0,242,255,0.10), transparent 26%);
             pointer-events: none; }
         .auth-panel-inner { width: 100%; max-width: 390px; position: relative; z-index: 1; }
-        .lock-avatar { 
-            width: 100px; height: 100px; border-radius: 28px;
-            background: rgba(3, 7, 18, 0.7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(0, 242, 255, 0.4); display: flex; flex-direction: column; align-items: center; justify-content: center;
-            margin: 0 auto 24px auto; box-shadow: 0 20px 40px rgba(0,0,0,0.6), inset 0 2px 20px rgba(0,242,255,0.15), inset 0 -2px 20px rgba(16,185,129,0.15);
-            position: relative; background-size: cover; background-position: center; font-weight: 800;
+        .lock-avatar-wrapper { display: flex; flex-direction: column; align-items: center; margin-bottom: 24px; }
+        .lock-avatar { width: 100px; height: 100px; border-radius: 50%;
+            background: #0B192C; display: flex; align-items: center; justify-content: center; font-size: 2.8rem; color: #00f2ff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(0,242,255,0.4), inset 0 0 15px rgba(0,242,255,0.2);
+            border: 2px solid rgba(0,242,255,0.8); background-size: cover; background-position: center; position: relative;
         }
-        .lock-avatar::after { content: ''; position: absolute; inset: -6px; border-radius: 34px; border: 1px solid rgba(16,185,129,0.3); pointer-events: none; }
-        .lock-avatar i { font-size: 3.2rem; animation: pulseGlow 2s infinite ease-in-out; }
-        .lock-avatar .icon-fingerprint {
-            background: linear-gradient(180deg, #00f2ff 0%, #10b981 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 10px rgba(0,242,255,0.6)); z-index: 2;
-        }
-        .lock-avatar .icon-shield {
-            position: absolute; bottom: -12px; font-size: 1.4rem; color: #10b981; background: #030712; border-radius: 50%; padding: 4px; box-shadow: 0 0 12px rgba(16,185,129,0.9); border: 1px solid rgba(16,185,129,0.4); z-index: 3; -webkit-text-fill-color: initial; animation: none;
-        }
-        .lock-avatar .digital-circuits {
-            position: absolute; width: 100%; height: 100%; border-radius: 28px; background: repeating-linear-gradient(90deg, transparent, transparent 8px, rgba(0,242,255,0.05) 8px, rgba(0,242,255,0.05) 10px), repeating-linear-gradient(0deg, transparent, transparent 8px, rgba(16,185,129,0.05) 8px, rgba(16,185,129,0.05) 10px); pointer-events: none; z-index: 1;
-        }
+        .lock-avatar::after { content: ''; position: absolute; inset: -6px; border-radius: 50%; border: 1px solid rgba(0,242,255,0.3); pointer-events: none; }
+        .lock-avatar-icon-group { position: relative; display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; }
+        .lock-avatar .fa-fingerprint { position: absolute; font-size: 3.8rem; opacity: 0.35; color: #00f2ff; }
+        .lock-avatar .fa-chart-column { position: absolute; font-size: 2.5rem; color: #00f2ff; text-shadow: 0 0 12px #00f2ff; margin-top: 10px; }
+        .lock-avatar-text { margin-top: 12px; font-size: 1.2rem; font-weight: 800; color: #fff; letter-spacing: 1px; font-family: 'Ubuntu', sans-serif; }
         @keyframes pulseGlow { 0% { filter: drop-shadow(0 0 2px rgba(255,255,255,0.3)); transform: scale(1);
         } 50% { filter: drop-shadow(0 0 15px rgba(255,255,255,0.9)); transform: scale(1.05); } 100% { filter: drop-shadow(0 0 2px rgba(255,255,255,0.3)); transform: scale(1);
         } }
@@ -983,10 +975,14 @@
 
             <div class="auth-panel">
                 <div class="auth-panel-inner">
-                    <div class="lock-avatar" id="loginAvatar">
-                        <div class="digital-circuits"></div>
-                        <i class="fa-solid fa-fingerprint icon-fingerprint"></i>
-                        <i class="fa-solid fa-shield-halved icon-shield"></i>
+                    <div class="lock-avatar-wrapper" id="loginAvatarWrapper">
+                        <div class="lock-avatar" id="loginAvatar">
+                            <div class="lock-avatar-icon-group" id="loginAvatarIcons">
+                                <i class="fa-solid fa-fingerprint"></i>
+                                <i class="fa-solid fa-chart-column"></i>
+                            </div>
+                        </div>
+                        <div class="lock-avatar-text" id="loginAvatarText">MeuCaixa</div>
                     </div>
 
                     <div id="viewCadastro" class="auth-view hidden">
@@ -1882,9 +1878,13 @@
             if (appConfig.fotoPerfil) {
                 av.style.backgroundImage = `url(${appConfig.fotoPerfil})`;
                 av.innerHTML = "";
+                let txt = document.getElementById('loginAvatarText');
+                if(txt) txt.style.display = 'none';
             } else {
                 av.style.backgroundImage = "none";
-                av.innerHTML = '<div class="digital-circuits"></div><i class="fa-solid fa-fingerprint icon-fingerprint"></i><i class="fa-solid fa-shield-halved icon-shield"></i>';
+                av.innerHTML = '<div class="lock-avatar-icon-group" id="loginAvatarIcons"><i class="fa-solid fa-fingerprint"></i><i class="fa-solid fa-chart-column"></i></div>';
+                let txt = document.getElementById('loginAvatarText');
+                if(txt) txt.style.display = 'block';
             }
         }
 
