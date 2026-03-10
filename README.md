@@ -1,47 +1,41 @@
-# 🏦 ZIRO-BANCK
+# 📊 ZIRO-BANCK (Gestor Financeiro)
 
 ![GitHub repo size](https://img.shields.io/github/repo-size/wendhelclaudio-lang/ZIRO-BANCK)
 ![GitHub last commit](https://img.shields.io/github/last-commit/wendhelclaudio-lang/ZIRO-BANCK)
 ![GitHub Pages](https://img.shields.io/badge/Deploy-GitHub%20Pages-success)
 
-> Plataforma financeira com interface moderna, focada em experiência do usuário e alta responsividade.
+> Aplicativo de Controle Financeiro Pessoal com interface premium para gestão de gastos, receitas e metas.
 
 ### 🌐 Status do Projeto: Em Desenvolvimento
 
 ## 💻 Sobre o projeto
 
-O **ZIRO-BANCK** é uma aplicação web construída com foco em simular uma experiência bancária premium. O projeto foi desenvolvido como um **Progressive Web App (PWA)**, o que significa que ele pode ser instalado diretamente no celular (Android/iOS) ou Desktop, funcionando como um aplicativo nativo.
+O **ZIRO-BANCK** não é uma instituição financeira, mas sim um poderoso **Dashboard de Controle Financeiro**. Ele foi criado para que o usuário possa lançar, categorizar e acompanhar de perto todas as suas entradas e saídas de pagamentos, organizando a vida financeira de forma centralizada e com a mesma elegância de um app bancário de alto padrão.
+
+O projeto foi desenvolvido como um **Progressive Web App (PWA)**, permitindo que seja instalado diretamente no celular (Android/iOS) ou Desktop, funcionando de forma rápida e offline como um aplicativo nativo.
 
 **Link para acessar a plataforma:** https://wendhelclaudio-lang.github.io/ZIRO-BANCK/
 
 ## ✨ Funcionalidades
 
+- **Controle de Fluxo de Caixa:** Registro detalhado de receitas, gastos fixos, variáveis, dívidas e patrimônio.
+- **Dashboard de Metas:** Acompanhamento visual e inteligente do progresso de objetivos financeiros.
+- **Armazenamento Seguro (Offline):** Salva os dados localmente e de forma privada no navegador do usuário utilizando `IndexedDB`.
 - **Progressive Web App (PWA):** Instalação facilitada via navegador (`manifest.json` e `sw.js` configurados).
-- **Interface Premium:** Design moderno com suporte a visualização mobile-first.
-- **Deploy Contínuo:** Configurado com GitHub Actions (`static.yml`) para atualizações automáticas no GitHub Pages a cada novo commit.
-- **Armazenamento:** Salva os dados localmente de forma segura e offline no navegador do usuário utilizando IndexedDB e LocalStorage.
+- **Interface Premium:** Design moderno em Glassmorphism, focado em clareza de dados e facilidade de uso (Mobile-first).
+- **Leitor de Extratos (IA):** Integração visual para leitura de PDFs e prints de extratos.
 
 ## 🛠 Tecnologias Utilizadas
 
-Este projeto foi desenvolvido utilizando as seguintes tecnologias:
-
-- **HTML5** (Estrutura e semântica)
-- **CSS3** (Estilização e Glassmorphism)
-- **Vanilla JavaScript** (Lógica de interação e Service Workers)
+- **HTML5 & CSS3** (Semântica, Estilização e Glassmorphism)
+- **Vanilla JavaScript** (Lógica de dados, Gráficos Chart.js e Service Workers)
+- **IndexedDB** (Banco de dados local)
 - **GitHub Actions & Pages** (Hospedagem e CI/CD)
-
-## 📁 Estrutura do Projeto
-
-- `index.html` - Página principal e estrutura da aplicação.
-- `manifest.json` - Configurações do PWA (nome, cores, display).
-- `sw.js` - Service Worker responsável pelo cache e funcionamento offline.
-- `icon.svg` - Ícone vetorial da aplicação.
-- `.github/workflows/static.yml` - Rotina de automação de deploy.
 
 ## 🚀 Como executar o projeto localmente
 
-Como é uma aplicação estática (Front-end), rodar este projeto é muito simples:
+Sendo uma aplicação estática (Front-end) que roda no lado do cliente, rodar este projeto é muito simples:
 
 1. Clone este repositório:
 ```bash
-git clone https://github.com/wendhelclaudio-lang/ZIRO-BANCK.git
+git clone [https://github.com/wendhelclaudio-lang/ZIRO-BANCK.git](https://github.com/wendhelclaudio-lang/ZIRO-BANCK.git)
