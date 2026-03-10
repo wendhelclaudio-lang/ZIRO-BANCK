@@ -12,7 +12,8 @@
 
 O **ZIRO-BANCK** é uma aplicação web construída com foco em simular uma experiência bancária premium. O projeto foi desenvolvido como um **Progressive Web App (PWA)**, o que significa que ele pode ser instalado diretamente no celular (Android/iOS) ou Desktop, funcionando como um aplicativo nativo.
 
-**Link para acessar a plataforma:** [COLOQUE_AQUI_O_LINK_DO_SEU_GITHUB_PAGES]
+
+**Link para acessar a plataforma:** [https://wendhelclaudio-lang.github.io/ZIRO-BANCK/]
 
 ## ✨ Funcionalidades
 
