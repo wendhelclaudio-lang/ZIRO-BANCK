@@ -12,15 +12,14 @@
 
 O **ZIRO-BANCK** é uma aplicação web construída com foco em simular uma experiência bancária premium. O projeto foi desenvolvido como um **Progressive Web App (PWA)**, o que significa que ele pode ser instalado diretamente no celular (Android/iOS) ou Desktop, funcionando como um aplicativo nativo.
 
-
-**Link para acessar a plataforma:** [https://wendhelclaudio-lang.github.io/ZIRO-BANCK/]
+**Link para acessar a plataforma:** https://wendhelclaudio-lang.github.io/ZIRO-BANCK/
 
 ## ✨ Funcionalidades
 
 - **Progressive Web App (PWA):** Instalação facilitada via navegador (`manifest.json` e `sw.js` configurados).
 - **Interface Premium:** Design moderno com suporte a visualização mobile-first.
 - **Deploy Contínuo:** Configurado com GitHub Actions (`static.yml`) para atualizações automáticas no GitHub Pages a cada novo commit.
-- **Armazenamento:** [Se o seu app usa LocalStorage/IndexedDB, mencione aqui, ex: Salva dados localmente direto no navegador].
+- **Armazenamento:** Salva os dados localmente de forma segura e offline no navegador do usuário utilizando IndexedDB e LocalStorage.
 
 ## 🛠 Tecnologias Utilizadas
 
@@ -44,5 +43,5 @@ Este projeto foi desenvolvido utilizando as seguintes tecnologias:
 Como é uma aplicação estática (Front-end), rodar este projeto é muito simples:
 
 1. Clone este repositório:
-   ```bash
-   git clone [https://github.com/wendhelclaudio-lang/ZIRO-BANCK.git](https://github.com/wendhelclaudio-lang/ZIRO-BANCK.git)
+```bash
+git clone [https://github.com/wendhelclaudio-lang/ZIRO-BANCK.git](https://github.com/wendhelclaudio-lang/ZIRO-BANCK.git)
