@@ -1,11 +1,32 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-    <rect width="512" height="512" fill="#0a0f1e" rx="115"/>
+    <rect width="512" height="512" fill="#0A0F1E" rx="115"/>
+    
     <defs>
-        <linearGradient id="pg" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#00f2ff"/>
-            <stop offset="100%" stop-color="#10b981"/>
+        <linearGradient id="gradMain" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#00F2FF"/>
+            <stop offset="100%" stop-color="#10B981"/>
         </linearGradient>
+        
+        <linearGradient id="gradGlass" x1="100%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#00F2FF" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="#10B981" stop-opacity="0.05"/>
+        </linearGradient>
+        
+        <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="30" result="coloredBlur"/>
+            <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
     </defs>
-    <path d="M256 100 L400 256 L256 412 L112 256 Z" stroke="url(#pg)" stroke-width="24" fill="rgba(0, 242, 255, 0.05)"/>
-    <circle cx="256" cy="256" r="50" fill="url(#pg)"/>
+
+    <circle cx="256" cy="256" r="110" fill="url(#gradMain)" opacity="0.25" filter="url(#glow)"/>
+
+    <rect x="136" y="136" width="240" height="240" rx="70" fill="none" stroke="url(#gradMain)" stroke-width="22" transform="rotate(45 256 256)"/>
+
+    <rect x="180" y="180" width="152" height="152" rx="45" fill="url(#gradGlass)" stroke="#ffffff" stroke-opacity="0.4" stroke-width="3" transform="rotate(45 256 256)"/>
+
+    <circle cx="256" cy="256" r="34" fill="#ffffff" opacity="0.9"/>
+    <circle cx="256" cy="256" r="16" fill="url(#gradMain)"/>
 </svg>
