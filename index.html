@@ -104,6 +104,166 @@
         @keyframes fadeIn { from { opacity: 0;
             transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
+
+        .login-card{
+            width:min(100%,430px);
+            padding:32px 28px 26px;
+            border:1px solid rgba(255,255,255,.10);
+            background:
+                radial-gradient(circle at top left, color-mix(in srgb, var(--accent) 18%, transparent), transparent 30%),
+                linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
+            box-shadow: 0 32px 80px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.08);
+            overflow:hidden;
+        }
+        .login-card::before{
+            content:'';
+            position:absolute; inset:0; pointer-events:none;
+            background:
+                radial-gradient(circle at 20% 0%, rgba(255,255,255,.12), transparent 22%),
+                radial-gradient(circle at 100% 20%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 25%);
+            opacity:.95;
+        }
+        .login-card > *{position:relative; z-index:1;}
+        .login-brand-bar{
+            width:100%; display:flex; align-items:center; justify-content:space-between; gap:12px;
+            margin-bottom:18px;
+        }
+        .login-brand-pill, .login-trust-pill{
+            display:inline-flex; align-items:center; gap:8px; padding:9px 12px; border-radius:999px;
+            border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.05); backdrop-filter:blur(14px);
+            color:var(--text); font-size:.72rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+        }
+        .login-brand-pill i{color:var(--accent);}
+        .login-trust-pill{color:var(--success);}
+        .lock-avatar{
+            width:88px; height:88px; border-radius:28px;
+            background:
+                linear-gradient(145deg, color-mix(in srgb, var(--accent) 60%, white), color-mix(in srgb, var(--accent) 30%, #020617)),
+                linear-gradient(145deg, rgba(255,255,255,.2), rgba(255,255,255,0));
+            border:1px solid rgba(255,255,255,.14);
+            box-shadow: 0 20px 34px rgba(0,0,0,.25), 0 0 0 8px rgba(255,255,255,.04);
+            margin-bottom:18px;
+        }
+        .lock-title{font-size:1.82rem; letter-spacing:-.04em;}
+        .lock-subtitle{font-size:.9rem; max-width:30ch; margin-bottom:24px;}
+        .auth-view{width:100%;}
+        .login-microcopy{
+            width:100%; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin:2px 0 18px;
+        }
+        .login-micro-card{
+            padding:12px 13px; border-radius:16px; border:1px solid rgba(255,255,255,.07);
+            background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.025));
+            text-align:left;
+        }
+        .login-micro-card span{
+            display:block; font-size:.64rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:.12em; font-weight:800; margin-bottom:5px;
+        }
+        .login-micro-card strong{display:block; font-size:.92rem; color:var(--text);}
+        .password-shell{position:relative;}
+        .toggle-password-btn{
+            position:absolute; right:10px; top:50%; transform:translateY(-50%);
+            width:36px; height:36px; border-radius:12px; border:1px solid rgba(255,255,255,.08);
+            background:rgba(255,255,255,.05); color:var(--text-muted); cursor:pointer; display:flex; align-items:center; justify-content:center;
+        }
+        .toggle-password-btn:hover{color:var(--accent); box-shadow:0 0 18px color-mix(in srgb, var(--accent) 18%, transparent);}
+        .lock-input.password{padding-right:54px;}
+        .btn-login{
+            padding:17px;
+            border-radius:18px;
+            background:linear-gradient(135deg, color-mix(in srgb, var(--accent) 72%, white), var(--success));
+            box-shadow: 0 18px 34px color-mix(in srgb, var(--accent) 18%, transparent), inset 0 1px 0 rgba(255,255,255,.28);
+        }
+        .btn-forgot{margin-top:-2px;}
+        .login-footer-note{
+            margin-top:16px; width:100%; display:flex; align-items:center; justify-content:center; gap:8px;
+            padding:12px 14px; border-radius:16px; color:var(--text-muted); font-size:.78rem; font-weight:700;
+            background:rgba(255,255,255,.045); border:1px dashed rgba(255,255,255,.10);
+        }
+        [data-theme="light"] .login-card, [data-theme="nubank"] .login-card, [data-theme="santander"] .login-card, [data-theme="itau"] .login-card, [data-theme="bradesco"] .login-card{
+            background:
+                radial-gradient(circle at top left, color-mix(in srgb, var(--accent) 10%, transparent), transparent 30%),
+                linear-gradient(180deg, rgba(255,255,255,.96), rgba(248,250,252,.92));
+            box-shadow:0 26px 60px rgba(15,23,42,.14), inset 0 1px 0 rgba(255,255,255,.75);
+        }
+
+        #modalGestaoMetas{
+            background: radial-gradient(circle at top, rgba(0,242,255,.08), transparent 18%), var(--bg);
+            padding:18px 18px 32px;
+        }
+        .meta-goals-shell{
+            max-width:1180px;
+            margin:0 auto;
+        }
+        .meta-body-premium{padding:0 18px 24px;}
+        .meta-layout-grid{
+            display:grid;
+            grid-template-columns: minmax(320px, 0.98fr) minmax(340px, 1.02fr);
+            gap:18px;
+            align-items:start;
+        }
+        .meta-left-column, .meta-right-column{display:flex; flex-direction:column; gap:18px; min-width:0;}
+        .meta-section-nav{
+            position:sticky; top:10px; z-index:8; display:flex; flex-wrap:wrap; gap:10px;
+            margin:-48px 0 18px 0; padding:12px; border-radius:22px; background:rgba(2,6,23,.62);
+            border:1px solid rgba(255,255,255,.08); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+            box-shadow:0 18px 34px rgba(0,0,0,.24);
+        }
+        .meta-nav-chip{
+            flex:1; min-width:130px; border:none; border-radius:16px; padding:12px 14px; cursor:pointer;
+            background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+            color:var(--text); font-weight:800; letter-spacing:.02em; display:flex; align-items:center; justify-content:center; gap:8px;
+        }
+        .meta-nav-chip:hover{transform:translateY(-1px); box-shadow:0 0 22px color-mix(in srgb, var(--accent) 16%, transparent);}
+        .meta-dashboard-card, .meta-motion-card{margin-top:0;}
+        .meta-dashboard-card{padding:22px 20px 20px;}
+        .meta-progress-ring{width:150px; height:150px; margin-bottom:12px;}
+        .meta-progress-text{font-size:2.32rem;}
+        .meta-mini-insights,.meta-planner-strip{gap:10px;}
+        .meta-mini-pill,.meta-plan-chip,.meta-milestones,.meta-motion-card,.meta-tip-card{border-radius:18px;}
+        .meta-milestone-track{gap:8px;}
+        .meta-milestone{padding:10px 8px;}
+        .meta-stats-grid{margin-top:16px;}
+        .meta-quick-actions{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:12px;
+            margin-top:0;
+        }
+        .btn-meta-quick{
+            min-height:88px;
+            border-radius:20px !important;
+            box-shadow:0 18px 34px rgba(0,0,0,.18);
+        }
+        .meta-config-grid.single, .meta-input-row{margin-bottom:0;}
+        .meta-actions-stack{position:sticky; bottom:0; background:linear-gradient(180deg, rgba(2,6,23,0), rgba(2,6,23,.74) 22%, rgba(2,6,23,.92)); padding-top:14px;}
+        @media (max-width: 960px){
+            .meta-layout-grid{grid-template-columns:1fr;}
+            .meta-section-nav{position:sticky; top:8px; margin-top:-42px;}
+            .meta-hero{padding:24px 20px 84px;}
+            .meta-hero-copy{max-width:100%;}
+        }
+        @media (max-width: 680px){
+            .login-card{padding:24px 18px 20px; max-width:100%;}
+            .login-brand-bar{flex-wrap:wrap; justify-content:center;}
+            .login-microcopy{grid-template-columns:1fr;}
+            .lock-title{font-size:1.58rem;}
+            #modalGestaoMetas{padding:10px 10px 24px;}
+            .meta-body-premium{padding:0 12px 16px;}
+            .meta-section-nav{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; padding:10px; border-radius:18px;}
+            .meta-nav-chip{min-width:0; padding:11px 8px; font-size:.74rem; line-height:1.2; flex-direction:column; gap:5px;}
+            .meta-mini-insights,.meta-planner-strip,.meta-stats-grid,.meta-quick-actions{grid-template-columns:1fr;}
+            .meta-milestone-track{grid-template-columns:repeat(2,minmax(0,1fr));}
+            .meta-progress-ring{width:136px;height:136px;}
+            .meta-hero h2{font-size:1.28rem;}
+            .meta-hero p{font-size:.84rem;}
+            .meta-dashboard-card{padding:18px 16px;}
+            .meta-motion-card{padding:14px;}
+        }
+
+
         /* TOAST */
         #toast-container { position: fixed;
             bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 100000; display: flex; flex-direction: column; gap: 10px; pointer-events: none; width: 90%;
@@ -139,52 +299,6 @@
         }
         .badge { position:absolute; top:-5px; right:-5px; background:var(--danger); color:white; font-size:0.6rem; font-weight:bold; border-radius:50%; width:18px; height:18px;
             display:flex; align-items:center; justify-content:center; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
-        .top-action-btn { background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02)); border:1px solid rgba(255,255,255,0.08); color:var(--text); padding:8px 10px; border-radius:14px; cursor:pointer;
-            position:relative; display:flex; align-items:center; justify-content:center; height:40px; width:40px; backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: 0 12px 24px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.08); }
-        .top-action-btn:hover { transform: translateY(-2px); box-shadow: 0 16px 28px rgba(0,0,0,0.24), 0 0 0 1px rgba(255,255,255,0.05), 0 0 24px color-mix(in srgb, var(--accent) 24%, transparent); }
-        .top-action-btn.system-trigger { width:auto; padding:0 14px; gap:8px; background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 18%, rgba(255,255,255,0.08)), rgba(255,255,255,0.04)); }
-        .top-action-btn.system-trigger .btn-label { font-size: .74rem; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; }
-
-        .system-data-modal { height:auto; max-height:min(84vh,720px); border-radius:32px 32px 0 0; background: linear-gradient(180deg, rgba(10,16,30,0.96), rgba(6,10,20,0.98)); border:1px solid rgba(255,255,255,0.08); box-shadow: 0 -24px 60px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06); overflow:hidden; }
-        [data-theme="light"] .system-data-modal, [data-theme="nubank"] .system-data-modal, [data-theme="santander"] .system-data-modal, [data-theme="itau"] .system-data-modal, [data-theme="bradesco"] .system-data-modal { background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.98)); }
-        .system-data-modal::before { content:''; position:absolute; inset:0; pointer-events:none; background: radial-gradient(circle at top left, color-mix(in srgb, var(--accent) 24%, transparent), transparent 32%), radial-gradient(circle at top right, rgba(16,185,129,0.16), transparent 28%); opacity:.95; }
-        .system-data-modal-inner { position:relative; z-index:1; }
-        .system-data-head { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:22px; }
-        .system-data-kicker { display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px; background: color-mix(in srgb, var(--accent) 12%, rgba(255,255,255,0.04)); border:1px solid rgba(255,255,255,0.08); color:var(--accent); font-size:.72rem; font-weight:800; letter-spacing:.6px; text-transform:uppercase; }
-        .system-data-head h2 { margin:12px 0 6px; font-size:1.4rem; letter-spacing:.2px; }
-        .system-data-head p { margin:0; color:var(--text-muted); line-height:1.45; max-width:560px; }
-        .system-close-btn { width:42px; height:42px; display:flex; align-items:center; justify-content:center; border-radius:14px; border:1px solid rgba(255,255,255,0.08); color:var(--text); background:rgba(255,255,255,0.05); cursor:pointer; backdrop-filter: blur(12px); }
-        .system-close-btn:hover { transform: rotate(90deg); box-shadow: 0 0 18px color-mix(in srgb, var(--accent) 24%, transparent); }
-        .system-data-grid { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:16px; }
-        .system-card { position:relative; overflow:hidden; min-height:178px; padding:18px; border-radius:24px; border:1px solid rgba(255,255,255,0.09); background: linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.03)); box-shadow: 0 18px 40px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.08); cursor:pointer; text-align:left; color:var(--text); }
-        .system-card::before { content:''; position:absolute; inset:-40% auto auto -10%; width:120px; height:120px; border-radius:50%; background:var(--card-glow, color-mix(in srgb, var(--accent) 18%, transparent)); filter: blur(26px); opacity:.85; pointer-events:none; }
-        .system-card::after { content:''; position:absolute; inset:1px; border-radius:23px; pointer-events:none; border:1px solid rgba(255,255,255,0.05); }
-        .system-card:hover { transform: translateY(-5px) scale(1.01); box-shadow: 0 24px 44px rgba(0,0,0,0.24), 0 0 28px color-mix(in srgb, var(--accent) 18%, transparent); }
-        .system-card-icon { width:54px; height:54px; display:flex; align-items:center; justify-content:center; border-radius:18px; margin-bottom:18px; color:#fff; font-size:1.15rem; background:var(--card-icon-bg, linear-gradient(135deg, var(--accent), rgba(255,255,255,0.2))); box-shadow: 0 12px 24px rgba(0,0,0,0.18); }
-        .system-card strong { display:block; font-size:1rem; margin-bottom:8px; letter-spacing:.2px; }
-        .system-card p { margin:0 0 18px; font-size:.88rem; line-height:1.45; color:var(--text-muted); max-width:24ch; }
-        .system-card-footer { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:auto; font-size:.75rem; font-weight:800; letter-spacing:.45px; text-transform:uppercase; color:var(--text); }
-        .system-card-footer i { opacity:.75; }
-        .system-data-mini-note { margin-top:16px; padding:14px 16px; border-radius:18px; border:1px solid rgba(255,255,255,0.07); background: rgba(255,255,255,0.04); color:var(--text-muted); font-size:.82rem; line-height:1.45; }
-        .sidebar-system-hint { margin-top:12px; padding:16px 18px; border-radius:20px; border:1px solid rgba(255,255,255,0.08); background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)); color:var(--text-muted); }
-        .sidebar-system-hint strong { display:block; color:var(--text); margin-bottom:6px; }
-        .sidebar-system-hint button { margin-top:12px; width:100%; border:none; border-radius:14px; padding:13px 14px; background:linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 64%, white)); color:#03111d; font-weight:800; cursor:pointer; box-shadow: 0 14px 24px color-mix(in srgb, var(--accent) 22%, transparent); }
-        @media (max-width: 680px) {
-            .top-action-btn.system-trigger { width:40px; padding:0; }
-            .top-action-btn.system-trigger .btn-label { display:none; }
-            .system-data-grid { grid-template-columns:1fr 1fr; gap:12px; }
-            .system-card { min-height:164px; padding:16px; border-radius:22px; }
-            .system-data-head { align-items:flex-start; }
-            .system-data-head h2 { font-size:1.2rem; }
-            .system-data-head p { font-size:.88rem; }
-        }
-        @media (max-width: 520px) {
-            .system-data-grid { grid-template-columns:1fr 1fr; }
-            .system-card strong { font-size:.92rem; }
-            .system-card p { font-size:.8rem; max-width:none; }
-            .system-card-footer { font-size:.69rem; }
-            .system-card-icon { width:46px; height:46px; border-radius:16px; }
-        }
 
         /* MENU LATERAL */
         .sidebar { position: fixed;
@@ -1150,15 +1264,12 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
         </div>
         <div style="display: flex;
             gap: 10px; align-items: center;">
-            <button class="top-action-btn bell-btn" onclick="abrirNotificacoes()">
+            <button class="bell-btn" onclick="abrirNotificacoes()">
                 <i class="fa-solid fa-bell"></i>
                 <span id="badgeNotificacao" class="badge hidden">0</span>
             </button>
-            <button class="top-action-btn system-trigger" onclick="openSystemDataModal()" aria-label="Abrir Sistema &amp; Dados">
-                <i class="fa-solid fa-cloud-arrow-up"></i>
-                <span class="btn-label">Sistema</span>
-            </button>
-            <button class="top-action-btn" onclick="toggleFantasma()" aria-label="Alternar modo fantasma">
+            <button onclick="toggleFantasma()" style="background:none;
+            border:1px solid var(--border); color:var(--text); padding:8px 10px; border-radius:10px; cursor:pointer;">
                 <i id="eyeIcon" class="fa-solid fa-eye"></i>
             </button>
         </div>
@@ -1234,11 +1345,27 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
                 </div>
                 
                 <div class="menu-group-title">Sistema & Dados</div>
+                
+                <div class="menu-item" onclick="gerarPDFoficial()">
+                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--danger); background: rgba(239, 68, 68, 0.1);"><i class="fa-solid fa-file-pdf"></i></div><span>Baixar Extrato PDF</span></div>
+                    <i class="fa-solid fa-chevron-right menu-chevron"></i>
+                </div>
+                
+                <div class="menu-item" onclick="exportarBackupCompleto()">
+                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--accent); background: rgba(0, 242, 255, 0.1);"><i class="fa-solid fa-database"></i></div><span>Salvar Backup (Completo)</span></div>
+                    <i class="fa-solid fa-chevron-right menu-chevron"></i>
+                </div>
+
+                <div class="menu-item" onclick="exportarDadosCSV()">
+                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--success); background: rgba(16, 185, 129, 0.1);"><i class="fa-solid fa-file-excel"></i></div><span>Exportar Planilha (CSV)</span></div>
+                    <i class="fa-solid fa-chevron-right menu-chevron"></i>
+                </div>
+                
                 <input type="file" id="fileInput" accept=".json, application/json, .csv, text/csv, text/plain, */*" style="display: none;" onchange="importarDados(event)">
-                <div class="sidebar-system-hint">
-                    <strong>Nova central exclusiva</strong>
-                    Backup, restauração e exportações agora vivem em uma experiência dedicada, mais rápida e elegante.
-                    <button onclick="openSystemDataModal()"><i class="fa-solid fa-cloud-arrow-up" style="margin-right:8px;"></i>Abrir Sistema &amp; Dados</button>
+         
+                <div class="menu-item" onclick="document.getElementById('fileInput').click()"> 
+                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--warning); background: rgba(245, 158, 11, 0.1);"><i class="fa-solid fa-file-import"></i></div><span>Importar Backup</span></div>
+                    <i class="fa-solid fa-chevron-right menu-chevron"></i>
                 </div>
                 
                 <div class="menu-item" onclick="limparMesAtual()">
@@ -1319,53 +1446,6 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 
     <button class="fab" onclick="openModal()"><i class="fa-solid fa-plus"></i></button>
     <div class="overlay" id="overlay" onclick="closeAll()"></div>
-
-    <div class="modal modal-small system-data-modal" id="modalSystemData">
-        <div class="system-data-modal-inner">
-            <div class="system-data-head">
-                <div>
-                    <span class="system-data-kicker"><i class="fa-solid fa-shield-heart"></i> Sistema &amp; Dados</span>
-                    <h2>Central premium de backup e exportação</h2>
-                    <p>Uma área elegante e objetiva para proteger seus dados, restaurar informações e gerar arquivos prontos para compartilhar.</p>
-                </div>
-                <button class="system-close-btn" onclick="closeSystemDataModal()" aria-label="Fechar Sistema &amp; Dados"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-
-            <div class="system-data-grid">
-                <button class="system-card" onclick="exportarBackupCompleto()" style="--card-glow: rgba(0,242,255,.22); --card-icon-bg: linear-gradient(135deg, #06b6d4, #22d3ee);">
-                    <span class="system-card-icon"><i class="fa-solid fa-cloud-arrow-down"></i></span>
-                    <strong>Salvar Backup JSON</strong>
-                    <p>Baixe uma cópia completa da base para segurança, migração ou restauração futura.</p>
-                    <span class="system-card-footer">Backup completo <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
-                </button>
-
-                <button class="system-card" onclick="document.getElementById('fileInput').click()" style="--card-glow: rgba(245,158,11,.24); --card-icon-bg: linear-gradient(135deg, #f59e0b, #fbbf24);">
-                    <span class="system-card-icon"><i class="fa-solid fa-file-import"></i></span>
-                    <strong>Restaurar Importação</strong>
-                    <p>Importe JSON ou CSV para reconstruir o ambiente sem depender de processos manuais.</p>
-                    <span class="system-card-footer">Trazer dados <i class="fa-solid fa-rotate-left"></i></span>
-                </button>
-
-                <button class="system-card" onclick="gerarPDFoficial()" style="--card-glow: rgba(239,68,68,.22); --card-icon-bg: linear-gradient(135deg, #ef4444, #fb7185);">
-                    <span class="system-card-icon"><i class="fa-solid fa-file-pdf"></i></span>
-                    <strong>Baixar PDF</strong>
-                    <p>Gere relatórios premium em PDF para prestação de contas, organização e compartilhamento.</p>
-                    <span class="system-card-footer">Relatório oficial <i class="fa-solid fa-file-arrow-down"></i></span>
-                </button>
-
-                <button class="system-card" onclick="exportarDadosCSV()" style="--card-glow: rgba(16,185,129,.22); --card-icon-bg: linear-gradient(135deg, #10b981, #34d399);">
-                    <span class="system-card-icon"><i class="fa-solid fa-file-csv"></i></span>
-                    <strong>Exportar Planilha CSV</strong>
-                    <p>Leve seus lançamentos para planilhas e análises externas com estrutura limpa e compatível.</p>
-                    <span class="system-card-footer">Pronto para planilha <i class="fa-solid fa-table"></i></span>
-                </button>
-            </div>
-
-            <div class="system-data-mini-note">
-                Dica premium: esta central substitui a antiga lista solta e mantém todas as ações críticas em um único painel 2x2, mais intuitivo e muito mais elegante.
-            </div>
-        </div>
-    </div>
 
     <div class="modal" id="modalForm">
         <div style="display:flex;
@@ -1553,99 +1633,113 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
             <div class="meta-hero">
                 <div class="meta-hero-copy">
                     <div class="meta-overline"><i class="fa-solid fa-sparkles"></i> Gestão de Metas Premium</div>
-                    <h2>Transforme objetivos em conquistas visíveis.</h2>
-                    <p>Uma área mais inteligente para acompanhar evolução, ajustar aportes e manter sua meta sempre viva e inspiradora.</p>
+                    <h2>Seu cockpit de objetivos ficou mais ágil, elegante e prático.</h2>
+                    <p>Acompanhe evolução, faça aportes rápidos e ajuste a estratégia da meta sem precisar percorrer uma tela longa demais.</p>
                 </div>
                 <button class="meta-close-btn" onclick="closeModal()" aria-label="Fechar painel de metas"><i class="fa-solid fa-xmark"></i></button>
             </div>
+
             <div class="meta-body-premium">
-                <div class="meta-dashboard-card">
-                    <div class="meta-badge-motivational" id="txtMetaMotivacional">🚀 VAMOS COMEÇAR!</div>
-                    <div class="meta-progress-wrapper">
-                        <div class="meta-progress-ring" id="metaProgressRing">
-                            <div class="meta-progress-core">
-                                <h3 class="meta-progress-text" id="txtGestaoProgresso">0.0%</h3>
-                                <span class="meta-progress-caption" id="txtDescricaoResumoMeta">concluído da sua meta</span>
+                <div class="meta-section-nav">
+                    <button class="meta-nav-chip" type="button" onclick="scrollMetaSection('metaOverviewSection')"><i class="fa-solid fa-chart-pie"></i> Visão geral</button>
+                    <button class="meta-nav-chip" type="button" onclick="scrollMetaSection('metaMoveSection')"><i class="fa-solid fa-bolt"></i> Movimentar</button>
+                    <button class="meta-nav-chip" type="button" onclick="scrollMetaSection('metaConfigSection')"><i class="fa-solid fa-sliders"></i> Configurar</button>
+                </div>
+
+                <div class="meta-layout-grid">
+                    <div class="meta-left-column">
+                        <div class="meta-dashboard-card" id="metaOverviewSection">
+                            <div class="meta-badge-motivational" id="txtMetaBadge" style="background:linear-gradient(135deg,#f59e0b,#10b981);">PRONTO PARA DECOLAR</div>
+                            <div class="meta-progress-wrapper">
+                                <div class="meta-progress-ring">
+                                    <div class="meta-progress-core">
+                                        <p class="meta-progress-text" id="porcentagemMetaPremium">0%</p>
+                                        <span class="meta-progress-caption">da meta concluída</span>
+                                    </div>
+                                </div>
+                                <div class="meta-progress-track-glow"><div class="meta-progress-fill-glow" id="gestaoFillBar"></div></div>
+                                <div class="meta-progress-meta"><span id="txtMetaNomePreview">Meta principal</span><span id="txtGestaoPeriodo">Aporte mensal</span></div>
+                            </div>
+                            <div class="meta-mini-insights">
+                                <div class="meta-mini-pill"><span>Guardado</span><strong id="txtGestaoGuardado">R$ 0,00</strong></div>
+                                <div class="meta-mini-pill"><span>Aporte ideal</span><strong id="txtAporteIdealResumo">R$ 0,00</strong></div>
+                                <div class="meta-mini-pill"><span>Categoria</span><strong id="txtGestaoTipo">Reserva</strong></div>
+                            </div>
+                            <div class="meta-stats-grid">
+                                <div class="meta-stat-box highlight"><span>Alvo Final</span><strong id="txtGestaoAlvo">R$ 0,00</strong><small>Valor total que você quer alcançar.</small></div>
+                                <div class="meta-stat-box danger"><span>Quanto Falta</span><strong id="txtGestaoFalta">R$ 0,00</strong><small>Diferença entre o alvo e o acumulado atual.</small></div>
+                            </div>
+                            <div class="meta-milestones">
+                                <div class="meta-milestones-header"><strong>Marcos da jornada</strong><span id="txtMilestoneResumo">Ative sua primeira meta</span></div>
+                                <div class="meta-milestone-track" id="metaMilestoneTrack">
+                                    <div class="meta-milestone" data-step="25"><i class="fa-solid fa-seedling"></i><span>25%</span></div>
+                                    <div class="meta-milestone" data-step="50"><i class="fa-solid fa-bolt"></i><span>50%</span></div>
+                                    <div class="meta-milestone" data-step="75"><i class="fa-solid fa-fire"></i><span>75%</span></div>
+                                    <div class="meta-milestone" data-step="100"><i class="fa-solid fa-crown"></i><span>100%</span></div>
+                                </div>
+                            </div>
+                            <div class="meta-tip-card"><i class="fa-solid fa-lightbulb"></i><span id="txtDicaAporte">Configure uma meta para ver dicas de aporte aqui.</span></div>
+                        </div>
+
+                        <div id="metaMoveSection" class="meta-left-column">
+                            <div class="meta-quick-actions">
+                                <button class="btn-meta-quick deposit" onclick="prepararMovimentacaoMeta('add')"><i class="fa-solid fa-circle-arrow-up"></i>GUARDAR<br>DINHEIRO</button>
+                                <button class="btn-meta-quick withdraw" onclick="prepararMovimentacaoMeta('rem')"><i class="fa-solid fa-circle-arrow-down"></i>RESGATAR<br>DINHEIRO</button>
+                            </div>
+
+                            <div id="blocoMovimentacaoRapida" class="hidden meta-motion-card" style="animation: fadeIn 0.3s ease;">
+                                <div class="meta-section-title"><h4><i class="fa-solid fa-wave-square"></i> Movimentação rápida</h4><span id="lblAcaoRapida">Qual valor deseja guardar?</span></div>
+                                <input type="number" id="valorMovimentacaoMeta" placeholder="R$ 0,00" step="0.01" style="font-size: 1.5rem; font-weight: 800; color: #fff; background: transparent; border: none; border-bottom: 2px solid var(--accent); border-radius: 0; box-shadow: none; padding: 10px 5px; margin-bottom: 15px;">
+                                <div style="display: flex; gap: 10px;">
+                                    <button class="btn-confirm" id="btnConfirmarAcaoMeta" style="flex: 2;" onclick="executarMovimentacaoMeta()">CONFIRMAR</button>
+                                    <button class="btn-delete" style="flex: 1; padding: 16px;" onclick="document.getElementById('blocoMovimentacaoRapida').classList.add('hidden')">CANCELAR</button>
+                                </div>
                             </div>
                         </div>
-                        <div class="meta-progress-track-glow"><div class="meta-progress-fill-glow" id="gestaoFillBar"></div></div>
-                        <div class="meta-progress-meta"><span id="txtMetaNomePreview">Meta principal</span><span id="txtGestaoPeriodo">Aporte mensal</span></div>
                     </div>
-                    <div class="meta-mini-insights">
-                        <div class="meta-mini-pill"><span>Guardado</span><strong id="txtGestaoGuardado">R$ 0,00</strong></div>
-                        <div class="meta-mini-pill"><span>Aporte ideal</span><strong id="txtAporteIdealResumo">R$ 0,00</strong></div>
-                        <div class="meta-mini-pill"><span>Categoria</span><strong id="txtGestaoTipo">Reserva</strong></div>
-                    </div>
-                    <div class="meta-stats-grid">
-                        <div class="meta-stat-box highlight"><span>Alvo Final</span><strong id="txtGestaoAlvo">R$ 0,00</strong><small>Valor total que você quer alcançar.</small></div>
-                        <div class="meta-stat-box danger"><span>Quanto Falta</span><strong id="txtGestaoFalta">R$ 0,00</strong><small>Diferença entre o alvo e o acumulado atual.</small></div>
-                    </div>
-                    <div class="meta-milestones">
-                        <div class="meta-milestones-header"><strong>Marcos da jornada</strong><span id="txtMilestoneResumo">Ative sua primeira meta</span></div>
-                        <div class="meta-milestone-track" id="metaMilestoneTrack">
-                            <div class="meta-milestone" data-step="25"><i class="fa-solid fa-seedling"></i><span>25%</span></div>
-                            <div class="meta-milestone" data-step="50"><i class="fa-solid fa-bolt"></i><span>50%</span></div>
-                            <div class="meta-milestone" data-step="75"><i class="fa-solid fa-fire"></i><span>75%</span></div>
-                            <div class="meta-milestone" data-step="100"><i class="fa-solid fa-crown"></i><span>100%</span></div>
+
+                    <div class="meta-right-column">
+                        <div class="meta-motion-card" id="metaConfigSection">
+                            <div class="meta-section-title"><h4><i class="fa-solid fa-sliders"></i> Configurações do objetivo</h4><span>Defina valor, ritmo e identidade da meta</span></div>
+                            <div class="meta-config-grid single" style="margin-bottom: 14px;">
+                                <div class="meta-field">
+                                    <span class="label-mini"><i class="fa-solid fa-bullseye"></i> O que você quer alcançar?</span>
+                                    <select id="tipoMeta" style="font-weight: bold; background: var(--input-bg);">
+                                        <option value="reserva">🛡️ Reserva de Emergência</option>
+                                        <option value="viagem">✈️ Viagem / Férias</option>
+                                        <option value="veiculo">🚗 Trocar de Veículo</option>
+                                        <option value="imovel">🏠 Casa Própria / Reforma</option>
+                                        <option value="casamento">💍 Casamento / Festa</option>
+                                        <option value="educacao">📚 Estudos / Faculdade</option>
+                                        <option value="aposentadoria">🌅 Aposentadoria</option>
+                                        <option value="quitacao">💸 Quitar Dívidas</option>
+                                        <option value="investimento">📈 Liberdade Financeira</option>
+                                        <option value="eletronico">💻 Eletrônicos / Setup</option>
+                                        <option value="outros">🎯 Outro Objetivo</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="meta-input-row">
+                                <div class="meta-field"><span class="label-mini"><i class="fa-solid fa-sack-dollar"></i> Valor total do objetivo</span><input type="number" id="valorMetaInput" placeholder="Ex: 5000,00" step="0.01" style="background: var(--input-bg);"></div>
+                                <div class="meta-field"><span class="label-mini"><i class="fa-regular fa-calendar-days"></i> Frequência de aporte ideal</span><select id="periodoMeta" style="background: var(--input-bg);"><option value="Semanal">Por Semana</option><option value="Quinzenal">Por Quinzena</option><option value="Mensal">Por Mês</option><option value="Anual">Por Ano</option></select></div>
+                            </div>
+                            <div class="meta-config-grid single" style="margin-top: 14px;">
+                                <div class="meta-field"><span class="label-mini"><i class="fa-solid fa-signature"></i> Dê um nome para a meta</span><input type="text" id="descMetaInput" placeholder="Ex: Viagem para a Europa..." style="background: var(--input-bg);"></div>
+                            </div>
+                            <div class="meta-planner-strip">
+                                <div class="meta-plan-chip"><span>Visão atual</span><strong id="txtPreviewTituloMeta">Objetivo ainda sem nome</strong><small id="txtPreviewSubMeta">Escolha um foco para a sua próxima conquista.</small></div>
+                                <div class="meta-plan-chip"><span>Ritmo sugerido</span><strong id="txtPreviewAporte">R$ 0,00 por mês</strong><small id="txtPreviewHorizonte">Ajuste a frequência para recalcular o aporte ideal.</small></div>
+                                <div class="meta-plan-chip"><span>Status visual</span><strong id="txtPreviewStatus">Preparando sua meta</strong><small id="txtPreviewStatusSub">Assim que salvar, o painel superior será atualizado.</small></div>
+                            </div>
+                            <div class="meta-actions-stack">
+                                <button class="btn-confirm" style="background: linear-gradient(90deg, #00f2ff, #0284c7); color: #fff; font-weight: 800;" onclick="salvarConfiguracaoMeta()">SALVAR E ATUALIZAR DASHBOARD</button>
+                                <button class="btn-delete" style="border-color: rgba(239, 68, 68, 0.3); color: var(--danger); font-weight: 800;" onclick="zerarMetaCompleta()">EXCLUIR META ATUAL</button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="meta-tip-card"><i class="fa-solid fa-lightbulb"></i><span id="txtDicaAporte">Configure uma meta para ver dicas de aporte aqui.</span></div>
-                </div>
-
-                <div class="meta-quick-actions">
-                    <button class="btn-meta-quick deposit" onclick="prepararMovimentacaoMeta('add')"><i class="fa-solid fa-circle-arrow-up"></i>GUARDAR<br>DINHEIRO</button>
-                    <button class="btn-meta-quick withdraw" onclick="prepararMovimentacaoMeta('rem')"><i class="fa-solid fa-circle-arrow-down"></i>RESGATAR<br>DINHEIRO</button>
-                </div>
-
-                <div id="blocoMovimentacaoRapida" class="hidden meta-motion-card" style="animation: fadeIn 0.3s ease;">
-                    <div class="meta-section-title"><h4><i class="fa-solid fa-wave-square"></i> Movimentação rápida</h4><span id="lblAcaoRapida">Qual valor deseja guardar?</span></div>
-                    <input type="number" id="valorMovimentacaoMeta" placeholder="R$ 0,00" step="0.01" style="font-size: 1.5rem; font-weight: 800; color: #fff; background: transparent; border: none; border-bottom: 2px solid var(--accent); border-radius: 0; box-shadow: none; padding: 10px 5px; margin-bottom: 15px;">
-                    <div style="display: flex; gap: 10px;">
-                        <button class="btn-confirm" id="btnConfirmarAcaoMeta" style="flex: 2;" onclick="executarMovimentacaoMeta()">CONFIRMAR</button>
-                        <button class="btn-delete" style="flex: 1; padding: 16px;" onclick="document.getElementById('blocoMovimentacaoRapida').classList.add('hidden')">CANCELAR</button>
-                    </div>
-                </div>
-
-                <div class="meta-motion-card">
-                    <div class="meta-section-title"><h4><i class="fa-solid fa-sliders"></i> Configurações do objetivo</h4><span>Defina valor, ritmo e identidade da meta</span></div>
-                    <div class="meta-config-grid single" style="margin-bottom: 14px;">
-                        <div class="meta-field">
-                            <span class="label-mini"><i class="fa-solid fa-bullseye"></i> O que você quer alcançar?</span>
-                            <select id="tipoMeta" style="font-weight: bold; background: var(--input-bg);">
-                                <option value="reserva">🛡️ Reserva de Emergência</option>
-                                <option value="viagem">✈️ Viagem / Férias</option>
-                                <option value="veiculo">🚗 Trocar de Veículo</option>
-                                <option value="imovel">🏠 Casa Própria / Reforma</option>
-                                <option value="casamento">💍 Casamento / Festa</option>
-                                <option value="educacao">📚 Estudos / Faculdade</option>
-                                <option value="aposentadoria">🌅 Aposentadoria</option>
-                                <option value="quitacao">💸 Quitar Dívidas</option>
-                                <option value="investimento">📈 Liberdade Financeira</option>
-                                <option value="eletronico">💻 Eletrônicos / Setup</option>
-                                <option value="outros">🎯 Outro Objetivo</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="meta-input-row">
-                        <div class="meta-field"><span class="label-mini"><i class="fa-solid fa-sack-dollar"></i> Valor total do objetivo</span><input type="number" id="valorMetaInput" placeholder="Ex: 5000,00" step="0.01" style="background: var(--input-bg);"></div>
-                        <div class="meta-field"><span class="label-mini"><i class="fa-regular fa-calendar-days"></i> Frequência de aporte ideal</span><select id="periodoMeta" style="background: var(--input-bg);"><option value="Semanal">Por Semana</option><option value="Quinzenal">Por Quinzena</option><option value="Mensal">Por Mês</option><option value="Anual">Por Ano</option></select></div>
-                    </div>
-                    <div class="meta-config-grid single" style="margin-top: 14px;">
-                        <div class="meta-field"><span class="label-mini"><i class="fa-solid fa-signature"></i> Dê um nome para a meta</span><input type="text" id="descMetaInput" placeholder="Ex: Viagem para a Europa..." style="background: var(--input-bg);"></div>
-                    </div>
-                    <div class="meta-planner-strip">
-                        <div class="meta-plan-chip"><span>Visão atual</span><strong id="txtPreviewTituloMeta">Objetivo ainda sem nome</strong><small id="txtPreviewSubMeta">Escolha um foco para a sua próxima conquista.</small></div>
-                        <div class="meta-plan-chip"><span>Ritmo sugerido</span><strong id="txtPreviewAporte">R$ 0,00 por mês</strong><small id="txtPreviewHorizonte">Ajuste a frequência para recalcular o aporte ideal.</small></div>
-                        <div class="meta-plan-chip"><span>Status visual</span><strong id="txtPreviewStatus">Preparando sua meta</strong><small id="txtPreviewStatusSub">Assim que salvar, o painel superior será atualizado.</small></div>
-                    </div>
-                    <div class="meta-actions-stack">
-                        <button class="btn-confirm" style="background: linear-gradient(90deg, #00f2ff, #0284c7); color: #fff; font-weight: 800;" onclick="salvarConfiguracaoMeta()">SALVAR E ATUALIZAR DASHBOARD</button>
-                        <button class="btn-delete" style="border-color: rgba(239, 68, 68, 0.3); color: var(--danger); font-weight: 800;" onclick="zerarMetaCompleta()">EXCLUIR META ATUAL</button>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </div>    </div>
 
 
     <div class="modal modal-small" id="modalNotificacoes" style="z-index: 2500;
@@ -2372,19 +2466,6 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
                 if(document.getElementById('overlay')) document.getElementById('overlay').style.display = s.classList.contains('open') ? 'block' : 'none'; 
                 document.getElementById('themeOptions')?.classList.remove('open'); 
             }
-        }
-
-        function openSystemDataModal() {
-            document.getElementById('modalSystemData')?.classList.add('open');
-            document.getElementById('profileSidebar')?.classList.remove('open');
-            if(document.getElementById('overlay')) document.getElementById('overlay').style.display = 'block';
-        }
-
-        function closeSystemDataModal() {
-            document.getElementById('modalSystemData')?.classList.remove('open');
-            const hasOpenModal = Array.from(document.querySelectorAll('.modal')).some(m => m.classList.contains('open'));
-            const sidebarOpen = document.getElementById('profileSidebar')?.classList.contains('open');
-            if(document.getElementById('overlay') && !hasOpenModal && !sidebarOpen) document.getElementById('overlay').style.display = 'none';
         }
         
         function closeModal() { 
@@ -4080,5 +4161,26 @@ function exportarDadosCSV() {
         window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(err => console.error('Erro no PWA:', err)); });
       }
     </script>
+
+    <script>
+        function togglePasswordVisibility(inputId, triggerBtn){
+            const input = document.getElementById(inputId);
+            if(!input) return;
+            const icon = triggerBtn ? triggerBtn.querySelector('i') : null;
+            const showing = input.type === 'text';
+            input.type = showing ? 'password' : 'text';
+            if(icon){
+                icon.className = showing ? 'fa-regular fa-eye' : 'fa-regular fa-eye-slash';
+            }
+        }
+        function scrollMetaSection(sectionId){
+            const target = document.getElementById(sectionId);
+            const modal = document.getElementById('modalGestaoMetas');
+            if(!target || !modal) return;
+            const offset = target.offsetTop - 86;
+            modal.scrollTo({ top: Math.max(offset, 0), behavior: 'smooth' });
+        }
+    </script>
+
 </body>
 </html>
