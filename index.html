@@ -1191,7 +1191,37 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
     .menu-icon-wrap{ width: 42px; height: 42px; }
 }
 
-</style>
+
+
+        /* APRIMORAMENTOS 2026 | Leitor IA + Metas simples */
+        .reader-premium-shell{position:relative;border-radius:28px;padding:1px;background:linear-gradient(135deg,rgba(0,242,255,.35),rgba(16,185,129,.18),rgba(255,255,255,.08));box-shadow:0 18px 60px rgba(0,0,0,.34)}
+        .reader-premium-inner{border-radius:27px;padding:22px;background:radial-gradient(circle at top left,rgba(0,242,255,.12),transparent 28%),radial-gradient(circle at top right,rgba(16,185,129,.1),transparent 26%),linear-gradient(180deg,rgba(3,7,18,.96),rgba(3,7,18,.92));backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px)}
+        .reader-topbar{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:18px}
+        .reader-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(0,242,255,.1);border:1px solid rgba(0,242,255,.18);font-size:.76rem;font-weight:800;letter-spacing:.04em;color:var(--accent);text-transform:uppercase}
+        .reader-topbar h2{margin:10px 0 8px;font-size:1.25rem;color:#fff}
+        .reader-topbar p{margin:0;color:var(--text-muted);font-size:.9rem;line-height:1.5;max-width:560px}
+        .reader-feature-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0 10px}
+        .reader-feature-card,.reader-step-card,.meta-explain-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:14px 15px;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+        .reader-feature-card strong,.reader-step-card strong,.meta-explain-card strong{display:block;color:#fff;font-size:.92rem;margin-bottom:4px}
+        .reader-feature-card span,.reader-step-card span,.meta-explain-card span{display:block;color:var(--text-muted);font-size:.8rem;line-height:1.45}
+        .reader-feature-icon{width:40px;height:40px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;background:linear-gradient(135deg,rgba(0,242,255,.18),rgba(16,185,129,.15));color:var(--accent);box-shadow:0 10px 24px rgba(0,242,255,.12)}
+        .reader-step-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:12px 0 20px}
+        .reader-step-card em{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:999px;margin-bottom:10px;background:rgba(255,255,255,.07);color:#fff;font-style:normal;font-weight:800}
+        .reader-upload-cta{display:flex;gap:12px;margin-bottom:18px}
+        .reader-upload-cta .btn-confirm{min-height:54px;border-radius:16px}
+        .reader-processing-note{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:16px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.18);color:#d1fae5;font-size:.82rem}
+        .meta-simple-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:16px 0 18px}
+        .meta-explain-card{border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.03))}
+        .meta-explain-card i{display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:14px;margin-bottom:10px;color:#fff;background:linear-gradient(135deg,rgba(0,242,255,.22),rgba(59,130,246,.22))}
+        .meta-plan-chip strong{font-size:1rem}
+        .meta-plan-chip small{line-height:1.45}
+        .meta-section-title span{max-width:360px}
+        @media (max-width: 860px){
+            .reader-feature-grid,.reader-step-grid,.meta-simple-grid{grid-template-columns:1fr}
+            .reader-upload-cta{flex-direction:column}
+        }
+
+    </style>
 </head>
 <body>
 
@@ -1633,8 +1663,8 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
             <div class="meta-hero">
                 <div class="meta-hero-copy">
                     <div class="meta-overline"><i class="fa-solid fa-sparkles"></i> Gestão de Metas Premium</div>
-                    <h2>Seu cockpit de objetivos ficou mais ágil, elegante e prático.</h2>
-                    <p>Acompanhe evolução, faça aportes rápidos e ajuste a estratégia da meta sem precisar percorrer uma tela longa demais.</p>
+                    <h2>Sua meta ficou mais simples de entender e mais rápida de usar.</h2>
+                    <p>Veja quanto falta, quanto já foi guardado e qual valor manter em cada período sem confusão.</p>
                 </div>
                 <button class="meta-close-btn" onclick="closeModal()" aria-label="Fechar painel de metas"><i class="fa-solid fa-xmark"></i></button>
             </div>
@@ -1688,7 +1718,7 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
                             </div>
 
                             <div id="blocoMovimentacaoRapida" class="hidden meta-motion-card" style="animation: fadeIn 0.3s ease;">
-                                <div class="meta-section-title"><h4><i class="fa-solid fa-wave-square"></i> Movimentação rápida</h4><span id="lblAcaoRapida">Qual valor deseja guardar?</span></div>
+                                <div class="meta-section-title"><h4><i class="fa-solid fa-wave-square"></i> Guardar ou resgatar em segundos</h4><span id="lblAcaoRapida">Quanto você quer guardar agora?</span></div>
                                 <input type="number" id="valorMovimentacaoMeta" placeholder="R$ 0,00" step="0.01" style="font-size: 1.5rem; font-weight: 800; color: #fff; background: transparent; border: none; border-bottom: 2px solid var(--accent); border-radius: 0; box-shadow: none; padding: 10px 5px; margin-bottom: 15px;">
                                 <div style="display: flex; gap: 10px;">
                                     <button class="btn-confirm" id="btnConfirmarAcaoMeta" style="flex: 2;" onclick="executarMovimentacaoMeta()">CONFIRMAR</button>
@@ -1700,7 +1730,7 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 
                     <div class="meta-right-column">
                         <div class="meta-motion-card" id="metaConfigSection">
-                            <div class="meta-section-title"><h4><i class="fa-solid fa-sliders"></i> Configurações do objetivo</h4><span>Defina valor, ritmo e identidade da meta</span></div>
+                            <div class="meta-section-title"><h4><i class="fa-solid fa-sliders"></i> Configurações do objetivo</h4><span>Preencha só o essencial e veja a leitura da meta ficar clara na hora</span></div>
                             <div class="meta-config-grid single" style="margin-bottom: 14px;">
                                 <div class="meta-field">
                                     <span class="label-mini"><i class="fa-solid fa-bullseye"></i> O que você quer alcançar?</span>
@@ -1720,20 +1750,26 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
                                 </div>
                             </div>
                             <div class="meta-input-row">
-                                <div class="meta-field"><span class="label-mini"><i class="fa-solid fa-sack-dollar"></i> Valor total do objetivo</span><input type="number" id="valorMetaInput" placeholder="Ex: 5000,00" step="0.01" style="background: var(--input-bg);"></div>
-                                <div class="meta-field"><span class="label-mini"><i class="fa-regular fa-calendar-days"></i> Frequência de aporte ideal</span><select id="periodoMeta" style="background: var(--input-bg);"><option value="Semanal">Por Semana</option><option value="Quinzenal">Por Quinzena</option><option value="Mensal">Por Mês</option><option value="Anual">Por Ano</option></select></div>
+                                <div class="meta-field"><span class="label-mini"><i class="fa-solid fa-sack-dollar"></i> Quanto você quer juntar no total?</span><input type="number" id="valorMetaInput" placeholder="Ex: 5000,00" step="0.01" style="background: var(--input-bg);"></div>
+                                <div class="meta-field"><span class="label-mini"><i class="fa-regular fa-calendar-days"></i> Com que frequência você pretende guardar?</span><select id="periodoMeta" style="background: var(--input-bg);"><option value="Semanal">Por Semana</option><option value="Quinzenal">Por Quinzena</option><option value="Mensal">Por Mês</option><option value="Anual">Por Ano</option></select></div>
+                            </div>
+                            </div>
+                            <div class="meta-simple-grid">
+                                <div class="meta-explain-card"><i class="fa-solid fa-flag-checkered"></i><strong>Total da meta</strong><span>É o valor final que você deseja alcançar.</span></div>
+                                <div class="meta-explain-card"><i class="fa-regular fa-calendar"></i><strong>Seu ritmo</strong><span>Escolha se pretende guardar por semana, quinzena, mês ou ano.</span></div>
+                                <div class="meta-explain-card"><i class="fa-solid fa-wallet"></i><strong>Sugestão automática</strong><span>O sistema mostra quanto guardar em cada período para chegar ao objetivo.</span></div>
                             </div>
                             <div class="meta-config-grid single" style="margin-top: 14px;">
-                                <div class="meta-field"><span class="label-mini"><i class="fa-solid fa-signature"></i> Dê um nome para a meta</span><input type="text" id="descMetaInput" placeholder="Ex: Viagem para a Europa..." style="background: var(--input-bg);"></div>
+                                <div class="meta-field"><span class="label-mini"><i class="fa-solid fa-signature"></i> Nome curto da sua meta</span><input type="text" id="descMetaInput" placeholder="Ex: Viagem para a Europa..." style="background: var(--input-bg);"></div>
                             </div>
                             <div class="meta-planner-strip">
                                 <div class="meta-plan-chip"><span>Visão atual</span><strong id="txtPreviewTituloMeta">Objetivo ainda sem nome</strong><small id="txtPreviewSubMeta">Escolha um foco para a sua próxima conquista.</small></div>
-                                <div class="meta-plan-chip"><span>Ritmo sugerido</span><strong id="txtPreviewAporte">R$ 0,00 por mês</strong><small id="txtPreviewHorizonte">Ajuste a frequência para recalcular o aporte ideal.</small></div>
-                                <div class="meta-plan-chip"><span>Status visual</span><strong id="txtPreviewStatus">Preparando sua meta</strong><small id="txtPreviewStatusSub">Assim que salvar, o painel superior será atualizado.</small></div>
+                                <div class="meta-plan-chip"><span>Quanto guardar por período</span><strong id="txtPreviewAporte">R$ 0,00 por mês</strong><small id="txtPreviewHorizonte">Ajuste a frequência para recalcular o aporte ideal.</small></div>
+                                <div class="meta-plan-chip"><span>Leitura da meta</span><strong id="txtPreviewStatus">Preparando sua meta</strong><small id="txtPreviewStatusSub">Assim que salvar, o painel superior será atualizado.</small></div>
                             </div>
                             <div class="meta-actions-stack">
-                                <button class="btn-confirm" style="background: linear-gradient(90deg, #00f2ff, #0284c7); color: #fff; font-weight: 800;" onclick="salvarConfiguracaoMeta()">SALVAR E ATUALIZAR DASHBOARD</button>
-                                <button class="btn-delete" style="border-color: rgba(239, 68, 68, 0.3); color: var(--danger); font-weight: 800;" onclick="zerarMetaCompleta()">EXCLUIR META ATUAL</button>
+                                <button class="btn-confirm" style="background: linear-gradient(90deg, #00f2ff, #0284c7); color: #fff; font-weight: 800;" onclick="salvarConfiguracaoMeta()">SALVAR META</button>
+                                <button class="btn-delete" style="border-color: rgba(239, 68, 68, 0.3); color: var(--danger); font-weight: 800;" onclick="zerarMetaCompleta()">APAGAR META</button>
                             </div>
                         </div>
                     </div>
@@ -1808,27 +1844,37 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
     </div>
 
     
-    <div class="modal" id="modalLeitorExtrato" style="background: rgba(3, 7, 18, 0.95); backdrop-filter: blur(20px); border: 1px solid var(--accent); box-shadow: 0 0 30px rgba(0, 242, 255, 0.1); z-index: 3000;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <h2 style="margin:0; font-size:1.15rem; color: var(--accent); display:flex; align-items:center; gap:8px;">
-                <i class="fa-solid fa-microchip"></i> ZIRO-BANCK VAULT V3
-            </h2>
-            <i class="fa-solid fa-xmark" style="font-size:1.4rem; color:var(--text-muted); cursor:pointer;" onclick="closeModal()"></i>
+    <div class="modal" id="modalLeitorExtrato" style="background: transparent; border: none; box-shadow: none; z-index: 3000; padding: 10px;">
+        <div class="reader-premium-shell"><div class="reader-premium-inner">
+        <div class="reader-topbar">
+            <div>
+                <div class="reader-badge"><i class="fa-solid fa-sparkles"></i> Leitor IA de Extratos</div>
+                <h2>Importe seu extrato e revise tudo com muito mais clareza.</h2>
+                <p>O leitor agora destaca o que acontece em cada etapa: enviar, interpretar e confirmar. A leitura continua privada no seu dispositivo e o resultado fica pronto para revisão antes de entrar no app.</p>
+            </div>
+            <i class="fa-solid fa-xmark" style="font-size:1.4rem; color:var(--text-muted); cursor:pointer; background: rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); width: 42px; height: 42px; display:flex; align-items:center; justify-content:center; border-radius: 50%;" onclick="closeModal()"></i>
         </div>
 
         <input type="file" id="extratoInput" accept="image/*,application/pdf" style="display: none;" onchange="processarExtratoImagem(event)">
 
         <div id="leitorUploadArea">
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.4;">
-                Motor de Inteligência Financeira. Anexe o extrato do seu banco em PDF para que a IA analise e categorize seus lançamentos automaticamente. Processamento 100% privado.
-            </p>
-            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                <button class="btn-confirm" onclick="document.getElementById('extratoInput').click()" style="background: linear-gradient(135deg, var(--success), #059669); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); width: 100%; margin: 0;">
-                    <i class="fa-solid fa-cloud-arrow-up fa-bounce"></i> CARREGAR EXTRATO PDF
-                </button>
-                
+            <div class="reader-feature-grid">
+                <div class="reader-feature-card"><div class="reader-feature-icon"><i class="fa-solid fa-file-shield"></i></div><strong>Leitura mais segura</strong><span>Seu extrato é processado localmente, com foco em privacidade e revisão antes de salvar.</span></div>
+                <div class="reader-feature-card"><div class="reader-feature-icon"><i class="fa-solid fa-filter-circle-dollar"></i></div><strong>Categorização inicial</strong><span>Pix, cartão, entradas e saídas são organizados para você validar com menos esforço.</span></div>
+                <div class="reader-feature-card"><div class="reader-feature-icon"><i class="fa-solid fa-pen-ruler"></i></div><strong>Edição rápida</strong><span>Depois da leitura, ajuste descrições e confirme somente o que fizer sentido.</span></div>
             </div>
-        </div>
+            <div class="reader-step-grid">
+                <div class="reader-step-card"><em>1</em><strong>Envie o arquivo</strong><span>Selecione PDF ou imagem do extrato.</span></div>
+                <div class="reader-step-card"><em>2</em><strong>A IA organiza</strong><span>Os lançamentos são separados para análise visual.</span></div>
+                <div class="reader-step-card"><em>3</em><strong>Você confirma</strong><span>Revise tudo antes de adicionar ao painel financeiro.</span></div>
+            </div>
+            <div class="reader-upload-cta">
+                <button class="btn-confirm" onclick="document.getElementById('extratoInput').click()" style="background: linear-gradient(135deg, var(--success), #059669); box-shadow: 0 10px 28px rgba(16, 185, 129, 0.24); width: 100%; margin: 0;">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> ENVIAR EXTRATO AGORA
+                </button>
+            </div>
+            <div class="reader-processing-note"><i class="fa-solid fa-lock"></i><span>Dica: envie um PDF legível. Quanto mais claro o arquivo, mais rápida e precisa fica a organização automática.</span></div>
+        </div></div>
 
         <div id="leitorRestoreArea" class="hidden" style="background: rgba(0, 242, 255, 0.05); border: 1px dashed var(--accent); padding: 25px 20px; border-radius: 16px; margin-bottom: 20px; text-align: center; box-shadow: inset 0 0 20px rgba(0,242,255,0.05);">
             <i class="fa-solid fa-clock-rotate-left" style="font-size: 2.5rem; color: var(--accent); margin-bottom: 12px;"></i>
@@ -1856,6 +1902,7 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
             <h4 style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px;">Reconciliação Editável:</h4>
             <div id="leitorLista"></div>
         </div>
+        </div></div>
     </div>
 
     <div id="pdf-container"></div>
@@ -2260,11 +2307,11 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
             const titulo = nome || tipoTexto.replace(/^[^ ]+\s*/, '');
             const set = (id, value) => { const el = document.getElementById(id); if(el) el.innerText = value; };
             set('txtPreviewTituloMeta', titulo || 'Objetivo ainda sem nome');
-            set('txtPreviewSubMeta', valor > 0 ? `Meta total definida em ${formatarMoeda(valor)}.` : 'Escolha um foco para a sua próxima conquista.');
+            set('txtPreviewSubMeta', valor > 0 ? `Você quer juntar ${formatarMoeda(valor)} ao todo.` : 'Escolha o objetivo e informe o valor final desejado.');
             set('txtPreviewAporte', valor > 0 ? `${formatarMoeda(aporte)} por ${textoMap[periodo]}` : 'R$ 0,00 por mês');
-            set('txtPreviewHorizonte', valor > 0 ? `Planejamento baseado em aporte ${periodo.toLowerCase()}.` : 'Ajuste a frequência para recalcular o aporte ideal.');
-            set('txtPreviewStatus', valor > 0 ? 'Pronta para salvar' : 'Preparando sua meta');
-            set('txtPreviewStatusSub', valor > 0 ? 'Seu painel ganhará uma leitura mais estratégica.' : 'Assim que salvar, o painel superior será atualizado.');
+            set('txtPreviewHorizonte', valor > 0 ? `Essa é a média indicada para guardar a cada ${textoMap[periodo]}.` : 'Selecione a frequência para ver a sugestão automática.');
+            set('txtPreviewStatus', valor > 0 ? 'Meta pronta para salvar' : 'Meta em preparação');
+            set('txtPreviewStatusSub', valor > 0 ? 'Ao salvar, o painel mostra quanto já foi guardado e quanto ainda falta.' : 'Assim que preencher, o resumo da meta fica mais fácil de entender.');
         }
 
         function abrirGestaoMetas() {
@@ -2302,6 +2349,8 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 
             const pTxt = document.getElementById('txtGestaoProgresso');
             if(pTxt) { pTxt.innerText = progresso.toFixed(1) + '%'; pTxt.style.color = progresso === 100 ? '#00f2ff' : (progresso >= 50 ? '#86efac' : '#fff'); }
+            const premiumPct = document.getElementById('porcentagemMetaPremium');
+            if(premiumPct) premiumPct.innerText = progresso.toFixed(1) + '%';
 
             const fill = document.getElementById('gestaoFillBar');
             if(fill) { fill.style.width = progresso + '%'; fill.style.backgroundPosition = `${Math.max(0, 100 - progresso)}% 0`; fill.style.boxShadow = progresso === 100 ? '0 0 26px #00f2ff' : '0 0 18px rgba(0, 242, 255, 0.45)'; }
@@ -2315,11 +2364,13 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
             set('txtGestaoGuardado', formatarMoeda(acumulado));
             set('txtGestaoTipo', tipoTexto.replace(/^[^ ]+\s*/, ''));
             set('txtMetaNomePreview', nomeMeta || 'Meta principal');
-            set('txtGestaoPeriodo', `Aporte ${periodo.toLowerCase()}`);
+            set('txtGestaoPeriodo', `Guardar por ${periodo.toLowerCase()}`);
 
             const motiv = gerarFraseMotivacional(progresso);
             const badgeMotiv = document.getElementById('txtMetaMotivacional');
             if(badgeMotiv) { badgeMotiv.innerText = motiv.t; badgeMotiv.style.background = motiv.c; }
+            const badge2 = document.getElementById('txtMetaBadge');
+            if(badge2) { badge2.innerText = progresso === 100 ? 'OBJETIVO CONCLUÍDO' : (alvo > 0 ? 'PAINEL DA SUA META' : 'CONFIGURE SUA META'); }
 
             let divisor = 1, txtPer = "mês";
             if (periodo === "Semanal") { divisor = 4; txtPer = "semana"; }
@@ -2331,12 +2382,12 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 
             const dicaArea = document.getElementById('txtDicaAporte');
             if (dicaArea && alvo > 0) {
-                dicaArea.innerHTML = progresso === 100 ? "Você atingiu o alvo! Esse espaço agora pode virar sua próxima conquista premium." : `Para concluir <strong>${nomeMeta}</strong>, tente manter cerca de <strong>${formatarMoeda(sug)} por ${txtPer}</strong> no seu ritmo atual.`;
+                dicaArea.innerHTML = progresso === 100 ? "Você bateu a meta. Agora já pode criar o próximo objetivo." : `Faltam <strong>${formatarMoeda(falta)}</strong>. Para chegar lá, tente guardar em média <strong>${formatarMoeda(sug)} por ${txtPer}</strong>.`;
             } else if (dicaArea) {
-                dicaArea.innerHTML = "Configure um valor alvo abaixo para começarmos com uma leitura mais estratégica.";
+                dicaArea.innerHTML = "Defina o valor total e a frequência. O sistema vai mostrar quanto guardar em cada período.";
             }
 
-            set('txtMilestoneResumo', alvo > 0 ? `${Math.floor(progresso)}% concluído • ${formatarMoeda(falta)} restantes` : 'Ative sua primeira meta');
+            set('txtMilestoneResumo', alvo > 0 ? `${Math.floor(progresso)}% concluído • faltam ${formatarMoeda(falta)}` : 'Ative sua primeira meta');
             document.querySelectorAll('#metaMilestoneTrack .meta-milestone').forEach(el => {
                 const step = parseFloat(el.dataset.step || '0') || 0;
                 el.classList.toggle('active', progresso >= step);
