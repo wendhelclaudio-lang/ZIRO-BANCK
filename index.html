@@ -515,161 +515,76 @@
         .btn-meta-action { flex: 1; padding: 12px; border-radius: 10px;
             border: none; font-weight: 800; color: #fff; cursor: pointer; font-size: 0.85rem;}
         
+
         /* ---------------------------------------------------
-            NOVO DASHBOARD PREMIUM DE METAS (JAW-DROPPING)
+            GESTÃO DE METAS PREMIUM INTERATIVA
         ----------------------------------------------------- */
-        .meta-dashboard-card {
-            background: linear-gradient(160deg, #111827 0%, #030712 100%);
-            border: 1px solid rgba(0, 242, 255, 0.2);
-            border-radius: 24px;
-            padding: 25px;
-            margin-bottom: 25px;
-            position: relative;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4), inset 0 2px 15px rgba(0,242,255,0.05);
-            text-align: center;
-        }
-        
-        .meta-badge-motivational {
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(90deg, #00f2ff, #10b981);
-            color: #000;
-            font-size: 0.7rem;
-            font-weight: 800;
-            padding: 5px 15px;
-            border-radius: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
-            white-space: nowrap;
-        }
+        .meta-goals-shell{position:relative;border-radius:34px;overflow:hidden;background:radial-gradient(circle at top left,rgba(0,242,255,.12),transparent 38%),radial-gradient(circle at top right,rgba(16,185,129,.10),transparent 34%),linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,0));border:1px solid rgba(255,255,255,.06);box-shadow:0 24px 80px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.05)}
+        .meta-goals-shell:before{content:'';position:absolute;inset:0;padding:1px;border-radius:inherit;background:linear-gradient(135deg,rgba(0,242,255,.28),rgba(255,255,255,.06),rgba(16,185,129,.24));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+        .meta-hero{position:relative;min-height:168px;padding:26px 26px 92px;display:flex;align-items:flex-start;justify-content:space-between;gap:18px;background:radial-gradient(circle at 15% 20%,rgba(0,242,255,.24),transparent 28%),radial-gradient(circle at 85% 10%,rgba(16,185,129,.18),transparent 24%),linear-gradient(180deg,rgba(7,15,30,.92),rgba(3,7,18,.74))}
+        .meta-hero-copy{position:relative;z-index:2;max-width:78%}
+        .meta-overline{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.10);color:rgba(255,255,255,.86);font-size:.75rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 12px 30px rgba(0,0,0,.22)}
+        .meta-hero h2{margin:16px 0 8px;color:#fff;font-size:1.5rem;font-weight:800;letter-spacing:-.03em;line-height:1.05}
+        .meta-hero p{margin:0;max-width:460px;color:rgba(255,255,255,.74);font-size:.9rem;line-height:1.55}
+        .meta-close-btn{width:42px;height:42px;border-radius:16px;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.28);color:#fff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 15px 35px rgba(0,0,0,.25)}
+        .meta-close-btn:hover{transform:translateY(-2px);box-shadow:0 18px 40px rgba(0,0,0,.32),0 0 0 1px rgba(255,255,255,.07) inset}
+        .meta-body-premium{position:relative;z-index:3;margin-top:-62px;padding:0 22px 26px}
+        .meta-dashboard-card{position:relative;border-radius:28px;padding:28px 22px 22px;margin-bottom:20px;overflow:hidden;background:linear-gradient(160deg,rgba(15,23,42,.92) 0%,rgba(2,6,23,.96) 100%);border:1px solid rgba(255,255,255,.07);box-shadow:0 20px 48px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.05),inset 0 0 40px rgba(0,242,255,.03);text-align:center}
+        .meta-dashboard-card:before,.meta-dashboard-card:after{content:'';position:absolute;border-radius:999px;filter:blur(8px);pointer-events:none;opacity:.9}
+        .meta-dashboard-card:before{width:160px;height:160px;top:-58px;right:-42px;background:radial-gradient(circle,rgba(0,242,255,.20),transparent 68%)}
+        .meta-dashboard-card:after{width:140px;height:140px;bottom:-54px;left:-36px;background:radial-gradient(circle,rgba(16,185,129,.18),transparent 68%)}
+        .meta-badge-motivational{display:inline-flex;align-items:center;justify-content:center;gap:8px;position:relative;z-index:2;margin:0 auto 18px;padding:10px 18px;border-radius:999px;color:#020617;font-size:.72rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;box-shadow:0 10px 30px rgba(16,185,129,.28);white-space:nowrap}
+        .meta-progress-wrapper{position:relative;z-index:2;margin:10px 0 18px}
+        .meta-progress-ring{position:relative;width:168px;height:168px;margin:0 auto 16px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at center,rgba(2,6,23,.96) 0 54%,transparent 55%),conic-gradient(from 180deg,rgba(15,23,42,.25),rgba(0,242,255,.9),rgba(16,185,129,.95),rgba(245,158,11,.92),rgba(15,23,42,.25));box-shadow:inset 0 0 0 12px rgba(255,255,255,.03),0 0 40px rgba(0,242,255,.12)}
+        .meta-progress-ring:before{content:'';position:absolute;inset:16px;border-radius:50%;border:1px solid rgba(255,255,255,.05);background:radial-gradient(circle,rgba(15,23,42,.92),rgba(2,6,23,.98));box-shadow:inset 0 0 24px rgba(0,0,0,.45)}
+        .meta-progress-core{position:relative;z-index:2;padding:0 10px}
+        .meta-progress-text{font-size:2.7rem;font-weight:800;color:#fff;margin:0;line-height:.95;letter-spacing:-.05em;text-shadow:0 0 18px rgba(255,255,255,.15);transition:color .5s ease}
+        .meta-progress-caption{display:block;margin-top:8px;font-size:.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.14em;font-weight:800}
+        .meta-progress-track-glow{width:100%;height:16px;background:rgba(255,255,255,.06);border-radius:999px;margin-top:16px;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.06);box-shadow:inset 0 3px 10px rgba(0,0,0,.35)}
+        .meta-progress-fill-glow{height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,#ef4444,#f59e0b,#10b981,#00f2ff);background-size:240% 100%;transition:width 1.25s cubic-bezier(.4,0,.2,1),background-position .4s ease;box-shadow:0 0 22px rgba(0,242,255,.42)}
+        .meta-progress-meta{display:flex;justify-content:space-between;gap:12px;margin-top:12px;color:var(--text-muted);font-size:.76rem;font-weight:700}
+        .meta-mini-insights,.meta-planner-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:18px}
+        .meta-mini-pill,.meta-plan-chip{padding:14px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);text-align:left}
+        .meta-mini-pill span,.meta-plan-chip span{display:block;font-size:.66rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.12em;font-weight:800;margin-bottom:6px}
+        .meta-mini-pill strong,.meta-plan-chip strong{display:block;color:#fff;font-size:.96rem;line-height:1.25;letter-spacing:-.02em}
+        .meta-plan-chip small{display:block;color:var(--text-muted);font-size:.73rem;margin-top:6px;line-height:1.35}
+        .meta-stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px}
+        .meta-stat-box{position:relative;overflow:hidden;padding:16px;border-radius:20px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);text-align:left}
+        .meta-stat-box.highlight{border-color:rgba(0,242,255,.20);background:linear-gradient(145deg,rgba(0,242,255,.08),rgba(255,255,255,.03))}
+        .meta-stat-box.danger{border-color:rgba(239,68,68,.18);background:linear-gradient(145deg,rgba(239,68,68,.10),rgba(255,255,255,.03))}
+        .meta-stat-box span{display:block;font-size:.66rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.12em;font-weight:800;margin-bottom:7px}
+        .meta-stat-box strong{display:block;font-size:1.18rem;color:var(--text);font-weight:800;letter-spacing:-.03em}
+        .meta-stat-box small{display:block;margin-top:6px;color:var(--text-muted);font-size:.73rem;line-height:1.4}
+        .meta-stat-box.highlight strong{color:var(--accent)} .meta-stat-box.danger strong{color:#fda4af}
+        .meta-milestones,.meta-motion-card{margin-top:18px;padding:16px;border-radius:20px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07);text-align:left}
+        .meta-milestones-header,.meta-section-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+        .meta-milestones-header strong,.meta-section-title h4{margin:0;color:#fff;font-size:.9rem}
+        .meta-milestones-header span,.meta-section-title span{color:var(--text-muted);font-size:.74rem;font-weight:700}
+        .meta-milestone-track{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+        .meta-milestone{display:flex;flex-direction:column;gap:6px;padding:12px 10px;border-radius:16px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.06);color:var(--text-muted);font-size:.72rem;font-weight:800;text-align:center}
+        .meta-milestone i{width:34px;height:34px;margin:0 auto;display:inline-flex;align-items:center;justify-content:center;border-radius:12px;background:rgba(255,255,255,.05)}
+        .meta-milestone.active{color:#fff;border-color:rgba(0,242,255,.28);background:linear-gradient(145deg,rgba(0,242,255,.14),rgba(16,185,129,.10));box-shadow:0 10px 24px rgba(0,242,255,.10)}
+        .meta-milestone.active i{background:rgba(255,255,255,.14);color:var(--accent)}
+        .meta-tip-card{margin-top:18px;display:flex;align-items:flex-start;gap:12px;text-align:left;padding:16px 16px 15px;border-radius:20px;background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.02));border:1px dashed rgba(255,255,255,.12)}
+        .meta-tip-card i{width:40px;height:40px;flex-shrink:0;border-radius:14px;display:inline-flex;align-items:center;justify-content:center;color:#f59e0b;background:rgba(245,158,11,.12)}
+        .meta-tip-card span{color:var(--text-muted);font-size:.82rem;line-height:1.55}
+        .meta-quick-actions{display:flex;gap:12px;margin-bottom:18px}
+        .btn-meta-quick{position:relative;overflow:hidden;flex:1;padding:18px 12px;border-radius:20px;border:1px solid rgba(255,255,255,.08);font-weight:800;font-size:.85rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;transition:transform .25s ease,box-shadow .25s ease;border-color .25s ease;text-transform:uppercase;letter-spacing:.06em;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 14px 35px rgba(0,0,0,.18)}
+        .btn-meta-quick:hover{transform:translateY(-3px)}
+        .btn-meta-quick.deposit{background:linear-gradient(145deg,rgba(16,185,129,.16),rgba(16,185,129,.06));border-color:rgba(16,185,129,.22);color:#b7f7d5}
+        .btn-meta-quick.withdraw{background:linear-gradient(145deg,rgba(239,68,68,.16),rgba(239,68,68,.06));border-color:rgba(239,68,68,.20);color:#fecaca}
+        .btn-meta-quick.deposit:active{background:var(--success);color:#fff;transform:scale(.97)} .btn-meta-quick.withdraw:active{background:var(--danger);color:#fff;transform:scale(.97)}
+        .btn-meta-quick i{font-size:1.45rem}
+        .meta-input-row,.meta-config-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+        .meta-config-grid.single{grid-template-columns:1fr}
+        .meta-field{padding:14px;border-radius:20px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
+        .meta-field .label-mini{display:flex;align-items:center;gap:8px;margin-bottom:10px;color:#fff!important}
+        .meta-field .label-mini i{width:28px;height:28px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,.06);color:var(--accent)}
+        .meta-field input,.meta-field select{border-radius:16px!important;border:1px solid rgba(255,255,255,.08)!important;background:rgba(15,23,42,.6)!important;min-height:52px;color:var(--text)!important}
+        .meta-actions-stack{display:grid;gap:12px;margin-top:16px}
+        .meta-actions-stack .btn-confirm,.meta-actions-stack .btn-delete{margin-top:0!important;border-radius:18px!important;min-height:56px}
+        @media (max-width:640px){.meta-hero{padding:22px 18px 88px;min-height:160px}.meta-hero-copy{max-width:100%}.meta-hero h2{font-size:1.28rem}.meta-body-premium{margin-top:-56px;padding:0 14px 18px}.meta-progress-ring{width:148px;height:148px}.meta-progress-text{font-size:2.3rem}.meta-mini-insights,.meta-planner-strip,.meta-input-row,.meta-config-grid,.meta-milestone-track,.meta-stats-grid,.meta-quick-actions{grid-template-columns:1fr;display:grid}.meta-dashboard-card{padding:24px 16px 18px}}
 
-        .meta-progress-wrapper {
-            position: relative;
-            margin: 25px 0 20px;
-        }
-
-        .meta-progress-text {
-            font-size: 3rem;
-            font-weight: 800;
-            color: #fff;
-            margin: 0;
-            line-height: 1;
-            text-shadow: 0 0 20px rgba(255,255,255,0.2);
-            transition: color 0.5s ease;
-        }
-
-        .meta-progress-track-glow {
-            width: 100%;
-            height: 14px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 20px;
-            margin-top: 15px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .meta-progress-fill-glow {
-            height: 100%;
-            width: 0%;
-            border-radius: 20px;
-            background: linear-gradient(90deg, #ef4444, #f59e0b, #10b981, #00f2ff);
-            background-size: 300% 100%;
-            transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1), background-position 0.5s ease;
-            box-shadow: 0 0 15px rgba(0, 242, 255, 0.6);
-        }
-
-        .meta-stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 25px;
-        }
-
-        .meta-stat-box {
-            background: rgba(0,0,0,0.3);
-            border: 1px solid var(--border);
-            padding: 15px;
-            border-radius: 16px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .meta-stat-box.highlight {
-            border-color: rgba(0, 242, 255, 0.3);
-            background: rgba(0, 242, 255, 0.03);
-        }
-
-        .meta-stat-box span {
-            font-size: 0.65rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-
-        .meta-stat-box strong {
-            font-size: 1.15rem;
-            color: var(--text);
-            font-weight: 800;
-        }
-
-        .meta-stat-box.highlight strong { color: var(--accent);
-        }
-        .meta-stat-box.danger strong { color: var(--danger);
-        }
-
-        .meta-quick-actions {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 30px;
-        }
-
-        .btn-meta-quick {
-            flex: 1;
-            padding: 16px 10px;
-            border-radius: 16px;
-            border: none;
-            font-weight: 800;
-            font-size: 0.85rem;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.2s;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .btn-meta-quick.deposit {
-            background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(16,185,129,0.2));
-            border: 1px solid rgba(16,185,129,0.3);
-            color: var(--success);
-        }
-        .btn-meta-quick.deposit:active { background: var(--success); color: #fff;
-            transform: scale(0.95); }
-
-        .btn-meta-quick.withdraw {
-            background: linear-gradient(135deg, rgba(239,68,68,0.05), rgba(239,68,68,0.1));
-            border: 1px solid rgba(239,68,68,0.2);
-            color: var(--danger);
-        }
-        .btn-meta-quick.withdraw:active { background: var(--danger); color: #fff;
-            transform: scale(0.95); }
-
-        .btn-meta-quick i { font-size: 1.4rem;
-        }
 
         /* ---------------------------------------------------
             NOVOS ESTILOS PARA CARDS DE NOTIFICAÇÃO (SUPER PREMIUM)
@@ -1552,148 +1467,106 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
         <button id="btnExcluir" class="btn-delete hidden" onclick="excluirRegistro()">EXCLUIR</button>
     </div>
 
-    <div class="modal" id="modalGestaoMetas" style="background: var(--bg); padding: 0;">
-        <div style="height: 120px;
-            background: linear-gradient(to bottom, rgba(0,242,255,0.15), var(--bg)); position: relative; display: flex; justify-content: space-between;
-            padding: 20px 25px;">
-            <h2 style="margin:0; font-size:1.3rem; color: #fff;
-            z-index: 2; font-weight: 800; display: flex; align-items: center; gap: 10px;">
-                <i class="fa-solid fa-trophy" style="color: #f59e0b;"></i> Dashboard de Metas
-            </h2>
-            <i class="fa-solid fa-xmark" style="font-size:1.5rem;
-            color:#fff; cursor:pointer; z-index: 2; background: rgba(0,0,0,0.5); width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center;
-            justify-content: center;" onclick="closeModal()"></i>
-        </div>
 
-        <div style="padding: 0 25px 30px;
-            margin-top: -60px; position: relative; z-index: 3;">
-            
-            <div class="meta-dashboard-card">
-                <div class="meta-badge-motivational" id="txtMetaMotivacional">🚀 VAMOS COMEÇAR!</div>
-                
-                <div class="meta-progress-wrapper">
-                 
-                    <h3 class="meta-progress-text" id="txtGestaoProgresso">0.0%</h3>
-                    <span style="font-size: 0.7rem;
-                    color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: bold; display: block;
-                    margin-top: 5px;" id="txtDescricaoResumoMeta">CONCLUÍDO DA SUA META</span>
-                    
-                    <div class="meta-progress-track-glow">
-                        <div class="meta-progress-fill-glow" id="gestaoFillBar"></div>
+    <div class="modal" id="modalGestaoMetas" style="background: transparent; padding: 12px;">
+        <div class="meta-goals-shell">
+            <div class="meta-hero">
+                <div class="meta-hero-copy">
+                    <div class="meta-overline"><i class="fa-solid fa-sparkles"></i> Gestão de Metas Premium</div>
+                    <h2>Transforme objetivos em conquistas visíveis.</h2>
+                    <p>Uma área mais inteligente para acompanhar evolução, ajustar aportes e manter sua meta sempre viva e inspiradora.</p>
+                </div>
+                <button class="meta-close-btn" onclick="closeModal()" aria-label="Fechar painel de metas"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="meta-body-premium">
+                <div class="meta-dashboard-card">
+                    <div class="meta-badge-motivational" id="txtMetaMotivacional">🚀 VAMOS COMEÇAR!</div>
+                    <div class="meta-progress-wrapper">
+                        <div class="meta-progress-ring" id="metaProgressRing">
+                            <div class="meta-progress-core">
+                                <h3 class="meta-progress-text" id="txtGestaoProgresso">0.0%</h3>
+                                <span class="meta-progress-caption" id="txtDescricaoResumoMeta">concluído da sua meta</span>
+                            </div>
+                        </div>
+                        <div class="meta-progress-track-glow"><div class="meta-progress-fill-glow" id="gestaoFillBar"></div></div>
+                        <div class="meta-progress-meta"><span id="txtMetaNomePreview">Meta principal</span><span id="txtGestaoPeriodo">Aporte mensal</span></div>
                     </div>
-        
-                </div>
-                
-                <div class="meta-stats-grid">
-                    <div class="meta-stat-box highlight">
-                        <span>Alvo Final</span>
-            
-                        <strong id="txtGestaoAlvo">R$ 0,00</strong>
+                    <div class="meta-mini-insights">
+                        <div class="meta-mini-pill"><span>Guardado</span><strong id="txtGestaoGuardado">R$ 0,00</strong></div>
+                        <div class="meta-mini-pill"><span>Aporte ideal</span><strong id="txtAporteIdealResumo">R$ 0,00</strong></div>
+                        <div class="meta-mini-pill"><span>Categoria</span><strong id="txtGestaoTipo">Reserva</strong></div>
                     </div>
-                    <div class="meta-stat-box danger">
-                        <span>Quanto Falta</span>
-                    
-                        <strong id="txtGestaoFalta">R$ 0,00</strong>
+                    <div class="meta-stats-grid">
+                        <div class="meta-stat-box highlight"><span>Alvo Final</span><strong id="txtGestaoAlvo">R$ 0,00</strong><small>Valor total que você quer alcançar.</small></div>
+                        <div class="meta-stat-box danger"><span>Quanto Falta</span><strong id="txtGestaoFalta">R$ 0,00</strong><small>Diferença entre o alvo e o acumulado atual.</small></div>
+                    </div>
+                    <div class="meta-milestones">
+                        <div class="meta-milestones-header"><strong>Marcos da jornada</strong><span id="txtMilestoneResumo">Ative sua primeira meta</span></div>
+                        <div class="meta-milestone-track" id="metaMilestoneTrack">
+                            <div class="meta-milestone" data-step="25"><i class="fa-solid fa-seedling"></i><span>25%</span></div>
+                            <div class="meta-milestone" data-step="50"><i class="fa-solid fa-bolt"></i><span>50%</span></div>
+                            <div class="meta-milestone" data-step="75"><i class="fa-solid fa-fire"></i><span>75%</span></div>
+                            <div class="meta-milestone" data-step="100"><i class="fa-solid fa-crown"></i><span>100%</span></div>
+                        </div>
+                    </div>
+                    <div class="meta-tip-card"><i class="fa-solid fa-lightbulb"></i><span id="txtDicaAporte">Configure uma meta para ver dicas de aporte aqui.</span></div>
+                </div>
+
+                <div class="meta-quick-actions">
+                    <button class="btn-meta-quick deposit" onclick="prepararMovimentacaoMeta('add')"><i class="fa-solid fa-circle-arrow-up"></i>GUARDAR<br>DINHEIRO</button>
+                    <button class="btn-meta-quick withdraw" onclick="prepararMovimentacaoMeta('rem')"><i class="fa-solid fa-circle-arrow-down"></i>RESGATAR<br>DINHEIRO</button>
+                </div>
+
+                <div id="blocoMovimentacaoRapida" class="hidden meta-motion-card" style="animation: fadeIn 0.3s ease;">
+                    <div class="meta-section-title"><h4><i class="fa-solid fa-wave-square"></i> Movimentação rápida</h4><span id="lblAcaoRapida">Qual valor deseja guardar?</span></div>
+                    <input type="number" id="valorMovimentacaoMeta" placeholder="R$ 0,00" step="0.01" style="font-size: 1.5rem; font-weight: 800; color: #fff; background: transparent; border: none; border-bottom: 2px solid var(--accent); border-radius: 0; box-shadow: none; padding: 10px 5px; margin-bottom: 15px;">
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn-confirm" id="btnConfirmarAcaoMeta" style="flex: 2;" onclick="executarMovimentacaoMeta()">CONFIRMAR</button>
+                        <button class="btn-delete" style="flex: 1; padding: 16px;" onclick="document.getElementById('blocoMovimentacaoRapida').classList.add('hidden')">CANCELAR</button>
                     </div>
                 </div>
-                
-                <div style="margin-top: 20px;
-                    font-size: 0.75rem; color: var(--text-muted); background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px;
-                    border: 1px dashed rgba(255,255,255,0.1);">
-                    <i class="fa-solid fa-lightbulb" style="color: #f59e0b;
-                    margin-right: 5px;"></i> <span id="txtDicaAporte">Configure uma meta para ver dicas de aporte aqui.</span>
-                </div>
-            </div>
 
-            <div class="meta-quick-actions">
-                <button class="btn-meta-quick deposit" onclick="prepararMovimentacaoMeta('add')">
-                    <i class="fa-solid fa-circle-arrow-up"></i>
-       
-                    GUARDAR<br>DINHEIRO
-                </button>
-                <button class="btn-meta-quick withdraw" onclick="prepararMovimentacaoMeta('rem')">
-                    <i class="fa-solid fa-circle-arrow-down"></i>
-                    RESGATAR<br>DINHEIRO
-          
-                </button>
-            </div>
-            
-            <div id="blocoMovimentacaoRapida" class="hidden" style="background: var(--card);
-            padding: 20px; border-radius: 16px; border: 1px solid var(--accent); margin-bottom: 25px;
-            animation: fadeIn 0.3s ease;">
-                <span class="label-mini" style="color: var(--accent);" id="lblAcaoRapida">QUAL VALOR DESEJA GUARDAR?</span>
-                <input type="number" id="valorMovimentacaoMeta" placeholder="R$ 0,00" step="0.01" style="font-size: 1.5rem;
-                font-weight: 800; color: #fff; background: transparent; border: none; border-bottom: 2px solid var(--accent); border-radius: 0; box-shadow: none; padding: 10px 5px;
-                margin-bottom: 15px;">
-                <div style="display: flex;
-                    gap: 10px;">
-                    <button class="btn-confirm" id="btnConfirmarAcaoMeta" style="margin-top: 0;
-                    flex: 2;" onclick="executarMovimentacaoMeta()">CONFIRMAR</button>
-                    <button class="btn-delete" style="margin-top: 0;
-                    flex: 1; padding: 16px;" onclick="document.getElementById('blocoMovimentacaoRapida').classList.add('hidden')">CANCELAR</button>
+                <div class="meta-motion-card">
+                    <div class="meta-section-title"><h4><i class="fa-solid fa-sliders"></i> Configurações do objetivo</h4><span>Defina valor, ritmo e identidade da meta</span></div>
+                    <div class="meta-config-grid single" style="margin-bottom: 14px;">
+                        <div class="meta-field">
+                            <span class="label-mini"><i class="fa-solid fa-bullseye"></i> O que você quer alcançar?</span>
+                            <select id="tipoMeta" style="font-weight: bold; background: var(--input-bg);">
+                                <option value="reserva">🛡️ Reserva de Emergência</option>
+                                <option value="viagem">✈️ Viagem / Férias</option>
+                                <option value="veiculo">🚗 Trocar de Veículo</option>
+                                <option value="imovel">🏠 Casa Própria / Reforma</option>
+                                <option value="casamento">💍 Casamento / Festa</option>
+                                <option value="educacao">📚 Estudos / Faculdade</option>
+                                <option value="aposentadoria">🌅 Aposentadoria</option>
+                                <option value="quitacao">💸 Quitar Dívidas</option>
+                                <option value="investimento">📈 Liberdade Financeira</option>
+                                <option value="eletronico">💻 Eletrônicos / Setup</option>
+                                <option value="outros">🎯 Outro Objetivo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="meta-input-row">
+                        <div class="meta-field"><span class="label-mini"><i class="fa-solid fa-sack-dollar"></i> Valor total do objetivo</span><input type="number" id="valorMetaInput" placeholder="Ex: 5000,00" step="0.01" style="background: var(--input-bg);"></div>
+                        <div class="meta-field"><span class="label-mini"><i class="fa-regular fa-calendar-days"></i> Frequência de aporte ideal</span><select id="periodoMeta" style="background: var(--input-bg);"><option value="Semanal">Por Semana</option><option value="Quinzenal">Por Quinzena</option><option value="Mensal">Por Mês</option><option value="Anual">Por Ano</option></select></div>
+                    </div>
+                    <div class="meta-config-grid single" style="margin-top: 14px;">
+                        <div class="meta-field"><span class="label-mini"><i class="fa-solid fa-signature"></i> Dê um nome para a meta</span><input type="text" id="descMetaInput" placeholder="Ex: Viagem para a Europa..." style="background: var(--input-bg);"></div>
+                    </div>
+                    <div class="meta-planner-strip">
+                        <div class="meta-plan-chip"><span>Visão atual</span><strong id="txtPreviewTituloMeta">Objetivo ainda sem nome</strong><small id="txtPreviewSubMeta">Escolha um foco para a sua próxima conquista.</small></div>
+                        <div class="meta-plan-chip"><span>Ritmo sugerido</span><strong id="txtPreviewAporte">R$ 0,00 por mês</strong><small id="txtPreviewHorizonte">Ajuste a frequência para recalcular o aporte ideal.</small></div>
+                        <div class="meta-plan-chip"><span>Status visual</span><strong id="txtPreviewStatus">Preparando sua meta</strong><small id="txtPreviewStatusSub">Assim que salvar, o painel superior será atualizado.</small></div>
+                    </div>
+                    <div class="meta-actions-stack">
+                        <button class="btn-confirm" style="background: linear-gradient(90deg, #00f2ff, #0284c7); color: #fff; font-weight: 800;" onclick="salvarConfiguracaoMeta()">SALVAR E ATUALIZAR DASHBOARD</button>
+                        <button class="btn-delete" style="border-color: rgba(239, 68, 68, 0.3); color: var(--danger); font-weight: 800;" onclick="zerarMetaCompleta()">EXCLUIR META ATUAL</button>
+                    </div>
                 </div>
             </div>
-
-            <hr style="border: none;
-            border-top: 1px dashed var(--border); margin: 30px 0;">
-
-            <h4 style="font-size: 0.9rem;
-            color: #fff; margin: 0 0 20px 0; display: flex; align-items: center;
-            gap: 8px;"><i class="fa-solid fa-sliders"></i> Configurações do Objetivo</h4>
-            
-            <div style="display:grid;
-                grid-template-columns: 1fr; gap:15px; margin-bottom: 15px;">
-                <div>
-                    <span class="label-mini" style="color: #fff;">O QUE VOCÊ QUER ALCANÇAR?</span>
-                    <select id="tipoMeta" style="font-weight: bold;
-                    background: var(--input-bg);">
-                        <option value="reserva">🛡️ Reserva de Emergência</option>
-                        <option value="viagem">✈️ Viagem / Férias</option>
-                        <option value="veiculo">🚗 Trocar de Veículo</option>
-                
-                        <option value="imovel">🏠 Casa Própria / Reforma</option>
-                        <option value="casamento">💍 Casamento / Festa</option>
-                        <option value="educacao">📚 Estudos / Faculdade</option>
-                        <option value="aposentadoria">🌅 Aposentadoria</option>
-    
-                        <option value="quitacao">💸 Quitar Dívidas</option>
-                        <option value="investimento">📈 Liberdade Financeira</option>
-                        <option value="eletronico">💻 Eletrônicos / Setup</option>
-                      
-                        <option value="outros">🎯 Outro Objetivo</option>
-                    </select>
-                </div>
-            </div>
-
-            <div style="display:grid;
-                grid-template-columns: 1fr 1fr; gap:15px; margin-bottom: 15px;">
-                <div>
-                    <span class="label-mini" style="color: #00f2ff;">VALOR TOTAL DO OBJETIVO</span>
-                    <input type="number" id="valorMetaInput" placeholder="Ex: 5000,00" step="0.01" style="background: var(--input-bg);">
-                </div>
-          
-                <div>
-                    <span class="label-mini" style="color: #fff;">FREQUÊNCIA DE APORTE IDEAL</span>
-                    <select id="periodoMeta" style="background: var(--input-bg);">
-                        <option value="Semanal">Por Semana</option>
-                    
-                        <option value="Quinzenal">Por Quinzena</option>
-                        <option value="Mensal">Por Mês</option>
-                        <option value="Anual">Por Ano</option>
-                    </select>
-                </div>
-     
-            </div>
-            
-            <span class="label-mini" style="color: #fff;">DÊ UM NOME (OPCIONAL)</span>
-            <input type="text" id="descMetaInput" placeholder="Ex: Viagem para a Europa..." style="background: var(--input-bg);">
-            
-            <button class="btn-confirm" style="background: linear-gradient(90deg, #00f2ff, #0284c7);
-            color: #fff; font-weight: 800; border-radius: 12px; padding: 16px; margin-top: 10px;" onclick="salvarConfiguracaoMeta()">SALVAR E ATUALIZAR DASHBOARD</button>
-            <button class="btn-delete" style="border-color: rgba(239, 68, 68, 0.3);
-            color: var(--danger); font-weight: 800; border-radius: 12px; padding: 16px; margin-top: 15px;" onclick="zerarMetaCompleta()">EXCLUIR META ATUAL</button>
         </div>
     </div>
+
 
     <div class="modal modal-small" id="modalNotificacoes" style="z-index: 2500;
         padding: 25px 20px; background: linear-gradient(to bottom, var(--card), var(--bg));">
@@ -2196,20 +2069,42 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
         /* =========================================================================
             NOVA IA E LÓGICA DO DASHBOARD DE METAS
         ========================================================================= */
+
+        function atualizarPreviewMetaConfig() {
+            const tipoSelect = document.getElementById('tipoMeta');
+            const valorInput = document.getElementById('valorMetaInput');
+            const periodoSelect = document.getElementById('periodoMeta');
+            const descInput = document.getElementById('descMetaInput');
+            const tipoTexto = tipoSelect ? (tipoSelect.options[tipoSelect.selectedIndex]?.text || 'Meta principal') : 'Meta principal';
+            const valor = parseFloat(valorInput?.value || 0) || 0;
+            const periodo = periodoSelect?.value || 'Mensal';
+            const nome = (descInput?.value || '').trim();
+            const divisorMap = { 'Semanal': 4, 'Quinzenal': 2, 'Mensal': 1, 'Anual': 12 };
+            const textoMap = { 'Semanal': 'semana', 'Quinzenal': 'quinzena', 'Mensal': 'mês', 'Anual': 'mês' };
+            const divisor = divisorMap[periodo] || 1;
+            const aporte = valor > 0 ? valor / divisor : 0;
+            const titulo = nome || tipoTexto.replace(/^[^ ]+\s*/, '');
+            const set = (id, value) => { const el = document.getElementById(id); if(el) el.innerText = value; };
+            set('txtPreviewTituloMeta', titulo || 'Objetivo ainda sem nome');
+            set('txtPreviewSubMeta', valor > 0 ? `Meta total definida em ${formatarMoeda(valor)}.` : 'Escolha um foco para a sua próxima conquista.');
+            set('txtPreviewAporte', valor > 0 ? `${formatarMoeda(aporte)} por ${textoMap[periodo]}` : 'R$ 0,00 por mês');
+            set('txtPreviewHorizonte', valor > 0 ? `Planejamento baseado em aporte ${periodo.toLowerCase()}.` : 'Ajuste a frequência para recalcular o aporte ideal.');
+            set('txtPreviewStatus', valor > 0 ? 'Pronta para salvar' : 'Preparando sua meta');
+            set('txtPreviewStatusSub', valor > 0 ? 'Seu painel ganhará uma leitura mais estratégica.' : 'Assim que salvar, o painel superior será atualizado.');
+        }
+
         function abrirGestaoMetas() {
             document.getElementById('modalGestaoMetas')?.classList.add('open');
             if (document.getElementById('overlay')) document.getElementById('overlay').style.display = 'block';
             document.getElementById('profileSidebar')?.classList.remove('open');
             document.getElementById('blocoMovimentacaoRapida')?.classList.add('hidden');
-            
             atualizarUIGestaoMetas();
-            
             if (document.getElementById('valorMetaInput')) document.getElementById('valorMetaInput').value = appConfig.metaMensal > 0 ? appConfig.metaMensal : "";
             if (document.getElementById('tipoMeta')) document.getElementById('tipoMeta').value = appConfig.tipoMeta || "reserva";
             if (document.getElementById('periodoMeta')) document.getElementById('periodoMeta').value = appConfig.periodoMeta || "Mensal";
-            if (document.getElementById('descMetaInput')) document.getElementById('descMetaInput').value = appConfig.descMeta ||
-            "";
+            if (document.getElementById('descMetaInput')) document.getElementById('descMetaInput').value = appConfig.descMeta || "";
             if (document.getElementById('valorMovimentacaoMeta')) document.getElementById('valorMovimentacaoMeta').value = "";
+            atualizarPreviewMetaConfig();
         }
 
         function gerarFraseMotivacional(progresso) {
@@ -2222,70 +2117,57 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
         }
 
         function atualizarUIGestaoMetas() {
-            const acumulado = appConfig.metaAcumulado ||
-            0;
+            const acumulado = appConfig.metaAcumulado || 0;
             const alvo = appConfig.metaMensal || 0;
-            let progresso = 0;
-            let falta = 0;
-            if(alvo > 0) {
-                progresso = Math.min((acumulado / alvo) * 100, 100);
-                falta = Math.max(alvo - acumulado, 0);
-            }
-            
+            let progresso = 0, falta = 0;
+            if(alvo > 0) { progresso = Math.min((acumulado / alvo) * 100, 100); falta = Math.max(alvo - acumulado, 0); }
+
+            const tipoTexto = document.querySelector(`#tipoMeta option[value="${appConfig.tipoMeta || 'reserva'}"]`)?.text || '🎯 Meta Principal';
+            const nomeMeta = (appConfig.descMeta || '').trim() || tipoTexto.replace(/^[^ ]+\s*/, '');
+            const periodo = appConfig.periodoMeta || 'Mensal';
+
             const pTxt = document.getElementById('txtGestaoProgresso');
-            if(pTxt) {
-                pTxt.innerText = progresso.toFixed(1) + '%';
-                // Muda a cor do texto do progresso com base na porcentagem
-                if (progresso === 100) pTxt.style.color = '#00f2ff';
-                else if (progresso >= 50) pTxt.style.color = '#10b981';
-                else pTxt.style.color = '#fff';
-            }
+            if(pTxt) { pTxt.innerText = progresso.toFixed(1) + '%'; pTxt.style.color = progresso === 100 ? '#00f2ff' : (progresso >= 50 ? '#86efac' : '#fff'); }
 
             const fill = document.getElementById('gestaoFillBar');
-            if(fill) {
-                fill.style.width = progresso + '%';
-                // Efeito visual no gradiente se chegar a 100%
-                if(progresso === 100) fill.style.boxShadow = '0 0 25px #00f2ff';
-                else fill.style.boxShadow = '0 0 15px rgba(0, 242, 255, 0.6)';
-            }
-            
-            if(document.getElementById('txtGestaoAlvo')) document.getElementById('txtGestaoAlvo').innerText = formatarMoeda(alvo);
-            if(document.getElementById('txtGestaoFalta')) document.getElementById('txtGestaoFalta').innerText = formatarMoeda(falta);
+            if(fill) { fill.style.width = progresso + '%'; fill.style.backgroundPosition = `${Math.max(0, 100 - progresso)}% 0`; fill.style.boxShadow = progresso === 100 ? '0 0 26px #00f2ff' : '0 0 18px rgba(0, 242, 255, 0.45)'; }
 
-            // Lógica do Badge Motivacional
+            const ring = document.getElementById('metaProgressRing');
+            if (ring) ring.style.background = `radial-gradient(circle at center, rgba(2,6,23,0.96) 0 54%, transparent 55%), conic-gradient(from 180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.08) ${Math.max(progresso, 1)}%, rgba(255,255,255,0.03) ${Math.max(progresso, 1)}%, rgba(255,255,255,0.03) 100%), conic-gradient(from 180deg, #ef4444, #f59e0b, #10b981, #00f2ff, #ef4444)`;
+
+            const set = (id, val) => { const el = document.getElementById(id); if(el) el.innerText = val; };
+            set('txtGestaoAlvo', formatarMoeda(alvo));
+            set('txtGestaoFalta', formatarMoeda(falta));
+            set('txtGestaoGuardado', formatarMoeda(acumulado));
+            set('txtGestaoTipo', tipoTexto.replace(/^[^ ]+\s*/, ''));
+            set('txtMetaNomePreview', nomeMeta || 'Meta principal');
+            set('txtGestaoPeriodo', `Aporte ${periodo.toLowerCase()}`);
+
             const motiv = gerarFraseMotivacional(progresso);
             const badgeMotiv = document.getElementById('txtMetaMotivacional');
-            if(badgeMotiv) {
-                badgeMotiv.innerText = motiv.t;
-                badgeMotiv.style.background = motiv.c;
-            }
+            if(badgeMotiv) { badgeMotiv.innerText = motiv.t; badgeMotiv.style.background = motiv.c; }
 
-            // Lógica de Dica de Aporte
+            let divisor = 1, txtPer = "mês";
+            if (periodo === "Semanal") { divisor = 4; txtPer = "semana"; }
+            else if (periodo === "Quinzenal") { divisor = 2; txtPer = "quinzena"; }
+            else if (periodo === "Anual") { divisor = 12; txtPer = "mês"; }
+
+            const sug = falta > 0 ? falta / divisor : 0;
+            set('txtAporteIdealResumo', formatarMoeda(sug));
+
             const dicaArea = document.getElementById('txtDicaAporte');
             if (dicaArea && alvo > 0) {
-                if (progresso === 100) {
-                    dicaArea.innerHTML = "Você atingiu o alvo! Deseja configurar uma nova meta ou curtir sua recompensa?";
-                } else {
-                    let divisor = 1;
-                    let txtPer = "vez";
-                    let p = appConfig.periodoMeta || "Mensal";
-                    
-                    if (p === "Semanal") { divisor = 4;
-                    txtPer = "semana"; }
-                    else if (p === "Quinzenal") { divisor = 2;
-                    txtPer = "quinzena"; }
-                    else if (p === "Mensal") { divisor = 1;
-                    txtPer = "mês"; }
-                    else if (p === "Anual") { divisor = 12;
-                    txtPer = "mês (para fechar o ano)"; }
-                    
-                    let sug = falta / divisor;
-                    dicaArea.innerHTML = `Guarde cerca de <strong>${formatarMoeda(sug)} por ${txtPer}</strong> para bater esse alvo mais rápido!`;
-                }
+                dicaArea.innerHTML = progresso === 100 ? "Você atingiu o alvo! Esse espaço agora pode virar sua próxima conquista premium." : `Para concluir <strong>${nomeMeta}</strong>, tente manter cerca de <strong>${formatarMoeda(sug)} por ${txtPer}</strong> no seu ritmo atual.`;
             } else if (dicaArea) {
-                dicaArea.innerHTML = "Configure um valor alvo abaixo para começarmos.";
+                dicaArea.innerHTML = "Configure um valor alvo abaixo para começarmos com uma leitura mais estratégica.";
             }
-            
+
+            set('txtMilestoneResumo', alvo > 0 ? `${Math.floor(progresso)}% concluído • ${formatarMoeda(falta)} restantes` : 'Ative sua primeira meta');
+            document.querySelectorAll('#metaMilestoneTrack .meta-milestone').forEach(el => {
+                const step = parseFloat(el.dataset.step || '0') || 0;
+                el.classList.toggle('active', progresso >= step);
+            });
+
             if(progresso === 100 && alvo > 0) triggerConfetti();
         }
 
@@ -4077,6 +3959,26 @@ function exportarDadosCSV() {
     upgradeSidebar();
   }
   window.addEventListener('load', upgradeSidebar);
+})();
+</script>
+
+    
+<script id="meta-premium-live-preview">
+(function(){
+  function bindMetaPreview(){
+    ['tipoMeta','valorMetaInput','periodoMeta','descMetaInput'].forEach(function(id){
+      var el = document.getElementById(id);
+      if(!el || el.dataset.previewBound === '1') return;
+      el.dataset.previewBound = '1';
+      ['input','change'].forEach(function(evt){
+        el.addEventListener(evt, function(){
+          if (typeof atualizarPreviewMetaConfig === 'function') atualizarPreviewMetaConfig();
+        });
+      });
+    });
+  }
+  if(document.readyState === 'loading'){ document.addEventListener('DOMContentLoaded', bindMetaPreview); } else { bindMetaPreview(); }
+  window.addEventListener('load', bindMetaPreview);
 })();
 </script>
 
