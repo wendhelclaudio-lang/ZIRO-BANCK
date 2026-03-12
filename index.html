@@ -1960,6 +1960,32 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
             box-shadow: 0 10px 24px rgba(0,0,0,0.15);
         }
         .btn-google i { color: #ea4335; font-size: 1.1rem; }
+
+        .btn-install {
+            width: 100%;
+            background: rgba(255,255,255,0.04);
+            color: var(--text);
+            border: 1px dashed rgba(148,163,184,0.35);
+            padding: 13px 16px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 0.92rem;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 6px;
+        }
+        .btn-install.visible { display:flex; }
+        .auth-status-note {
+            width: 100%;
+            margin-top: 10px;
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            line-height: 1.45;
+        }
+
         .auth-divider {
             width: 100%;
             display: flex;
@@ -2024,7 +2050,7 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 <div class="input-group"><i class="fa-solid fa-user"></i><input class="lock-input" id="cadNome" placeholder="Como devemos te chamar?" type="text"/></div>
 <div class="input-group"><i class="fa-solid fa-envelope"></i><input autocapitalize="none" autocomplete="email" class="lock-input" id="cadEmail" inputmode="email" placeholder="Seu melhor e-mail" spellcheck="false" type="email"/></div>
 <div class="input-group"><i class="fa-solid fa-lock"></i><input autocapitalize="none" autocomplete="new-password" class="lock-input password" id="cadSenha" onkeypress="if(event.key === 'Enter') efetuarCadastro()" placeholder="Crie uma senha forte" spellcheck="false" type="password"/></div>
-<div class="auth-divider">ou</div><button class="btn-google" onclick="loginGoogle()" type="button"><i class="fa-brands fa-google"></i> Continuar com Google</button><p class="auth-note">Ao criar sua conta por e-mail, enviamos uma verificação para seu Gmail.</p><button class="btn-forgot" onclick="mostrarViewLogin()" type="button">Já tenho conta</button><button class="btn-login" onclick="efetuarCadastro()">CADASTRAR E ENTRAR</button>
+<div class="auth-divider">ou</div><button class="btn-google" onclick="loginGoogle()" type="button"><i class="fa-brands fa-google"></i> Continuar com Google</button><button class="btn-install" id="btnInstallCadastro" onclick="instalarApp()" type="button"><i class="fa-solid fa-mobile-screen-button"></i> Instalar app sem barra do navegador</button><p class="auth-note">Ao criar sua conta por e-mail, enviamos uma verificação para seu Gmail.</p><button class="btn-forgot" onclick="mostrarViewLogin()" type="button">Já tenho conta</button><button class="btn-login" onclick="efetuarCadastro()">CADASTRAR E ENTRAR</button>
 </div>
 <div class="auth-view hidden" id="viewLogin" style="justify-content: center; height: 100%;">
 <h2 class="lock-title" id="txtWelcomeBack">Olá, WENDEL!</h2>
@@ -2032,7 +2058,7 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
                 Digite sua senha.</p>
 <div class="input-group"><i class="fa-solid fa-envelope"></i><input autocapitalize="none" autocomplete="email" class="lock-input" id="inputEmail" inputmode="email" placeholder="Seu e-mail cadastrado" spellcheck="false" type="email"/></div><div class="input-group"><i class="fa-solid fa-key"></i><input autocapitalize="none" autocomplete="current-password" class="lock-input password" id="inputSenha" onkeypress="if(event.key === 'Enter') checkLogin()" placeholder="Sua senha secreta" spellcheck="false" type="password"/></div>
 <button class="btn-login" onclick="checkLogin()">ENTRAR NO MEUCAIXA</button>
-<div class="auth-divider">ou</div><button class="btn-google" onclick="loginGoogle()" type="button"><i class="fa-brands fa-google"></i> Entrar com Google</button><div class="auth-link-row"><button class="btn-forgot" onclick="mostrarViewCadastro()" type="button">Criar conta</button></div><button class="btn-forgot" onclick="recuperarSenha()">Esqueci minha senha</button>
+<div class="auth-divider">ou</div><button class="btn-google" onclick="loginGoogle()" type="button"><i class="fa-brands fa-google"></i> Entrar com Google</button><button class="btn-install" id="btnInstallLogin" onclick="instalarApp()" type="button"><i class="fa-solid fa-mobile-screen-button"></i> Instalar app sem barra do navegador</button><div class="auth-link-row"><button class="btn-forgot" onclick="mostrarViewCadastro()" type="button">Criar conta</button><button class="btn-forgot" onclick="reenviarVerificacaoEmail()" type="button">Reenviar verificação</button></div><button class="btn-forgot" onclick="recuperarSenha()">Esqueci minha senha</button><div class="auth-status-note" id="authModeHint">Para usar sem a barra do site, instale o MeuCaixa na tela inicial.</div>
 </div>
 <div class="auth-view hidden" id="viewRecuperar">
 <h2 class="lock-title">Recuperar Senha</h2>
@@ -2075,8 +2101,8 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 <div class="sidebar-profile-card">
 <div class="avatar" id="sidebarAvatar">MC</div>
 <h2 id="sidebarUserName">Usuário</h2>
-<span id="userEmailSidebar">usuario@local</span>
-<div class="security-badge"><i class="fa-solid fa-shield-halved"></i> SEGURO (LOCAL)</div>
+<span id="userEmailSidebar">usuario@firebase</span>
+<div class="security-badge"><i class="fa-solid fa-shield-halved"></i> SEGURO (FIREBASE)</div>
 </div>
 <div class="sidebar-menu">
 <div class="menu-group-title">Sua Conta</div>
@@ -3139,32 +3165,95 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
             }
         }
 
+        
+        let deferredInstallPrompt = null;
+
+        function updateInstallButtons() {
+            const canInstall = !!deferredInstallPrompt && !window.matchMedia('(display-mode: standalone)').matches && !window.navigator.standalone;
+            document.getElementById('btnInstallLogin')?.classList.toggle('visible', canInstall);
+            document.getElementById('btnInstallCadastro')?.classList.toggle('visible', canInstall);
+        }
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredInstallPrompt = e;
+            updateInstallButtons();
+        });
+
+        window.addEventListener('appinstalled', () => {
+            deferredInstallPrompt = null;
+            updateInstallButtons();
+        });
+
+        async function instalarApp() {
+            if (!deferredInstallPrompt) {
+                showToast("No navegador, use 'Adicionar à tela inicial' para abrir sem a barra do site.", "warning");
+                return;
+            }
+            deferredInstallPrompt.prompt();
+            try { await deferredInstallPrompt.userChoice; } catch(e) {}
+            deferredInstallPrompt = null;
+            updateInstallButtons();
+        }
+
+        async function persistirSessaoFirebase(credUser) {
+            currentFirebaseUser = credUser || firebase.auth().currentUser || null;
+            if (!currentFirebaseUser) return;
+            appConfig.nome = (currentFirebaseUser.displayName || appConfig.nome || 'Usuário').toUpperCase();
+            appConfig.email = sanitizeEmail(currentFirebaseUser.email || appConfig.email || '');
+            appConfig.fotoPerfil = currentFirebaseUser.photoURL || appConfig.fotoPerfil || null;
+            await salvarPerfilFirebase(currentFirebaseUser.uid);
+            sessionStorage.setItem('isLoggedIn', 'true');
+            document.getElementById('lock-screen')?.classList.add('hidden');
+            salvarConfig();
+            carregarConfig();
+            renderizar();
+            preencherEmailLogin(appConfig.email || '');
+        }
+
+        async function processarRedirectGoogle() {
+            if (!firebaseReady) return;
+            try {
+                const result = await firebase.auth().getRedirectResult();
+                if (result && result.user) {
+                    await persistirSessaoFirebase(result.user);
+                    showToast("Login com Google realizado com sucesso!", "success");
+                }
+            } catch (e) {
+                console.error(e);
+                showToast("Não foi possível concluir o login com Google.", "error");
+            }
+        }
+
         async function loginGoogle() {
             if (!firebaseReady) return showToast("Firebase não inicializado.", "error");
             try {
                 const provider = new firebase.auth.GoogleAuthProvider();
                 provider.setCustomParameters({ prompt: 'select_account' });
+                const isMobile = /android|iphone|ipad|ipod/i.test(navigator.userAgent);
+                const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+                if (isMobile || isStandalone) {
+                    await firebase.auth().signInWithRedirect(provider);
+                    return;
+                }
                 const cred = await firebase.auth().signInWithPopup(provider);
-                currentFirebaseUser = cred.user;
-                appConfig.nome = (cred.user.displayName || appConfig.nome || 'Usuário').toUpperCase();
-                appConfig.email = sanitizeEmail(cred.user.email || appConfig.email || '');
-                appConfig.fotoPerfil = cred.user.photoURL || appConfig.fotoPerfil || null;
-                await salvarPerfilFirebase(cred.user.uid);
-                sessionStorage.setItem('isLoggedIn', 'true');
-                document.getElementById('lock-screen')?.classList.add('hidden');
-                salvarConfig();
-                carregarConfig();
-                renderizar();
+                await persistirSessaoFirebase(cred.user);
                 showToast("Login com Google realizado com sucesso!", "success");
             } catch (e) {
                 console.error(e);
-                const msg = e?.code === 'auth/popup-closed-by-user'
-                    ? 'Login com Google cancelado.'
-                    : 'Não foi possível entrar com Google.';
-                showToast(msg, "error");
+                if (['auth/popup-blocked','auth/popup-closed-by-user','auth/cancelled-popup-request','auth/operation-not-supported-in-this-environment'].includes(e?.code)) {
+                    try {
+                        const provider = new firebase.auth.GoogleAuthProvider();
+                        provider.setCustomParameters({ prompt: 'select_account' });
+                        await firebase.auth().signInWithRedirect(provider);
+                        return;
+                    } catch (redirectErr) {
+                        console.error(redirectErr);
+                    }
+                }
+                showToast("Não foi possível entrar com Google.", "error");
             }
         }
-
 
         async function efetuarCadastro() {
             const nome = document.getElementById('cadNome')?.value.trim();
@@ -3177,20 +3266,16 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 
             try {
                 const cred = await firebase.auth().createUserWithEmailAndPassword(email, senha);
-                currentFirebaseUser = cred.user;
-                await cred.user.updateProfile({ displayName: nome });
+                if (cred.user) {
+                    await cred.user.updateProfile({ displayName: nome });
+                    try { await cred.user.sendEmailVerification(); } catch (e) { console.error(e); }
+                    currentFirebaseUser = cred.user;
+                }
                 appConfig.nome = nome.toUpperCase();
                 appConfig.email = email;
                 appConfig.fotoPerfil = null;
-                await salvarPerfilFirebase(cred.user.uid);
-                try { await cred.user.sendEmailVerification(); } catch (e) { console.error(e); }
-                sessionStorage.setItem('isLoggedIn', 'true');
-                document.getElementById('lock-screen')?.classList.add('hidden');
-                salvarConfig();
-                carregarConfig();
-                renderizar();
-                preencherEmailLogin(email);
-                showToast("Conta criada. Enviamos a verificação para seu Gmail.", "success");
+                await persistirSessaoFirebase(cred.user);
+                showToast("Conta criada com sucesso. Enviamos a verificação para seu Gmail.", "success");
             } catch (e) {
                 console.error(e);
                 const msg = e?.code === 'auth/email-already-in-use'
@@ -3200,10 +3285,8 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
                     : 'Não foi possível criar sua conta.';
                 showToast(msg, "error");
             }
-        } 
+        }
 
-
-        async 
         async function checkLogin() {
             const senha = document.getElementById('inputSenha')?.value.trim();
             const email = sanitizeEmail(document.getElementById('inputEmail')?.value || appConfig.email);
@@ -3212,16 +3295,8 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 
             try {
                 const cred = await firebase.auth().signInWithEmailAndPassword(email, senha);
-                currentFirebaseUser = cred.user;
-                appConfig.email = email;
-                sessionStorage.setItem('isLoggedIn', 'true');
-                document.getElementById('lock-screen')?.classList.add('hidden');
-                if (document.getElementById('inputSenha')) document.getElementById('inputSenha').value = "";
                 await carregarPerfilFirebase(cred.user);
-                salvarConfig();
-                carregarConfig();
-                renderizar();
-                preencherEmailLogin(email);
+                await persistirSessaoFirebase(cred.user);
 
                 if (!cred.user.emailVerified && cred.user.providerData.some(p => p.providerId === 'password')) {
                     try { await cred.user.sendEmailVerification(); } catch (e) { console.error(e); }
@@ -3230,36 +3305,44 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
                     playNotificationSound();
                     showToast("Você tem notificações na Central de Alertas!", "warning");
                 } else {
-                    showToast(`Acesso Liberado!`, "success");
+                    showToast("Acesso liberado!", "success");
                 }
+                if (document.getElementById('inputSenha')) document.getElementById('inputSenha').value = "";
             } catch (e) {
                 console.error(e);
                 showToast("E-mail ou senha incorretos.", "error");
                 if (document.getElementById('inputSenha')) document.getElementById('inputSenha').value = "";
             }
-        } 
+        }
 
-
-        
         function recuperarSenha() {
             document.getElementById('viewLogin')?.classList.add('hidden');
             document.getElementById('viewCadastro')?.classList.add('hidden');
             document.getElementById('viewRecuperar')?.classList.remove('hidden');
             const loginEmail = document.getElementById('inputEmail')?.value || appConfig.email || '';
             if (document.getElementById('recEmail') && loginEmail) document.getElementById('recEmail').value = loginEmail;
-        } 
+        }
 
-
-        
         function mostrarViewLogin() {
             document.getElementById('viewRecuperar')?.classList.add('hidden');
             document.getElementById('viewCadastro')?.classList.add('hidden');
             document.getElementById('viewLogin')?.classList.remove('hidden');
             preencherEmailLogin(appConfig.email || '');
-        } 
+        }
 
+        async function reenviarVerificacaoEmail() {
+            if (!firebaseReady) return showToast("Firebase não inicializado.", "error");
+            const user = firebase.auth().currentUser;
+            if (!user) return showToast("Entre na conta para reenviar a verificação.", "warning");
+            try {
+                await user.sendEmailVerification();
+                showToast("Verificação reenviada para seu Gmail.", "success");
+            } catch (e) {
+                console.error(e);
+                showToast("Não foi possível reenviar a verificação.", "error");
+            }
+        }
 
-        async 
         async function enviarCodigoRecuperacao() {
             const email = sanitizeEmail(document.getElementById('recEmail')?.value || document.getElementById('inputEmail')?.value);
             if (!email) return showToast("Digite seu e-mail.", "error");
@@ -3273,21 +3356,36 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
                 console.error(e);
                 showToast("Não foi possível enviar o e-mail de recuperação.", "error");
             }
-        } 
-
+        }
 
         async function configurarSenha() {
             if (!firebaseReady || !currentFirebaseUser) return showToast("Faça login novamente para alterar a senha.", "error");
-            let novaSenha = prompt("Digite a sua NOVA SENHA / PIN para o aplicativo:");
-            if (novaSenha && novaSenha.trim().length > 0) {
-                try {
-                    await currentFirebaseUser.updatePassword(novaSenha.trim());
-                    showToast("Senha alterada com sucesso!", "success");
-                    closeAll();
-                } catch (e) {
-                    console.error(e);
-                    showToast("Por segurança, entre novamente antes de trocar a senha.", "warning");
-                }
+
+            const providerIds = (currentFirebaseUser.providerData || []).map(p => p.providerId);
+            if (!providerIds.includes('password')) {
+                return showToast("Sua conta usa Google. Para trocar a senha do Google, faça isso na sua conta Google.", "warning");
+            }
+
+            const senhaAtual = prompt("Digite sua senha atual:");
+            if (!senhaAtual) return;
+
+            let novaSenha = prompt("Digite a sua NOVA SENHA:");
+            if (!novaSenha || !novaSenha.trim()) return;
+            novaSenha = novaSenha.trim();
+            if (novaSenha.length < 8) return showToast("Use pelo menos 8 caracteres na nova senha.", "warning");
+
+            try {
+                const credential = firebase.auth.EmailAuthProvider.credential(currentFirebaseUser.email, senhaAtual.trim());
+                await currentFirebaseUser.reauthenticateWithCredential(credential);
+                await currentFirebaseUser.updatePassword(novaSenha);
+                showToast("Senha alterada com sucesso!", "success");
+                closeAll();
+            } catch (e) {
+                console.error(e);
+                const msg = e?.code === 'auth/wrong-password'
+                    ? 'A senha atual está incorreta.'
+                    : 'Por segurança, entre novamente antes de trocar a senha.';
+                showToast(msg, "warning");
             }
         }
 
@@ -3301,9 +3399,8 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
             location.reload();
         }
 
-        
-
-        const themeCatalog = {
+        processarRedirectGoogle();
+const themeCatalog = {
             dark: { name: 'Modo Escuro Premium', color: '#030712' },
             light: { name: 'Modo Claro Inteligente', color: '#f8fbff' },
             nubank: { name: 'Identidade Nubank', color: '#820ad1' },
@@ -3339,7 +3436,7 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
         }
 
         function salvarConfig() {
-            const configToSave = { ...appConfig, senhaHash: null };
+            const configToSave = { ...appConfig, senhaHash: null, senhaSalt: null, authVersion: null, passwordUpdatedAt: null };
             localStorage.setItem('meucaixa_config', JSON.stringify(configToSave));
             carregarConfig();
             syncThemeSelector();
@@ -3354,6 +3451,7 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
             if (document.getElementById('headerUserName')) document.getElementById('headerUserName').innerText = appConfig.nome;
             if (document.getElementById('sidebarUserName')) document.getElementById('sidebarUserName').innerText = appConfig.nome;
             if (document.getElementById('userEmailSidebar')) document.getElementById('userEmailSidebar').innerText = appConfig.email;
+            document.querySelectorAll('.security-badge').forEach(el => el.innerHTML = '<i class="fa-solid fa-shield-halved"></i> SEGURO (FIREBASE)');
             
             let avatares = [document.getElementById('headerAvatar'), document.getElementById('sidebarAvatar')];
             let iniciais = appConfig.nome.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
@@ -6282,370 +6380,7 @@ function exportarDadosCSV() {
   }
 })();
 </script>
-<script>
-/* === MEUCAIXA SECURITY HARDENING PATCH === */
-(function(){
-  const SECURITY_POLICY = {
-    minPasswordLength: 8,
-    maxFailedAttempts: 5,
-    lockMinutes: 15,
-    sessionTimeoutMs: 15 * 60 * 1000,
-    hiddenTabTimeoutMs: 5 * 60 * 1000,
-    hashVersion: 'pbkdf2-v2',
-    iterations: 120000
-  };
 
-  function getSecurityState(){
-    try {
-      return JSON.parse(localStorage.getItem('meucaixa_security_state') || '{}');
-    } catch(e){
-      return {};
-    }
-  }
-
-  function saveSecurityState(state){
-    localStorage.setItem('meucaixa_security_state', JSON.stringify(state || {}));
-  }
-
-  function isValidEmail(email){
-    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(String(email || '').trim());
-  }
-
-  function isStrongPassword(password){
-    const value = String(password || '');
-    return value.length >= SECURITY_POLICY.minPasswordLength &&
-      /[a-z]/.test(value) &&
-      /[A-Z]/.test(value) &&
-      /\d/.test(value) &&
-      /[^A-Za-z0-9]/.test(value);
-  }
-
-  function passwordFeedback(password){
-    const value = String(password || '');
-    if(value.length < SECURITY_POLICY.minPasswordLength) return 'Use pelo menos 8 caracteres.';
-    if(!/[a-z]/.test(value)) return 'Inclua ao menos 1 letra minúscula.';
-    if(!/[A-Z]/.test(value)) return 'Inclua ao menos 1 letra maiúscula.';
-    if(!/\d/.test(value)) return 'Inclua ao menos 1 número.';
-    if(!/[^A-Za-z0-9]/.test(value)) return 'Inclua ao menos 1 símbolo.';
-    return '';
-  }
-
-  function bytesToBase64(bytes){
-    const arr = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes);
-    let binary = '';
-    for(let i = 0; i < arr.length; i++) binary += String.fromCharCode(arr[i]);
-    return btoa(binary);
-  }
-
-  function base64ToBytes(base64){
-    const binary = atob(base64);
-    const bytes = new Uint8Array(binary.length);
-    for(let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-    return bytes;
-  }
-
-  async function sha256Text(value){
-    const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(String(value || '')));
-    return bytesToBase64(digest);
-  }
-
-  async function generateSalt(){
-    const bytes = new Uint8Array(16);
-    crypto.getRandomValues(bytes);
-    return bytesToBase64(bytes);
-  }
-
-  async function derivePasswordHash(password, salt){
-    const keyMaterial = await crypto.subtle.importKey(
-      'raw',
-      new TextEncoder().encode(String(password || '')),
-      'PBKDF2',
-      false,
-      ['deriveBits']
-    );
-    const bits = await crypto.subtle.deriveBits(
-      {
-        name: 'PBKDF2',
-        salt: base64ToBytes(salt),
-        iterations: SECURITY_POLICY.iterations,
-        hash: 'SHA-256'
-      },
-      keyMaterial,
-      256
-    );
-    return bytesToBase64(bits);
-  }
-
-  async function persistSecurePassword(password){
-    const salt = await generateSalt();
-    const hash = await derivePasswordHash(password, salt);
-    appConfig.senhaHash = hash;
-    appConfig.senhaSalt = salt;
-    appConfig.authVersion = SECURITY_POLICY.hashVersion;
-    appConfig.passwordUpdatedAt = new Date().toISOString();
-    salvarConfig();
-  }
-
-  async function verifyPassword(password){
-    const value = String(password || '');
-    if(!appConfig?.senhaHash) return false;
-
-    if(appConfig.authVersion === SECURITY_POLICY.hashVersion && appConfig.senhaSalt){
-      const candidate = await derivePasswordHash(value, appConfig.senhaSalt);
-      return candidate === appConfig.senhaHash;
-    }
-
-    if(value === appConfig.senhaHash){
-      await persistSecurePassword(value);
-      showToast('Sua segurança foi atualizada automaticamente.', 'success');
-      return true;
-    }
-
-    return false;
-  }
-
-  function getLockInfo(){
-    const state = getSecurityState();
-    const until = state.lockUntil ? new Date(state.lockUntil).getTime() : 0;
-    if(until && until > Date.now()){
-      const diffMin = Math.ceil((until - Date.now()) / 60000);
-      return { locked: true, minutesLeft: diffMin };
-    }
-    if(until){
-      state.lockUntil = null;
-      state.failedAttempts = 0;
-      saveSecurityState(state);
-    }
-    return { locked: false, minutesLeft: 0 };
-  }
-
-  function registerFailedAttempt(){
-    const state = getSecurityState();
-    state.failedAttempts = (state.failedAttempts || 0) + 1;
-    state.lastFailedAt = new Date().toISOString();
-    if(state.failedAttempts >= SECURITY_POLICY.maxFailedAttempts){
-      state.lockUntil = new Date(Date.now() + SECURITY_POLICY.lockMinutes * 60000).toISOString();
-      state.failedAttempts = 0;
-    }
-    saveSecurityState(state);
-    return getLockInfo();
-  }
-
-  function resetFailedAttempts(){
-    const state = getSecurityState();
-    state.failedAttempts = 0;
-    state.lockUntil = null;
-    state.lastSuccessAt = new Date().toISOString();
-    saveSecurityState(state);
-  }
-
-  function markSessionActivity(){
-    sessionStorage.setItem('isLoggedIn', 'true');
-    sessionStorage.setItem('lastActivityAt', String(Date.now()));
-  }
-
-  function forceLockScreen(reason){
-    sessionStorage.removeItem('isLoggedIn');
-    sessionStorage.removeItem('lastActivityAt');
-    const lockScreen = document.getElementById('lock-screen');
-    if(lockScreen) lockScreen.classList.remove('hidden');
-    const inputSenha = document.getElementById('inputSenha');
-    if(inputSenha) inputSenha.value = '';
-    const recView = document.getElementById('viewRecuperar');
-    const cadastroView = document.getElementById('viewCadastro');
-    const loginView = document.getElementById('viewLogin');
-    if(recView) recView.classList.add('hidden');
-    if(cadastroView) cadastroView.classList.add('hidden');
-    if(loginView) loginView.classList.remove('hidden');
-    if(reason) showToast(reason, 'warning');
-  }
-
-  function startSessionProtection(){
-    if(window.__meucaixaSessionProtectionStarted) return;
-    window.__meucaixaSessionProtectionStarted = true;
-
-    const refreshActivity = () => {
-      if(sessionStorage.getItem('isLoggedIn') === 'true'){
-        sessionStorage.setItem('lastActivityAt', String(Date.now()));
-      }
-    };
-
-    ['click','keydown','touchstart','mousemove'].forEach((evt) => {
-      window.addEventListener(evt, refreshActivity, { passive: true });
-    });
-
-    let hiddenAt = null;
-    document.addEventListener('visibilitychange', () => {
-      if(document.visibilityState === 'hidden'){
-        hiddenAt = Date.now();
-      } else if(hiddenAt && (Date.now() - hiddenAt) > SECURITY_POLICY.hiddenTabTimeoutMs && sessionStorage.getItem('isLoggedIn') === 'true'){
-        forceLockScreen('Sessão protegida após ficar em segundo plano.');
-      }
-      refreshActivity();
-    });
-
-    setInterval(() => {
-      if(sessionStorage.getItem('isLoggedIn') !== 'true') return;
-      const lastActivity = Number(sessionStorage.getItem('lastActivityAt') || Date.now());
-      if(Date.now() - lastActivity > SECURITY_POLICY.sessionTimeoutMs){
-        forceLockScreen('Sessão expirada por segurança. Faça login novamente.');
-      }
-    }, 15000);
-  }
-
-  const _originalCheckAppSecurity = window.checkAppSecurity;
-  window.checkAppSecurity = function(){
-    if(typeof _originalCheckAppSecurity === 'function'){
-      _originalCheckAppSecurity.apply(this, arguments);
-    }
-    const lockInfo = getLockInfo();
-    if(lockInfo.locked){
-      const lockScreen = document.getElementById('lock-screen');
-      if(lockScreen) lockScreen.classList.remove('hidden');
-      const recView = document.getElementById('viewRecuperar');
-      const cadastroView = document.getElementById('viewCadastro');
-      const loginView = document.getElementById('viewLogin');
-      if(recView) recView.classList.add('hidden');
-      if(cadastroView) cadastroView.classList.add('hidden');
-      if(loginView) loginView.classList.remove('hidden');
-    }
-    startSessionProtection();
-  };
-
-  window.efetuarCadastro = async function(){
-    const nome = document.getElementById('cadNome')?.value.trim();
-    const email = document.getElementById('cadEmail')?.value.trim().toLowerCase();
-    const senha = document.getElementById('cadSenha')?.value || '';
-
-    if(!nome || !email || !senha) return showToast('Preencha todos os campos!', 'error');
-    if(!isValidEmail(email)) return showToast('Digite um e-mail válido.', 'error');
-    if(!isStrongPassword(senha)) return showToast(passwordFeedback(senha), 'error');
-
-    appConfig.nome = nome.toUpperCase();
-    appConfig.email = email;
-
-    await persistSecurePassword(senha);
-    resetFailedAttempts();
-    markSessionActivity();
-
-    document.getElementById('lock-screen')?.classList.add('hidden');
-    const cadSenha = document.getElementById('cadSenha');
-    if(cadSenha) cadSenha.value = '';
-    showToast('Conta criada com segurança reforçada!', 'success');
-    if(typeof carregarConfig === 'function') carregarConfig();
-    if(typeof renderizar === 'function') renderizar();
-  };
-
-  window.checkLogin = async function(){
-    const lockInfo = getLockInfo();
-    if(lockInfo.locked){
-      return showToast(`Acesso temporariamente bloqueado. Tente novamente em ${lockInfo.minutesLeft} min.`, 'error');
-    }
-
-    const inputSenha = document.getElementById('inputSenha');
-    const input = inputSenha?.value || '';
-    if(!input) return showToast('Digite sua senha.', 'error');
-
-    const ok = await verifyPassword(input);
-    if(ok){
-      resetFailedAttempts();
-      markSessionActivity();
-      document.getElementById('lock-screen')?.classList.add('hidden');
-      if(inputSenha) inputSenha.value = '';
-      if (typeof carregarConfig === 'function') carregarConfig();
-      if (typeof renderizar === 'function') renderizar();
-
-      if (sessionStorage.getItem('hasPendingAlert') === 'true') {
-        if(typeof playNotificationSound === 'function') playNotificationSound();
-        showToast('Você tem notificações na Central de Alertas!', 'warning');
-      } else {
-        showToast('Acesso liberado com segurança reforçada!', 'success');
-      }
-    } else {
-      const fail = registerFailedAttempt();
-      if(inputSenha) inputSenha.value = '';
-      if(fail.locked){
-        showToast(`Muitas tentativas. Acesso bloqueado por ${SECURITY_POLICY.lockMinutes} minutos.`, 'error');
-      } else {
-        const state = getSecurityState();
-        const left = Math.max(SECURITY_POLICY.maxFailedAttempts - (state.failedAttempts || 0), 0);
-        showToast(`Senha incorreta. Restam ${left} tentativa(s).`, 'error');
-      }
-    }
-  };
-
-  window.enviarCodigoRecuperacao = async function(){
-    const email = document.getElementById('recEmail')?.value.trim().toLowerCase();
-    if(email !== appConfig.email) return showToast('E-mail não confere com o cadastrado.', 'error');
-
-    const codigoGerado = Math.floor(100000 + Math.random() * 900000).toString();
-    sessionStorage.setItem('recoveryCodeHash', await sha256Text(codigoGerado));
-    sessionStorage.setItem('recoveryCodeCreatedAt', String(Date.now()));
-
-    alert(`[SIMULAÇÃO DE ENVIO PARA O EMAIL]\n\nCódigo de verificação enviado para ${email}:\n\n${codigoGerado}`);
-    const inputCodigo = prompt('Digite o código de 6 dígitos:');
-    const codeAge = Date.now() - Number(sessionStorage.getItem('recoveryCodeCreatedAt') || 0);
-    const providedHash = await sha256Text(String(inputCodigo || ''));
-    const expectedHash = sessionStorage.getItem('recoveryCodeHash');
-
-    if(codeAge > 10 * 60 * 1000){
-      sessionStorage.removeItem('recoveryCodeHash');
-      sessionStorage.removeItem('recoveryCodeCreatedAt');
-      return showToast('Código expirado. Solicite um novo.', 'error');
-    }
-
-    if(providedHash !== expectedHash){
-      return showToast('Código inválido.', 'error');
-    }
-
-    let novaSenha = prompt('Código correto! Digite sua NOVA senha forte:');
-    if(!novaSenha) return;
-    novaSenha = novaSenha.trim();
-    if(!isStrongPassword(novaSenha)) return showToast(passwordFeedback(novaSenha), 'error');
-
-    await persistSecurePassword(novaSenha);
-    resetFailedAttempts();
-    markSessionActivity();
-    sessionStorage.removeItem('recoveryCodeHash');
-    sessionStorage.removeItem('recoveryCodeCreatedAt');
-    document.getElementById('lock-screen')?.classList.add('hidden');
-    showToast('Senha redefinida com sucesso!', 'success');
-    if(typeof mostrarViewLogin === 'function') mostrarViewLogin();
-  };
-
-  window.configurarSenha = async function(){
-    const atual = prompt('Digite sua senha atual:');
-    if(!atual) return;
-    const ok = await verifyPassword(atual.trim());
-    if(!ok) return showToast('Senha atual inválida.', 'error');
-
-    let novaSenha = prompt('Digite a sua NOVA SENHA forte para o aplicativo:');
-    if(!novaSenha) return;
-    novaSenha = novaSenha.trim();
-    if(!isStrongPassword(novaSenha)) return showToast(passwordFeedback(novaSenha), 'error');
-
-    await persistSecurePassword(novaSenha);
-    showToast('Senha alterada com sucesso!', 'success');
-    if(typeof closeAll === 'function') closeAll();
-  };
-
-  const _originalSairApp = window.sairApp;
-  window.sairApp = function(){
-    sessionStorage.removeItem('lastActivityAt');
-    if(typeof _originalSairApp === 'function') return _originalSairApp.apply(this, arguments);
-    sessionStorage.removeItem('isLoggedIn');
-    location.reload();
-  };
-
-  const savedConfigRaw = JSON.parse(localStorage.getItem('meucaixa_config') || '{}');
-  if(savedConfigRaw){
-    appConfig.senhaSalt = savedConfigRaw.senhaSalt || appConfig.senhaSalt || null;
-    appConfig.authVersion = savedConfigRaw.authVersion || appConfig.authVersion || null;
-    appConfig.passwordUpdatedAt = savedConfigRaw.passwordUpdatedAt || appConfig.passwordUpdatedAt || null;
-  }
-
-  startSessionProtection();
-})();
-</script>
+<!-- Firebase auth rebuilt v2 -->
 </body>
 </html>
