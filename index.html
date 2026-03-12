@@ -24,7 +24,6 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
-
 <style>
         /* VARIÁVEIS DE TEMAS */
         :root {
@@ -1940,6 +1939,60 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
             .pdf-mode-modal { max-width: 96vw; }
         }
 
+
+
+        .btn-google {
+            width: 100%;
+            background: #ffffff;
+            color: #111827;
+            border: 1px solid rgba(148,163,184,0.35);
+            padding: 14px 16px;
+            border-radius: 16px;
+            font-weight: 800;
+            font-size: 0.95rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0 10px 24px rgba(0,0,0,0.15);
+        }
+        .btn-google i { color: #ea4335; font-size: 1.1rem; }
+        .auth-divider {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin: 8px 0 16px;
+        }
+        .auth-divider::before, .auth-divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+        .auth-link-row {
+            display:flex;
+            gap:10px;
+            width:100%;
+            justify-content:center;
+            flex-wrap:wrap;
+            margin-top: 6px;
+        }
+        .auth-note {
+            width: 100%;
+            font-size: 0.75rem;
+            line-height: 1.5;
+            color: var(--text-muted);
+            text-align: center;
+            margin: 12px 0 0;
+        }
 </style>
 </head>
 <body>
@@ -1969,23 +2022,23 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 <h2 class="lock-title">Criar Conta</h2>
 <p class="lock-subtitle">Sua jornada financeira começa aqui.</p>
 <div class="input-group"><i class="fa-solid fa-user"></i><input class="lock-input" id="cadNome" placeholder="Como devemos te chamar?" type="text"/></div>
-<div class="input-group"><i class="fa-solid fa-envelope"></i><input autocomplete="email" autocapitalize="none" class="lock-input" id="cadEmail" inputmode="email" placeholder="Seu melhor e-mail" spellcheck="false" type="email"/></div>
-<div class="input-group"><i class="fa-solid fa-lock"></i><input autocomplete="new-password" autocapitalize="none" class="lock-input password" id="cadSenha" onkeypress="if(event.key === 'Enter') efetuarCadastro()" placeholder="Crie uma senha forte" spellcheck="false" type="password"/></div>
-<button class="btn-login" onclick="efetuarCadastro()">CADASTRAR E ENTRAR</button>
+<div class="input-group"><i class="fa-solid fa-envelope"></i><input autocapitalize="none" autocomplete="email" class="lock-input" id="cadEmail" inputmode="email" placeholder="Seu melhor e-mail" spellcheck="false" type="email"/></div>
+<div class="input-group"><i class="fa-solid fa-lock"></i><input autocapitalize="none" autocomplete="new-password" class="lock-input password" id="cadSenha" onkeypress="if(event.key === 'Enter') efetuarCadastro()" placeholder="Crie uma senha forte" spellcheck="false" type="password"/></div>
+<div class="auth-divider">ou</div><button class="btn-google" onclick="loginGoogle()" type="button"><i class="fa-brands fa-google"></i> Continuar com Google</button><p class="auth-note">Ao criar sua conta por e-mail, enviamos uma verificação para seu Gmail.</p><button class="btn-forgot" onclick="mostrarViewLogin()" type="button">Já tenho conta</button><button class="btn-login" onclick="efetuarCadastro()">CADASTRAR E ENTRAR</button>
 </div>
 <div class="auth-view hidden" id="viewLogin" style="justify-content: center; height: 100%;">
 <h2 class="lock-title" id="txtWelcomeBack">Olá, WENDEL!</h2>
 <p class="lock-subtitle">Que bom ter você de volta.
                 Digite sua senha.</p>
-<div class="input-group"><i class="fa-solid fa-key"></i><input autocomplete="current-password" autocapitalize="none" class="lock-input password" id="inputSenha" onkeypress="if(event.key === 'Enter') checkLogin()" placeholder="Sua senha secreta" spellcheck="false" type="password"/></div>
+<div class="input-group"><i class="fa-solid fa-envelope"></i><input autocapitalize="none" autocomplete="email" class="lock-input" id="inputEmail" inputmode="email" placeholder="Seu e-mail cadastrado" spellcheck="false" type="email"/></div><div class="input-group"><i class="fa-solid fa-key"></i><input autocapitalize="none" autocomplete="current-password" class="lock-input password" id="inputSenha" onkeypress="if(event.key === 'Enter') checkLogin()" placeholder="Sua senha secreta" spellcheck="false" type="password"/></div>
 <button class="btn-login" onclick="checkLogin()">ENTRAR NO MEUCAIXA</button>
-<button class="btn-forgot" onclick="recuperarSenha()">Esqueci minha senha</button>
+<div class="auth-divider">ou</div><button class="btn-google" onclick="loginGoogle()" type="button"><i class="fa-brands fa-google"></i> Entrar com Google</button><div class="auth-link-row"><button class="btn-forgot" onclick="mostrarViewCadastro()" type="button">Criar conta</button></div><button class="btn-forgot" onclick="recuperarSenha()">Esqueci minha senha</button>
 </div>
 <div class="auth-view hidden" id="viewRecuperar">
 <h2 class="lock-title">Recuperar Senha</h2>
-<p class="lock-subtitle">Não se preocupe, vamos resolver isso.</p>
+<p class="lock-subtitle">Enviaremos um link oficial de redefinição para o seu Gmail.</p>
 <div class="input-group"><i class="fa-solid fa-envelope"></i><input class="lock-input" id="recEmail" placeholder="Confirme seu e-mail cadastrado" type="email"/></div>
-<button class="btn-login" onclick="enviarCodigoRecuperacao()">ENVIAR CÓDIGO</button>
+<button class="btn-login" onclick="enviarCodigoRecuperacao()">ENVIAR LINK DE RECUPERAÇÃO</button>
 <button class="btn-forgot" onclick="mostrarViewLogin()"><i class="fa-solid fa-arrow-left"></i> Voltar ao Login</button>
 </div>
 </div>
@@ -2206,8 +2259,8 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 <div class="pdf-mode-icon"><i class="fa-solid fa-calendar-days"></i></div>
 </div>
 <div class="pdf-mode-actions">
-<button class="pdf-mini-btn primary" type="button" onclick="gerarPDFoficial('simples','mensal')">Simples</button>
-<button class="pdf-mini-btn secondary" type="button" onclick="gerarPDFoficial('detalhado','mensal')">Detalhado</button>
+<button class="pdf-mini-btn primary" onclick="gerarPDFoficial('simples','mensal')" type="button">Simples</button>
+<button class="pdf-mini-btn secondary" onclick="gerarPDFoficial('detalhado','mensal')" type="button">Detalhado</button>
 </div>
 </div>
 <div class="pdf-mode-card">
@@ -2219,8 +2272,8 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 <div class="pdf-mode-icon"><i class="fa-solid fa-calendar"></i></div>
 </div>
 <div class="pdf-mode-actions">
-<button class="pdf-mini-btn primary" type="button" onclick="gerarPDFoficial('simples','anual')">Simples</button>
-<button class="pdf-mini-btn secondary" type="button" onclick="gerarPDFoficial('detalhado','anual')">Detalhado</button>
+<button class="pdf-mini-btn primary" onclick="gerarPDFoficial('simples','anual')" type="button">Simples</button>
+<button class="pdf-mini-btn secondary" onclick="gerarPDFoficial('detalhado','anual')" type="button">Detalhado</button>
 </div>
 </div>
 <div class="pdf-mode-card">
@@ -2232,8 +2285,8 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 <div class="pdf-mode-icon"><i class="fa-solid fa-chart-line"></i></div>
 </div>
 <div class="pdf-mode-actions">
-<button class="pdf-mini-btn primary" type="button" onclick="gerarPDFoficial('simples','patrimonio')">Simples</button>
-<button class="pdf-mini-btn secondary" type="button" onclick="gerarPDFoficial('detalhado','patrimonio')">Detalhado</button>
+<button class="pdf-mini-btn primary" onclick="gerarPDFoficial('simples','patrimonio')" type="button">Simples</button>
+<button class="pdf-mini-btn secondary" onclick="gerarPDFoficial('detalhado','patrimonio')" type="button">Detalhado</button>
 </div>
 </div>
 <div class="pdf-mode-card">
@@ -2245,16 +2298,15 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 <div class="pdf-mode-icon"><i class="fa-solid fa-bullseye"></i></div>
 </div>
 <div class="pdf-mode-actions">
-<button class="pdf-mini-btn primary" type="button" onclick="gerarPDFoficial('simples','metas')">Simples</button>
-<button class="pdf-mini-btn secondary" type="button" onclick="gerarPDFoficial('detalhado','metas')">Detalhado</button>
+<button class="pdf-mini-btn primary" onclick="gerarPDFoficial('simples','metas')" type="button">Simples</button>
+<button class="pdf-mini-btn secondary" onclick="gerarPDFoficial('detalhado','metas')" type="button">Detalhado</button>
 </div>
 </div>
 </div>
 <div class="pdf-mode-footer">
-<button class="secondary-btn" type="button" onclick="closePDFModal()">Cancelar</button>
+<button class="secondary-btn" onclick="closePDFModal()" type="button">Cancelar</button>
 </div>
 </div>
-
 <div class="modal modal-small system-data-modal" id="modalSystemData">
 <div class="system-data-modal-inner">
 <div class="system-data-head">
@@ -2691,7 +2743,7 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 <p style="font-size: 0.9rem; font-weight: bold; letter-spacing: 1px;">EXTRAINDO DADOS...</p>
 </div>
 <div class="hidden" id="leitorResult">
-<div id="leitorInsightStrip" class="leitor-insight-strip"></div>
+<div class="leitor-insight-strip" id="leitorInsightStrip"></div>
 <div class="grafico-card" style="padding: 15px; margin-bottom: 15px; background: rgba(0,0,0,0.5); border: 1px solid var(--border);">
 <span class="label-mini" style="text-align: center; color: var(--accent);">Fluxo Financeiro Encontrado</span>
 <div style="position: relative; height: 180px; width: 100%;">
@@ -3032,26 +3084,113 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
             }
         }
 
-        async function efetuarCadastro() {
-            const nome = document.getElementById('cadNome')?.value.trim();
-            const email = document.getElementById('cadEmail')?.value.trim().toLowerCase();
-            const senha = document.getElementById('cadSenha')?.value.trim();
+        async 
+        function sanitizeEmail(value) {
+            return String(value || '').trim().toLowerCase();
+        }
 
-            if (!nome || !email || !senha) return showToast("Preencha todos os campos!", "error");
+        function preencherEmailLogin(email) {
+            const loginEmail = document.getElementById('inputEmail');
+            const recEmail = document.getElementById('recEmail');
+            if (loginEmail && email) loginEmail.value = email;
+            if (recEmail && email) recEmail.value = email;
+        }
+
+        function mostrarViewCadastro() {
+            document.getElementById('viewLogin')?.classList.add('hidden');
+            document.getElementById('viewRecuperar')?.classList.add('hidden');
+            document.getElementById('viewCadastro')?.classList.remove('hidden');
+        }
+
+        function prepararTelaAuth(user = null) {
+            const lock = document.getElementById('lock-screen');
+            if (lock) lock.classList.remove('hidden');
+
+            const loginView = document.getElementById('viewLogin');
+            const cadView = document.getElementById('viewCadastro');
+            const recView = document.getElementById('viewRecuperar');
+            recView?.classList.add('hidden');
+
+            const knownEmail = sanitizeEmail(user?.email || appConfig.email || '');
+            const knownName = (user?.displayName || appConfig.nome || 'Usuário').trim();
+            const welcome = document.getElementById('txtWelcomeBack');
+            if (welcome) welcome.innerText = `Olá, ${knownName.split(' ')[0]}!`;
+
+            preencherEmailLogin(knownEmail);
+
+            const av = document.getElementById('loginAvatar');
+            if (av) {
+                const photo = user?.photoURL || appConfig.fotoPerfil;
+                if (photo) {
+                    av.style.backgroundImage = `url(${photo})`;
+                    av.innerHTML = '';
+                } else {
+                    av.style.backgroundImage = 'none';
+                    av.innerHTML = '<i class="fa-solid fa-fingerprint"></i>';
+                }
+            }
+
+            if (knownEmail) {
+                loginView?.classList.remove('hidden');
+                cadView?.classList.add('hidden');
+            } else {
+                loginView?.classList.add('hidden');
+                cadView?.classList.remove('hidden');
+            }
+        }
+
+        async function loginGoogle() {
             if (!firebaseReady) return showToast("Firebase não inicializado.", "error");
-
             try {
-                const cred = await firebase.auth().createUserWithEmailAndPassword(email, senha);
+                const provider = new firebase.auth.GoogleAuthProvider();
+                provider.setCustomParameters({ prompt: 'select_account' });
+                const cred = await firebase.auth().signInWithPopup(provider);
                 currentFirebaseUser = cred.user;
-                appConfig.nome = nome.toUpperCase();
-                appConfig.email = email;
+                appConfig.nome = (cred.user.displayName || appConfig.nome || 'Usuário').toUpperCase();
+                appConfig.email = sanitizeEmail(cred.user.email || appConfig.email || '');
+                appConfig.fotoPerfil = cred.user.photoURL || appConfig.fotoPerfil || null;
                 await salvarPerfilFirebase(cred.user.uid);
                 sessionStorage.setItem('isLoggedIn', 'true');
                 document.getElementById('lock-screen')?.classList.add('hidden');
                 salvarConfig();
                 carregarConfig();
                 renderizar();
-                showToast("Conta criada com sucesso!", "success");
+                showToast("Login com Google realizado com sucesso!", "success");
+            } catch (e) {
+                console.error(e);
+                const msg = e?.code === 'auth/popup-closed-by-user'
+                    ? 'Login com Google cancelado.'
+                    : 'Não foi possível entrar com Google.';
+                showToast(msg, "error");
+            }
+        }
+
+
+        async function efetuarCadastro() {
+            const nome = document.getElementById('cadNome')?.value.trim();
+            const email = sanitizeEmail(document.getElementById('cadEmail')?.value);
+            const senha = document.getElementById('cadSenha')?.value.trim();
+
+            if (!nome || !email || !senha) return showToast("Preencha todos os campos!", "error");
+            if (senha.length < 8) return showToast("Use uma senha com pelo menos 8 caracteres.", "warning");
+            if (!firebaseReady) return showToast("Firebase não inicializado.", "error");
+
+            try {
+                const cred = await firebase.auth().createUserWithEmailAndPassword(email, senha);
+                currentFirebaseUser = cred.user;
+                await cred.user.updateProfile({ displayName: nome });
+                appConfig.nome = nome.toUpperCase();
+                appConfig.email = email;
+                appConfig.fotoPerfil = null;
+                await salvarPerfilFirebase(cred.user.uid);
+                try { await cred.user.sendEmailVerification(); } catch (e) { console.error(e); }
+                sessionStorage.setItem('isLoggedIn', 'true');
+                document.getElementById('lock-screen')?.classList.add('hidden');
+                salvarConfig();
+                carregarConfig();
+                renderizar();
+                preencherEmailLogin(email);
+                showToast("Conta criada. Enviamos a verificação para seu Gmail.", "success");
             } catch (e) {
                 console.error(e);
                 const msg = e?.code === 'auth/email-already-in-use'
@@ -3061,25 +3200,33 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
                     : 'Não foi possível criar sua conta.';
                 showToast(msg, "error");
             }
-        }
+        } 
 
+
+        async 
         async function checkLogin() {
             const senha = document.getElementById('inputSenha')?.value.trim();
-            const email = (appConfig.email || '').trim().toLowerCase();
-            if (!email || !senha) return showToast("Informe sua senha para entrar.", "error");
+            const email = sanitizeEmail(document.getElementById('inputEmail')?.value || appConfig.email);
+            if (!email || !senha) return showToast("Informe seu e-mail e senha para entrar.", "error");
             if (!firebaseReady) return showToast("Firebase não inicializado.", "error");
 
             try {
                 const cred = await firebase.auth().signInWithEmailAndPassword(email, senha);
                 currentFirebaseUser = cred.user;
+                appConfig.email = email;
                 sessionStorage.setItem('isLoggedIn', 'true');
                 document.getElementById('lock-screen')?.classList.add('hidden');
                 if (document.getElementById('inputSenha')) document.getElementById('inputSenha').value = "";
                 await carregarPerfilFirebase(cred.user);
+                salvarConfig();
                 carregarConfig();
                 renderizar();
+                preencherEmailLogin(email);
 
-                if (sessionStorage.getItem('hasPendingAlert') === 'true') {
+                if (!cred.user.emailVerified && cred.user.providerData.some(p => p.providerId === 'password')) {
+                    try { await cred.user.sendEmailVerification(); } catch (e) { console.error(e); }
+                    showToast("Entrou com sucesso. Também reenviamos a verificação para seu Gmail.", "warning");
+                } else if (sessionStorage.getItem('hasPendingAlert') === 'true') {
                     playNotificationSound();
                     showToast("Você tem notificações na Central de Alertas!", "warning");
                 } else {
@@ -3087,34 +3234,47 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
                 }
             } catch (e) {
                 console.error(e);
-                showToast("Senha incorreta ou acesso indisponível.", "error");
+                showToast("E-mail ou senha incorretos.", "error");
                 if (document.getElementById('inputSenha')) document.getElementById('inputSenha').value = "";
             }
-        }
+        } 
 
+
+        
         function recuperarSenha() {
             document.getElementById('viewLogin')?.classList.add('hidden');
+            document.getElementById('viewCadastro')?.classList.add('hidden');
             document.getElementById('viewRecuperar')?.classList.remove('hidden');
-        }
+            const loginEmail = document.getElementById('inputEmail')?.value || appConfig.email || '';
+            if (document.getElementById('recEmail') && loginEmail) document.getElementById('recEmail').value = loginEmail;
+        } 
 
+
+        
         function mostrarViewLogin() {
             document.getElementById('viewRecuperar')?.classList.add('hidden');
+            document.getElementById('viewCadastro')?.classList.add('hidden');
             document.getElementById('viewLogin')?.classList.remove('hidden');
-        }
+            preencherEmailLogin(appConfig.email || '');
+        } 
 
+
+        async 
         async function enviarCodigoRecuperacao() {
-            const email = document.getElementById('recEmail')?.value.trim().toLowerCase();
+            const email = sanitizeEmail(document.getElementById('recEmail')?.value || document.getElementById('inputEmail')?.value);
             if (!email) return showToast("Digite seu e-mail.", "error");
             if (!firebaseReady) return showToast("Firebase não inicializado.", "error");
             try {
                 await firebase.auth().sendPasswordResetEmail(email);
-                showToast("Enviamos o link de redefinição para seu e-mail.", "success");
+                showToast("Enviamos o link de recuperação para seu Gmail.", "success");
+                preencherEmailLogin(email);
                 mostrarViewLogin();
             } catch (e) {
                 console.error(e);
                 showToast("Não foi possível enviar o e-mail de recuperação.", "error");
             }
-        }
+        } 
+
 
         async function configurarSenha() {
             if (!firebaseReady || !currentFirebaseUser) return showToast("Faça login novamente para alterar a senha.", "error");
@@ -5946,7 +6106,6 @@ function exportarDadosCSV() {
     }
 })();
 </script>
-
 <script>
 (function(){
   const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
@@ -6123,8 +6282,6 @@ function exportarDadosCSV() {
   }
 })();
 </script>
-
-
 <script>
 /* === MEUCAIXA SECURITY HARDENING PATCH === */
 (function(){
@@ -6490,6 +6647,5 @@ function exportarDadosCSV() {
   startSessionProtection();
 })();
 </script>
-
 </body>
 </html>
