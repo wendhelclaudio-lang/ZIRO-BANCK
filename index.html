@@ -1889,6 +1889,17 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
   .meta-hero-simple{padding:20px 18px 78px;}
 }
 
+
+/* === 2026 SYSTEM STABILITY PATCH === */
+.leitor-insight-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 14px 0}
+.leitor-insight-pill{background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+.leitor-insight-pill span{font-size:.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em}
+.leitor-insight-pill strong{font-size:1rem;color:var(--text)}
+.meta-simple-tip strong{color:var(--text)}
+@media (max-width: 640px){
+  .leitor-insight-strip{grid-template-columns:1fr}
+}
+
 </style>
 </head>
 <body>
@@ -2572,6 +2583,7 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 <p style="font-size: 0.9rem; font-weight: bold; letter-spacing: 1px;">EXTRAINDO DADOS...</p>
 </div>
 <div class="hidden" id="leitorResult">
+<div id="leitorInsightStrip" class="leitor-insight-strip"></div>
 <div class="grafico-card" style="padding: 15px; margin-bottom: 15px; background: rgba(0,0,0,0.5); border: 1px solid var(--border);">
 <span class="label-mini" style="text-align: center; color: var(--accent);">Fluxo Financeiro Encontrado</span>
 <div style="position: relative; height: 180px; width: 100%;">
@@ -5465,5 +5477,183 @@ function exportarDadosCSV() {
     }
 })();
 </script>
+
+<script>
+(function(){
+  const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+  const pick = function(){
+    for(const id of arguments){
+      const node = document.getElementById(id);
+      if(node) return node;
+    }
+    return null;
+  };
+  const moeda = function(v){
+    const n = Number(v || 0);
+    return n.toLocaleString('pt-BR', {style:'currency', currency:'BRL'});
+  };
+  const rotuloFrequencia = function(periodo){
+    if(periodo === 'Semanal') return 'por semana';
+    if(periodo === 'Quinzenal') return 'por quinzena';
+    if(periodo === 'Anual') return 'por mês';
+    return 'por mês';
+  };
+  const prefixoFrequencia = function(periodo){
+    if(periodo === 'Semanal') return 'Aporte semanal';
+    if(periodo === 'Quinzenal') return 'Aporte quinzenal';
+    if(periodo === 'Anual') return 'Aporte anual';
+    return 'Aporte mensal';
+  };
+
+  function atualizarPreviewMeta(){
+    const valor = parseFloat((pick('valorMetaInput') || {}).value) || 0;
+    const periodo = ((pick('periodoMeta') || {}).value) || 'Mensal';
+    const desc = ((pick('descMetaInput') || {}).value || '').trim();
+    const tipoEl = pick('tipoMeta');
+    const tipoTexto = tipoEl && tipoEl.options ? (tipoEl.options[tipoEl.selectedIndex]?.textContent || 'Meta principal') : 'Meta principal';
+    const objetivo = desc || String(tipoTexto).replace(/^[^\s]+\s*/, '').trim() || 'Meta principal';
+    let divisor = 1;
+    if(periodo === 'Semanal') divisor = 4;
+    else if(periodo === 'Quinzenal') divisor = 2;
+    else if(periodo === 'Anual') divisor = 12;
+    const aporte = valor > 0 ? valor / divisor : 0;
+
+    const titulo = pick('txtPreviewTituloMeta');
+    const sub = pick('txtPreviewSubMeta');
+    const aporteEl = pick('txtPreviewAporte');
+    const horizonte = pick('txtPreviewHorizonte');
+    const status = pick('txtPreviewStatus');
+    const statusSub = pick('txtPreviewStatusSub');
+
+    if(titulo) titulo.textContent = objetivo;
+    if(sub) sub.textContent = valor > 0 ? `Meta total definida em ${moeda(valor)}.` : 'Escolha um foco para a sua próxima conquista.';
+    if(aporteEl) aporteEl.textContent = valor > 0 ? `${moeda(aporte)} ${rotuloFrequencia(periodo)}` : 'R$ 0,00 por mês';
+    if(horizonte) horizonte.textContent = valor > 0 ? `Com ${prefixoFrequencia(periodo).toLowerCase()}, sua meta fica mais clara.` : 'Ajuste a frequência para recalcular o aporte ideal.';
+    if(status) status.textContent = valor > 0 ? 'Meta pronta para salvar' : 'Preparando sua meta';
+    if(statusSub) statusSub.textContent = valor > 0 ? 'Ao salvar, o painel superior será atualizado com os novos números.' : 'Assim que salvar, o painel superior será atualizado.';
+  }
+
+  function reforcarUIGestaoMetas(){
+    try{
+      const guardadoValor = pick('txtGestaoGuardado')?.textContent || 'R$ 0,00';
+      const aporteValor = pick('txtAporteIdealResumo')?.textContent || 'R$ 0,00';
+      const alvoValor = pick('txtGestaoAlvo')?.textContent || 'R$ 0,00';
+      const objetivoNome = pick('txtMetaNomePreview')?.textContent || 'Meta principal';
+      const periodoTxt = pick('txtGestaoPeriodo')?.textContent || 'Aporte mensal';
+      const faltaValor = pick('txtGestaoFalta')?.textContent || 'R$ 0,00';
+
+      const badge = pick('txtMetaMotivacional');
+      const progressoTxt = (pick('txtGestaoProgresso')?.textContent || '0').replace('%','').replace(',','.');
+      const progresso = parseFloat(progressoTxt) || 0;
+      if(badge){
+        if(progresso >= 100) badge.textContent = '🏁 META CONCLUÍDA';
+        else if(progresso >= 70) badge.textContent = '🔥 QUASE LÁ';
+        else if(progresso > 0) badge.textContent = '📈 EM EVOLUÇÃO';
+        else badge.textContent = '🚀 VAMOS COMEÇAR!';
+      }
+
+      const descResumo = pick('txtDescricaoResumoMeta');
+      if(descResumo){
+        descResumo.textContent = progresso >= 100 ? 'meta concluída com sucesso' : 'concluído da sua meta';
+      }
+
+      // Compatibilidade com patches anteriores
+      if(pick('txtMetaGuardado')) pick('txtMetaGuardado').textContent = guardadoValor;
+      if(pick('txtMetaAporteCiclo')) pick('txtMetaAporteCiclo').textContent = aporteValor;
+      if(pick('txtMetaObjetivoNome')) pick('txtMetaObjetivoNome').textContent = objetivoNome;
+      if(pick('txtMetaFrequenciaLabel')) pick('txtMetaFrequenciaLabel').textContent = periodoTxt;
+      if(pick('txtMetaAporteLegenda')) pick('txtMetaAporteLegenda').textContent = `Faltam ${faltaValor} para concluir a meta.`;
+
+      const dica = pick('txtDicaAporte');
+      if(dica && /\bR\$\s?0,00\b/.test(alvoValor)){
+        dica.textContent = 'Defina o valor total da meta, escolha a frequência e salve para começar.';
+      }
+    }catch(e){}
+  }
+
+  const originalAtualizarMetas = window.atualizarUIGestaoMetas;
+  if(typeof originalAtualizarMetas === 'function' && !window.__patchedGestaoMetas2026){
+    window.atualizarUIGestaoMetas = function(){
+      const res = originalAtualizarMetas.apply(this, arguments);
+      reforcarUIGestaoMetas();
+      atualizarPreviewMeta();
+      return res;
+    };
+    window.__patchedGestaoMetas2026 = true;
+  }
+
+  const originalSalvarMeta = window.salvarConfiguracaoMeta;
+  if(typeof originalSalvarMeta === 'function' && !window.__patchedSalvarMeta2026){
+    window.salvarConfiguracaoMeta = function(){
+      const res = originalSalvarMeta.apply(this, arguments);
+      setTimeout(reforcarUIGestaoMetas, 30);
+      return res;
+    };
+    window.__patchedSalvarMeta2026 = true;
+  }
+
+  const originalAtualizarExtrato = window.atualizarUIExtratoIA;
+  if(typeof originalAtualizarExtrato === 'function' && !window.__patchedExtrato2026){
+    window.atualizarUIExtratoIA = function(transacoes){
+      const res = originalAtualizarExtrato.apply(this, arguments);
+      try{
+        const lista = Array.isArray(transacoes) ? transacoes : [];
+        const entradas = lista.filter(t => t && t.isEntrada).reduce((s,t) => s + (parseFloat(t.valor) || 0), 0);
+        const saidas = lista.filter(t => t && !t.isEntrada).reduce((s,t) => s + (parseFloat(t.valor) || 0), 0);
+        const saldo = entradas - saidas;
+        const strip = pick('leitorInsightStrip');
+        if(strip){
+          strip.innerHTML = `
+            <div class="leitor-insight-pill"><span>Entradas</span><strong>${moeda(entradas)}</strong></div>
+            <div class="leitor-insight-pill"><span>Saídas</span><strong>${moeda(saidas)}</strong></div>
+            <div class="leitor-insight-pill"><span>Saldo do extrato</span><strong>${moeda(saldo)}</strong></div>`;
+          strip.style.display = 'grid';
+        }
+      }catch(e){}
+      return res;
+    };
+    window.__patchedExtrato2026 = true;
+  }
+
+  function bindMetaInputs(){
+    ['tipoMeta','valorMetaInput','periodoMeta','descMetaInput'].forEach(function(id){
+      const el = pick(id);
+      if(!el || el.dataset.metaBound2026 === '1') return;
+      ['input','change','keyup'].forEach(function(evt){
+        el.addEventListener(evt, atualizarPreviewMeta);
+      });
+      el.dataset.metaBound2026 = '1';
+    });
+    atualizarPreviewMeta();
+    reforcarUIGestaoMetas();
+  }
+
+  function melhorarAcessibilidadeAcoes(){
+    $$('.mini-card[onclick], .menu-item[onclick], .btn-meta-quick[onclick]').forEach(function(el){
+      if(!el.hasAttribute('tabindex')) el.setAttribute('tabindex','0');
+      if(!el.hasAttribute('role')) el.setAttribute('role','button');
+      if(el.dataset.keyBound2026 === '1') return;
+      el.addEventListener('keydown', function(ev){
+        if(ev.key === 'Enter' || ev.key === ' '){
+          ev.preventDefault();
+          el.click();
+        }
+      });
+      el.dataset.keyBound2026 = '1';
+    });
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', function(){
+      bindMetaInputs();
+      melhorarAcessibilidadeAcoes();
+    });
+  } else {
+    bindMetaInputs();
+    melhorarAcessibilidadeAcoes();
+  }
+})();
+</script>
+
 </body>
 </html>
