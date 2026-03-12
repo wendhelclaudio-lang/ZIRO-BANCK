@@ -1965,15 +1965,15 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 <h2 class="lock-title">Criar Conta</h2>
 <p class="lock-subtitle">Sua jornada financeira começa aqui.</p>
 <div class="input-group"><i class="fa-solid fa-user"></i><input class="lock-input" id="cadNome" placeholder="Como devemos te chamar?" type="text"/></div>
-<div class="input-group"><i class="fa-solid fa-envelope"></i><input class="lock-input" id="cadEmail" placeholder="Seu melhor e-mail" type="email"/></div>
-<div class="input-group"><i class="fa-solid fa-lock"></i><input class="lock-input password" id="cadSenha" onkeypress="if(event.key === 'Enter') efetuarCadastro()" placeholder="Crie uma senha forte" type="password"/></div>
+<div class="input-group"><i class="fa-solid fa-envelope"></i><input autocomplete="email" autocapitalize="none" class="lock-input" id="cadEmail" inputmode="email" placeholder="Seu melhor e-mail" spellcheck="false" type="email"/></div>
+<div class="input-group"><i class="fa-solid fa-lock"></i><input autocomplete="new-password" autocapitalize="none" class="lock-input password" id="cadSenha" onkeypress="if(event.key === 'Enter') efetuarCadastro()" placeholder="Crie uma senha forte" spellcheck="false" type="password"/></div>
 <button class="btn-login" onclick="efetuarCadastro()">CADASTRAR E ENTRAR</button>
 </div>
 <div class="auth-view hidden" id="viewLogin" style="justify-content: center; height: 100%;">
 <h2 class="lock-title" id="txtWelcomeBack">Olá, WENDEL!</h2>
 <p class="lock-subtitle">Que bom ter você de volta.
                 Digite sua senha.</p>
-<div class="input-group"><i class="fa-solid fa-key"></i><input class="lock-input password" id="inputSenha" onkeypress="if(event.key === 'Enter') checkLogin()" placeholder="Sua senha secreta" type="password"/></div>
+<div class="input-group"><i class="fa-solid fa-key"></i><input autocomplete="current-password" autocapitalize="none" class="lock-input password" id="inputSenha" onkeypress="if(event.key === 'Enter') checkLogin()" placeholder="Sua senha secreta" spellcheck="false" type="password"/></div>
 <button class="btn-login" onclick="checkLogin()">ENTRAR NO MEUCAIXA</button>
 <button class="btn-forgot" onclick="recuperarSenha()">Esqueci minha senha</button>
 </div>
@@ -5970,6 +5970,373 @@ function exportarDadosCSV() {
     bindMetaInputs();
     melhorarAcessibilidadeAcoes();
   }
+})();
+</script>
+
+
+<script>
+/* === MEUCAIXA SECURITY HARDENING PATCH === */
+(function(){
+  const SECURITY_POLICY = {
+    minPasswordLength: 8,
+    maxFailedAttempts: 5,
+    lockMinutes: 15,
+    sessionTimeoutMs: 15 * 60 * 1000,
+    hiddenTabTimeoutMs: 5 * 60 * 1000,
+    hashVersion: 'pbkdf2-v2',
+    iterations: 120000
+  };
+
+  function getSecurityState(){
+    try {
+      return JSON.parse(localStorage.getItem('meucaixa_security_state') || '{}');
+    } catch(e){
+      return {};
+    }
+  }
+
+  function saveSecurityState(state){
+    localStorage.setItem('meucaixa_security_state', JSON.stringify(state || {}));
+  }
+
+  function isValidEmail(email){
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(String(email || '').trim());
+  }
+
+  function isStrongPassword(password){
+    const value = String(password || '');
+    return value.length >= SECURITY_POLICY.minPasswordLength &&
+      /[a-z]/.test(value) &&
+      /[A-Z]/.test(value) &&
+      /\d/.test(value) &&
+      /[^A-Za-z0-9]/.test(value);
+  }
+
+  function passwordFeedback(password){
+    const value = String(password || '');
+    if(value.length < SECURITY_POLICY.minPasswordLength) return 'Use pelo menos 8 caracteres.';
+    if(!/[a-z]/.test(value)) return 'Inclua ao menos 1 letra minúscula.';
+    if(!/[A-Z]/.test(value)) return 'Inclua ao menos 1 letra maiúscula.';
+    if(!/\d/.test(value)) return 'Inclua ao menos 1 número.';
+    if(!/[^A-Za-z0-9]/.test(value)) return 'Inclua ao menos 1 símbolo.';
+    return '';
+  }
+
+  function bytesToBase64(bytes){
+    const arr = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes);
+    let binary = '';
+    for(let i = 0; i < arr.length; i++) binary += String.fromCharCode(arr[i]);
+    return btoa(binary);
+  }
+
+  function base64ToBytes(base64){
+    const binary = atob(base64);
+    const bytes = new Uint8Array(binary.length);
+    for(let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    return bytes;
+  }
+
+  async function sha256Text(value){
+    const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(String(value || '')));
+    return bytesToBase64(digest);
+  }
+
+  async function generateSalt(){
+    const bytes = new Uint8Array(16);
+    crypto.getRandomValues(bytes);
+    return bytesToBase64(bytes);
+  }
+
+  async function derivePasswordHash(password, salt){
+    const keyMaterial = await crypto.subtle.importKey(
+      'raw',
+      new TextEncoder().encode(String(password || '')),
+      'PBKDF2',
+      false,
+      ['deriveBits']
+    );
+    const bits = await crypto.subtle.deriveBits(
+      {
+        name: 'PBKDF2',
+        salt: base64ToBytes(salt),
+        iterations: SECURITY_POLICY.iterations,
+        hash: 'SHA-256'
+      },
+      keyMaterial,
+      256
+    );
+    return bytesToBase64(bits);
+  }
+
+  async function persistSecurePassword(password){
+    const salt = await generateSalt();
+    const hash = await derivePasswordHash(password, salt);
+    appConfig.senhaHash = hash;
+    appConfig.senhaSalt = salt;
+    appConfig.authVersion = SECURITY_POLICY.hashVersion;
+    appConfig.passwordUpdatedAt = new Date().toISOString();
+    salvarConfig();
+  }
+
+  async function verifyPassword(password){
+    const value = String(password || '');
+    if(!appConfig?.senhaHash) return false;
+
+    if(appConfig.authVersion === SECURITY_POLICY.hashVersion && appConfig.senhaSalt){
+      const candidate = await derivePasswordHash(value, appConfig.senhaSalt);
+      return candidate === appConfig.senhaHash;
+    }
+
+    if(value === appConfig.senhaHash){
+      await persistSecurePassword(value);
+      showToast('Sua segurança foi atualizada automaticamente.', 'success');
+      return true;
+    }
+
+    return false;
+  }
+
+  function getLockInfo(){
+    const state = getSecurityState();
+    const until = state.lockUntil ? new Date(state.lockUntil).getTime() : 0;
+    if(until && until > Date.now()){
+      const diffMin = Math.ceil((until - Date.now()) / 60000);
+      return { locked: true, minutesLeft: diffMin };
+    }
+    if(until){
+      state.lockUntil = null;
+      state.failedAttempts = 0;
+      saveSecurityState(state);
+    }
+    return { locked: false, minutesLeft: 0 };
+  }
+
+  function registerFailedAttempt(){
+    const state = getSecurityState();
+    state.failedAttempts = (state.failedAttempts || 0) + 1;
+    state.lastFailedAt = new Date().toISOString();
+    if(state.failedAttempts >= SECURITY_POLICY.maxFailedAttempts){
+      state.lockUntil = new Date(Date.now() + SECURITY_POLICY.lockMinutes * 60000).toISOString();
+      state.failedAttempts = 0;
+    }
+    saveSecurityState(state);
+    return getLockInfo();
+  }
+
+  function resetFailedAttempts(){
+    const state = getSecurityState();
+    state.failedAttempts = 0;
+    state.lockUntil = null;
+    state.lastSuccessAt = new Date().toISOString();
+    saveSecurityState(state);
+  }
+
+  function markSessionActivity(){
+    sessionStorage.setItem('isLoggedIn', 'true');
+    sessionStorage.setItem('lastActivityAt', String(Date.now()));
+  }
+
+  function forceLockScreen(reason){
+    sessionStorage.removeItem('isLoggedIn');
+    sessionStorage.removeItem('lastActivityAt');
+    const lockScreen = document.getElementById('lock-screen');
+    if(lockScreen) lockScreen.classList.remove('hidden');
+    const inputSenha = document.getElementById('inputSenha');
+    if(inputSenha) inputSenha.value = '';
+    const recView = document.getElementById('viewRecuperar');
+    const cadastroView = document.getElementById('viewCadastro');
+    const loginView = document.getElementById('viewLogin');
+    if(recView) recView.classList.add('hidden');
+    if(cadastroView) cadastroView.classList.add('hidden');
+    if(loginView) loginView.classList.remove('hidden');
+    if(reason) showToast(reason, 'warning');
+  }
+
+  function startSessionProtection(){
+    if(window.__meucaixaSessionProtectionStarted) return;
+    window.__meucaixaSessionProtectionStarted = true;
+
+    const refreshActivity = () => {
+      if(sessionStorage.getItem('isLoggedIn') === 'true'){
+        sessionStorage.setItem('lastActivityAt', String(Date.now()));
+      }
+    };
+
+    ['click','keydown','touchstart','mousemove'].forEach((evt) => {
+      window.addEventListener(evt, refreshActivity, { passive: true });
+    });
+
+    let hiddenAt = null;
+    document.addEventListener('visibilitychange', () => {
+      if(document.visibilityState === 'hidden'){
+        hiddenAt = Date.now();
+      } else if(hiddenAt && (Date.now() - hiddenAt) > SECURITY_POLICY.hiddenTabTimeoutMs && sessionStorage.getItem('isLoggedIn') === 'true'){
+        forceLockScreen('Sessão protegida após ficar em segundo plano.');
+      }
+      refreshActivity();
+    });
+
+    setInterval(() => {
+      if(sessionStorage.getItem('isLoggedIn') !== 'true') return;
+      const lastActivity = Number(sessionStorage.getItem('lastActivityAt') || Date.now());
+      if(Date.now() - lastActivity > SECURITY_POLICY.sessionTimeoutMs){
+        forceLockScreen('Sessão expirada por segurança. Faça login novamente.');
+      }
+    }, 15000);
+  }
+
+  const _originalCheckAppSecurity = window.checkAppSecurity;
+  window.checkAppSecurity = function(){
+    if(typeof _originalCheckAppSecurity === 'function'){
+      _originalCheckAppSecurity.apply(this, arguments);
+    }
+    const lockInfo = getLockInfo();
+    if(lockInfo.locked){
+      const lockScreen = document.getElementById('lock-screen');
+      if(lockScreen) lockScreen.classList.remove('hidden');
+      const recView = document.getElementById('viewRecuperar');
+      const cadastroView = document.getElementById('viewCadastro');
+      const loginView = document.getElementById('viewLogin');
+      if(recView) recView.classList.add('hidden');
+      if(cadastroView) cadastroView.classList.add('hidden');
+      if(loginView) loginView.classList.remove('hidden');
+    }
+    startSessionProtection();
+  };
+
+  window.efetuarCadastro = async function(){
+    const nome = document.getElementById('cadNome')?.value.trim();
+    const email = document.getElementById('cadEmail')?.value.trim().toLowerCase();
+    const senha = document.getElementById('cadSenha')?.value || '';
+
+    if(!nome || !email || !senha) return showToast('Preencha todos os campos!', 'error');
+    if(!isValidEmail(email)) return showToast('Digite um e-mail válido.', 'error');
+    if(!isStrongPassword(senha)) return showToast(passwordFeedback(senha), 'error');
+
+    appConfig.nome = nome.toUpperCase();
+    appConfig.email = email;
+
+    await persistSecurePassword(senha);
+    resetFailedAttempts();
+    markSessionActivity();
+
+    document.getElementById('lock-screen')?.classList.add('hidden');
+    const cadSenha = document.getElementById('cadSenha');
+    if(cadSenha) cadSenha.value = '';
+    showToast('Conta criada com segurança reforçada!', 'success');
+    if(typeof carregarConfig === 'function') carregarConfig();
+    if(typeof renderizar === 'function') renderizar();
+  };
+
+  window.checkLogin = async function(){
+    const lockInfo = getLockInfo();
+    if(lockInfo.locked){
+      return showToast(`Acesso temporariamente bloqueado. Tente novamente em ${lockInfo.minutesLeft} min.`, 'error');
+    }
+
+    const inputSenha = document.getElementById('inputSenha');
+    const input = inputSenha?.value || '';
+    if(!input) return showToast('Digite sua senha.', 'error');
+
+    const ok = await verifyPassword(input);
+    if(ok){
+      resetFailedAttempts();
+      markSessionActivity();
+      document.getElementById('lock-screen')?.classList.add('hidden');
+      if(inputSenha) inputSenha.value = '';
+      if (typeof carregarConfig === 'function') carregarConfig();
+      if (typeof renderizar === 'function') renderizar();
+
+      if (sessionStorage.getItem('hasPendingAlert') === 'true') {
+        if(typeof playNotificationSound === 'function') playNotificationSound();
+        showToast('Você tem notificações na Central de Alertas!', 'warning');
+      } else {
+        showToast('Acesso liberado com segurança reforçada!', 'success');
+      }
+    } else {
+      const fail = registerFailedAttempt();
+      if(inputSenha) inputSenha.value = '';
+      if(fail.locked){
+        showToast(`Muitas tentativas. Acesso bloqueado por ${SECURITY_POLICY.lockMinutes} minutos.`, 'error');
+      } else {
+        const state = getSecurityState();
+        const left = Math.max(SECURITY_POLICY.maxFailedAttempts - (state.failedAttempts || 0), 0);
+        showToast(`Senha incorreta. Restam ${left} tentativa(s).`, 'error');
+      }
+    }
+  };
+
+  window.enviarCodigoRecuperacao = async function(){
+    const email = document.getElementById('recEmail')?.value.trim().toLowerCase();
+    if(email !== appConfig.email) return showToast('E-mail não confere com o cadastrado.', 'error');
+
+    const codigoGerado = Math.floor(100000 + Math.random() * 900000).toString();
+    sessionStorage.setItem('recoveryCodeHash', await sha256Text(codigoGerado));
+    sessionStorage.setItem('recoveryCodeCreatedAt', String(Date.now()));
+
+    alert(`[SIMULAÇÃO DE ENVIO PARA O EMAIL]\n\nCódigo de verificação enviado para ${email}:\n\n${codigoGerado}`);
+    const inputCodigo = prompt('Digite o código de 6 dígitos:');
+    const codeAge = Date.now() - Number(sessionStorage.getItem('recoveryCodeCreatedAt') || 0);
+    const providedHash = await sha256Text(String(inputCodigo || ''));
+    const expectedHash = sessionStorage.getItem('recoveryCodeHash');
+
+    if(codeAge > 10 * 60 * 1000){
+      sessionStorage.removeItem('recoveryCodeHash');
+      sessionStorage.removeItem('recoveryCodeCreatedAt');
+      return showToast('Código expirado. Solicite um novo.', 'error');
+    }
+
+    if(providedHash !== expectedHash){
+      return showToast('Código inválido.', 'error');
+    }
+
+    let novaSenha = prompt('Código correto! Digite sua NOVA senha forte:');
+    if(!novaSenha) return;
+    novaSenha = novaSenha.trim();
+    if(!isStrongPassword(novaSenha)) return showToast(passwordFeedback(novaSenha), 'error');
+
+    await persistSecurePassword(novaSenha);
+    resetFailedAttempts();
+    markSessionActivity();
+    sessionStorage.removeItem('recoveryCodeHash');
+    sessionStorage.removeItem('recoveryCodeCreatedAt');
+    document.getElementById('lock-screen')?.classList.add('hidden');
+    showToast('Senha redefinida com sucesso!', 'success');
+    if(typeof mostrarViewLogin === 'function') mostrarViewLogin();
+  };
+
+  window.configurarSenha = async function(){
+    const atual = prompt('Digite sua senha atual:');
+    if(!atual) return;
+    const ok = await verifyPassword(atual.trim());
+    if(!ok) return showToast('Senha atual inválida.', 'error');
+
+    let novaSenha = prompt('Digite a sua NOVA SENHA forte para o aplicativo:');
+    if(!novaSenha) return;
+    novaSenha = novaSenha.trim();
+    if(!isStrongPassword(novaSenha)) return showToast(passwordFeedback(novaSenha), 'error');
+
+    await persistSecurePassword(novaSenha);
+    showToast('Senha alterada com sucesso!', 'success');
+    if(typeof closeAll === 'function') closeAll();
+  };
+
+  const _originalSairApp = window.sairApp;
+  window.sairApp = function(){
+    sessionStorage.removeItem('lastActivityAt');
+    if(typeof _originalSairApp === 'function') return _originalSairApp.apply(this, arguments);
+    sessionStorage.removeItem('isLoggedIn');
+    location.reload();
+  };
+
+  const savedConfigRaw = JSON.parse(localStorage.getItem('meucaixa_config') || '{}');
+  if(savedConfigRaw){
+    appConfig.senhaSalt = savedConfigRaw.senhaSalt || appConfig.senhaSalt || null;
+    appConfig.authVersion = savedConfigRaw.authVersion || appConfig.authVersion || null;
+    appConfig.passwordUpdatedAt = savedConfigRaw.passwordUpdatedAt || appConfig.passwordUpdatedAt || null;
+  }
+
+  startSessionProtection();
 })();
 </script>
 
