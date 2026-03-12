@@ -1230,6 +1230,45 @@
         .notif-header-glow h2 { margin: 0; font-size: 1.15rem;
             color: var(--danger); text-shadow: 0 0 10px rgba(239,68,68,0.3); }
 
+        .notifications-shell { display:flex; flex-direction:column; gap:16px; }
+        .notifications-hero { display:flex; align-items:flex-start; justify-content:space-between; gap:14px; padding:18px; border-radius:26px; border:1px solid rgba(255,255,255,0.08); background:linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03)); box-shadow:0 18px 44px rgba(0,0,0,0.22); }
+        .notifications-kicker { display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px; background:color-mix(in srgb, var(--accent) 12%, rgba(255,255,255,0.05)); color:var(--accent); border:1px solid rgba(255,255,255,0.08); font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.08em; }
+        .notifications-hero h2 { margin:12px 0 6px; font-size:1.34rem; color:var(--text); }
+        .notifications-hero p { margin:0; color:var(--text-muted); line-height:1.5; max-width:54ch; font-size:.86rem; }
+        .notifications-close { width:42px; height:42px; border:none; border-radius:16px; background:rgba(255,255,255,0.06); color:var(--text); border:1px solid rgba(255,255,255,0.08); cursor:pointer; flex-shrink:0; }
+        .notifications-summary { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:12px; }
+        .notifications-stat { padding:14px; border-radius:20px; border:1px solid rgba(255,255,255,0.08); background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)); box-shadow:inset 0 1px 0 rgba(255,255,255,0.05); }
+        .notifications-stat span { display:block; font-size:.68rem; text-transform:uppercase; letter-spacing:.08em; color:var(--text-muted); margin-bottom:6px; font-weight:800; }
+        .notifications-stat strong { display:block; color:var(--text); font-size:1.15rem; }
+        .notifications-stat small { display:block; color:var(--text-muted); font-size:.74rem; margin-top:4px; }
+        .notifications-filters { display:flex; gap:10px; flex-wrap:wrap; }
+        .notif-filter-btn { border:none; padding:11px 14px; border-radius:999px; background:rgba(255,255,255,0.05); color:var(--text-muted); border:1px solid rgba(255,255,255,0.08); font-weight:800; cursor:pointer; font-family:'Ubuntu',sans-serif; }
+        .notif-filter-btn.active { color:#03111d; background:linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 65%, white)); box-shadow:0 14px 24px color-mix(in srgb, var(--accent) 18%, transparent); }
+        .notifications-list { display:flex; flex-direction:column; gap:12px; min-height:160px; }
+        .notif-card { min-height:96px; }
+        .notif-card.meta::before { background:#8b5cf6; }
+        .notif-card.orcamento::before { background:#10b981; }
+        .notif-card.sistema::before { background:var(--accent); }
+        .notif-card.meta .notif-icon { background:rgba(139,92,246,0.14); color:#8b5cf6; }
+        .notif-card.orcamento .notif-icon { background:rgba(16,185,129,0.14); color:var(--success); }
+        .notif-card.sistema .notif-icon { background:rgba(0,242,255,0.12); color:var(--accent); }
+        .notif-meta-line { font-size:.74rem; color:var(--text-muted); line-height:1.45; }
+        .notif-helper { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:6px; }
+        .notif-tag-soft { display:inline-flex; align-items:center; gap:6px; padding:4px 9px; border-radius:999px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.07); color:var(--text); font-size:.68rem; font-weight:700; }
+        .notif-empty-state { padding:28px 18px; border-radius:24px; border:1px dashed rgba(255,255,255,0.12); background:linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); text-align:center; color:var(--text-muted); }
+        .notif-empty-state .icon { width:62px; height:62px; margin:0 auto 14px; border-radius:22px; display:grid; place-items:center; font-size:1.6rem; color:var(--success); background:rgba(16,185,129,0.12); box-shadow:0 0 22px rgba(16,185,129,0.16); }
+        @media (max-width: 680px) {
+            .notifications-hero { padding:16px; border-radius:22px; }
+            .notifications-summary { grid-template-columns:repeat(2, minmax(0,1fr)); }
+            .notif-card { padding:14px; align-items:flex-start; }
+            .notif-value-box { min-width:78px; }
+        }
+        @media (max-width: 520px) {
+            .notifications-filters { display:grid; grid-template-columns:repeat(2,1fr); }
+            .notif-filter-btn { width:100%; }
+            .notifications-summary { grid-template-columns:1fr 1fr; }
+        }
+
         /* CONTAINER PDF (OCULTO DA TELA) */
         #pdf-container { position: absolute;
             left: -9999px; top: -9999px; width: 800px; background: white; color: black; z-index: -1;
@@ -2633,23 +2672,25 @@ input:focus, select:focus, textarea:focus{
     </div>
 
 
-    <div class="modal modal-small" id="modalNotificacoes" style="z-index: 2500;
-        padding: 25px 20px; background: linear-gradient(to bottom, var(--card), var(--bg));">
-        <div style="display:flex; justify-content:space-between; align-items:center;
-            margin-bottom:20px;">
-            <div class="notif-header-glow" style="margin:0; padding: 10px 15px; width: auto;
-            flex: 1;">
-                <h2 style="display: flex;
-                align-items: center; gap: 10px;"><i class="fa-solid fa-bell fa-shake"></i> Central de Alertas</h2>
+    <div class="modal modal-small notifications-modal" id="modalNotificacoes" style="z-index: 2500; padding: 22px 18px; background: linear-gradient(180deg, color-mix(in srgb, var(--bg) 92%, #000), var(--bg));">
+        <div class="notifications-shell">
+            <div class="notifications-hero">
+                <div class="notifications-hero-copy">
+                    <div class="notifications-kicker"><i class="fa-solid fa-bell"></i> Centro de notificações</div>
+                    <h2>Alertas inteligentes do app</h2>
+                    <p>Contas, metas, orçamento, backup e atualização reunidos em uma central única, mais clara e prática para o dia a dia.</p>
+                </div>
+                <button class="notifications-close" onclick="closeModal()" aria-label="Fechar notificações"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <i class="fa-solid fa-xmark" style="font-size:1.5rem;
-            color:var(--text-muted); cursor:pointer; background: var(--input-bg); width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%;
-            margin-left: 15px;" onclick="closeModal()"></i>
-        </div>
-        <p style="font-size: 0.85rem;
-        color: var(--text-muted); margin-bottom: 20px; text-align: center;">Monitoramento inteligente das suas contas próximas ao vencimento ou em atraso.</p>
-        <div id="listaNotificacoes" style="background: transparent;
-        border: none; border-radius: 0; overflow: visible;">
+            <div class="notifications-summary" id="notificationsSummary"></div>
+            <div class="notifications-filters" id="notificationsFilters">
+                <button type="button" class="notif-filter-btn active" data-filter="tudo" onclick="filtrarCentralNotificacoes('tudo')">Tudo</button>
+                <button type="button" class="notif-filter-btn" data-filter="contas" onclick="filtrarCentralNotificacoes('contas')">Contas</button>
+                <button type="button" class="notif-filter-btn" data-filter="metas" onclick="filtrarCentralNotificacoes('metas')">Metas</button>
+                <button type="button" class="notif-filter-btn" data-filter="orcamento" onclick="filtrarCentralNotificacoes('orcamento')">Orçamento</button>
+                <button type="button" class="notif-filter-btn" data-filter="sistema" onclick="filtrarCentralNotificacoes('sistema')">Sistema</button>
+            </div>
+            <div id="listaNotificacoes" class="notifications-list"></div>
         </div>
     </div>
 
@@ -3480,6 +3521,8 @@ input:focus, select:focus, textarea:focus{
             if(document.getElementById('overlay')) document.getElementById('overlay').style.display = 'none'; 
         }
         
+        function closeModalById(modalId) { const modal = document.getElementById(modalId); if (modal) modal.classList.remove('open'); const hasOpen = !!document.querySelector('.modal.open'); if(!hasOpen && document.getElementById('overlay')) document.getElementById('overlay').style.display = 'none'; }
+
         function closeAll() { closeModal();
         document.getElementById('profileSidebar')?.classList.remove('open'); }
         
@@ -3601,107 +3644,261 @@ input:focus, select:focus, textarea:focus{
             return `<span class="bank-badge" style="background:var(--input-bg); color:var(--text); border: 1px solid var(--border);"><i class="fa-solid fa-building-columns"></i> ${bancoNome}</span>`;
         }
 
-        // VERIFICAR NOTIFICAÇÕES (AGORA COM O NOVO LAYOUT PODEROSO)
-        function verificarNotificacoes() {
-            let pendingList = [];
-            let hoje = new Date();
+        // VERIFICAR NOTIFICAÇÕES (CENTRO INTELIGENTE)
+        let notificationCenterFilter = 'tudo';
+        let notificationCenterCache = [];
+
+        function formatarDataSimples(dataISO) {
+            if(!dataISO) return '--/--/----';
+            const partes = String(dataISO).split('-');
+            if(partes.length === 3) return `${partes[2]}/${partes[1]}/${partes[0]}`;
+            return dataISO;
+        }
+
+        function obterResumoMensalAtual() {
+            const prefixoMes = `${dataVisualizacao.getFullYear()}-${String(dataVisualizacao.getMonth() + 1).padStart(2, '0')}`;
+            let entradas = 0;
+            let saidas = 0;
+            registros.forEach(r => {
+                if ((r.data || '').startsWith(prefixoMes)) {
+                    const valor = parseFloat(r.valor) || 0;
+                    if (r.tipo === 'Receita') entradas += valor;
+                    else saidas += valor;
+                }
+            });
+            return { entradas, saidas, saldo: entradas - saidas };
+        }
+
+        function criarItemNotificacao(base) {
+            return Object.assign({
+                categoria: 'sistema',
+                classe: 'sistema',
+                prioridade: 1,
+                icon: 'fa-bell',
+                title: 'Notificação',
+                meta: '',
+                tag: '',
+                amount: '',
+                actionLabel: 'Abrir',
+                action: '',
+                helper: ''
+            }, base || {});
+        }
+
+        function gerarCentralNotificacoes() {
+            const itens = [];
+            const hoje = new Date();
             hoje.setHours(0,0,0,0);
+            const msPerDay = 1000 * 60 * 60 * 24;
 
             registros.forEach((r, idx) => {
-                let vT = parseFloat(r.valor) || 0;
-                let vP = parseFloat(r.pago) || 0;
-                let isPago = vP >= vT && vT > 0;
-                
-        
-                if(!isPago && (r.tipo === 'Divida' || r.tipo === 'Juros' || r.tipo === 'Fixo' || r.tipo === 'Variavel')) {
-                    let dataOperacao = new Date(r.data + "T12:00:00");
+                const valorTotal = parseFloat(r.valor) || 0;
+                const valorPago = parseFloat(r.pago) || 0;
+                const isPago = valorPago >= valorTotal && valorTotal > 0;
+                const tipoCritico = r.tipo === 'Divida' || r.tipo === 'Juros' || r.tipo === 'Fixo' || r.tipo === 'Variavel';
+                if (!isPago && tipoCritico && r.data) {
+                    const dataOperacao = new Date(r.data + 'T12:00:00');
                     dataOperacao.setHours(0,0,0,0);
-                    const msPerDay = 1000 * 60 * 60 * 24;
-    
-                    const diffTime = dataOperacao.getTime() - hoje.getTime();
-                    const diffDays = Math.ceil(diffTime / msPerDay);
-                    if(diffDays <= 3) { pendingList.push({ ...r, realIdx: idx, diffDays: diffDays }); }
+                    const diffDays = Math.ceil((dataOperacao.getTime() - hoje.getTime()) / msPerDay);
+                    if (diffDays <= 5) {
+                        const atrasado = diffDays < 0;
+                        const tituloTempo = atrasado
+                          ? `Atrasado há ${Math.abs(diffDays)} dia(s)`
+                          : diffDays === 0
+                            ? 'Vence hoje'
+                            : `Vence em ${diffDays} dia(s)`;
+                        itens.push(criarItemNotificacao({
+                            categoria: 'contas',
+                            classe: atrasado ? 'atrasado' : 'pendente',
+                            prioridade: atrasado ? 10 : diffDays === 0 ? 9 : 7,
+                            icon: atrasado ? 'fa-triangle-exclamation' : 'fa-clock',
+                            title: r.desc || 'Conta pendente',
+                            meta: `Vencimento em ${formatarDataSimples(r.data)} • ${r.tipo || 'Lançamento'}`,
+                            tag: tituloTempo,
+                            amount: formatarMoeda(Math.max(valorTotal - valorPago, 0)),
+                            actionLabel: 'Resolver',
+                            action: `openModal(${idx})`,
+                            helper: `<span class="notif-tag-soft"><i class="fa-solid fa-wallet"></i>${r.forma || r.banco || 'Acompanhar agora'}</span>`
+                        }));
+                    }
                 }
-       
             });
 
-            const badge = document.getElementById('badgeNotificacao');
-            const listaContainer = document.getElementById('listaNotificacoes');
-            if (badge && listaContainer) {
-                if(pendingList.length > 0) {
-                    badge.classList.remove('hidden');
-                    badge.innerText = pendingList.length;
-                    
-                    let html = "";
-                    
-                    // Ordenar: Os mais atrasados primeiro
-                    pendingList.sort((a, b) => a.diffDays - b.diffDays);
-                    pendingList.forEach(p => {
-                        let isAtrasado = p.diffDays < 0;
-                        let cardClass = isAtrasado ? 'atrasado' : 'pendente';
-                        let iconClass = isAtrasado ? 'fa-triangle-exclamation fa-beat-fade' : 'fa-clock';
-       
-                        
-                        let tagHtml = "";
-                        if (isAtrasado) {
-                            let 
-                            dias = Math.abs(p.diffDays);
-                            let textoDias = dias === 1 ? "1 dia" : `${dias} dias`;
-                            tagHtml = `<span class="notif-days"><i class="fa-solid fa-fire"></i> Atrasado há ${textoDias}</span>`;
-                       
-                        } else if (p.diffDays === 0) {
-                            tagHtml = `<span class="notif-days"><i class="fa-solid fa-bolt"></i> Vence Hoje!</span>`;
-                        } else {
-                            tagHtml = `<span class="notif-days" 
-                            style="background: rgba(245, 158, 11, 0.2); color: var(--warning);"><i class="fa-solid fa-calendar-day"></i> Vence em ${p.diffDays} dia(s)</span>`;
-                        }
-
-                        let dataFormatada = p.data.split('-').reverse().join('/');
-                        html += `
-                        <div class="notif-card ${cardClass}" onclick="openModal(${p.realIdx})">
-                            <div class="notif-icon"><i class="fa-solid ${iconClass}"></i></div>
-                            <div class="notif-content">
-            
-                                <h4 class="notif-title">${p.desc}</h4>
-                                <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 2px;">Vencimento: ${dataFormatada}</div>
-                                ${tagHtml}
-       
-                            </div>
-                            <div class="notif-value-box">
-                                <span class="notif-val">${formatarMoeda(p.valor - (p.pago || 0))}</span>
-             
-                                <button class="notif-action">Resolver <i class="fa-solid fa-arrow-right" style="margin-left: 2px;"></i></button>
-                            </div>
-                        </div>`;
-                    });
-                    
-                    listaContainer.innerHTML = html;
-                    sessionStorage.setItem('hasPendingAlert', 'true');
-                } else {
-                    badge.classList.add('hidden');
-                    // TELA DE ESTADO VAZIO COMEMORATIVO
-                    listaContainer.innerHTML = `
-                        <div style="padding: 40px 20px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px;">
-                            <div style="width: 60px; height: 60px; border-radius: 
-                            50%; background: rgba(16, 185, 129, 0.1); color: var(--success); display: flex; align-items: center; justify-content: center; font-size: 2rem; box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);">
-                                <i class="fa-solid fa-check"></i>
-                            </div>
-               
-                            <div>
-                                <h4 style="margin: 0 0 5px 0; color: var(--text); font-size: 1.1rem;">Tudo no Azul!</h4>
-                                <p style="margin: 0; color: var(--text-muted); font-size: 0.85rem;">Nenhuma conta pendente ou atrasada para 
-                                os próximos dias. Excelente gestão!</p>
-                            </div>
-                        </div>
-                    `;
-                    sessionStorage.setItem('hasPendingAlert', 'false');
+            if ((appConfig.metaMensal || 0) > 0) {
+                const alvo = parseFloat(appConfig.metaMensal) || 0;
+                const acumulado = parseFloat(appConfig.metaAcumulado) || 0;
+                const progresso = alvo > 0 ? (acumulado / alvo) * 100 : 0;
+                const falta = Math.max(alvo - acumulado, 0);
+                if (progresso < 100) {
+                    itens.push(criarItemNotificacao({
+                        categoria: 'metas',
+                        classe: 'meta',
+                        prioridade: progresso < 25 ? 6 : 4,
+                        icon: progresso < 25 ? 'fa-bullseye' : 'fa-flag-checkered',
+                        title: appConfig.descMeta || 'Sua meta financeira precisa de atenção',
+                        meta: `Progresso atual: ${progresso.toFixed(1)}% concluído`,
+                        tag: progresso < 25 ? 'Meta no início' : 'Meta em andamento',
+                        amount: formatarMoeda(falta),
+                        actionLabel: 'Ver meta',
+                        action: `document.getElementById('modalGestaoMetas')?.classList.add('open'); document.getElementById('overlay').style.display='block'; closeModalById('modalNotificacoes');`,
+                        helper: `<span class="notif-tag-soft"><i class="fa-solid fa-piggy-bank"></i>Falta ${formatarMoeda(falta)} para concluir</span>`
+                    }));
                 }
             }
+
+            const resumoMes = obterResumoMensalAtual();
+            if (resumoMes.saidas > 0) {
+                const uso = resumoMes.entradas > 0 ? (resumoMes.saidas / resumoMes.entradas) * 100 : 100;
+                if (resumoMes.saldo < 0 || uso >= 80) {
+                    itens.push(criarItemNotificacao({
+                        categoria: 'orcamento',
+                        classe: 'orcamento',
+                        prioridade: resumoMes.saldo < 0 ? 8 : 5,
+                        icon: resumoMes.saldo < 0 ? 'fa-chart-line-down' : 'fa-chart-pie',
+                        title: resumoMes.saldo < 0 ? 'Orçamento mensal no vermelho' : 'Orçamento do mês pressionado',
+                        meta: `Entradas ${formatarMoeda(resumoMes.entradas)} • Saídas ${formatarMoeda(resumoMes.saidas)}`,
+                        tag: resumoMes.saldo < 0 ? 'Saldo negativo' : `${uso.toFixed(0)}% da renda comprometida`,
+                        amount: formatarMoeda(Math.abs(resumoMes.saldo < 0 ? resumoMes.saldo : (resumoMes.entradas - resumoMes.saidas))),
+                        actionLabel: 'Analisar',
+                        action: `abrirModalGraficos(); closeModalById('modalNotificacoes')`,
+                        helper: `<span class="notif-tag-soft"><i class="fa-solid fa-calendar-days"></i>Mês de ${formatarMesAno(dataVisualizacao)}</span>`
+                    }));
+                }
+            }
+
+            const ultimoBackup = localStorage.getItem('meucaixa_last_backup_at');
+            if (!ultimoBackup) {
+                itens.push(criarItemNotificacao({
+                    categoria: 'sistema',
+                    classe: 'sistema',
+                    prioridade: 3,
+                    icon: 'fa-cloud-arrow-up',
+                    title: 'Seu primeiro backup ainda não foi salvo',
+                    meta: 'Proteja seu histórico com uma cópia completa em JSON.',
+                    tag: 'Backup recomendado',
+                    amount: '',
+                    actionLabel: 'Salvar agora',
+                    action: `openSystemDataModal()`,
+                    helper: `<span class="notif-tag-soft"><i class="fa-solid fa-shield-halved"></i>Dados locais mais seguros</span>`
+                }));
+            } else {
+                const diasSemBackup = Math.floor((Date.now() - new Date(ultimoBackup).getTime()) / msPerDay);
+                if (diasSemBackup >= 7) {
+                    itens.push(criarItemNotificacao({
+                        categoria: 'sistema',
+                        classe: 'sistema',
+                        prioridade: 2,
+                        icon: 'fa-floppy-disk',
+                        title: 'Backup desatualizado',
+                        meta: `Última cópia salva em ${new Date(ultimoBackup).toLocaleDateString('pt-BR')}.`,
+                        tag: `${diasSemBackup} dia(s) sem backup`,
+                        amount: '',
+                        actionLabel: 'Atualizar backup',
+                        action: `openSystemDataModal()`,
+                        helper: `<span class="notif-tag-soft"><i class="fa-solid fa-database"></i>Evite perder seu histórico</span>`
+                    }));
+                }
+            }
+
+            if (typeof appWaitingWorker !== 'undefined' && appWaitingWorker) {
+                itens.push(criarItemNotificacao({
+                    categoria: 'sistema',
+                    classe: 'sistema',
+                    prioridade: 9,
+                    icon: 'fa-arrows-rotate',
+                    title: 'Nova atualização disponível',
+                    meta: 'Uma versão mais recente do app já está pronta para aplicar.',
+                    tag: 'Atualização pronta',
+                    amount: '',
+                    actionLabel: 'Atualizar',
+                    action: `aplicarAtualizacao()`,
+                    helper: `<span class="notif-tag-soft"><i class="fa-solid fa-cloud-arrow-down"></i>Sem reinstalar o aplicativo</span>`
+                }));
+            }
+
+            return itens.sort((a,b) => b.prioridade - a.prioridade);
+        }
+
+        function renderizarResumoNotificacoes(itens) {
+            const box = document.getElementById('notificationsSummary');
+            if (!box) return;
+            const contas = itens.filter(i => i.categoria === 'contas').length;
+            const metas = itens.filter(i => i.categoria === 'metas').length;
+            const orcamento = itens.filter(i => i.categoria === 'orcamento').length;
+            const sistema = itens.filter(i => i.categoria === 'sistema').length;
+            box.innerHTML = `
+                <div class="notifications-stat"><span>Total</span><strong>${itens.length}</strong><small>alertas ativos</small></div>
+                <div class="notifications-stat"><span>Contas</span><strong>${contas}</strong><small>próximas ou atrasadas</small></div>
+                <div class="notifications-stat"><span>Metas</span><strong>${metas}</strong><small>acompanhamentos</small></div>
+                <div class="notifications-stat"><span>Sistema</span><strong>${sistema + orcamento}</strong><small>app e orçamento</small></div>
+            `;
+        }
+
+        function renderizarListaNotificacoes() {
+            const listaContainer = document.getElementById('listaNotificacoes');
+            const badge = document.getElementById('badgeNotificacao');
+            if (!listaContainer || !badge) return;
+
+            notificationCenterCache = gerarCentralNotificacoes();
+            renderizarResumoNotificacoes(notificationCenterCache);
+            const itensFiltrados = notificationCenterFilter === 'tudo'
+                ? notificationCenterCache
+                : notificationCenterCache.filter(item => item.categoria === notificationCenterFilter);
+
+            if (notificationCenterCache.length > 0) {
+                badge.classList.remove('hidden');
+                badge.innerText = notificationCenterCache.length > 99 ? '99+' : notificationCenterCache.length;
+                sessionStorage.setItem('hasPendingAlert', 'true');
+            } else {
+                badge.classList.add('hidden');
+                sessionStorage.setItem('hasPendingAlert', 'false');
+            }
+
+            if (!itensFiltrados.length) {
+                listaContainer.innerHTML = `
+                    <div class="notif-empty-state">
+                        <div class="icon"><i class="fa-solid fa-circle-check"></i></div>
+                        <h4 style="margin:0 0 6px; color:var(--text);">Tudo em ordem por aqui</h4>
+                        <p style="margin:0;">Não há alertas para este filtro agora. Sua central está limpa e organizada.</p>
+                    </div>`;
+                return;
+            }
+
+            listaContainer.innerHTML = itensFiltrados.map(item => `
+                <div class="notif-card ${item.classe}" onclick="${item.action}">
+                    <div class="notif-icon"><i class="fa-solid ${item.icon}"></i></div>
+                    <div class="notif-content">
+                        <h4 class="notif-title">${item.title}</h4>
+                        <div class="notif-meta-line">${item.meta}</div>
+                        <div class="notif-helper">
+                            <span class="notif-days">${item.tag}</span>
+                            ${item.helper || ''}
+                        </div>
+                    </div>
+                    <div class="notif-value-box">
+                        ${item.amount ? `<span class="notif-val">${item.amount}</span>` : '<span class="notif-val" style="font-size:.8rem; color:var(--text-muted);">Agora</span>'}
+                        <button class="notif-action" type="button">${item.actionLabel} <i class="fa-solid fa-arrow-right" style="margin-left:4px;"></i></button>
+                    </div>
+                </div>`).join('');
+        }
+
+        function filtrarCentralNotificacoes(filtro) {
+            notificationCenterFilter = filtro || 'tudo';
+            document.querySelectorAll('#notificationsFilters .notif-filter-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.filter === notificationCenterFilter);
+            });
+            renderizarListaNotificacoes();
+        }
+
+        function verificarNotificacoes() {
+            renderizarListaNotificacoes();
         }
 
         function abrirNotificacoes() {
+            notificationCenterFilter = 'tudo';
             document.getElementById('modalNotificacoes')?.classList.add('open');
             if(document.getElementById('overlay')) document.getElementById('overlay').style.display = 'block';
+            filtrarCentralNotificacoes('tudo');
         }
 
         // RENDERIZAÇÃO DA TELA INICIAL
@@ -5044,7 +5241,7 @@ function exportarDadosCSV() {
             
             a.download = `Backup_MeuCaixa_${dataFormatada}.json`; 
             a.click();
-            closeAll(); showToast("Backup COMPLETO salvo!", "success"); 
+            localStorage.setItem('meucaixa_last_backup_at', new Date().toISOString()); verificarNotificacoes(); closeAll(); showToast("Backup COMPLETO salvo!", "success"); 
         }
 
         // NOVA FUNÇÃO DE IMPORTAÇÃO INTELIGENTE (Aceita JSON com imagens ou CSV antigo)
@@ -5318,11 +5515,13 @@ function exportarDadosCSV() {
         const banner = document.getElementById('appUpdateBanner');
         if (banner) banner.classList.add('show');
         atualizarIndicadorAtualizacao('Nova versão pronta', true);
+        try { verificarNotificacoes(); } catch(e) {}
       }
 
       function dispensarAtualizacao() {
         const banner = document.getElementById('appUpdateBanner');
         if (banner) banner.classList.remove('show');
+        try { verificarNotificacoes(); } catch(e) {}
       }
 
       function aplicarAtualizacao() {
