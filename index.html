@@ -1700,6 +1700,70 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
     }
 }
 
+
+/* === CATEGORIAS INTELIGENTES AUTOMÁTICAS === */
+.smart-category-hint{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-top:10px;
+    padding:12px 14px;
+    border-radius:16px;
+    background:linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+    border:1px solid rgba(255,255,255,0.10);
+    color:var(--text);
+    box-shadow:0 8px 24px rgba(0,0,0,0.16);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+}
+.smart-category-hint.hidden{display:none !important;}
+.smart-category-hint .smart-copy{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    min-width:0;
+}
+.smart-category-hint .smart-copy i{
+    width:34px;
+    height:34px;
+    border-radius:12px;
+    display:grid;
+    place-items:center;
+    background:linear-gradient(135deg, rgba(99,102,241,0.22), rgba(34,211,238,0.16));
+    color:#c7d2fe;
+    border:1px solid rgba(199,210,254,0.18);
+    flex:none;
+}
+.smart-category-hint .smart-copy div{min-width:0;}
+.smart-category-hint .smart-title{
+    font-size:0.72rem;
+    font-weight:800;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--text-soft, var(--text-muted));
+    margin-bottom:2px;
+}
+.smart-category-hint .smart-value{
+    font-size:0.95rem;
+    font-weight:800;
+    color:var(--text);
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+.smart-category-hint .smart-badge{
+    flex:none;
+    padding:8px 12px;
+    border-radius:999px;
+    font-size:0.78rem;
+    font-weight:800;
+    letter-spacing:.02em;
+    color:#e0e7ff;
+    background:linear-gradient(135deg, rgba(79,70,229,0.28), rgba(6,182,212,0.20));
+    border:1px solid rgba(165,180,252,0.20);
+}
+
 </style>
 </head>
 <body>
@@ -2149,6 +2213,17 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
         </div>
 
         <input type="text" id="desc" placeholder="Descrição Personalizada">
+
+        <div id="smartCategoryHint" class="smart-category-hint hidden">
+            <div class="smart-copy">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                <div>
+                    <div class="smart-title">Categoria inteligente detectada</div>
+                    <div class="smart-value" id="smartCategoryText">Uber → Transporte</div>
+                </div>
+            </div>
+            <span class="smart-badge" id="smartCategoryBadge">Automático</span>
+        </div>
 
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
             <div>
@@ -3049,10 +3124,89 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
             "AjusteNeg": ["🏦 Saldo Inicial Negativo", "⚖️ Correção Negativa"]
         };
 
+
+        // CATEGORIAS INTELIGENTES AUTOMÁTICAS
+        const SMART_CATEGORY_RULES = [
+            { keywords: ['uber', '99', '99pop', 'taxi', 'cabify', 'mobi', 'inDrive', 'indrive'], tipo: 'Variavel', categoria: '🚗 App/Transporte', badge: 'Transporte', preview: 'Transporte' },
+            { keywords: ['ifood', 'i food', 'delivery', 'restaurante', 'lanche', 'hamburguer', 'hambúrguer', 'pizza', 'açai', 'acai', 'pastelaria'], tipo: 'Variavel', categoria: '🍕 Alimentação', badge: 'Alimentação', preview: 'Alimentação' },
+            { keywords: ['shell', 'ipiranga', 'petrobras', 'posto', 'gasolina', 'etanol', 'diesel', 'combustivel', 'combustível'], tipo: 'Variavel', categoria: '⛽ Combustível', badge: 'Combustível', preview: 'Combustível' },
+            { keywords: ['amazon', 'mercado livre', 'mercadolivre', 'shopee', 'magalu', 'americanas', 'shein', 'aliexpress'], tipo: 'Variavel', categoria: '🛍️ Compras (Shopee/E-commerce)', badge: 'Compras', preview: 'Compras' },
+            { keywords: ['netflix', 'spotify', 'prime video', 'amazon prime', 'disney', 'max ', 'hbo', 'globoplay', 'youtube premium', 'deezer'], tipo: 'Fixo', categoria: '🎬 Streamings', badge: 'Streaming', preview: 'Assinatura' },
+            { keywords: ['farmacia', 'farmácia', 'droga', 'drogaria', 'ultrafarma', 'pague menos', 'raia'], tipo: 'Variavel', categoria: '💊 Farmácia/Saúde', badge: 'Saúde', preview: 'Saúde' },
+            { keywords: ['mercado', 'supermercado', 'atacadao', 'atacadão', 'carrefour', 'assai', 'assaí', 'extra', 'dia'], tipo: 'Variavel', categoria: '🛒 Mercado', badge: 'Mercado', preview: 'Mercado' },
+            { keywords: ['barbearia', 'barbeiro', 'salão', 'salao', 'manicure', 'estetica', 'estética'], tipo: 'Variavel', categoria: '✂️ Estética & Barbeiro', badge: 'Cuidados', preview: 'Cuidados pessoais' },
+            { keywords: ['academia', 'smart fit', 'bluefit', 'gympass'], tipo: 'Fixo', categoria: '🏋️ Academia', badge: 'Academia', preview: 'Academia' },
+            { keywords: ['salario', 'salário', 'holerite', 'pagamento empresa', 'folha'], tipo: 'Receita', categoria: '💰 Salário', badge: 'Receita', preview: 'Salário' },
+            { keywords: ['freela', 'freelance', 'servico', 'serviço', 'cliente'], tipo: 'Receita', categoria: '🚀 Freelance', badge: 'Receita', preview: 'Freelance' },
+            { keywords: ['pix recebido', 'pix entrada', 'transferencia recebida', 'transferência recebida'], tipo: 'Receita', categoria: '🛠️ Serviço', badge: 'Receita', preview: 'Entrada Pix' }
+        ];
+
+        function normalizeSmartText(texto) {
+            return (texto || '')
+                .toString()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .toLowerCase()
+                .trim();
+        }
+
+        function inferSmartLaunchData(desc, fallbackTipo) {
+            const texto = normalizeSmartText(desc);
+            if(!texto) return null;
+            for(const rule of SMART_CATEGORY_RULES) {
+                const matched = rule.keywords.some(k => texto.includes(normalizeSmartText(k)));
+                if(matched) return { ...rule };
+            }
+            return null;
+        }
+
+        function setSmartCategoryHint(rule) {
+            const box = document.getElementById('smartCategoryHint');
+            const text = document.getElementById('smartCategoryText');
+            const badge = document.getElementById('smartCategoryBadge');
+            if(!box || !text || !badge) return;
+            if(!rule) {
+                box.classList.add('hidden');
+                return;
+            }
+            const nomeCategoria = (rule.categoria || '').replace(/^[^\s]+\s/, '');
+            text.textContent = `${rule.preview || nomeCategoria} → ${nomeCategoria}`;
+            badge.textContent = rule.badge || 'Automático';
+            box.classList.remove('hidden');
+        }
+
+        let smartTypeInternalChange = false;
+
+        function aplicarCategoriaInteligente() {
+            const descInput = document.getElementById('desc');
+            const tipoEl = document.getElementById('tipo');
+            const sub = document.getElementById('submenu');
+            if(!descInput || !tipoEl || !sub) return null;
+
+            const rule = inferSmartLaunchData(descInput.value, tipoEl.value);
+            setSmartCategoryHint(rule);
+
+            if(!rule) return null;
+
+            if(tipoEl.value !== rule.tipo) {
+                smartTypeInternalChange = true;
+                tipoEl.value = rule.tipo;
+                atualizarSubmenu();
+                smartTypeInternalChange = false;
+            }
+
+            const hasOption = Array.from(sub.options).some(opt => opt.value === rule.categoria);
+            if(hasOption) sub.value = rule.categoria;
+
+            return rule;
+        }
+
         // EVENTOS GLOBAIS
         document.getElementById('valor').addEventListener('input', function() {
             if(document.getElementById('tipo').value === 'Juros') calcularJuros();
         });
+        document.getElementById('desc')?.addEventListener('input', aplicarCategoriaInteligente);
+        document.getElementById('desc')?.addEventListener('blur', aplicarCategoriaInteligente);
 
         window.calcularJuros = function() {
             const principal = parseFloat(document.getElementById('valor').value) || 0;
@@ -3734,7 +3888,8 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
                 if(gridDatas) gridDatas.style.gridTemplateColumns = isDivida ?
                 '1fr 1fr' : '1fr';
                 
-                if(!isEdit) definirDescricao();
+                if(!isEdit && !smartTypeInternalChange) definirDescricao();
+                if(!smartTypeInternalChange) setSmartCategoryHint(null);
                 if(isJuros) calcularJuros();
             }
         }
@@ -3753,8 +3908,11 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
             const forma = document.getElementById('formaRecebimento')?.value;
             
             const cat = document.getElementById('submenu')?.value || "";
-            const bancoSel = (t === 'Divida' || t === 'Juros') ? (document.getElementById('banco')?.value || "") : "";
-            const dataLanc = (t === 'Divida' || t === 'Juros') ?
+            const smartRule = inferSmartLaunchData(desc, t);
+            const tipoFinal = smartRule?.tipo || t;
+            const categoriaFinal = smartRule?.categoria || cat;
+            const bancoSel = (tipoFinal === 'Divida' || tipoFinal === 'Juros') ? (document.getElementById('banco')?.value || "") : "";
+            const dataLanc = (tipoFinal === 'Divida' || tipoFinal === 'Juros') ?
             (document.getElementById('dataLancamento')?.value || dBase) : dBase;
             
             const isP = document.getElementById('selectPago')?.value === "1";
@@ -3765,32 +3923,32 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
             if(!desc || vT <= 0 || !dBase) return showToast("Preencha todos os campos!", "error");
             
             const horaAtual = new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
-            let isReceita = (t === 'Receita');
+            let isReceita = (tipoFinal === 'Receita');
             let triggerWin = false;
             
             if(editIdx !== "") { 
                 let wasNotPaid = (parseFloat(registros[editIdx].pago) || 0) === 0;
-                registros[editIdx] = { ...registros[editIdx], tipo: t, desc, categoria: cat, valor: vT, pago: valorPago, data: dBase, dataLancamento: dataLanc, banco: bancoSel, forma: isReceita ?
+                registros[editIdx] = { ...registros[editIdx], tipo: tipoFinal, desc, categoria: categoriaFinal, valor: vT, pago: valorPago, data: dBase, dataLancamento: dataLanc, banco: bancoSel, forma: isReceita ?
                 forma : null, comprovante: compB64 || registros[editIdx].comprovante, hora: registros[editIdx].hora || horaAtual }; 
                 
                 if (wasNotPaid && isP) {
                     if (isReceita) { setTimeout(playIncomeSound, 400);
                     triggerConfetti(); }
-                    else if (t === 'Divida' || t === 'Juros') { triggerWin = true;
+                    else if (tipoFinal === 'Divida' || tipoFinal === 'Juros') { triggerWin = true;
                     }
                     else { setTimeout(playNotificationSound, 400);
                     triggerConfetti(); }
                 }
             } else {
-                if (t === 'Divida' && parseInt(document.getElementById('parcelas')?.value) > 1) {
+                if (tipoFinal === 'Divida' && parseInt(document.getElementById('parcelas')?.value) > 1) {
                     const p = parseInt(document.getElementById('parcelas').value), pP = parseInt(document.getElementById('parcelasPagas').value);
                     const vParc = vT / p; let dObj = new Date(dBase + "T12:00:00");
                     for (let i = 1; i <= p; i++) {
                         let nD = new Date(dObj.getFullYear(), dObj.getMonth() + (i - 1), dObj.getDate()).toISOString().split('T')[0];
-                        registros.push({ tipo: t, desc: `${desc} (${i}/${p})`, categoria: cat, valor: vParc, pago: (i <= pP) ? vParc : 0, data: nD, dataLancamento: dataLanc, banco: bancoSel, comprovante: i===1 ? compB64 : null, hora: horaAtual });
+                        registros.push({ tipo: tipoFinal, desc: `${desc} (${i}/${p})`, categoria: categoriaFinal, valor: vParc, pago: (i <= pP) ? vParc : 0, data: nD, dataLancamento: dataLanc, banco: bancoSel, comprovante: i===1 ? compB64 : null, hora: horaAtual });
                     }
                     if(isP) { triggerWin = true; }
-                } else if (t === 'Juros' && parseInt(document.getElementById('qtdParcelasJuros')?.value) >= 1) {
+                } else if (tipoFinal === 'Juros' && parseInt(document.getElementById('qtdParcelasJuros')?.value) >= 1) {
                     const principal = vT;
                     const taxa = parseFloat(document.getElementById('taxaJuros').value) || 0;
                     const parcelas = parseInt(document.getElementById('qtdParcelasJuros').value) || 1;
@@ -3812,9 +3970,9 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
                         let dataStr = nD.toISOString().split('T')[0];
 
                         registros.push({
-                            tipo: t,
+                            tipo: tipoFinal,
                             desc: `${desc} (${i}/${parcelas})`,
-                            categoria: cat,
+                            categoria: categoriaFinal,
                             valor: vParc,
                             pago: (i <= pagas) ? vParc : 0,
                             data: dataStr,
@@ -3826,11 +3984,11 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
                     }
                     if (isP) { triggerWin = true; }
                 } else { 
-                    registros.push({ tipo: t, desc, categoria: cat, valor: vT, pago: valorPago, data: dBase, dataLancamento: dataLanc, banco: bancoSel, forma: isReceita ? forma : null, comprovante: compB64, hora: horaAtual });
+                    registros.push({ tipo: tipoFinal, desc, categoria: categoriaFinal, valor: vT, pago: valorPago, data: dBase, dataLancamento: dataLanc, banco: bancoSel, forma: isReceita ? forma : null, comprovante: compB64, hora: horaAtual });
                     if(isP) {
                         if (isReceita) { setTimeout(playIncomeSound, 400);
                         triggerConfetti(); }
-                        else if (t === 'Divida' || t === 'Juros') { triggerWin = true;
+                        else if (tipoFinal === 'Divida' || tipoFinal === 'Juros') { triggerWin = true;
                         }
                         else { setTimeout(playNotificationSound, 400);
                         triggerConfetti(); }
@@ -4306,16 +4464,18 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
                 if (catTotais[c] > vilaoValor) { vilaoValor = catTotais[c]; vilaoCat = c; }
             }
 
-            const subsKeywords = ['netflix', 'spotify', 'amazon', 'prime video', 'hbo', 'disney', 'smartfit', 'gympass', 'tim', 'vivo', 'claro', 'apple', 'google', 'youtube'];
-            let subsCount = 0;
-            let subsTotal = 0;
-            transacoes.filter(t => !t.isEntrada).forEach(t => {
-                let descL = t.favorecido.toLowerCase();
-                if (subsKeywords.some(kw => descL.includes(kw))) {
-                    subsCount++;
-                    subsTotal += t.valor;
-                }
-            });
+            const assinaturasDetectadas = window.detectarAssinaturasExtrato(transacoes);
+            const subsCount = assinaturasDetectadas.length;
+            const subsTotal = assinaturasDetectadas.reduce((s, item) => s + item.total, 0);
+            const subsTop3Html = assinaturasDetectadas.slice(0, 3).map(item => `
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 12px; border-radius:12px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.05);">
+                    <div style="min-width:0;">
+                        <strong style="display:block; color:#fff; font-size:0.86rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${item.nome}</strong>
+                        <span style="font-size:0.65rem; color:var(--text-muted);">${item.qtd} cobrança(s) encontrada(s)</span>
+                    </div>
+                    <strong style="color:var(--reserve); font-size:0.9rem; white-space:nowrap;">${formatarMoeda(item.total)}</strong>
+                </div>
+            `).join('');
 
             insightsHtml = `
             <div style="background: linear-gradient(160deg, #111827 0%, #030712 100%); border: 1px solid rgba(0, 242, 255, 0.2); border-radius: 20px; padding: 22px; margin-bottom: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.5), inset 0 2px 10px rgba(0, 242, 255, 0.05); position: relative; overflow: hidden;">
@@ -4360,15 +4520,21 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 
             if (subsCount > 0) {
                 insightsHtml += `
-                    <div onclick="filtrarExtratoIA('assinatura', 'subs')" style="cursor: pointer; background: rgba(255,255,255,0.03); border: 1px solid rgba(139, 92, 246, 0.2); padding: 16px; border-radius: 16px; display: flex; align-items: center; gap: 15px; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(139, 92, 246, 0.08)'; this.style.transform='translateY(-2px)'; this.style.borderColor='rgba(139, 92, 246, 0.4)';" onmouseout="this.style.background='rgba(255,255,255,0.03)'; this.style.transform='translateY(0)'; this.style.borderColor='rgba(139, 92, 246, 0.2)';">
-                        <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(139, 92, 246, 0.15); color: var(--reserve); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; box-shadow: 0 4px 10px rgba(139, 92, 246, 0.2);"><i class="fa-solid fa-repeat"></i></div>
-                        <div style="flex: 1; overflow: hidden;">
-                            <span style="display: block; font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 1px; margin-bottom: 2px;">Assinaturas Recorrentes</span>
-                            <strong style="color: #fff; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;">${subsCount} serviço(s) detectado(s)</strong>
+                    <div onclick="filtrarExtratoIA('assinatura', 'subs')" style="cursor: pointer; background: linear-gradient(180deg, rgba(139, 92, 246, 0.12), rgba(15, 23, 42, 0.78)); border: 1px solid rgba(139, 92, 246, 0.26); padding: 18px; border-radius: 18px; display: block; transition: all 0.3s ease; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 12px 24px rgba(76,29,149,0.18);" onmouseover="this.style.background='linear-gradient(180deg, rgba(139, 92, 246, 0.17), rgba(15, 23, 42, 0.88))'; this.style.transform='translateY(-2px)'; this.style.borderColor='rgba(139, 92, 246, 0.42)';" onmouseout="this.style.background='linear-gradient(180deg, rgba(139, 92, 246, 0.12), rgba(15, 23, 42, 0.78))'; this.style.transform='translateY(0)'; this.style.borderColor='rgba(139, 92, 246, 0.26)';">
+                        <div style="display:flex; align-items:flex-start; gap:14px; margin-bottom:14px;">
+                            <div style="width: 48px; height: 48px; border-radius: 14px; background: rgba(139, 92, 246, 0.18); color: var(--reserve); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; box-shadow: 0 8px 18px rgba(139, 92, 246, 0.22);"><i class="fa-solid fa-cloud-arrow-down"></i></div>
+                            <div style="flex:1; min-width:0;">
+                                <span style="display:block; font-size:0.72rem; color:#c4b5fd; text-transform:uppercase; font-weight:800; letter-spacing:1px; margin-bottom:4px;">Assinaturas Detectadas</span>
+                                <strong style="display:block; color:#fff; font-size:1rem;">${subsCount} serviço(s) encontrado(s)</strong>
+                                <span style="font-size:0.72rem; color:var(--text-muted);">Toque para filtrar apenas cobranças recorrentes no extrato.</span>
+                            </div>
+                            <div style="text-align:right;">
+                                <span style="display:block; font-size:0.68rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Total mensal</span>
+                                <strong style="color: var(--reserve); font-size: 1.05rem; display: block; margin-top:2px;">${formatarMoeda(subsTotal)}</strong>
+                            </div>
                         </div>
-                        <div style="text-align: right;">
-                            <strong style="color: var(--reserve); font-size: 1.1rem; display: block;">${formatarMoeda(subsTotal)}</strong>
-                            <span style="font-size: 0.65rem; color: var(--text-muted); font-weight: 600; display: inline-block; margin-top: 4px;">Total mensal</span>
+                        <div style="display:grid; gap:8px;">
+                            ${subsTop3Html}
                         </div>
                     </div>`;
             }
@@ -4408,6 +4574,42 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 
     
 // --- FILTROS DE IA ---
+
+window.detectarAssinaturasExtrato = function(lista){
+    const assinaturaMap = [
+        { nome: 'Netflix', chaves: ['netflix'] },
+        { nome: 'Spotify', chaves: ['spotify'] },
+        { nome: 'Amazon', chaves: ['amazon', 'prime video', 'amazon prime'] },
+        { nome: 'HBO Max', chaves: ['hbo', 'max '] },
+        { nome: 'Disney+', chaves: ['disney'] },
+        { nome: 'Smart Fit', chaves: ['smartfit', 'smart fit'] },
+        { nome: 'Gympass', chaves: ['gympass', 'wellhub'] },
+        { nome: 'TIM', chaves: [' tim ', 'tim fibra', 'tim ultra'] },
+        { nome: 'Vivo', chaves: [' vivo ', 'vivo fibra'] },
+        { nome: 'Claro', chaves: [' claro ', 'claro net', 'net claro'] },
+        { nome: 'Apple', chaves: ['apple.com', 'apple services', 'itunes', 'icloud'] },
+        { nome: 'Google', chaves: ['google', 'youtube premium', 'google one'] },
+        { nome: 'YouTube', chaves: ['youtube'] }
+    ];
+
+    const normalizar = (v='') => ` ${String(v).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')} `;
+    const grupos = {};
+
+    (lista || []).filter(t => !t.isEntrada).forEach(t => {
+        const base = normalizar(t.favorecido || '');
+        const match = assinaturaMap.find(item => item.chaves.some(ch => base.includes(normalizar(ch).trim())));
+        if(match){
+            if(!grupos[match.nome]){
+                grupos[match.nome] = { nome: match.nome, total: 0, qtd: 0 };
+            }
+            grupos[match.nome].total += parseFloat(t.valor) || 0;
+            grupos[match.nome].qtd += 1;
+        }
+    });
+
+    return Object.values(grupos).sort((a,b) => b.total - a.total);
+};
+
 window.filtroAtivoIA = { tipo: null, valor: null };
 window.filtrarExtratoIA = function(tipo, valor) {
     let limparBtn = document.getElementById('btnLimparFiltroIA');
@@ -4415,7 +4617,43 @@ window.filtrarExtratoIA = function(tipo, valor) {
     if (window.filtroAtivoIA && window.filtroAtivoIA.tipo === tipo && window.filtroAtivoIA.valor === valor) {
         // Desativar filtro (mostrar tudo)
         document.querySelectorAll('.ia-card-item').forEach(el => el.style.display = 'flex');
-        window.filtroAtivoIA = { tipo: null, valor: null };
+        
+window.detectarAssinaturasExtrato = function(lista){
+    const assinaturaMap = [
+        { nome: 'Netflix', chaves: ['netflix'] },
+        { nome: 'Spotify', chaves: ['spotify'] },
+        { nome: 'Amazon', chaves: ['amazon', 'prime video', 'amazon prime'] },
+        { nome: 'HBO Max', chaves: ['hbo', 'max '] },
+        { nome: 'Disney+', chaves: ['disney'] },
+        { nome: 'Smart Fit', chaves: ['smartfit', 'smart fit'] },
+        { nome: 'Gympass', chaves: ['gympass', 'wellhub'] },
+        { nome: 'TIM', chaves: [' tim ', 'tim fibra', 'tim ultra'] },
+        { nome: 'Vivo', chaves: [' vivo ', 'vivo fibra'] },
+        { nome: 'Claro', chaves: [' claro ', 'claro net', 'net claro'] },
+        { nome: 'Apple', chaves: ['apple.com', 'apple services', 'itunes', 'icloud'] },
+        { nome: 'Google', chaves: ['google', 'youtube premium', 'google one'] },
+        { nome: 'YouTube', chaves: ['youtube'] }
+    ];
+
+    const normalizar = (v='') => ` ${String(v).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')} `;
+    const grupos = {};
+
+    (lista || []).filter(t => !t.isEntrada).forEach(t => {
+        const base = normalizar(t.favorecido || '');
+        const match = assinaturaMap.find(item => item.chaves.some(ch => base.includes(normalizar(ch).trim())));
+        if(match){
+            if(!grupos[match.nome]){
+                grupos[match.nome] = { nome: match.nome, total: 0, qtd: 0 };
+            }
+            grupos[match.nome].total += parseFloat(t.valor) || 0;
+            grupos[match.nome].qtd += 1;
+        }
+    });
+
+    return Object.values(grupos).sort((a,b) => b.total - a.total);
+};
+
+window.filtroAtivoIA = { tipo: null, valor: null };
         if(limparBtn) limparBtn.style.display = 'none';
     } else {
         // Ativar filtro
@@ -4429,8 +4667,8 @@ window.filtrarExtratoIA = function(tipo, valor) {
             if (tipo === 'categoria' && cCat.trim() === valor.trim()) show = true;
             if (tipo === 'assinatura') {
                 let descL = cFav.toLowerCase();
-                let subs = ['netflix', 'spotify', 'amazon', 'prime video', 'hbo', 'disney', 'smartfit', 'gympass', 'tim', 'vivo', 'claro', 'apple', 'google', 'youtube'];
-                if (subs.some(kw => descL.includes(kw))) show = true;
+                let subs = (window.detectarAssinaturasExtrato([{favorecido: cFav, valor: 0, isEntrada: false}]) || []);
+                if (subs.length > 0) show = true;
             }
             if (tipo === 'entrada' && isEntrada) show = true;
             if (tipo === 'saida' && !isEntrada) show = true;
@@ -4486,10 +4724,11 @@ Deseja alocar esse valor direto no cofre agora?`);
         }
     }
     
+    const smartRuleVault = inferSmartLaunchData(descInput, tipoInput);
     registros.push({
-        tipo: tipoInput,
+        tipo: smartRuleVault?.tipo || tipoInput,
         desc: descInput,
-        categoria: catInferida || tipoInput,
+        categoria: catInferida || smartRuleVault?.categoria || tipoInput,
         valor: parseFloat(valor),
         pago: parseFloat(valor), 
         data: dataISO,
