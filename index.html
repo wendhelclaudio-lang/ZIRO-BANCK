@@ -4,20 +4,12 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-<title>MeuCaixa - Comando de Ativos</title>
-<link href="./manifest_pwa_fullscreen.json" rel="manifest" id="appManifest"/>
+<title>MeuCaixa - Comando de Ativos</title><!-- auth-firebase-v2 -->
+<link href="./manifest.json" rel="manifest"/>
 <meta content="yes" name="apple-mobile-web-app-capable"/>
 <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
 <link href="./icon.svg" rel="apple-touch-icon"/>
 <meta content="#030712" name="theme-color"/>
-<meta name="mobile-web-app-capable" content="yes"/>
-<meta name="application-name" content="MeuCaixa"/>
-<meta name="apple-mobile-web-app-title" content="MeuCaixa"/>
-<meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-<meta name="theme-color" content="#030712" media="(prefers-color-scheme: dark)"/>
-<meta name="theme-color" content="#030712" media="(prefers-color-scheme: light)"/>
-
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -2028,29 +2020,8 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
             margin: 12px 0 0;
         }
 </style>
-
-<style>
-.pwa-install-overlay{position:fixed;inset:0;z-index:99999;background:rgba(2,6,23,.88);backdrop-filter:blur(10px);display:none;align-items:flex-end;justify-content:center;padding:18px}.pwa-install-overlay.show{display:flex}.pwa-install-sheet{width:min(520px,100%);background:linear-gradient(180deg,#0f172a,#111827);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:18px 18px 16px;color:#fff;box-shadow:0 20px 80px rgba(0,0,0,.45)}.pwa-install-sheet h3{margin:0 0 8px;font-size:1.2rem}.pwa-install-sheet p{margin:0 0 12px;color:rgba(255,255,255,.8);line-height:1.45}.pwa-install-steps{margin:0 0 14px;padding-left:20px;color:rgba(255,255,255,.9)}.pwa-install-actions{display:flex;gap:10px;flex-wrap:wrap}.pwa-install-actions button{border:none;border-radius:14px;padding:12px 16px;font-weight:700;cursor:pointer}.pwa-primary{background:linear-gradient(135deg,#22d3ee,#14b8a6);color:#04111d}.pwa-secondary{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.12)}
-html.pwa-standalone,body.pwa-standalone{height:100%;overflow:hidden}body.pwa-standalone{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
-</style>
 </head>
 <body>
-<div class="pwa-install-overlay" id="pwaInstallOverlay" aria-hidden="true">
-  <div class="pwa-install-sheet">
-    <h3>Instale o MeuCaixa para remover a barra do navegador</h3>
-    <p>No celular, a barra do site só desaparece quando o app é aberto como PWA instalado. Este modo abre em tela cheia, com aparência de app.</p>
-    <ol class="pwa-install-steps" id="pwaInstallSteps">
-      <li>Toque no menu do navegador</li>
-      <li>Escolha <strong>Instalar app</strong> ou <strong>Adicionar à tela inicial</strong></li>
-      <li>Abra o MeuCaixa pelo ícone instalado</li>
-    </ol>
-    <div class="pwa-install-actions">
-      <button class="pwa-primary" id="pwaInstallNowBtn">Instalar agora</button>
-      <button class="pwa-secondary" id="pwaInstallCloseBtn">Entendi</button>
-    </div>
-  </div>
-</div>
-
 <div id="toast-container"></div>
 <div class="hidden" id="ios-prompt" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--card); border: 2px solid var(--accent); padding: 20px; border-radius: 16px; z-index: 100000; width: 90%; max-width: 350px; box-shadow: 0 10px 40px rgba(0,0,0,0.7); text-align: center;">
 <h3 style="margin: 0 0 10px 0; color: var(--text); font-size: 1.1rem;"><i class="fa-brands fa-apple" style="margin-right: 5px;"></i> Instalar no iPhone</h3>
@@ -2079,7 +2050,7 @@ html.pwa-standalone,body.pwa-standalone{height:100%;overflow:hidden}body.pwa-sta
 <div class="input-group"><i class="fa-solid fa-user"></i><input class="lock-input" id="cadNome" placeholder="Como devemos te chamar?" type="text"/></div>
 <div class="input-group"><i class="fa-solid fa-envelope"></i><input autocapitalize="none" autocomplete="email" class="lock-input" id="cadEmail" inputmode="email" placeholder="Seu melhor e-mail" spellcheck="false" type="email"/></div>
 <div class="input-group"><i class="fa-solid fa-lock"></i><input autocapitalize="none" autocomplete="new-password" class="lock-input password" id="cadSenha" onkeypress="if(event.key === 'Enter') efetuarCadastro()" placeholder="Crie uma senha forte" spellcheck="false" type="password"/></div>
-<div class="auth-divider">ou</div><button class="btn-google" onclick="loginGoogle()" type="button"><i class="fa-brands fa-google"></i> Continuar com Google</button><button class="btn-install" id="btnInstallCadastro" onclick="instalarApp()" type="button"><i class="fa-solid fa-mobile-screen-button"></i> Instalar app sem barra do navegador</button><p class="auth-note">Ao criar sua conta por e-mail, enviamos uma verificação para seu Gmail.</p><button class="btn-forgot" onclick="mostrarViewLogin()" type="button">Já tenho conta</button><button class="btn-login" onclick="efetuarCadastro()">CADASTRAR E ENTRAR</button>
+<div class="auth-divider">ou</div><button class="btn-google" onclick="loginGoogle()" type="button"><i class="fa-brands fa-google"></i> Continuar com Google</button><p class="auth-note">Ao criar sua conta por e-mail, enviamos uma verificação para seu Gmail.</p><button class="btn-forgot" onclick="mostrarViewLogin()" type="button">Já tenho conta</button><button class="btn-login" onclick="efetuarCadastro()">CADASTRAR E ENTRAR</button>
 </div>
 <div class="auth-view hidden" id="viewLogin" style="justify-content: center; height: 100%;">
 <h2 class="lock-title" id="txtWelcomeBack">Olá, WENDEL!</h2>
@@ -2087,7 +2058,7 @@ html.pwa-standalone,body.pwa-standalone{height:100%;overflow:hidden}body.pwa-sta
                 Digite sua senha.</p>
 <div class="input-group"><i class="fa-solid fa-envelope"></i><input autocapitalize="none" autocomplete="email" class="lock-input" id="inputEmail" inputmode="email" placeholder="Seu e-mail cadastrado" spellcheck="false" type="email"/></div><div class="input-group"><i class="fa-solid fa-key"></i><input autocapitalize="none" autocomplete="current-password" class="lock-input password" id="inputSenha" onkeypress="if(event.key === 'Enter') checkLogin()" placeholder="Sua senha secreta" spellcheck="false" type="password"/></div>
 <button class="btn-login" onclick="checkLogin()">ENTRAR NO MEUCAIXA</button>
-<div class="auth-divider">ou</div><button class="btn-google" onclick="loginGoogle()" type="button"><i class="fa-brands fa-google"></i> Entrar com Google</button><button class="btn-install" id="btnInstallLogin" onclick="instalarApp()" type="button"><i class="fa-solid fa-mobile-screen-button"></i> Instalar app sem barra do navegador</button><div class="auth-link-row"><button class="btn-forgot" onclick="mostrarViewCadastro()" type="button">Criar conta</button><button class="btn-forgot" onclick="reenviarVerificacaoEmail()" type="button">Reenviar verificação</button></div><button class="btn-forgot" onclick="recuperarSenha()">Esqueci minha senha</button><div class="auth-status-note" id="authModeHint">Para usar sem a barra do site, instale o MeuCaixa na tela inicial.</div>
+<div class="auth-divider">ou</div><button class="btn-google" onclick="loginGoogle()" type="button"><i class="fa-brands fa-google"></i> Entrar com Google</button><div class="auth-link-row"><button class="btn-forgot" onclick="mostrarViewCadastro()" type="button">Criar conta</button><button class="btn-forgot" onclick="reenviarVerificacaoEmail()" type="button">Reenviar verificação</button></div><button class="btn-forgot" onclick="recuperarSenha()">Esqueci minha senha</button><div class="auth-status-note" id="authModeHint">Para usar como aplicativo, instale o MeuCaixa na tela inicial.</div>
 </div>
 <div class="auth-view hidden" id="viewRecuperar">
 <h2 class="lock-title">Recuperar Senha</h2>
@@ -2954,20 +2925,19 @@ html.pwa-standalone,body.pwa-standalone{height:100%;overflow:hidden}body.pwa-sta
         }
 
         if (firebaseReady) {
+            firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(console.error);
             firebase.auth().onAuthStateChanged(async (user) => {
                 currentFirebaseUser = user || null;
                 if (user) {
                     sessionStorage.setItem('isLoggedIn', 'true');
                     try {
-                        await carregarPerfilFirebase(user);
+                        await persistirSessaoFirebase(user);
                     } catch (e) {
-                        console.error('Falha ao carregar perfil do Firebase:', e);
+                        console.error('Falha ao sincronizar sessão Firebase:', e);
                     }
-                    document.getElementById('lock-screen')?.classList.add('hidden');
-                    carregarConfig();
-                    renderizar();
                 } else {
                     sessionStorage.removeItem('isLoggedIn');
+                    document.getElementById('lock-screen')?.classList.remove('hidden');
                     checkAppSecurity();
                 }
             });
@@ -3245,23 +3215,37 @@ html.pwa-standalone,body.pwa-standalone{height:100%;overflow:hidden}body.pwa-sta
             try {
                 const result = await firebase.auth().getRedirectResult();
                 if (result && result.user) {
+                    sessionStorage.removeItem('googleRedirectPending');
                     await persistirSessaoFirebase(result.user);
+                    showToast("Login com Google realizado com sucesso!", "success");
+                    return;
+                }
+                if (sessionStorage.getItem('googleRedirectPending') === '1' && firebase.auth().currentUser) {
+                    sessionStorage.removeItem('googleRedirectPending');
+                    await persistirSessaoFirebase(firebase.auth().currentUser);
                     showToast("Login com Google realizado com sucesso!", "success");
                 }
             } catch (e) {
                 console.error(e);
-                showToast("Não foi possível concluir o login com Google.", "error");
+                sessionStorage.removeItem('googleRedirectPending');
+                const msg = e?.code === 'auth/unauthorized-domain'
+                    ? 'Domínio não autorizado no Firebase.'
+                    : e?.code === 'auth/account-exists-with-different-credential'
+                    ? 'Este e-mail já usa outro método de login.'
+                    : 'Não foi possível concluir o login com Google.';
+                showToast(msg, "error");
             }
         }
 
         async function loginGoogle() {
             if (!firebaseReady) return showToast("Firebase não inicializado.", "error");
+            const provider = new firebase.auth.GoogleAuthProvider();
+            provider.setCustomParameters({ prompt: 'select_account' });
             try {
-                const provider = new firebase.auth.GoogleAuthProvider();
-                provider.setCustomParameters({ prompt: 'select_account' });
-                const isMobile = /android|iphone|ipad|ipod/i.test(navigator.userAgent);
                 const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-                if (isMobile || isStandalone) {
+                const isMobile = /android|iphone|ipad|ipod/i.test(navigator.userAgent);
+                if (isStandalone || isMobile) {
+                    sessionStorage.setItem('googleRedirectPending', '1');
                     await firebase.auth().signInWithRedirect(provider);
                     return;
                 }
@@ -3272,15 +3256,19 @@ html.pwa-standalone,body.pwa-standalone{height:100%;overflow:hidden}body.pwa-sta
                 console.error(e);
                 if (['auth/popup-blocked','auth/popup-closed-by-user','auth/cancelled-popup-request','auth/operation-not-supported-in-this-environment'].includes(e?.code)) {
                     try {
-                        const provider = new firebase.auth.GoogleAuthProvider();
-                        provider.setCustomParameters({ prompt: 'select_account' });
+                        sessionStorage.setItem('googleRedirectPending', '1');
                         await firebase.auth().signInWithRedirect(provider);
                         return;
                     } catch (redirectErr) {
                         console.error(redirectErr);
                     }
                 }
-                showToast("Não foi possível entrar com Google.", "error");
+                const msg = e?.code === 'auth/unauthorized-domain'
+                    ? 'Domínio não autorizado no Firebase.'
+                    : e?.code === 'auth/account-exists-with-different-credential'
+                    ? 'Este e-mail já usa outro método de login.'
+                    : 'Não foi possível entrar com Google.';
+                showToast(msg, "error");
             }
         }
 
@@ -6411,28 +6399,5 @@ function exportarDadosCSV() {
 </script>
 
 <!-- Firebase auth rebuilt v2 -->
-
-<script>
-(function(){
-  const manifestData={name:'MeuCaixa - Comando de Ativos',short_name:'MeuCaixa',id:'./?source=pwa',start_url:'./index.html?source=pwa',scope:'./',display:'fullscreen',display_override:['fullscreen','standalone','minimal-ui'],background_color:'#030712',theme_color:'#030712',orientation:'portrait-primary',icons:[{src:'./icon.svg',sizes:'192x192 512x512',type:'image/svg+xml',purpose:'any maskable'}]};
-  try{const blob=new Blob([JSON.stringify(manifestData)],{type:'application/manifest+json'});const url=URL.createObjectURL(blob);const el=document.getElementById('appManifest');if(el)el.href=url;}catch(e){}
-  const mq=window.matchMedia?window.matchMedia('(display-mode: standalone), (display-mode: fullscreen)'):null;
-  const isStandalone=()=> (mq&&mq.matches) || window.navigator.standalone===true || document.referrer.startsWith('android-app://');
-  const overlay=document.getElementById('pwaInstallOverlay');
-  const nowBtn=document.getElementById('pwaInstallNowBtn');
-  const closeBtn=document.getElementById('pwaInstallCloseBtn');
-  let deferred=null;
-  function applyStandalone(){const yes=isStandalone();document.documentElement.classList.toggle('pwa-standalone',yes);document.body.classList.toggle('pwa-standalone',yes);if(overlay)overlay.classList.toggle('show',!yes);}
-  window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;if(nowBtn)nowBtn.textContent='Instalar agora';applyStandalone();});
-  window.addEventListener('appinstalled',()=>{deferred=null;localStorage.setItem('meucaixa_pwa_installed','1');if(overlay)overlay.classList.remove('show');setTimeout(()=>location.href='./index.html?source=pwa',300);});
-  if(nowBtn) nowBtn.addEventListener('click', async()=>{
-    if(deferred){await deferred.prompt(); try{await deferred.userChoice;}catch(e){} return;}
-    alert('Para remover a barra do navegador, instale o MeuCaixa pelo menu do navegador e abra pelo ícone instalado.');
-  });
-  if(closeBtn) closeBtn.addEventListener('click',()=>overlay&&overlay.classList.remove('show'));
-  setTimeout(applyStandalone,150);
-  if(mq&&mq.addEventListener)mq.addEventListener('change',applyStandalone);
-})();
-</script>
 </body>
 </html>
