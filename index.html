@@ -28,26 +28,135 @@
         /* VARIÁVEIS DE TEMAS */
         :root {
             --bg: #030712;
-            --card: #111827; --accent: #00f2ff; --text: #f3f4f6;
-            --text-muted: #94a3b8; --border: #1f2937; --input-bg: #1f2937;
-            --hover-bg: rgba(255,255,255,0.05); --success: #10b981; --danger: #ef4444;
+            --card: #111827;
+            --accent: #00f2ff;
+            --accent-2: #10b981;
+            --text: #f3f4f6;
+            --text-muted: #94a3b8;
+            --border: #1f2937;
+            --input-bg: #111827;
+            --hover-bg: rgba(255,255,255,0.05);
+            --success: #10b981;
+            --danger: #ef4444;
             --warning: #f59e0b;
             --reserve: #8b5cf6;
+            --bg-gradient: radial-gradient(circle at top left, rgba(0,242,255,0.15), transparent 28%), radial-gradient(circle at top right, rgba(16,185,129,0.14), transparent 22%), linear-gradient(180deg, #020617 0%, #030712 100%);
+            --panel-surface: linear-gradient(180deg, rgba(17,24,39,0.92), rgba(10,15,27,0.96));
+            --surface-soft: linear-gradient(135deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03));
+            --surface-strong: linear-gradient(135deg, rgba(0,242,255,0.16), rgba(255,255,255,0.04));
+            --brand-line: linear-gradient(90deg, rgba(0,242,255,0), rgba(0,242,255,0.92), rgba(16,185,129,0.78), rgba(0,242,255,0));
+            --card-shadow: 0 18px 40px rgba(0,0,0,0.28);
+            --theme-contrast: #03111d;
         }
-        [data-theme="light"] { --bg: #f8fafc; --card: #ffffff; --accent: #0284c7; --text: #0f172a;
-            --text-muted: #64748b; --border: #e2e8f0; --input-bg: #f1f5f9; --hover-bg: rgba(0,0,0,0.05); --success: #059669; --danger: #dc2626; --warning: #d97706; --reserve: #7c3aed;
+        [data-theme="light"] {
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --accent: #0ea5e9;
+            --accent-2: #2563eb;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --border: #dbe5f0;
+            --input-bg: #f8fbff;
+            --hover-bg: rgba(14,165,233,0.08);
+            --success: #059669;
+            --danger: #dc2626;
+            --warning: #d97706;
+            --reserve: #7c3aed;
+            --bg-gradient: radial-gradient(circle at top left, rgba(14,165,233,0.16), transparent 26%), radial-gradient(circle at top right, rgba(37,99,235,0.14), transparent 24%), linear-gradient(180deg, #f8fbff 0%, #eef5fb 100%);
+            --panel-surface: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(244,248,252,0.98));
+            --surface-soft: linear-gradient(135deg, rgba(14,165,233,0.10), rgba(255,255,255,0.85));
+            --surface-strong: linear-gradient(135deg, rgba(14,165,233,0.18), rgba(37,99,235,0.08));
+            --brand-line: linear-gradient(90deg, rgba(14,165,233,0), rgba(14,165,233,0.9), rgba(37,99,235,0.7), rgba(14,165,233,0));
+            --card-shadow: 0 16px 34px rgba(15,23,42,0.08);
+            --theme-contrast: #ffffff;
         }
-        [data-theme="nubank"] { --bg: #f0f1f5; --card: #ffffff; --accent: #820ad1; --text: #111111; --text-muted: #757575;
-            --border: #e0e0e0; --input-bg: #f5f5f5; --hover-bg: rgba(130, 10, 209, 0.05); --success: #00a868; --danger: #e92929; --warning: #ff9800; --reserve: #820ad1;
+        [data-theme="nubank"] {
+            --bg: #f7f2fb;
+            --card: #ffffff;
+            --accent: #820ad1;
+            --accent-2: #9f45e0;
+            --text: #20132e;
+            --text-muted: #6f5a80;
+            --border: #e8daf4;
+            --input-bg: #fbf8fe;
+            --hover-bg: rgba(130, 10, 209, 0.08);
+            --success: #00a868;
+            --danger: #d62839;
+            --warning: #ff9800;
+            --reserve: #5d128f;
+            --bg-gradient: radial-gradient(circle at top left, rgba(130,10,209,0.22), transparent 27%), radial-gradient(circle at top right, rgba(174,84,255,0.18), transparent 24%), linear-gradient(180deg, #f6effc 0%, #efe6f8 100%);
+            --panel-surface: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,242,252,0.98));
+            --surface-soft: linear-gradient(135deg, rgba(130,10,209,0.12), rgba(255,255,255,0.88));
+            --surface-strong: linear-gradient(135deg, rgba(130,10,209,0.20), rgba(159,69,224,0.10));
+            --brand-line: linear-gradient(90deg, rgba(130,10,209,0), rgba(130,10,209,0.95), rgba(159,69,224,0.85), rgba(130,10,209,0));
+            --card-shadow: 0 18px 38px rgba(82, 20, 126, 0.12);
+            --theme-contrast: #ffffff;
         }
-        [data-theme="santander"] { --bg: #f5f5f5; --card: #ffffff; --accent: #ec0000; --text: #222222; --text-muted: #666666;
-            --border: #cccccc; --input-bg: #eeeeee; --hover-bg: rgba(236, 0, 0, 0.05); --success: #107c10; --danger: #cc0000; --warning: #ff7300; --reserve: #444444;
+        [data-theme="santander"] {
+            --bg: #fff7f6;
+            --card: #ffffff;
+            --accent: #ec0000;
+            --accent-2: #ff6b35;
+            --text: #2f1111;
+            --text-muted: #7c5a5a;
+            --border: #f3d7d4;
+            --input-bg: #fffafa;
+            --hover-bg: rgba(236, 0, 0, 0.08);
+            --success: #14804a;
+            --danger: #c40000;
+            --warning: #ff7300;
+            --reserve: #5f2525;
+            --bg-gradient: radial-gradient(circle at top left, rgba(236,0,0,0.18), transparent 28%), radial-gradient(circle at top right, rgba(255,107,53,0.14), transparent 24%), linear-gradient(180deg, #fff8f7 0%, #fff0ee 100%);
+            --panel-surface: linear-gradient(180deg, rgba(255,255,255,0.99), rgba(255,247,245,0.98));
+            --surface-soft: linear-gradient(135deg, rgba(236,0,0,0.10), rgba(255,255,255,0.92));
+            --surface-strong: linear-gradient(135deg, rgba(236,0,0,0.18), rgba(255,107,53,0.10));
+            --brand-line: linear-gradient(90deg, rgba(236,0,0,0), rgba(236,0,0,0.95), rgba(255,107,53,0.78), rgba(236,0,0,0));
+            --card-shadow: 0 18px 38px rgba(124, 18, 18, 0.10);
+            --theme-contrast: #ffffff;
         }
-        [data-theme="itau"] { --bg: #f0f1f3; --card: #ffffff; --accent: #ec7000; --text: #002959; --text-muted: #6c7a89;
-            --border: #dcdde1; --input-bg: #f5f6f8; --hover-bg: rgba(236, 112, 0, 0.05); --success: #008f39; --danger: #da291c; --warning: #ec7000; --reserve: #002959;
+        [data-theme="itau"] {
+            --bg: #fff8f1;
+            --card: #ffffff;
+            --accent: #ec7000;
+            --accent-2: #003b8e;
+            --text: #08244c;
+            --text-muted: #5f708d;
+            --border: #f2dbc2;
+            --input-bg: #fffaf5;
+            --hover-bg: rgba(236, 112, 0, 0.08);
+            --success: #008f39;
+            --danger: #da291c;
+            --warning: #ec7000;
+            --reserve: #003b8e;
+            --bg-gradient: radial-gradient(circle at top left, rgba(236,112,0,0.18), transparent 28%), radial-gradient(circle at top right, rgba(0,59,142,0.14), transparent 24%), linear-gradient(180deg, #fff8f1 0%, #fff2e3 100%);
+            --panel-surface: linear-gradient(180deg, rgba(255,255,255,0.99), rgba(255,248,241,0.98));
+            --surface-soft: linear-gradient(135deg, rgba(236,112,0,0.10), rgba(255,255,255,0.90));
+            --surface-strong: linear-gradient(135deg, rgba(236,112,0,0.18), rgba(0,59,142,0.09));
+            --brand-line: linear-gradient(90deg, rgba(236,112,0,0), rgba(236,112,0,0.95), rgba(0,59,142,0.72), rgba(236,112,0,0));
+            --card-shadow: 0 18px 38px rgba(126, 74, 16, 0.11);
+            --theme-contrast: #ffffff;
         }
-        [data-theme="bradesco"] { --bg: #ffffff; --card: #f9f9f9; --accent: #cc092f; --text: #333333; --text-muted: #777777;
-            --border: #e6e6e6; --input-bg: #ffffff; --hover-bg: rgba(204, 9, 47, 0.05); --success: #008000; --danger: #cc092f; --warning: #f2a900; --reserve: #444444;
+        [data-theme="bradesco"] {
+            --bg: #fff8fa;
+            --card: #ffffff;
+            --accent: #cc092f;
+            --accent-2: #9c1d5b;
+            --text: #2e1220;
+            --text-muted: #7f5a69;
+            --border: #f0d8df;
+            --input-bg: #fffafb;
+            --hover-bg: rgba(204, 9, 47, 0.08);
+            --success: #008000;
+            --danger: #cc092f;
+            --warning: #f2a900;
+            --reserve: #7b1844;
+            --bg-gradient: radial-gradient(circle at top left, rgba(204,9,47,0.18), transparent 28%), radial-gradient(circle at top right, rgba(156,29,91,0.16), transparent 24%), linear-gradient(180deg, #fff9fb 0%, #fff0f4 100%);
+            --panel-surface: linear-gradient(180deg, rgba(255,255,255,0.99), rgba(255,247,250,0.98));
+            --surface-soft: linear-gradient(135deg, rgba(204,9,47,0.11), rgba(255,255,255,0.92));
+            --surface-strong: linear-gradient(135deg, rgba(204,9,47,0.18), rgba(156,29,91,0.10));
+            --brand-line: linear-gradient(90deg, rgba(204,9,47,0), rgba(204,9,47,0.95), rgba(156,29,91,0.74), rgba(204,9,47,0));
+            --card-shadow: 0 18px 38px rgba(109, 24, 52, 0.11);
+            --theme-contrast: #ffffff;
         }
 
         * { box-sizing: border-box; outline: none;
@@ -165,7 +274,130 @@
         .system-card p { margin:0 0 18px; font-size:.88rem; line-height:1.45; color:var(--text-muted); max-width:24ch; }
         .system-card-footer { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:auto; font-size:.75rem; font-weight:800; letter-spacing:.45px; text-transform:uppercase; color:var(--text); }
         .system-card-footer i { opacity:.75; }
-        .system-data-mini-note { margin-top:16px; padding:14px 16px; border-radius:18px; border:1px solid rgba(255,255,255,0.07); background: rgba(255,255,255,0.04); color:var(--text-muted); font-size:.82rem; line-height:1.45; }
+        
+        .update-center-card {
+            margin-top: 16px;
+            padding: 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 10%, rgba(255,255,255,0.04)), rgba(255,255,255,0.03));
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+        .update-center-copy strong {
+            display: block;
+            font-size: .92rem;
+            margin-bottom: 4px;
+            color: var(--text);
+        }
+        .update-center-copy span {
+            display: block;
+            max-width: 54ch;
+            font-size: .8rem;
+            line-height: 1.45;
+            color: var(--text-muted);
+        }
+        .update-center-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: auto;
+            flex-wrap: wrap;
+        }
+        .update-pill-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.05);
+            color: var(--text);
+            font-size: .74rem;
+            font-weight: 800;
+            letter-spacing: .3px;
+        }
+        .update-pill-status.available {
+            color: var(--accent);
+            box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 20%, transparent), 0 0 22px color-mix(in srgb, var(--accent) 14%, transparent);
+        }
+        .update-action-btn {
+            border: none;
+            border-radius: 14px;
+            padding: 12px 16px;
+            cursor: pointer;
+            font-weight: 800;
+            letter-spacing: .25px;
+            font-family: 'Ubuntu', sans-serif;
+        }
+        .update-action-btn.secondary {
+            background: rgba(255,255,255,0.06);
+            color: var(--text);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .update-action-btn.primary {
+            background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 64%, white));
+            color: #03111d;
+            box-shadow: 0 14px 24px color-mix(in srgb, var(--accent) 22%, transparent);
+        }
+        .app-update-banner {
+            position: fixed;
+            left: 16px;
+            right: 16px;
+            bottom: 18px;
+            z-index: 120000;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            padding: 16px 18px;
+            border-radius: 22px;
+            border: 1px solid rgba(255,255,255,0.09);
+            background: linear-gradient(135deg, rgba(8,15,30,0.96), rgba(10,20,35,0.98));
+            box-shadow: 0 22px 44px rgba(0,0,0,0.34), 0 0 26px color-mix(in srgb, var(--accent) 14%, transparent);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .app-update-banner.show { display: flex; }
+        .app-update-copy { min-width: 0; }
+        .app-update-copy strong {
+            display: block;
+            font-size: .96rem;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+        .app-update-copy span {
+            display: block;
+            color: var(--text-muted);
+            font-size: .8rem;
+            line-height: 1.4;
+        }
+        .app-update-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+        @media (max-width: 640px) {
+            .update-center-card,
+            .app-update-banner {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .update-center-actions,
+            .app-update-actions {
+                width: 100%;
+                margin-left: 0;
+            }
+            .update-action-btn {
+                flex: 1;
+                justify-content: center;
+            }
+        }
+.system-data-mini-note { margin-top:16px; padding:14px 16px; border-radius:18px; border:1px solid rgba(255,255,255,0.07); background: rgba(255,255,255,0.04); color:var(--text-muted); font-size:.82rem; line-height:1.45; }
         .sidebar-system-hint { margin-top:12px; padding:16px 18px; border-radius:20px; border:1px solid rgba(255,255,255,0.08); background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)); color:var(--text-muted); }
         .sidebar-system-hint strong { display:block; color:var(--text); margin-bottom:6px; }
         .sidebar-system-hint button { margin-top:12px; width:100%; border:none; border-radius:14px; padding:13px 14px; background:linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 64%, white)); color:#03111d; font-weight:800; cursor:pointer; box-shadow: 0 14px 24px color-mix(in srgb, var(--accent) 22%, transparent); }
@@ -186,9 +418,222 @@
             .system-card-icon { width:46px; height:46px; border-radius:16px; }
         }
 
+        /* EXPERIÊNCIA DE TEMA / BANCO */
+        body {
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+        }
+        header, .sidebar, .login-card, .modal, .modal-small, .grafico-card, .mini-card, .resumo-mini-card, .meta-motion-card {
+            box-shadow: var(--card-shadow);
+        }
+        header, .sidebar {
+            background: var(--panel-surface);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+        header::after {
+            content: '';
+            position: absolute;
+            left: 22px;
+            right: 22px;
+            bottom: -1px;
+            height: 2px;
+            background: var(--brand-line);
+            opacity: .95;
+            pointer-events: none;
+        }
+        .theme-selector {
+            display: none;
+            margin: 8px 4px 14px;
+            padding: 16px;
+            border-radius: 24px;
+            background: var(--panel-surface);
+            border: 1px solid color-mix(in srgb, var(--accent) 16%, var(--border));
+            box-shadow: var(--card-shadow), inset 0 1px 0 rgba(255,255,255,0.07);
+        }
+        .theme-selector.open { display: block; }
+        .theme-selector-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+        .theme-selector-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 12px;
+            border-radius: 999px;
+            background: color-mix(in srgb, var(--accent) 12%, rgba(255,255,255,0.04));
+            color: var(--accent);
+            border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+            font-size: .7rem;
+            font-weight: 800;
+            letter-spacing: .55px;
+            text-transform: uppercase;
+        }
+        .theme-selector-title {
+            margin: 10px 0 4px;
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--text);
+        }
+        .theme-selector-copy {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: .84rem;
+            line-height: 1.45;
+            max-width: 45ch;
+        }
+        .theme-current-badge {
+            min-width: 126px;
+            padding: 10px 12px;
+            border-radius: 16px;
+            background: var(--surface-strong);
+            border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+            text-align: right;
+        }
+        .theme-current-badge span {
+            display: block;
+            font-size: .63rem;
+            text-transform: uppercase;
+            letter-spacing: .6px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+        .theme-current-badge strong {
+            display: block;
+            font-size: .9rem;
+            color: var(--text);
+        }
+        .theme-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+        .theme-btn {
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+            min-height: 138px;
+            padding: 16px;
+            border-radius: 20px;
+            border: 1px solid color-mix(in srgb, var(--theme-accent, var(--accent)) 18%, rgba(255,255,255,0.16));
+            background: var(--theme-bg, var(--surface-soft));
+            color: var(--theme-text, var(--text));
+            cursor: pointer;
+            text-align: left;
+            font-weight: 700;
+            letter-spacing: .01em;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,.14), 0 8px 18px rgba(0,0,0,.08);
+        }
+        .theme-btn::before {
+            content: '';
+            position: absolute;
+            inset: auto -28px -30px auto;
+            width: 92px;
+            height: 92px;
+            border-radius: 50%;
+            background: color-mix(in srgb, var(--theme-accent, var(--accent)) 26%, transparent);
+            filter: blur(20px);
+            opacity: .9;
+            pointer-events: none;
+        }
+        .theme-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 32px rgba(0,0,0,.14), 0 0 0 1px color-mix(in srgb, var(--theme-accent, var(--accent)) 18%, transparent);
+        }
+        .theme-btn.active {
+            border-color: color-mix(in srgb, var(--theme-accent, var(--accent)) 45%, white 8%);
+            box-shadow: 0 18px 34px color-mix(in srgb, var(--theme-accent, var(--accent)) 18%, transparent), inset 0 0 0 1px rgba(255,255,255,.12);
+            transform: translateY(-2px);
+        }
+        .theme-btn-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--theme-contrast, #fff);
+            background: linear-gradient(135deg, var(--theme-accent, var(--accent)), color-mix(in srgb, var(--theme-accent, var(--accent)) 75%, white));
+            box-shadow: 0 12px 24px color-mix(in srgb, var(--theme-accent, var(--accent)) 20%, transparent);
+            font-size: 1.05rem;
+        }
+        .theme-btn strong {
+            display: block;
+            font-size: .96rem;
+            line-height: 1.15;
+        }
+        .theme-btn small {
+            display: block;
+            font-size: .77rem;
+            color: color-mix(in srgb, var(--theme-text, var(--text)) 68%, var(--text-muted));
+            line-height: 1.4;
+            font-weight: 500;
+            max-width: none;
+        }
+        .theme-btn .theme-chip {
+            margin-top: auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 10px;
+            border-radius: 999px;
+            background: rgba(255,255,255,.14);
+            border: 1px solid rgba(255,255,255,.18);
+            font-size: .66rem;
+            letter-spacing: .45px;
+            text-transform: uppercase;
+            font-weight: 800;
+        }
+        .theme-note {
+            margin-top: 12px;
+            padding: 14px 15px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+            border: 1px solid rgba(255,255,255,.06);
+            color: var(--text-muted);
+            font-size: .8rem;
+            line-height: 1.45;
+        }
+        [data-theme="light"] .theme-btn,
+        [data-theme="nubank"] .theme-btn,
+        [data-theme="santander"] .theme-btn,
+        [data-theme="itau"] .theme-btn,
+        [data-theme="bradesco"] .theme-btn,
+        [data-theme="light"] .theme-note,
+        [data-theme="nubank"] .theme-note,
+        [data-theme="santander"] .theme-note,
+        [data-theme="itau"] .theme-note,
+        [data-theme="bradesco"] .theme-note {
+            box-shadow: 0 10px 24px rgba(15,23,42,.06), inset 0 1px 0 rgba(255,255,255,.7);
+        }
+        @media (max-width: 560px) {
+            .sidebar { width: 100%; max-width: 100%; }
+            .theme-selector-head {
+                flex-direction: column;
+            }
+            .theme-current-badge {
+                width: 100%;
+                text-align: left;
+            }
+            .theme-grid {
+                grid-template-columns: 1fr;
+            }
+            .theme-btn {
+                min-height: 122px;
+            }
+        }
+
         /* MENU LATERAL */
         .sidebar { position: fixed;
-            top: 0; right: -100%; width: 85%; max-width: 400px; height: 100%; background: var(--card); z-index: 3000; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            top: 0; right: -100%; width: min(92vw, 460px); max-width: 460px; height: 100%; background: var(--card); z-index: 3000; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             padding: 0; box-shadow: -20px 0 50px rgba(0,0,0,0.5); display: flex; flex-direction: column; overflow: hidden;
         }
         .sidebar.open { right: 0;
@@ -1078,66 +1523,97 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 }
 
 
-/* === PREVIEW DO LANÇAMENTO RESTAURADO === */
-.operation-preview-card{
-    position:relative;
-    margin:14px 0 18px;
-    padding:18px 16px 14px;
-    border-radius:22px;
-    border:1px solid rgba(255,255,255,0.08);
-    background:
-        radial-gradient(circle at 85% 20%, rgba(0,242,255,0.16), transparent 18%),
-        linear-gradient(145deg, rgba(15,23,42,0.96), rgba(2,6,23,0.96));
-    box-shadow:0 18px 40px rgba(0,0,0,0.24), inset 0 1px 0 rgba(255,255,255,0.04);
-    overflow:hidden;
+/* === HOTFIX LAYOUT: seletor de temas / bancos === */
+.sidebar{
+    width:min(94vw, 560px) !important;
+    max-width:560px !important;
 }
-.operation-preview-card::before{
-    content:'';
-    position:absolute; inset:0 0 auto 0; height:1px;
-    background:linear-gradient(90deg, transparent, rgba(255,255,255,0.14), transparent);
+.sidebar-scroll-area{
+    padding:28px 22px 34px !important;
+    overflow-x:hidden !important;
 }
-.operation-preview-head{
-    display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:12px;
+#themeOptions.theme-selector{
+    display:none !important;
+    grid-template-columns:none !important;
+    gap:0 !important;
+    margin:10px 4px 16px !important;
+    padding:18px !important;
+    border-radius:24px !important;
+    background:var(--panel-surface) !important;
+    border:1px solid color-mix(in srgb, var(--accent) 16%, var(--border)) !important;
+    box-shadow:var(--card-shadow), inset 0 1px 0 rgba(255,255,255,0.07) !important;
 }
-.operation-preview-kicker{
-    font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.14em;
-    color:var(--text-muted); display:block; margin-bottom:6px;
+#themeOptions.theme-selector.open{
+    display:block !important;
 }
-.operation-preview-value{
-    margin:0; font-size:2.1rem; line-height:1; letter-spacing:-.04em; font-weight:800; color:var(--text);
+#themeOptions .theme-selector-head{
+    display:flex !important;
+    align-items:flex-start !important;
+    justify-content:space-between !important;
+    gap:14px !important;
+    margin-bottom:14px !important;
 }
-.operation-preview-status{
-    display:inline-flex; align-items:center; gap:7px; white-space:nowrap;
-    padding:9px 14px; border-radius:999px; border:1px solid rgba(255,255,255,0.09);
-    background:rgba(255,255,255,0.06); color:var(--text); font-size:.78rem; font-weight:800;
-    box-shadow:0 10px 22px rgba(0,0,0,0.18);
+#themeOptions .theme-grid{
+    display:grid !important;
+    grid-template-columns:repeat(2, minmax(0, 1fr)) !important;
+    gap:12px !important;
 }
-.operation-preview-status.pendente{color:#fbbf24; background:rgba(245,158,11,0.12); border-color:rgba(245,158,11,0.34);}
-.operation-preview-status.pago{color:#86efac; background:rgba(16,185,129,0.14); border-color:rgba(16,185,129,0.30);}
-.operation-preview-grid{
-    display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:10px;
+#themeOptions .theme-btn{
+    position:relative !important;
+    overflow:hidden !important;
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:flex-start !important;
+    justify-content:flex-start !important;
+    gap:10px !important;
+    width:100% !important;
+    min-width:0 !important;
+    min-height:146px !important;
+    padding:16px !important;
+    border-radius:20px !important;
+    text-align:left !important;
+    white-space:normal !important;
+    font-size:0.94rem !important;
+    line-height:1.25 !important;
 }
-.operation-preview-item{
-    min-width:0;
-    padding:12px 14px;
-    border-radius:16px;
-    border:1px solid rgba(255,255,255,0.07);
-    background:rgba(255,255,255,0.05);
+#themeOptions .theme-btn strong{
+    display:block !important;
 }
-.operation-preview-item span{
-    display:block; margin-bottom:6px; font-size:.66rem; font-weight:800;
-    text-transform:uppercase; letter-spacing:.12em; color:var(--text-muted);
+#themeOptions .theme-btn small{
+    display:block !important;
+    max-width:none !important;
 }
-.operation-preview-item strong{
-    display:block; font-size:1.08rem; line-height:1.25; color:var(--text); font-weight:800;
-    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+#themeOptions .theme-chip{
+    margin-top:auto !important;
 }
-@media (max-width:640px){
-    .operation-preview-card{padding:16px 14px 14px; border-radius:20px;}
-    .operation-preview-head{flex-direction:column; align-items:flex-start;}
-    .operation-preview-value{font-size:1.9rem;}
-    .operation-preview-grid{grid-template-columns:1fr; gap:9px;}
-    .operation-preview-item strong{font-size:1rem;}
+#themeOptions .theme-note{
+    margin-top:12px !important;
+}
+@media (max-width: 680px){
+    .sidebar{
+        width:100% !important;
+        max-width:100% !important;
+    }
+    .sidebar-scroll-area{
+        padding:22px 16px 30px !important;
+    }
+    #themeOptions.theme-selector{
+        padding:16px !important;
+        border-radius:22px !important;
+    }
+    #themeOptions .theme-selector-head{
+        flex-direction:column !important;
+    }
+    #themeOptions .theme-current-badge{
+        width:100% !important;
+        text-align:left !important;
+    }
+    #themeOptions .theme-grid{
+        grid-template-columns:1fr !important;
+    }
+    #themeOptions .theme-btn{
+        min-height:128px !important;
+    }
 }
 
 </style>
@@ -1282,18 +1758,50 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
                 </div>
                 
                 <div class="theme-selector" id="themeOptions">
-            
-                    <div class="theme-btn" onclick="mudarTema('dark')" style="border-left: 4px solid #00f2ff;">Escuro</div>
-                    <div class="theme-btn" onclick="mudarTema('light')" style="border-left: 4px solid #0ea5e9;
-                    background: #fff; color: #000;">Claro</div>
-                    <div class="theme-btn" onclick="mudarTema('nubank')" style="border-left: 4px solid #820ad1;
-                    background: #f0f1f5; color: #111;">Nubank</div>
-                    <div class="theme-btn" onclick="mudarTema('santander')" style="border-left: 4px solid #ec0000;
-                    background: #f5f5f5; color: #222;">Santander</div>
-                    <div class="theme-btn" onclick="mudarTema('itau')" style="border-left: 4px solid #ec7000;
-                    background: #f0f1f3; color: #002959;">Itaú</div>
-                    <div class="theme-btn" onclick="mudarTema('bradesco')" style="border-left: 4px solid #cc092f;
-                    background: #fff; color: #333;">Bradesco</div>
+                    <div class="theme-selector-head">
+                        <div>
+                            <div class="theme-selector-kicker"><i class="fa-solid fa-wand-magic-sparkles"></i> Visual inteligente</div>
+                            <div class="theme-selector-title">Escolha uma identidade completa para o app</div>
+                            <p class="theme-selector-copy">Ao trocar o tema, o MeuCaixa passa a adotar a linguagem visual do banco escolhido com cores, brilho, contraste e atmosfera própria.</p>
+                        </div>
+                        <div class="theme-current-badge">
+                            <span>Tema atual</span>
+                            <strong id="themeCurrentLabel">Modo Escuro Premium</strong>
+                        </div>
+                    </div>
+                    <div class="theme-grid">
+                        <button type="button" class="theme-btn" data-theme-option="dark" onclick="mudarTema('dark')" style="--theme-accent:#00f2ff; --theme-bg:linear-gradient(135deg,#07111f 0%, #0c1728 55%, #11273c 100%); --theme-text:#f3f4f6; --theme-contrast:#03111d;">
+                            <span class="theme-btn-icon"><i class="fa-solid fa-moon-stars"></i></span>
+                            <div><strong>Escuro</strong><small>Tecnologia premium com brilho sofisticado e foco total nos dados.</small></div>
+                            <span class="theme-chip"><i class="fa-solid fa-sparkles"></i> Noturno elegante</span>
+                        </button>
+                        <button type="button" class="theme-btn" data-theme-option="light" onclick="mudarTema('light')" style="--theme-accent:#0ea5e9; --theme-bg:linear-gradient(135deg,#ffffff 0%, #f2f8ff 55%, #e9f3ff 100%); --theme-text:#0f172a; --theme-contrast:#ffffff;">
+                            <span class="theme-btn-icon"><i class="fa-solid fa-sun"></i></span>
+                            <div><strong>Claro</strong><small>Leve, limpo e muito prático para uso diário em ambientes claros.</small></div>
+                            <span class="theme-chip"><i class="fa-solid fa-circle-half-stroke"></i> Alta leitura</span>
+                        </button>
+                        <button type="button" class="theme-btn" data-theme-option="nubank" onclick="mudarTema('nubank')" style="--theme-accent:#820ad1; --theme-bg:linear-gradient(135deg,#ffffff 0%, #f7effd 54%, #efe2fb 100%); --theme-text:#221332; --theme-contrast:#ffffff;">
+                            <span class="theme-btn-icon"><i class="fa-solid fa-gem"></i></span>
+                            <div><strong>Nubank</strong><small>Minimalismo roxo com sensação moderna, jovem e extremamente refinada.</small></div>
+                            <span class="theme-chip"><i class="fa-solid fa-bolt"></i> Digital premium</span>
+                        </button>
+                        <button type="button" class="theme-btn" data-theme-option="santander" onclick="mudarTema('santander')" style="--theme-accent:#ec0000; --theme-bg:linear-gradient(135deg,#ffffff 0%, #fff4f2 55%, #ffe7e2 100%); --theme-text:#311515; --theme-contrast:#ffffff;">
+                            <span class="theme-btn-icon"><i class="fa-solid fa-fire-flame-curved"></i></span>
+                            <div><strong>Santander</strong><small>Visual institucional vermelho com cara de banco real e presença marcante.</small></div>
+                            <span class="theme-chip"><i class="fa-solid fa-building-columns"></i> Banco clássico</span>
+                        </button>
+                        <button type="button" class="theme-btn" data-theme-option="itau" onclick="mudarTema('itau')" style="--theme-accent:#ec7000; --theme-bg:linear-gradient(135deg,#ffffff 0%, #fff4e7 55%, #ffe7cb 100%); --theme-text:#08244c; --theme-contrast:#ffffff;">
+                            <span class="theme-btn-icon"><i class="fa-solid fa-shield-halved"></i></span>
+                            <div><strong>Itaú</strong><small>Laranja forte com azul institucional para uma leitura segura e sofisticada.</small></div>
+                            <span class="theme-chip"><i class="fa-solid fa-wallet"></i> Solidez visual</span>
+                        </button>
+                        <button type="button" class="theme-btn" data-theme-option="bradesco" onclick="mudarTema('bradesco')" style="--theme-accent:#cc092f; --theme-bg:linear-gradient(135deg,#ffffff 0%, #fff2f6 55%, #ffe2ec 100%); --theme-text:#2c1320; --theme-contrast:#ffffff;">
+                            <span class="theme-btn-icon"><i class="fa-solid fa-chart-line"></i></span>
+                            <div><strong>Bradesco</strong><small>Paleta executiva vinho com acabamento premium e aparência corporativa.</small></div>
+                            <span class="theme-chip"><i class="fa-solid fa-crown"></i> Executivo</span>
+                        </button>
+                    </div>
+                    <div class="theme-note"><strong style="color:var(--text);">Sugestão premium:</strong> os temas bancários agora não mudam só a cor de destaque. Eles influenciam a atmosfera visual do app para parecer uma interface própria de cada banco.</div>
                 </div>
                 
                 <div class="menu-group-title">Sistema & Dados</div>
@@ -1426,6 +1934,17 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 
             <div class="system-data-mini-note">
                 Dica premium: esta central substitui a antiga lista solta e mantém todas as ações críticas em um único painel 2x2, mais intuitivo e muito mais elegante.
+            </div>
+
+            <div class="update-center-card">
+                <div class="update-center-copy">
+                    <strong>Atualização do aplicativo</strong>
+                    <span>Quando uma nova versão for publicada, o app avisa o usuário e permite atualizar sem apagar histórico, reinstalar ou perder os dados salvos no aparelho.</span>
+                </div>
+                <div class="update-center-actions">
+                    <span class="update-pill-status" id="updateStatusPill"><i class="fa-solid fa-rotate"></i> App atualizado</span>
+                    <button class="update-action-btn secondary" type="button" onclick="verificarAtualizacaoManual()"><i class="fa-solid fa-arrows-rotate" style="margin-right:8px;"></i>Verificar agora</button>
+                </div>
             </div>
         </div>
     </div>
@@ -1563,34 +2082,6 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
                 <input type="date" id="data">
             </div>
         </div>
-
-        <div class="operation-preview-card" id="operationPreviewCard" aria-live="polite">
-            <div class="operation-preview-head">
-                <div>
-                    <span class="operation-preview-kicker">Prévia do lançamento</span>
-                    <h3 class="operation-preview-value" id="operationPreviewValue">R$ 0,00</h3>
-                </div>
-                <div class="operation-preview-status pendente" id="operationPreviewStatus">
-                    <i class="fa-solid fa-clock"></i>
-                    <span>Pendente</span>
-                </div>
-            </div>
-            <div class="operation-preview-grid">
-                <div class="operation-preview-item">
-                    <span>Tipo</span>
-                    <strong id="operationPreviewType">Receita</strong>
-                </div>
-                <div class="operation-preview-item">
-                    <span>Quando</span>
-                    <strong id="operationPreviewDate">--/--/----</strong>
-                </div>
-                <div class="operation-preview-item">
-                    <span>Origem</span>
-                    <strong id="operationPreviewOrigin">Pix</strong>
-                </div>
-            </div>
-        </div>
-
 
         <div id="blocoJuros" class="bloco-parcelas hidden" style="border-color: #f97316;">
             <span class="label-mini" style="color: #f97316; margin-bottom: 10px; display: block;"><i class="fa-solid fa-calculator"></i> Cálculo de Juros Inteligente</span>
@@ -2157,19 +2648,42 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
         function sairApp() { sessionStorage.removeItem('isLoggedIn');
             location.reload(); }
 
+        const themeCatalog = {
+            dark: { name: 'Modo Escuro Premium', color: '#030712' },
+            light: { name: 'Modo Claro Inteligente', color: '#f8fbff' },
+            nubank: { name: 'Identidade Nubank', color: '#820ad1' },
+            santander: { name: 'Identidade Santander', color: '#ec0000' },
+            itau: { name: 'Identidade Itaú', color: '#ec7000' },
+            bradesco: { name: 'Identidade Bradesco', color: '#cc092f' }
+        };
+        function applyThemeMeta(theme) {
+            const metaTheme = document.querySelector('meta[name="theme-color"]');
+            if (metaTheme) metaTheme.setAttribute('content', (themeCatalog[theme] || themeCatalog.dark).color);
+        }
+        function syncThemeSelector() {
+            const activeTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+            document.querySelectorAll('[data-theme-option]').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.themeOption === activeTheme);
+            });
+            const currentLabel = document.getElementById('themeCurrentLabel');
+            if (currentLabel) currentLabel.innerText = (themeCatalog[activeTheme] || themeCatalog.dark).name;
+            applyThemeMeta(activeTheme);
+        }
         function checkTheme() {
-            const savedTheme = localStorage.getItem('meucaixa_theme');
-            if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
+            const savedTheme = localStorage.getItem('meucaixa_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            applyThemeMeta(savedTheme);
         }
         checkTheme();
         function mudarTema(tema) {
             document.documentElement.setAttribute('data-theme', tema);
             localStorage.setItem('meucaixa_theme', tema);
+            syncThemeSelector();
             closeAll();
             renderizar();
         }
 
-        function salvarConfig() { localStorage.setItem('meucaixa_config', JSON.stringify(appConfig)); carregarConfig(); renderizar();
+        function salvarConfig() { localStorage.setItem('meucaixa_config', JSON.stringify(appConfig)); carregarConfig(); syncThemeSelector(); renderizar();
         }
 
         function carregarConfig() {
@@ -4167,8 +4681,124 @@ function exportarDadosCSV() {
 </script>
 
     <script>
+      let appServiceWorkerRegistration = null;
+      let appWaitingWorker = null;
+      let appRefreshingByUpdate = false;
+
+      function atualizarIndicadorAtualizacao(status, available = false) {
+        const pill = document.getElementById('updateStatusPill');
+        if (!pill) return;
+        pill.classList.toggle('available', !!available);
+        pill.innerHTML = available
+          ? '<i class="fa-solid fa-sparkles"></i> ' + status
+          : '<i class="fa-solid fa-rotate"></i> ' + status;
+      }
+
+      function mostrarBannerAtualizacao() {
+        const banner = document.getElementById('appUpdateBanner');
+        if (banner) banner.classList.add('show');
+        atualizarIndicadorAtualizacao('Nova versão pronta', true);
+      }
+
+      function dispensarAtualizacao() {
+        const banner = document.getElementById('appUpdateBanner');
+        if (banner) banner.classList.remove('show');
+      }
+
+      function aplicarAtualizacao() {
+        if (appWaitingWorker) {
+          atualizarIndicadorAtualizacao('Atualizando aplicativo...', true);
+          appWaitingWorker.postMessage({ type: 'SKIP_WAITING' });
+          return;
+        }
+        if (appServiceWorkerRegistration) {
+          atualizarIndicadorAtualizacao('Verificando atualização...');
+          appServiceWorkerRegistration.update()
+            .then(() => {
+              if (!appWaitingWorker) {
+                atualizarIndicadorAtualizacao('Você já está na versão atual');
+                if (typeof showToast === 'function') showToast('Você já está com a versão mais recente.', 'success');
+              }
+            })
+            .catch(() => {
+              atualizarIndicadorAtualizacao('Falha ao verificar');
+              if (typeof showToast === 'function') showToast('Não foi possível verificar atualização agora.', 'error');
+            });
+        }
+      }
+
+      function verificarAtualizacaoManual() {
+        if (!appServiceWorkerRegistration) {
+          if (typeof showToast === 'function') showToast('Atualização automática ainda não iniciou.', 'warning');
+          return;
+        }
+        atualizarIndicadorAtualizacao('Verificando atualização...');
+        appServiceWorkerRegistration.update()
+          .then(() => {
+            setTimeout(() => {
+              if (!appWaitingWorker) {
+                atualizarIndicadorAtualizacao('Você já está na versão atual');
+                if (typeof showToast === 'function') showToast('Nenhuma nova atualização encontrada.', 'success');
+              }
+            }, 1200);
+          })
+          .catch(() => {
+            atualizarIndicadorAtualizacao('Falha ao verificar');
+            if (typeof showToast === 'function') showToast('Erro ao procurar nova versão.', 'error');
+          });
+      }
+
+      function acompanharInstalacaoSW(worker) {
+        if (!worker) return;
+        worker.addEventListener('statechange', () => {
+          if (worker.state === 'installed' && navigator.serviceWorker.controller) {
+            appWaitingWorker = worker;
+            mostrarBannerAtualizacao();
+            if (typeof showToast === 'function') showToast('Nova atualização disponível no aplicativo.', 'success');
+          }
+        });
+      }
+
       if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(err => console.error('Erro no PWA:', err)); });
+        window.addEventListener('load', async () => {
+          try {
+            const registration = await navigator.serviceWorker.register('./sw.js');
+            appServiceWorkerRegistration = registration;
+
+            if (registration.waiting) {
+              appWaitingWorker = registration.waiting;
+              mostrarBannerAtualizacao();
+            }
+
+            registration.addEventListener('updatefound', () => {
+              acompanharInstalacaoSW(registration.installing);
+            });
+
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+              if (appRefreshingByUpdate) return;
+              appRefreshingByUpdate = true;
+              window.location.reload();
+            });
+
+            window.addEventListener('focus', () => {
+              if (appServiceWorkerRegistration) appServiceWorkerRegistration.update().catch(() => {});
+            });
+
+            document.addEventListener('visibilitychange', () => {
+              if (document.visibilityState === 'visible' && appServiceWorkerRegistration) {
+                appServiceWorkerRegistration.update().catch(() => {});
+              }
+            });
+
+            setInterval(() => {
+              if (navigator.onLine && appServiceWorkerRegistration) {
+                appServiceWorkerRegistration.update().catch(() => {});
+              }
+            }, 180000);
+          } catch (err) {
+            console.error('Erro no PWA:', err);
+          }
+        });
       }
     
 /* === 2026 PREMIUM REFINEMENT PATCH === */
@@ -4286,118 +4916,16 @@ function closeSystemDataModal(){
 
 </script>
 
-<script id="operation-preview-restore">
-(function(){
-  function formatCurrencyBR(value){
-    var n = parseFloat(String(value || 0).replace(',', '.'));
-    if(isNaN(n)) n = 0;
-    try{
-      return new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(n);
-    }catch(e){
-      return 'R$ ' + n.toFixed(2).replace('.', ',');
-    }
-  }
-  function formatDateBR(value){
-    if(!value) return '--/--/----';
-    var parts = String(value).split('-');
-    if(parts.length === 3) return parts[2] + '/' + parts[1] + '/' + parts[0];
-    return value;
-  }
-  function getText(id){
-    var el = document.getElementById(id);
-    if(!el) return '';
-    if(el.tagName === 'SELECT'){
-      var opt = el.options[el.selectedIndex];
-      return (opt && opt.textContent ? opt.textContent : el.value || '').trim();
-    }
-    return (el.value || el.textContent || '').trim();
-  }
-  function updateOperationPreview(){
-    var valueEl = document.getElementById('operationPreviewValue');
-    var statusEl = document.getElementById('operationPreviewStatus');
-    var typeEl = document.getElementById('operationPreviewType');
-    var dateEl = document.getElementById('operationPreviewDate');
-    var originEl = document.getElementById('operationPreviewOrigin');
-    if(!valueEl || !statusEl || !typeEl || !dateEl || !originEl) return;
-
-    var amount = document.getElementById('valor') ? document.getElementById('valor').value : 0;
-    valueEl.textContent = formatCurrencyBR(amount);
-
-    var tipo = getText('submenu') || getText('tipo') || 'Lançamento';
-    typeEl.textContent = tipo;
-
-    var dateValue = getText('data');
-    dateEl.textContent = formatDateBR(dateValue);
-
-    var tipoPrincipal = getText('tipo');
-    var origin = 'Não definido';
-    if(tipoPrincipal === 'Receita'){
-      origin = getText('formaRecebimento') || getText('desc') || 'Pix';
-    } else {
-      origin = getText('banco') || getText('formaRecebimento') || getText('desc') || 'Não definido';
-    }
-    originEl.textContent = origin;
-
-    var checked = document.querySelector('input[name="statusPagoRadio"]:checked');
-    var isPaid = checked ? checked.value === '1' : (document.getElementById('selectPago') && document.getElementById('selectPago').value === '1');
-    statusEl.classList.remove('pendente','pago');
-    statusEl.classList.add(isPaid ? 'pago' : 'pendente');
-    statusEl.innerHTML = isPaid
-      ? '<i class="fa-solid fa-circle-check"></i><span>Pago</span>'
-      : '<i class="fa-solid fa-clock"></i><span>Pendente</span>';
-  }
-
-  function bindOperationPreview(){
-    ['tipo','submenu','formaRecebimento','banco','desc','valor','data','selectPago','status0','status1'].forEach(function(id){
-      var el = document.getElementById(id);
-      if(!el || el.dataset.opPreviewBound === '1') return;
-      el.dataset.opPreviewBound = '1';
-      ['input','change'].forEach(function(evt){
-        el.addEventListener(evt, updateOperationPreview);
-      });
-    });
-    updateOperationPreview();
-  }
-
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', bindOperationPreview);
-  } else {
-    bindOperationPreview();
-  }
-  window.addEventListener('load', bindOperationPreview);
-
-  var originalOpenModal = window.openModal;
-  if(typeof originalOpenModal === 'function' && !window.__previewWrappedOpenModal){
-    window.__previewWrappedOpenModal = true;
-    window.openModal = function(){
-      originalOpenModal.apply(this, arguments);
-      setTimeout(updateOperationPreview, 30);
-      setTimeout(updateOperationPreview, 180);
-    };
-  }
-
-  var originalDefinirDescricao = window.definirDescricao;
-  if(typeof originalDefinirDescricao === 'function' && !window.__previewWrappedDefinir){
-    window.__previewWrappedDefinir = true;
-    window.definirDescricao = function(){
-      var result = originalDefinirDescricao.apply(this, arguments);
-      setTimeout(updateOperationPreview, 0);
-      return result;
-    };
-  }
-
-  var originalAtualizarSubmenu = window.atualizarSubmenu;
-  if(typeof originalAtualizarSubmenu === 'function' && !window.__previewWrappedSubmenu){
-    window.__previewWrappedSubmenu = true;
-    window.atualizarSubmenu = function(){
-      var result = originalAtualizarSubmenu.apply(this, arguments);
-      setTimeout(bindOperationPreview, 0);
-      setTimeout(updateOperationPreview, 20);
-      return result;
-    };
-  }
-})();
-</script>
+    <div class="app-update-banner" id="appUpdateBanner" aria-live="polite">
+        <div class="app-update-copy">
+            <strong>Nova atualização disponível</strong>
+            <span>Toque em atualizar para carregar a versão mais recente do app sem reinstalar.</span>
+        </div>
+        <div class="app-update-actions">
+            <button class="update-action-btn secondary" type="button" onclick="dispensarAtualizacao()">Depois</button>
+            <button class="update-action-btn primary" type="button" onclick="aplicarAtualizacao()"><i class="fa-solid fa-cloud-arrow-down" style="margin-right:8px;"></i>Atualizar agora</button>
+        </div>
+    </div>
 
 </body>
 </html>
