@@ -1903,21 +1903,38 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 
 
 
-        .pdf-mode-modal { max-width: 460px; }
-        .pdf-mode-options { display:grid; grid-template-columns: 1fr; gap:12px; margin-top:18px; }
+        .pdf-mode-modal { max-width: 760px; }
+        .pdf-mode-options { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:14px; margin-top:18px; }
         .pdf-mode-card {
             width:100%; border:1px solid var(--border); background:var(--surface-soft); color:var(--text);
-            border-radius:18px; padding:16px; text-align:left; cursor:pointer; transition:transform .2s ease, border-color .2s ease, box-shadow .2s ease;
-            box-shadow: var(--card-shadow);
+            border-radius:22px; padding:18px; text-align:left; transition:transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+            box-shadow: var(--card-shadow); display:flex; flex-direction:column; gap:12px;
         }
         .pdf-mode-card:hover { transform: translateY(-2px); border-color: var(--accent); }
-        .pdf-mode-card strong { display:block; font-size:1rem; margin-bottom:6px; }
-        .pdf-mode-card span { display:block; font-size:.82rem; color:var(--text-muted); line-height:1.5; }
+        .pdf-mode-card strong { display:block; font-size:1rem; margin-bottom:4px; }
+        .pdf-mode-card span { display:block; font-size:.82rem; color:var(--text-muted); line-height:1.55; }
+        .pdf-mode-card-head { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+        .pdf-mode-icon {
+            width:42px; height:42px; border-radius:14px; display:inline-flex; align-items:center; justify-content:center;
+            background:linear-gradient(135deg, rgba(0,242,255,.18), rgba(0,242,255,.06)); color:var(--accent); border:1px solid rgba(255,255,255,.08);
+            flex-shrink:0;
+        }
+        .pdf-mode-actions { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:auto; }
+        .pdf-mini-btn {
+            border:none; border-radius:14px; padding:12px 14px; font-weight:800; cursor:pointer; transition:transform .18s ease, opacity .18s ease;
+        }
+        .pdf-mini-btn:hover { transform: translateY(-1px); opacity:.96; }
+        .pdf-mini-btn.primary { background:linear-gradient(135deg, var(--accent), #3b82f6); color:#fff; }
+        .pdf-mini-btn.secondary { background:rgba(255,255,255,.06); color:var(--text); border:1px solid var(--border); }
         .pdf-mode-badge {
             display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; font-size:.72rem; font-weight:800;
             border:1px solid rgba(255,255,255,.08); color:var(--accent); background:rgba(0,242,255,.08); letter-spacing:.04em; text-transform:uppercase;
         }
-        .pdf-mode-footer { display:flex; justify-content:flex-end; margin-top:14px; }
+        .pdf-mode-footer { display:flex; justify-content:flex-end; margin-top:16px; }
+        @media (max-width: 640px){
+            .pdf-mode-options { grid-template-columns:1fr; }
+            .pdf-mode-modal { max-width: 96vw; }
+        }
 
 </style>
 </head>
@@ -2169,21 +2186,65 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 <div class="modal modal-small pdf-mode-modal" id="modalPDFMode">
 <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:14px; margin-bottom:10px;">
 <div>
-<span class="pdf-mode-badge"><i class="fa-solid fa-file-pdf"></i> Relatório premium</span>
-<h2 style="margin:12px 0 8px; font-size:1.15rem; color:var(--text);">Escolha o estilo do PDF</h2>
-<p style="margin:0; color:var(--text-muted); line-height:1.55; font-size:.92rem;">O usuário pode gerar um relatório mais simples ou mais detalhado no mesmo fluxo, sem sair da central de exportação.</p>
+<span class="pdf-mode-badge"><i class="fa-solid fa-file-chart-column"></i> Central de Relatórios</span>
+<h2 style="margin:12px 0 8px; font-size:1.2rem; color:var(--text);">Escolha o relatório e o nível de detalhe</h2>
+<p style="margin:0; color:var(--text-muted); line-height:1.55; font-size:.92rem;">Na mesma central, o usuário decide qual relatório quer gerar e se prefere uma versão simples ou detalhada.</p>
 </div>
-<button aria-label="Fechar opções de PDF" onclick="closePDFModal()" style="background:transparent; border:none; color:var(--text-muted); font-size:1.4rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+<button aria-label="Fechar central de relatórios" onclick="closePDFModal()" style="background:transparent; border:none; color:var(--text-muted); font-size:1.4rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
 </div>
 <div class="pdf-mode-options">
-<button class="pdf-mode-card" type="button" onclick="gerarPDFoficial('simples')">
-<strong><i class="fa-solid fa-sparkles" style="margin-right:8px;"></i>PDF simples</strong>
-<span>Resumo financeiro limpo, visual elegante, totais do período e leitura rápida para o dia a dia.</span>
-</button>
-<button class="pdf-mode-card" type="button" onclick="gerarPDFoficial('detalhado')">
-<strong><i class="fa-solid fa-table-list" style="margin-right:8px;"></i>PDF detalhado</strong>
-<span>Inclui o resumo premium e também a lista completa de movimentações do mês com datas, banco e status.</span>
-</button>
+<div class="pdf-mode-card">
+<div class="pdf-mode-card-head">
+<div>
+<strong>📄 Relatório mensal</strong>
+<span>Fechamento do mês atual com receitas, despesas, saldo, pendências e movimentações do período.</span>
+</div>
+<div class="pdf-mode-icon"><i class="fa-solid fa-calendar-days"></i></div>
+</div>
+<div class="pdf-mode-actions">
+<button class="pdf-mini-btn primary" type="button" onclick="gerarPDFoficial('simples','mensal')">Simples</button>
+<button class="pdf-mini-btn secondary" type="button" onclick="gerarPDFoficial('detalhado','mensal')">Detalhado</button>
+</div>
+</div>
+<div class="pdf-mode-card">
+<div class="pdf-mode-card-head">
+<div>
+<strong>📊 Relatório anual</strong>
+<span>Consolidação do ano selecionado com visão executiva e fechamento mais completo para comparação.</span>
+</div>
+<div class="pdf-mode-icon"><i class="fa-solid fa-calendar"></i></div>
+</div>
+<div class="pdf-mode-actions">
+<button class="pdf-mini-btn primary" type="button" onclick="gerarPDFoficial('simples','anual')">Simples</button>
+<button class="pdf-mini-btn secondary" type="button" onclick="gerarPDFoficial('detalhado','anual')">Detalhado</button>
+</div>
+</div>
+<div class="pdf-mode-card">
+<div class="pdf-mode-card-head">
+<div>
+<strong>📈 Relatório de patrimônio</strong>
+<span>Foco em reservas, evolução do patrimônio lançado, aportes e leitura estratégica da construção da reserva.</span>
+</div>
+<div class="pdf-mode-icon"><i class="fa-solid fa-chart-line"></i></div>
+</div>
+<div class="pdf-mode-actions">
+<button class="pdf-mini-btn primary" type="button" onclick="gerarPDFoficial('simples','patrimonio')">Simples</button>
+<button class="pdf-mini-btn secondary" type="button" onclick="gerarPDFoficial('detalhado','patrimonio')">Detalhado</button>
+</div>
+</div>
+<div class="pdf-mode-card">
+<div class="pdf-mode-card-head">
+<div>
+<strong>🎯 Relatório de metas</strong>
+<span>Resumo da meta principal, progresso atual, valor acumulado e status geral do objetivo financeiro.</span>
+</div>
+<div class="pdf-mode-icon"><i class="fa-solid fa-bullseye"></i></div>
+</div>
+<div class="pdf-mode-actions">
+<button class="pdf-mini-btn primary" type="button" onclick="gerarPDFoficial('simples','metas')">Simples</button>
+<button class="pdf-mini-btn secondary" type="button" onclick="gerarPDFoficial('detalhado','metas')">Detalhado</button>
+</div>
+</div>
 </div>
 <div class="pdf-mode-footer">
 <button class="secondary-btn" type="button" onclick="closePDFModal()">Cancelar</button>
@@ -2215,9 +2276,9 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 </button>
 <button class="system-card" onclick="abrirModalPDF()" style="--card-glow: rgba(239,68,68,.22); --card-icon-bg: linear-gradient(135deg, #ef4444, #fb7185);">
 <span class="system-card-icon"><i class="fa-solid fa-file-pdf"></i></span>
-<strong>Baixar PDF</strong>
-<p>Gere relatórios premium em PDF para prestação de contas, organização e compartilhamento.</p>
-<span class="system-card-footer">Relatório oficial <i class="fa-solid fa-file-arrow-down"></i></span>
+<strong>Central de Relatórios</strong>
+<p>Escolha entre relatório mensal, anual, patrimônio ou metas, com versão simples ou detalhada.</p>
+<span class="system-card-footer">Abrir central <i class="fa-solid fa-file-arrow-down"></i></span>
 </button>
 <button class="system-card" onclick="exportarDadosCSV()" style="--card-glow: rgba(16,185,129,.22); --card-icon-bg: linear-gradient(135deg, #10b981, #34d399);">
 <span class="system-card-icon"><i class="fa-solid fa-file-csv"></i></span>
@@ -4243,9 +4304,9 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
             if (!document.querySelector('.modal.open') && overlay) overlay.style.display = 'none';
         }
 
-        function gerarPDFoficial(modo = 'detalhado') {
+        function gerarPDFoficial(modo = 'detalhado', tipoRelatorio = 'mensal') {
             closePDFModal();
-            if (registros.length === 0) return showToast("Não há dados para exportar.", "error");
+            if (registros.length === 0 && tipoRelatorio !== 'metas') return showToast("Não há dados para exportar.", "error");
 
             const jsPDFCtor = (window.jspdf && window.jspdf.jsPDF) || window.jsPDF;
             if (!jsPDFCtor) {
@@ -4253,14 +4314,50 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
                 return;
             }
 
-            showToast(`Gerando PDF ${modo === 'simples' ? 'simples' : 'detalhado'}...`, "success");
-
+            const anoAtual = dataVisualizacao.getFullYear();
+            const mesNumero = String(dataVisualizacao.getMonth() + 1).padStart(2, '0');
+            const prefixoMes = `${anoAtual}-${mesNumero}`;
             const mesFormatado = formatarMesAno(dataVisualizacao);
-            const prefixoMes = `${dataVisualizacao.getFullYear()}-${String(dataVisualizacao.getMonth() + 1).padStart(2, '0')}`;
+            const tipoTitulo = {
+                mensal: 'Relatório Mensal',
+                anual: 'Relatório Anual',
+                patrimonio: 'Relatório de Patrimônio',
+                metas: 'Relatório de Metas'
+            };
+            const tipoSlug = {
+                mensal: 'Mensal',
+                anual: 'Anual',
+                patrimonio: 'Patrimonio',
+                metas: 'Metas'
+            };
 
             const registrosDoMes = registros
                 .filter(r => (r.data || '').startsWith(prefixoMes))
                 .sort((a, b) => new Date(a.data) - new Date(b.data));
+
+            const registrosDoAno = registros
+                .filter(r => (r.data || '').startsWith(`${anoAtual}-`))
+                .sort((a, b) => new Date(a.data) - new Date(b.data));
+
+            const registrosPatrimonio = registros
+                .filter(r => String(r.tipo || '').toLowerCase() === 'reserva')
+                .sort((a, b) => new Date(a.data) - new Date(b.data));
+
+            let registrosBase = registrosDoMes;
+            let periodoRelatorio = mesFormatado;
+
+            if (tipoRelatorio === 'anual') {
+                registrosBase = registrosDoAno;
+                periodoRelatorio = String(anoAtual);
+            } else if (tipoRelatorio === 'patrimonio') {
+                registrosBase = registrosPatrimonio;
+                periodoRelatorio = 'Histórico completo';
+            } else if (tipoRelatorio === 'metas') {
+                registrosBase = [];
+                periodoRelatorio = mesFormatado;
+            }
+
+            showToast(`Gerando ${tipoTitulo[tipoRelatorio] || 'relatório'} ${modo === 'simples' ? 'simples' : 'detalhado'}...`, "success");
 
             const pdf = new jsPDFCtor({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true });
             const pageWidth = pdf.internal.pageSize.getWidth();
@@ -4286,6 +4383,80 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
                 return lines.length;
             };
 
+            const analisarRegistros = (lista) => {
+                let totalEntradas = 0;
+                let totalSaidas = 0;
+                let totalPatrimonio = 0;
+                let totalPendencias = 0;
+                let quantidadeLancamentos = 0;
+
+                (lista || []).forEach((r) => {
+                    const v = parseFloat(r.valor) || 0;
+                    const pagoAtual = parseFloat(r.pago) || 0;
+                    const status = (pagoAtual >= v && v > 0) ? 'PAGO' : 'PENDENTE';
+                    quantidadeLancamentos += 1;
+                    if (r.tipo === 'Receita' && status === 'PAGO') totalEntradas += v;
+                    if (r.tipo !== 'Receita' && r.tipo !== 'Reserva') totalSaidas += v;
+                    if (r.tipo === 'Reserva') totalPatrimonio += v;
+                    if (status === 'PENDENTE' && r.tipo !== 'Receita') totalPendencias += Math.max(v - pagoAtual, 0);
+                });
+
+                return { totalEntradas, totalSaidas, totalPatrimonio, totalPendencias, quantidadeLancamentos };
+            };
+
+            const desenharListaLancamentos = (lista, tituloSecao = 'Movimentações do período') => {
+                if (!lista.length) {
+                    pdf.setFontSize(11);
+                    pdf.text('Nenhum lançamento encontrado para este recorte.', margin, y);
+                    y += 8;
+                    return;
+                }
+
+                if (modo === 'simples') return;
+
+                addPageIfNeeded(16);
+                pdf.setFont('helvetica', 'bold');
+                pdf.setFontSize(12);
+                pdf.text(tituloSecao, margin, y);
+                y += 7;
+
+                lista.forEach((r, index) => {
+                    let v = parseFloat(r.valor) || 0;
+                    let status = (parseFloat(r.pago) >= v && v > 0) ? 'PAGO' : 'PENDENTE';
+
+                    addPageIfNeeded(26);
+
+                    pdf.setFont('helvetica', 'bold');
+                    pdf.setFontSize(11);
+                    const titulo = `${index + 1}. ${r.desc || 'Lançamento sem descrição'}`;
+                    const titleLines = pdf.splitTextToSize(titulo, usableWidth - 45);
+                    pdf.text(titleLines, margin, y);
+
+                    pdf.setFont('helvetica', 'normal');
+                    pdf.setFontSize(10);
+                    pdf.text(formatarMoeda(v), pageWidth - margin, y, { align: 'right' });
+
+                    y += titleLines.length * 5;
+
+                    const dtLanc = ((r.dataLancamento || r.data || '') + '').split('-').reverse().join('/');
+                    const dtVenc = ((r.data || '') + '').split('-').reverse().join('/');
+                    const banco = r.banco ? `Banco: ${r.banco}` : 'Banco: -';
+                    const categoria = r.categoria ? `Categoria: ${r.categoria}` : `Tipo: ${r.tipo || '-'}`;
+                    const anexo = r.comprovante ? 'Anexo: Sim' : 'Anexo: -';
+
+                    pdf.setFontSize(9);
+                    pdf.setTextColor(80, 80, 80);
+                    writeWrapped(`Lançamento: ${dtLanc}   |   Vencimento: ${dtVenc}`, margin, usableWidth, 4.5);
+                    writeWrapped(`${banco}   |   ${categoria}   |   Status: ${status}   |   ${anexo}`, margin, usableWidth, 4.5);
+
+                    pdf.setTextColor(0, 0, 0);
+                    y += 1;
+                    pdf.setDrawColor(220, 220, 220);
+                    pdf.line(margin, y, pageWidth - margin, y);
+                    y += 6;
+                });
+            };
+
             try {
                 pdf.setFillColor(255, 255, 255);
                 pdf.rect(0, 0, pageWidth, pageHeight, 'F');
@@ -4293,118 +4464,116 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 
                 pdf.setFont('helvetica', 'bold');
                 pdf.setFontSize(18);
-                pdf.text(`MeuCaixa - Relatório ${modo === 'simples' ? 'Essencial' : 'Detalhado'}`, margin, y);
+                pdf.text(`MeuCaixa - ${tipoTitulo[tipoRelatorio] || 'Relatório'} ${modo === 'simples' ? 'Simples' : 'Detalhado'}`, margin, y);
                 y += 8;
 
                 pdf.setFont('helvetica', 'normal');
                 pdf.setFontSize(10);
                 pdf.text(`Cliente: ${appConfig?.nome || 'Usuário'}`, margin, y);
                 y += 5;
-                pdf.text(`Período: ${mesFormatado}`, margin, y);
+                pdf.text(`Período: ${periodoRelatorio}`, margin, y);
+                y += 5;
+                pdf.text(`Gerado em: ${new Date().toLocaleDateString('pt-BR')}`, margin, y);
                 y += 8;
 
                 pdf.setDrawColor(0, 0, 0);
                 pdf.line(margin, y, pageWidth - margin, y);
-                y += 7;
-
-                let totalEntradas = 0;
-                let totalSaidas = 0;
-                let totalPatrimonio = 0;
-                let totalPendencias = 0;
-                let quantidadeLancamentos = 0;
-
-                if (!registrosDoMes.length) {
-                    pdf.setFontSize(11);
-                    pdf.text('Nenhum lançamento encontrado para este período.', margin, y);
-                    y += 8;
-                } else {
-                    registrosDoMes.forEach((r) => {
-                        const v = parseFloat(r.valor) || 0;
-                        const pagoAtual = parseFloat(r.pago) || 0;
-                        const status = (pagoAtual >= v && v > 0) ? 'PAGO' : 'PENDENTE';
-                        quantidadeLancamentos += 1;
-
-                        if (r.tipo === 'Receita' && status === 'PAGO') totalEntradas += v;
-                        if (r.tipo !== 'Receita' && r.tipo !== 'Reserva') totalSaidas += v;
-                        if (r.tipo === 'Reserva') totalPatrimonio += v;
-                        if (status === 'PENDENTE' && r.tipo !== 'Receita') totalPendencias += Math.max(v - pagoAtual, 0);
-                    });
-
-                    if (modo === 'detalhado') {
-                        registrosDoMes.forEach((r, index) => {
-                            let v = parseFloat(r.valor) || 0;
-                            let status = (parseFloat(r.pago) >= v && v > 0) ? 'PAGO' : 'PENDENTE';
-
-                            addPageIfNeeded(26);
-
-                            pdf.setFont('helvetica', 'bold');
-                            pdf.setFontSize(11);
-                            const titulo = `${index + 1}. ${r.desc || 'Lançamento sem descrição'}`;
-                            const titleLines = pdf.splitTextToSize(titulo, usableWidth - 45);
-                            pdf.text(titleLines, margin, y);
-
-                            pdf.setFont('helvetica', 'normal');
-                            pdf.setFontSize(10);
-                            pdf.text(formatarMoeda(v), pageWidth - margin, y, { align: 'right' });
-
-                            y += titleLines.length * 5;
-
-                            const dtLanc = ((r.dataLancamento || r.data || '') + '').split('-').reverse().join('/');
-                            const dtVenc = ((r.data || '') + '').split('-').reverse().join('/');
-                            const banco = r.banco ? `Banco: ${r.banco}` : 'Banco: -';
-                            const anexo = r.comprovante ? 'Anexo: Sim' : 'Anexo: -';
-
-                            pdf.setFontSize(9);
-                            pdf.setTextColor(80, 80, 80);
-                            writeWrapped(`Lançamento: ${dtLanc}   |   Vencimento: ${dtVenc}`, margin, usableWidth, 4.5);
-                            writeWrapped(`${banco}   |   Status: ${status}   |   ${anexo}`, margin, usableWidth, 4.5);
-
-                            pdf.setTextColor(0, 0, 0);
-                            y += 1;
-                            pdf.setDrawColor(220, 220, 220);
-                            pdf.line(margin, y, pageWidth - margin, y);
-                            y += 6;
-                        });
-                    }
-                }
-
-                addPageIfNeeded(40);
-                pdf.setFont('helvetica', 'bold');
-                pdf.setFontSize(12);
-                pdf.text(modo === 'simples' ? 'Resumo essencial do período' : 'Resumo do período', margin, y);
-                y += 7;
-
-                pdf.setFont('helvetica', 'normal');
-                pdf.setFontSize(11);
-                pdf.text(`Total Receitas: ${formatarMoeda(totalEntradas)}`, margin, y);
-                y += 6;
-                pdf.text(`Total Despesas: ${formatarMoeda(totalSaidas)}`, margin, y);
-                y += 6;
-                pdf.text(`Saldo do mês: ${formatarMoeda(totalEntradas - totalSaidas)}`, margin, y);
-                y += 6;
-                pdf.text(`Patrimônio lançado: ${formatarMoeda(totalPatrimonio)}`, margin, y);
-                y += 6;
-                pdf.text(`Pendências abertas: ${formatarMoeda(totalPendencias)}`, margin, y);
-                y += 6;
-                pdf.text(`Quantidade de lançamentos: ${quantidadeLancamentos}`, margin, y);
                 y += 8;
 
-                if (modo === 'simples') {
+                if (tipoRelatorio === 'metas') {
+                    const valorMeta = parseFloat(appConfig.metaMensal) || 0;
+                    const acumuladoMeta = parseFloat(appConfig.metaAcumulado) || 0;
+                    const progresso = valorMeta > 0 ? Math.min((acumuladoMeta / valorMeta) * 100, 100) : 0;
+                    const nomeMeta = (document.querySelector(`#tipoMeta option[value="${appConfig?.tipoMeta || 'reserva'}"]`)?.textContent || 'Meta principal').replace(/^[^\s]+\s*/, '').trim();
+                    const descricaoMeta = appConfig?.descMeta || 'Sem descrição complementar.';
+                    const falta = Math.max(valorMeta - acumuladoMeta, 0);
+
+                    pdf.setFont('helvetica', 'bold');
+                    pdf.setFontSize(12);
+                    pdf.text('Resumo da meta principal', margin, y);
+                    y += 7;
+                    pdf.setFont('helvetica', 'normal');
+                    pdf.setFontSize(11);
+                    pdf.text(`Meta escolhida: ${nomeMeta || 'Meta principal'}`, margin, y); y += 6;
+                    pdf.text(`Período da meta: ${appConfig?.periodoMeta || 'Mensal'}`, margin, y); y += 6;
+                    pdf.text(`Valor da meta: ${formatarMoeda(valorMeta)}`, margin, y); y += 6;
+                    pdf.text(`Acumulado atual: ${formatarMoeda(acumuladoMeta)}`, margin, y); y += 6;
+                    pdf.text(`Falta para concluir: ${formatarMoeda(falta)}`, margin, y); y += 6;
+                    pdf.text(`Progresso atual: ${progresso.toFixed(1)}%`, margin, y); y += 8;
+
                     pdf.setFontSize(9.5);
                     pdf.setTextColor(80, 80, 80);
-                    writeWrapped('Modo simples: este arquivo foi gerado para leitura rápida, com foco no resumo financeiro do mês e visão executiva dos principais números.', margin, usableWidth, 4.5);
+                    writeWrapped(`Descrição da meta: ${descricaoMeta}`, margin, usableWidth, 4.5);
+                    if (modo === 'detalhado') {
+                        pdf.setTextColor(0, 0, 0);
+                        y += 4;
+                        pdf.setFont('helvetica', 'bold');
+                        pdf.setFontSize(11);
+                        pdf.text('Leitura estratégica', margin, y);
+                        y += 6;
+                        pdf.setFont('helvetica', 'normal');
+                        pdf.setFontSize(9.5);
+                        pdf.setTextColor(80, 80, 80);
+                        const insight = valorMeta <= 0
+                            ? 'A meta ainda não foi configurada com valor. Defina um objetivo para que o sistema acompanhe a evolução corretamente.'
+                            : progresso >= 100
+                                ? 'A meta principal já foi atingida. Este é um ótimo momento para criar um novo objetivo ou elevar o próximo patamar financeiro.'
+                                : `Com o acumulado atual, o sistema identifica ${progresso.toFixed(1)}% de conclusão da meta. Mantenha os aportes consistentes para encurtar a distância até o objetivo final.`;
+                        writeWrapped(insight, margin, usableWidth, 4.5);
+                    }
                     pdf.setTextColor(0, 0, 0);
                 } else {
+                    const resumo = analisarRegistros(registrosBase);
+
+                    pdf.setFont('helvetica', 'bold');
+                    pdf.setFontSize(12);
+                    pdf.text(tipoRelatorio === 'patrimonio' ? 'Resumo patrimonial' : 'Resumo do período', margin, y);
+                    y += 7;
+                    pdf.setFont('helvetica', 'normal');
+                    pdf.setFontSize(11);
+
+                    if (tipoRelatorio !== 'patrimonio') {
+                        pdf.text(`Total Receitas: ${formatarMoeda(resumo.totalEntradas)}`, margin, y); y += 6;
+                        pdf.text(`Total Despesas: ${formatarMoeda(resumo.totalSaidas)}`, margin, y); y += 6;
+                        pdf.text(`Saldo apurado: ${formatarMoeda(resumo.totalEntradas - resumo.totalSaidas)}`, margin, y); y += 6;
+                        pdf.text(`Pendências abertas: ${formatarMoeda(resumo.totalPendencias)}`, margin, y); y += 6;
+                    }
+
+                    if (tipoRelatorio === 'patrimonio') {
+                        const patrimonioAno = registrosPatrimonio
+                            .filter(r => (r.data || '').startsWith(`${anoAtual}-`))
+                            .reduce((acc, r) => acc + (parseFloat(r.valor) || 0), 0);
+                        pdf.text(`Patrimônio acumulado: ${formatarMoeda(resumo.totalPatrimonio)}`, margin, y); y += 6;
+                        pdf.text(`Aportes em ${anoAtual}: ${formatarMoeda(patrimonioAno)}`, margin, y); y += 6;
+                        pdf.text(`Movimentações patrimoniais: ${resumo.quantidadeLancamentos}`, margin, y); y += 6;
+                    } else {
+                        pdf.text(`Patrimônio lançado: ${formatarMoeda(resumo.totalPatrimonio)}`, margin, y); y += 6;
+                        pdf.text(`Quantidade de lançamentos: ${resumo.quantidadeLancamentos}`, margin, y); y += 6;
+                    }
+                    y += 2;
+
                     pdf.setFontSize(9.5);
                     pdf.setTextColor(80, 80, 80);
-                    writeWrapped('Modo detalhado: este arquivo inclui a listagem completa das movimentações do período, mantendo um fechamento consolidado ao final do relatório.', margin, usableWidth, 4.5);
+                    const mensagemResumo = {
+                        mensal: 'Leitura mensal pensada para fechamento rápido, acompanhamento do ciclo atual e organização do orçamento.',
+                        anual: 'Consolidação anual para analisar desempenho, sazonalidade de gastos e evolução financeira ao longo do ano.',
+                        patrimonio: 'Visão patrimonial focada na construção de reserva, evolução dos aportes e fortalecimento do caixa.',
+                    };
+                    writeWrapped(mensagemResumo[tipoRelatorio] || 'Relatório gerado pelo MeuCaixa.', margin, usableWidth, 4.5);
                     pdf.setTextColor(0, 0, 0);
+                    y += 4;
+
+                    desenharListaLancamentos(
+                        registrosBase,
+                        tipoRelatorio === 'anual' ? 'Movimentações do ano' :
+                        tipoRelatorio === 'patrimonio' ? 'Movimentações patrimoniais' :
+                        'Movimentações do mês'
+                    );
                 }
 
-                const sufixoModo = modo === 'simples' ? 'Simples' : 'Detalhado';
-                const nomeArquivo = `Relatorio_MeuCaixa_${sufixoModo}_${mesFormatado.replace(/\s+/g, '_')}.pdf`;
+                const nomeArquivo = `Relatorio_MeuCaixa_${tipoSlug[tipoRelatorio] || 'Relatorio'}_${modo === 'simples' ? 'Simples' : 'Detalhado'}_${periodoRelatorio.replace(/[^\wÀ-ÿ-]+/g, '_')}.pdf`;
                 pdf.save(nomeArquivo);
-                showToast(`PDF ${modo === 'simples' ? 'simples' : 'detalhado'} salvo com sucesso!`, "success");
+                showToast(`${tipoTitulo[tipoRelatorio] || 'Relatório'} ${modo === 'simples' ? 'simples' : 'detalhado'} salvo com sucesso!`, "success");
             } catch (error) {
                 console.error('Erro ao gerar PDF:', error);
                 showToast("Erro ao gerar PDF.", "error");
