@@ -737,6 +737,90 @@
         }
         
         /* CARD DA TRANSAÇÃO NA LISTA */
+        .history-search-wrap { position: sticky; top: 10px; z-index: 25; margin: 14px 0 18px; }
+        .history-search-shell {
+            position: relative;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 12px;
+            align-items: center;
+            padding: 14px;
+            border-radius: 22px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: linear-gradient(135deg, rgba(8,15,30,0.92), rgba(15,23,42,0.88));
+            box-shadow: 0 18px 35px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.06);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            overflow: hidden;
+        }
+        .history-search-shell::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(120deg, rgba(0,242,255,0.55), rgba(255,255,255,0.08), rgba(16,185,129,0.4));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        .history-search-shell.is-active {
+            box-shadow: 0 22px 45px rgba(0,0,0,0.28), 0 0 0 1px rgba(0,242,255,0.18), 0 0 28px rgba(0,242,255,0.12);
+        }
+        .history-search-main { display:flex; align-items:center; gap:12px; min-width:0; }
+        .history-search-icon {
+            width: 48px; height: 48px; flex-shrink:0; border-radius: 16px;
+            display:flex; align-items:center; justify-content:center;
+            color: var(--accent);
+            background: linear-gradient(135deg, rgba(0,242,255,0.18), rgba(255,255,255,0.05));
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.15), 0 12px 24px rgba(0,0,0,0.18);
+            font-size: 1.1rem;
+        }
+        .history-search-field { min-width:0; display:flex; flex-direction:column; gap:4px; }
+        .history-search-label {
+            font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.2px; font-weight: 800;
+            color: var(--accent);
+        }
+        .history-search-input-row { display:flex; align-items:center; gap:10px; }
+        .history-search-input {
+            width:100%; background: transparent; border:none; color: var(--text); font-size: 1rem; font-weight: 700;
+            padding:0; margin:0;
+        }
+        .history-search-input::placeholder { color: var(--text-muted); font-weight: 500; }
+        .history-search-meta { display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-end; align-items:center; }
+        .history-search-pill {
+            display:inline-flex; align-items:center; gap:8px;
+            padding: 10px 14px; border-radius: 999px; background: rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08);
+            color: var(--text); font-size: 0.76rem; font-weight: 700; min-height: 42px;
+        }
+        .history-search-pill strong { font-size: 0.9rem; color: var(--accent); }
+        .history-search-clear {
+            border:none; cursor:pointer; min-height:42px; padding: 0 16px; border-radius: 999px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2)); color:#fff; font-weight:800; font-size:0.76rem;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.18);
+        }
+        .history-search-empty {
+            margin: 16px 0 4px; padding: 28px 20px; border-radius: 22px; text-align:center;
+            color: var(--text-muted); background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); border: 1px dashed rgba(255,255,255,0.12);
+        }
+        [data-theme="light"] .history-search-shell,
+        [data-theme="nubank"] .history-search-shell,
+        [data-theme="santander"] .history-search-shell,
+        [data-theme="itau"] .history-search-shell,
+        [data-theme="bradesco"] .history-search-shell {
+            background: linear-gradient(135deg, rgba(255,255,255,0.94), rgba(246,248,252,0.96));
+        }
+        @media (max-width: 768px) {
+            .history-search-wrap { top: 8px; }
+            .history-search-shell { grid-template-columns: 1fr; gap: 12px; padding: 14px 12px; border-radius: 20px; }
+            .history-search-main { align-items: flex-start; }
+            .history-search-icon { width: 42px; height: 42px; border-radius: 14px; }
+            .history-search-input { font-size: 0.95rem; }
+            .history-search-meta { justify-content: stretch; }
+            .history-search-pill, .history-search-clear { width: 100%; justify-content: center; }
+        }
+
         .transaction-item { background: var(--card);
             padding: 16px; border-radius: 18px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; width: 100%; border: 1px solid var(--border);
             box-shadow: 0 2px 8px rgba(0,0,0,0.02); cursor: pointer; transition: transform 0.1s;}
@@ -1854,6 +1938,24 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
             color: var(--accent); border: 1px solid var(--accent); padding: 6px 12px; border-radius: 8px; font-size: 0.7rem; font-weight: 800;
             cursor: pointer;"><i class="fa-solid fa-chevron-left"></i> VOLTAR</button>
         </div>
+
+        <div class="history-search-wrap">
+            <div class="history-search-shell" id="historySearchShell">
+                <div class="history-search-main">
+                    <div class="history-search-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+                    <div class="history-search-field">
+                        <span class="history-search-label">Busca global magnética</span>
+                        <div class="history-search-input-row">
+                            <input type="search" id="historySearchInput" class="history-search-input" placeholder="Ex: oficina, boleto, salário, pix..." autocomplete="off" oninput="atualizarBuscaHistorico(this.value)">
+                        </div>
+                    </div>
+                </div>
+                <div class="history-search-meta">
+                    <div class="history-search-pill" id="historySearchSummary"><span>Digite para filtrar o histórico</span></div>
+                    <button type="button" class="history-search-clear hidden" id="historySearchClear" onclick="limparBuscaHistorico()"><i class="fa-solid fa-xmark" style="margin-right:6px;"></i>Limpar busca</button>
+                </div>
+            </div>
+        </div>
         
         <div id="forecastBannerArea"></div>
         <div id="subFiltros" class="submenu-divida hidden">
@@ -2397,6 +2499,7 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
         let modoFantasma = false, filtroAtual = "Tudo", subFiltro = "Pendente", dataVisualizacao = new Date();
         let chartCategorias = null, chartStatus = null, chartEvolucao = null, chartLeitorInstance = null;
         let acaoMetaAtual = '';
+        let buscaHistorico = '';
         let savedConfig = JSON.parse(localStorage.getItem('meucaixa_config')) || {};
         let appConfig = {
             nome: savedConfig.nome || null,
@@ -3014,6 +3117,41 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
             renderizar(); 
         }
 
+        function atualizarBuscaHistorico(valor) {
+            buscaHistorico = (valor || '').trim().toLowerCase();
+            renderizar();
+        }
+
+        function limparBuscaHistorico() {
+            buscaHistorico = '';
+            const input = document.getElementById('historySearchInput');
+            if (input) input.value = '';
+            renderizar();
+        }
+
+        function atualizarResumoBuscaHistorico(info = {}) {
+            const shell = document.getElementById('historySearchShell');
+            const summary = document.getElementById('historySearchSummary');
+            const clearBtn = document.getElementById('historySearchClear');
+            if (!summary) return;
+
+            const termo = (info.termo || '').trim();
+            const qtd = Number(info.qtd || 0);
+            const total = Number(info.total || 0);
+            const gasto = Number(info.gasto || 0);
+
+            if (!termo) {
+                summary.innerHTML = '<span>Digite para filtrar o histórico</span>';
+                clearBtn?.classList.add('hidden');
+                shell?.classList.remove('is-active');
+                return;
+            }
+
+            clearBtn?.classList.remove('hidden');
+            shell?.classList.add('is-active');
+            summary.innerHTML = `<span><i class="fa-solid fa-wave-square" style="margin-right:6px; color:var(--accent);"></i>${qtd} resultado(s) • gasto <strong>${ocultarBits(gasto)}</strong> • total <strong>${ocultarBits(total)}</strong></span>`;
+        }
+
         // LÓGICA DE DETECÇÃO DE BANCOS PARA BADGE
         function getBankBadge(bancoNome) {
             if (!bancoNome || bancoNome === 'Outros / Nenhum') return '';
@@ -3225,6 +3363,7 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
             });
             const registrosDoMes = ordenados.filter(r => r.data && typeof r.data === 'string' && r.data.startsWith(prefixoMes));
             let agrupados = {};
+            let buscaInfo = { termo: buscaHistorico, qtd: 0, total: 0, gasto: 0 };
             
             registrosDoMes.forEach((r) => {
                 const idxO = registros.indexOf(r);
@@ -3247,6 +3386,19 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
                     if (subFiltro === "Pago" && !isPago) exibir = false;
                 }
 
+                if (exibir && buscaHistorico) {
+                    const baseBusca = [r.desc, r.categoria, r.forma, r.banco, r.tipo, r.data ? r.data.split('-').reverse().join('/') : '']
+                        .filter(Boolean)
+                        .join(' ')
+                        .toLowerCase();
+                    exibir = baseBusca.includes(buscaHistorico);
+                    if (exibir) {
+                        buscaInfo.qtd += 1;
+                        buscaInfo.total += vT;
+                        if (r.tipo !== 'Receita' && r.tipo !== 'Ajuste' && r.tipo !== 'Reserva') buscaInfo.gasto += vT;
+                    }
+                }
+
                 if(exibir) {
                     let dataFormatada = r.data.split('-').reverse().join('/');
                     let hoje = new Date();
@@ -3259,8 +3411,11 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
                     agrupados[groupName].push({ ...r, realIdx: idxO, isPago, vT });
                 }
             });
+            atualizarResumoBuscaHistorico(buscaInfo);
             if(Object.keys(agrupados).length === 0 && corpo) {
-                corpo.innerHTML = `<div style="text-align:center; padding:40px; color:var(--text-muted); font-size:0.85rem;">Nenhuma operação encontrada</div>`;
+                corpo.innerHTML = buscaHistorico
+                    ? `<div class="history-search-empty"><i class="fa-solid fa-magnifying-glass-minus" style="font-size:2rem; color:var(--accent); margin-bottom:10px;"></i><div style="font-weight:800; color:var(--text); margin-bottom:6px;">Nenhum lançamento encontrado para "${buscaHistorico}"</div><div>Teste outro termo como categoria, descrição, banco, forma de pagamento ou data.</div></div>`
+                    : `<div style="text-align:center; padding:40px; color:var(--text-muted); font-size:0.85rem;">Nenhuma operação encontrada</div>`;
             } else if (corpo) {
                 Object.keys(agrupados).forEach(dataGrupo => {
                     corpo.innerHTML += `<div class="date-group-header">${dataGrupo}</div>`;
