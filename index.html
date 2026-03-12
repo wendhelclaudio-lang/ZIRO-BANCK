@@ -248,6 +248,7 @@
         }
         .badge { position:absolute; top:-5px; right:-5px; background:var(--danger); color:white; font-size:0.6rem; font-weight:bold; border-radius:50%; width:18px; height:18px;
             display:flex; align-items:center; justify-content:center; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+        .badge.hidden, .badge:empty, .badge[data-count="0"] { display:none !important; }
         .top-action-btn { background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02)); border:1px solid rgba(255,255,255,0.08); color:var(--text); padding:8px 10px; border-radius:14px; cursor:pointer;
             position:relative; display:flex; align-items:center; justify-content:center; height:40px; width:40px; backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: 0 12px 24px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.08); }
         .top-action-btn:hover { transform: translateY(-2px); box-shadow: 0 16px 28px rgba(0,0,0,0.24), 0 0 0 1px rgba(255,255,255,0.05), 0 0 24px color-mix(in srgb, var(--accent) 24%, transparent); }
@@ -3685,6 +3686,36 @@ input:focus, select:focus, textarea:focus{
             }, base || {});
         }
 
+        function atualizarBadgeNotificacoes(total) {
+            const badge = document.getElementById('badgeNotificacao');
+            const bellBtn = document.querySelector('.bell-btn');
+            if (!badge) return;
+            const quantidade = Number(total) || 0;
+            badge.dataset.count = String(quantidade);
+            if (quantidade > 0) {
+                badge.textContent = quantidade > 99 ? '99+' : String(quantidade);
+                badge.classList.remove('hidden');
+                bellBtn?.classList.add('has-alert');
+                bellBtn?.setAttribute('aria-label', `Abrir notificações (${quantidade} alerta${quantidade > 1 ? 's' : ''})`);
+            } else {
+                badge.textContent = '';
+                badge.classList.add('hidden');
+                bellBtn?.classList.remove('has-alert');
+                bellBtn?.setAttribute('aria-label', 'Abrir notificações');
+            }
+        }
+
+        function abrirSistemaDadosPeloAlerta() {
+            closeModalById('modalNotificacoes');
+            requestAnimationFrame(() => {
+                openSystemDataModal();
+                const destaque = document.querySelector('#modalSystemData .system-data-grid, #modalSystemData .system-data-hero, #modalSystemData');
+                if (destaque && typeof destaque.scrollIntoView === 'function') {
+                    destaque.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        }
+
         function gerarCentralNotificacoes() {
             const itens = [];
             const hoje = new Date();
@@ -3778,7 +3809,7 @@ input:focus, select:focus, textarea:focus{
                     tag: 'Backup recomendado',
                     amount: '',
                     actionLabel: 'Salvar agora',
-                    action: `openSystemDataModal()`,
+                    action: `abrirSistemaDadosPeloAlerta()`,
                     helper: `<span class="notif-tag-soft"><i class="fa-solid fa-shield-halved"></i>Dados locais mais seguros</span>`
                 }));
             } else {
@@ -3794,7 +3825,7 @@ input:focus, select:focus, textarea:focus{
                         tag: `${diasSemBackup} dia(s) sem backup`,
                         amount: '',
                         actionLabel: 'Atualizar backup',
-                        action: `openSystemDataModal()`,
+                        action: `abrirSistemaDadosPeloAlerta()`,
                         helper: `<span class="notif-tag-soft"><i class="fa-solid fa-database"></i>Evite perder seu histórico</span>`
                     }));
                 }
@@ -3845,12 +3876,10 @@ input:focus, select:focus, textarea:focus{
                 ? notificationCenterCache
                 : notificationCenterCache.filter(item => item.categoria === notificationCenterFilter);
 
+            atualizarBadgeNotificacoes(notificationCenterCache.length);
             if (notificationCenterCache.length > 0) {
-                badge.classList.remove('hidden');
-                badge.innerText = notificationCenterCache.length > 99 ? '99+' : notificationCenterCache.length;
                 sessionStorage.setItem('hasPendingAlert', 'true');
             } else {
-                badge.classList.add('hidden');
                 sessionStorage.setItem('hasPendingAlert', 'false');
             }
 
@@ -3877,7 +3906,7 @@ input:focus, select:focus, textarea:focus{
                     </div>
                     <div class="notif-value-box">
                         ${item.amount ? `<span class="notif-val">${item.amount}</span>` : '<span class="notif-val" style="font-size:.8rem; color:var(--text-muted);">Agora</span>'}
-                        <button class="notif-action" type="button">${item.actionLabel} <i class="fa-solid fa-arrow-right" style="margin-left:4px;"></i></button>
+                        <button class="notif-action" type="button" onclick="event.stopPropagation(); ${item.action}">${item.actionLabel} <i class="fa-solid fa-arrow-right" style="margin-left:4px;"></i></button>
                     </div>
                 </div>`).join('');
         }
@@ -3890,8 +3919,13 @@ input:focus, select:focus, textarea:focus{
             renderizarListaNotificacoes();
         }
 
+        let notificationRenderFrame = null;
         function verificarNotificacoes() {
-            renderizarListaNotificacoes();
+            if (notificationRenderFrame) cancelAnimationFrame(notificationRenderFrame);
+            notificationRenderFrame = requestAnimationFrame(() => {
+                renderizarListaNotificacoes();
+                notificationRenderFrame = null;
+            });
         }
 
         function abrirNotificacoes() {
