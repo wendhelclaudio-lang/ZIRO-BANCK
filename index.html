@@ -2053,7 +2053,7 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
                 <div class="sidebar-system-hint">
                     <strong>Nova central exclusiva</strong>
                     Backup, restauração e exportações agora vivem em uma experiência dedicada, mais rápida e elegante.
-                    <button onclick="openSystemDataModal()"><i class="fa-solid fa-cloud-arrow-up" style="margin-right:8px;"></i>Abrir Sistema &amp; Dados</button>
+                    <button onclick="document.getElementById('profileSidebar')?.classList.remove('open'); openSystemDataModal();"><i class="fa-solid fa-cloud-arrow-up" style="margin-right:8px;"></i>Abrir Sistema &amp; Dados</button>
                 </div>
                 
                 <div class="menu-item" onclick="limparMesAtual()">
@@ -3361,16 +3361,31 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
         }
 
         function openSystemDataModal() {
-            document.getElementById('modalSystemData')?.classList.add('open');
-            document.getElementById('profileSidebar')?.classList.remove('open');
-            if(document.getElementById('overlay')) document.getElementById('overlay').style.display = 'block';
+            const modal = document.getElementById('modalSystemData');
+            const overlay = document.getElementById('overlay');
+            const sidebar = document.getElementById('profileSidebar');
+
+            if (sidebar) sidebar.classList.remove('open');
+            if (modal) {
+                modal.classList.add('open');
+                modal.scrollTop = 0;
+            }
+            if (overlay) overlay.style.display = 'block';
         }
 
         function closeSystemDataModal() {
-            document.getElementById('modalSystemData')?.classList.remove('open');
+            const modal = document.getElementById('modalSystemData');
+            const overlay = document.getElementById('overlay');
+            const sidebar = document.getElementById('profileSidebar');
+
+            if (modal) modal.classList.remove('open');
+
             const hasOpenModal = Array.from(document.querySelectorAll('.modal')).some(m => m.classList.contains('open'));
-            const sidebarOpen = document.getElementById('profileSidebar')?.classList.contains('open');
-            if(document.getElementById('overlay') && !hasOpenModal && !sidebarOpen) document.getElementById('overlay').style.display = 'none';
+            const sidebarOpen = !!sidebar?.classList.contains('open');
+
+            if (overlay && !hasOpenModal && !sidebarOpen) {
+                overlay.style.display = 'none';
+            }
         }
         
         function closeModal() { 
@@ -5320,18 +5335,6 @@ function exportarDadosCSV() {
       }
     
 /* === 2026 PREMIUM REFINEMENT PATCH === */
-function openSystemDataModal(){
-  const modal = document.getElementById('modalSystemData');
-  if(modal) modal.classList.add('open');
-  const overlay = document.getElementById('overlay');
-  if(overlay) overlay.style.display = 'block';
-}
-function closeSystemDataModal(){
-  const modal = document.getElementById('modalSystemData');
-  if(modal) modal.classList.remove('open');
-  const overlay = document.getElementById('overlay');
-  if(overlay && !document.querySelector('.modal.open')) overlay.style.display = 'none';
-}
 (function(){
   const _closeAll = window.closeAll;
   if(typeof _closeAll === 'function'){
