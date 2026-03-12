@@ -2435,9 +2435,7 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
         <div class="meta-goals-shell">
             <div class="meta-hero">
                 <div class="meta-hero-copy">
-                    <div class="meta-overline"><i class="fa-solid fa-sparkles"></i> Gestão de Metas Premium</div>
-                    <h2>Transforme objetivos em conquistas visíveis.</h2>
-                    <p>Uma área mais inteligente para acompanhar evolução, ajustar aportes e manter sua meta sempre viva e inspiradora.</p>
+                    <div class="meta-overline"><i class="fa-solid fa-sparkles"></i> Gestão de Metas Premium</h2><p>Uma visão simples para acompanhar sua meta, ver quanto falta e manter o foco no que importa.</p>
                 </div>
                 <button class="meta-close-btn" onclick="closeModal()" aria-label="Fechar painel de metas"><i class="fa-solid fa-xmark"></i></button>
             </div>
@@ -5537,6 +5535,207 @@ function exportarDadosCSV() {
     } else {
         bindPreview();
     }
+})();
+</script>
+
+
+<style id="metas-simple-patch">
+/* === SIMPLE GOALS LAYOUT PATCH === */
+#gestaoMetas .goal-hero, 
+#gestaoMetas .metas-hero,
+#gestaoMetas .goal-premium-header,
+#gestaoMetas .goal-premium-intro{
+    margin-bottom: 14px !important;
+}
+#gestaoMetas .goal-hero p,
+#gestaoMetas .metas-hero p,
+#gestaoMetas .goal-premium-header p,
+#gestaoMetas .goal-premium-intro p{
+    opacity:.82 !important;
+    max-width: 680px !important;
+}
+#gestaoMetas .goal-grid,
+#gestaoMetas .metas-grid,
+#gestaoMetas .goal-summary-grid{
+    display:grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap:12px !important;
+}
+#gestaoMetas .goal-card,
+#gestaoMetas .meta-card,
+#gestaoMetas .goal-stat,
+#gestaoMetas .goal-summary-card{
+    border-radius:18px !important;
+    padding:14px !important;
+    min-height:auto !important;
+}
+#gestaoMetas .goal-card .muted,
+#gestaoMetas .meta-card .muted,
+#gestaoMetas .goal-stat .muted{
+    font-size:12px !important;
+    opacity:.72 !important;
+}
+#gestaoMetas .goal-card .value,
+#gestaoMetas .meta-card .value,
+#gestaoMetas .goal-stat .value{
+    font-size:22px !important;
+    line-height:1.15 !important;
+}
+#gestaoMetas .goal-extra,
+#gestaoMetas .metas-extra,
+#gestaoMetas .goal-insights,
+#gestaoMetas .goal-tip,
+#gestaoMetas .goal-secondary-info,
+#gestaoMetas .goal-long-copy,
+#gestaoMetas .goal-complex-info,
+#gestaoMetas .goal-frequency,
+#gestaoMetas .goal-rhythm,
+#gestaoMetas .goal-ideal-frequency,
+#gestaoMetas .goal-suggested-rhythm{
+    display:none !important;
+}
+#gestaoMetas .goal-progress-wrap,
+#gestaoMetas .metas-progress-wrap{
+    margin-top:12px !important;
+    padding:14px !important;
+    border-radius:18px !important;
+}
+#gestaoMetas .goal-progress-title,
+#gestaoMetas .metas-progress-title{
+    font-size:14px !important;
+    font-weight:700 !important;
+    margin-bottom:8px !important;
+}
+#gestaoMetas .goal-progress-subtitle,
+#gestaoMetas .metas-progress-subtitle{
+    font-size:12px !important;
+    opacity:.72 !important;
+}
+#gestaoMetas .goal-actions,
+#gestaoMetas .metas-actions{
+    gap:10px !important;
+    flex-wrap:wrap !important;
+}
+#gestaoMetas .goal-actions button,
+#gestaoMetas .metas-actions button{
+    min-height:44px !important;
+    border-radius:14px !important;
+}
+@media (max-width: 860px){
+    #gestaoMetas .goal-grid,
+    #gestaoMetas .metas-grid,
+    #gestaoMetas .goal-summary-grid{
+        grid-template-columns: 1fr !important;
+    }
+}
+</style>
+
+<script id="metas-simple-script">
+(function(){
+    function formatBRL(v){
+        try { return Number(v || 0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'}); }
+        catch(e){ return 'R$ 0,00'; }
+    }
+
+    function simplifyGoalsSection(){
+        const section = document.querySelector('#gestaoMetas, #metas');
+        if(!section) return;
+
+        // Clean subtitle text only in this sector
+        section.querySelectorAll('p').forEach(p => {
+            const txt = (p.textContent || '').trim();
+            if (txt.includes('Transforme objetivos em conquistas visíveis') || txt.includes('Uma área mais inteligente para acompanhar evolução')) {
+                p.textContent = 'Veja o total da meta, quanto já foi guardado e quanto ainda falta.';
+            }
+        });
+
+        // Hide verbose texts by content match
+        section.querySelectorAll('*').forEach(el => {
+            const txt = (el.textContent || '').trim();
+            if (
+                txt === 'FREQUÊNCIA DE APORTE IDEAL' ||
+                txt === 'RITIMO SUGERIDO' ||
+                txt === 'RITMO SUGERIDO' ||
+                txt === 'POR MÊS'
+            ){
+                el.style.display = 'none';
+            }
+        });
+
+        // Rename labels for clarity
+        const replacements = [
+            ['VALOR TOTAL DO OBJETIVO', 'Meta total'],
+            ['VALOR TOTAL', 'Meta total'],
+            ['VALOR ATUAL', 'Guardado até agora'],
+            ['VALOR GUARDADO', 'Guardado até agora'],
+            ['QUANTO FALTA', 'Falta para concluir'],
+            ['RESTANTE', 'Falta para concluir'],
+            ['PERCENTUAL', 'Progresso']
+        ];
+
+        section.querySelectorAll('*').forEach(el => {
+            const txt = (el.textContent || '').trim().toUpperCase();
+            replacements.forEach(([from, to]) => {
+                if (txt === from) el.textContent = to;
+            });
+        });
+
+        // Try to reduce cards to the three main blocks only
+        const cards = Array.from(section.querySelectorAll('.goal-card, .meta-card, .goal-stat, .goal-summary-card'));
+        if (cards.length > 3){
+            cards.forEach((card, idx) => {
+                if (idx > 2){
+                    const text = (card.textContent || '').toLowerCase();
+                    if (
+                        text.includes('frequ') ||
+                        text.includes('ritmo') ||
+                        text.includes('aporte ideal') ||
+                        text.includes('sugerido')
+                    ){
+                        card.style.display = 'none';
+                    }
+                }
+            });
+        }
+
+        // Create a compact summary row if identifiable values exist
+        const values = {};
+        section.querySelectorAll('*').forEach(el => {
+            const txt = (el.textContent || '').trim();
+            if (/^r\$\s?[\d\.\,]+$/.test(txt)) {
+                const labelEl = el.previousElementSibling;
+                const label = (labelEl?.textContent || '').trim().toLowerCase();
+                if (label.includes('meta total')) values.total = txt;
+                if (label.includes('guardado')) values.saved = txt;
+                if (label.includes('falta')) values.left = txt;
+            }
+        });
+
+        const host = section.querySelector('.goal-grid, .metas-grid, .goal-summary-grid');
+        if (host && !section.querySelector('.goals-simple-summary') && (values.total || values.saved || values.left)) {
+            const wrap = document.createElement('div');
+            wrap.className = 'goals-simple-summary';
+            wrap.style.display = 'grid';
+            wrap.style.gridTemplateColumns = 'repeat(3, minmax(0, 1fr))';
+            wrap.style.gap = '12px';
+            wrap.style.marginBottom = '12px';
+            wrap.innerHTML = `
+              <div class="goal-card"><div class="muted">Meta total</div><div class="value">${values.total || 'R$ 0,00'}</div></div>
+              <div class="goal-card"><div class="muted">Guardado até agora</div><div class="value">${values.saved || 'R$ 0,00'}</div></div>
+              <div class="goal-card"><div class="muted">Falta para concluir</div><div class="value">${values.left || 'R$ 0,00'}</div></div>
+            `;
+            host.parentNode.insertBefore(wrap, host);
+            if (window.innerWidth <= 860) wrap.style.gridTemplateColumns = '1fr';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function(){
+        setTimeout(simplifyGoalsSection, 300);
+        setTimeout(simplifyGoalsSection, 900);
+    });
+    window.addEventListener('load', function(){
+        setTimeout(simplifyGoalsSection, 200);
+    });
 })();
 </script>
 
