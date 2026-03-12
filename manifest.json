@@ -12,5 +12,17 @@
       "type": "image/svg+xml",
       "purpose": "any maskable"
     }
+  ],
+  "id": "./index.html",
+  "scope": "./",
+  "description": "Aplicativo pessoal de controle financeiro do MeuCaixa com experiência PWA e acesso protegido.",
+  "categories": [
+    "finance",
+    "productivity"
+  ],
+  "orientation": "portrait-primary",
+  "display_override": [
+    "standalone",
+    "minimal-ui"
   ]
 }
