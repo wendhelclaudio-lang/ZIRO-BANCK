@@ -4373,8 +4373,22 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
                 }
             };
 
+            const sanitizePdfText = (value) => {
+                return String(value ?? '')
+                    .normalize('NFKD')
+                    .replace(/[\u0300-\u036f]/g, '')
+                    .replace(/[“”]/g, '"')
+                    .replace(/[‘’]/g, "'")
+                    .replace(/[•·]/g, '-')
+                    .replace(/\u00A0/g, ' ')
+                    .replace(/[^\x20-\x7EÀ-ÿ]/g, '')
+                    .replace(/\s+/g, ' ')
+                    .trim();
+            };
+
             const writeWrapped = (textValue, x, maxWidth, lineHeight = 5, opts = {}) => {
-                const lines = pdf.splitTextToSize(String(textValue ?? ''), maxWidth);
+                const safeText = sanitizePdfText(textValue);
+                const lines = pdf.splitTextToSize(String(safeText ?? ''), maxWidth);
                 lines.forEach((line) => {
                     addPageIfNeeded(lineHeight + 2);
                     pdf.text(String(line), x, y, opts);
@@ -4407,7 +4421,7 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
             const desenharListaLancamentos = (lista, tituloSecao = 'Movimentações do período') => {
                 if (!lista.length) {
                     pdf.setFontSize(11);
-                    pdf.text('Nenhum lançamento encontrado para este recorte.', margin, y);
+                    pdf.text(sanitizePdfText('Nenhum lançamento encontrado para este recorte.'), margin, y);
                     y += 8;
                     return;
                 }
@@ -4417,7 +4431,7 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
                 addPageIfNeeded(16);
                 pdf.setFont('helvetica', 'bold');
                 pdf.setFontSize(12);
-                pdf.text(tituloSecao, margin, y);
+                pdf.text(sanitizePdfText(tituloSecao), margin, y);
                 y += 7;
 
                 lista.forEach((r, index) => {
@@ -4428,13 +4442,13 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 
                     pdf.setFont('helvetica', 'bold');
                     pdf.setFontSize(11);
-                    const titulo = `${index + 1}. ${r.desc || 'Lançamento sem descrição'}`;
+                    const titulo = sanitizePdfText(`${index + 1}. ${r.desc || 'Lançamento sem descrição'}`);
                     const titleLines = pdf.splitTextToSize(titulo, usableWidth - 45);
                     pdf.text(titleLines, margin, y);
 
                     pdf.setFont('helvetica', 'normal');
                     pdf.setFontSize(10);
-                    pdf.text(formatarMoeda(v), pageWidth - margin, y, { align: 'right' });
+                    pdf.text(sanitizePdfText(formatarMoeda(v)), pageWidth - margin, y, { align: 'right' });
 
                     y += titleLines.length * 5;
 
@@ -4464,16 +4478,16 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 
                 pdf.setFont('helvetica', 'bold');
                 pdf.setFontSize(18);
-                pdf.text(`MeuCaixa - ${tipoTitulo[tipoRelatorio] || 'Relatório'} ${modo === 'simples' ? 'Simples' : 'Detalhado'}`, margin, y);
+                pdf.text(sanitizePdfText(`MeuCaixa - ${tipoTitulo[tipoRelatorio] || 'Relatório'} ${modo === 'simples' ? 'Simples' : 'Detalhado'}`), margin, y);
                 y += 8;
 
                 pdf.setFont('helvetica', 'normal');
                 pdf.setFontSize(10);
-                pdf.text(`Cliente: ${appConfig?.nome || 'Usuário'}`, margin, y);
+                pdf.text(sanitizePdfText(`Cliente: ${appConfig?.nome || 'Usuário'}`), margin, y);
                 y += 5;
-                pdf.text(`Período: ${periodoRelatorio}`, margin, y);
+                pdf.text(sanitizePdfText(`Periodo: ${periodoRelatorio}`), margin, y);
                 y += 5;
-                pdf.text(`Gerado em: ${new Date().toLocaleDateString('pt-BR')}`, margin, y);
+                pdf.text(sanitizePdfText(`Gerado em: ${new Date().toLocaleDateString('pt-BR')}`), margin, y);
                 y += 8;
 
                 pdf.setDrawColor(0, 0, 0);
@@ -4490,16 +4504,16 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 
                     pdf.setFont('helvetica', 'bold');
                     pdf.setFontSize(12);
-                    pdf.text('Resumo da meta principal', margin, y);
+                    pdf.text(sanitizePdfText('Resumo da meta principal'), margin, y);
                     y += 7;
                     pdf.setFont('helvetica', 'normal');
                     pdf.setFontSize(11);
-                    pdf.text(`Meta escolhida: ${nomeMeta || 'Meta principal'}`, margin, y); y += 6;
-                    pdf.text(`Período da meta: ${appConfig?.periodoMeta || 'Mensal'}`, margin, y); y += 6;
-                    pdf.text(`Valor da meta: ${formatarMoeda(valorMeta)}`, margin, y); y += 6;
-                    pdf.text(`Acumulado atual: ${formatarMoeda(acumuladoMeta)}`, margin, y); y += 6;
-                    pdf.text(`Falta para concluir: ${formatarMoeda(falta)}`, margin, y); y += 6;
-                    pdf.text(`Progresso atual: ${progresso.toFixed(1)}%`, margin, y); y += 8;
+                    pdf.text(sanitizePdfText(`Meta escolhida: ${nomeMeta || 'Meta principal'}`), margin, y); y += 6;
+                    pdf.text(sanitizePdfText(`Periodo da meta: ${appConfig?.periodoMeta || 'Mensal'}`), margin, y); y += 6;
+                    pdf.text(sanitizePdfText(`Valor da meta: ${formatarMoeda(valorMeta)}`), margin, y); y += 6;
+                    pdf.text(sanitizePdfText(`Acumulado atual: ${formatarMoeda(acumuladoMeta)}`), margin, y); y += 6;
+                    pdf.text(sanitizePdfText(`Falta para concluir: ${formatarMoeda(falta)}`), margin, y); y += 6;
+                    pdf.text(sanitizePdfText(`Progresso atual: ${progresso.toFixed(1)}%`), margin, y); y += 8;
 
                     pdf.setFontSize(9.5);
                     pdf.setTextColor(80, 80, 80);
@@ -4509,7 +4523,7 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
                         y += 4;
                         pdf.setFont('helvetica', 'bold');
                         pdf.setFontSize(11);
-                        pdf.text('Leitura estratégica', margin, y);
+                        pdf.text(sanitizePdfText('Leitura estrategica'), margin, y);
                         y += 6;
                         pdf.setFont('helvetica', 'normal');
                         pdf.setFontSize(9.5);
@@ -4527,28 +4541,28 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 
                     pdf.setFont('helvetica', 'bold');
                     pdf.setFontSize(12);
-                    pdf.text(tipoRelatorio === 'patrimonio' ? 'Resumo patrimonial' : 'Resumo do período', margin, y);
+                    pdf.text(sanitizePdfText(tipoRelatorio === 'patrimonio' ? 'Resumo patrimonial' : 'Resumo do periodo'), margin, y);
                     y += 7;
                     pdf.setFont('helvetica', 'normal');
                     pdf.setFontSize(11);
 
                     if (tipoRelatorio !== 'patrimonio') {
-                        pdf.text(`Total Receitas: ${formatarMoeda(resumo.totalEntradas)}`, margin, y); y += 6;
-                        pdf.text(`Total Despesas: ${formatarMoeda(resumo.totalSaidas)}`, margin, y); y += 6;
-                        pdf.text(`Saldo apurado: ${formatarMoeda(resumo.totalEntradas - resumo.totalSaidas)}`, margin, y); y += 6;
-                        pdf.text(`Pendências abertas: ${formatarMoeda(resumo.totalPendencias)}`, margin, y); y += 6;
+                        pdf.text(sanitizePdfText(`Total Receitas: ${formatarMoeda(resumo.totalEntradas)}`), margin, y); y += 6;
+                        pdf.text(sanitizePdfText(`Total Despesas: ${formatarMoeda(resumo.totalSaidas)}`), margin, y); y += 6;
+                        pdf.text(sanitizePdfText(`Saldo apurado: ${formatarMoeda(resumo.totalEntradas - resumo.totalSaidas)}`), margin, y); y += 6;
+                        pdf.text(sanitizePdfText(`Pendencias abertas: ${formatarMoeda(resumo.totalPendencias)}`), margin, y); y += 6;
                     }
 
                     if (tipoRelatorio === 'patrimonio') {
                         const patrimonioAno = registrosPatrimonio
                             .filter(r => (r.data || '').startsWith(`${anoAtual}-`))
                             .reduce((acc, r) => acc + (parseFloat(r.valor) || 0), 0);
-                        pdf.text(`Patrimônio acumulado: ${formatarMoeda(resumo.totalPatrimonio)}`, margin, y); y += 6;
-                        pdf.text(`Aportes em ${anoAtual}: ${formatarMoeda(patrimonioAno)}`, margin, y); y += 6;
-                        pdf.text(`Movimentações patrimoniais: ${resumo.quantidadeLancamentos}`, margin, y); y += 6;
+                        pdf.text(sanitizePdfText(`Patrimonio acumulado: ${formatarMoeda(resumo.totalPatrimonio)}`), margin, y); y += 6;
+                        pdf.text(sanitizePdfText(`Aportes em ${anoAtual}: ${formatarMoeda(patrimonioAno)}`), margin, y); y += 6;
+                        pdf.text(sanitizePdfText(`Movimentacoes patrimoniais: ${resumo.quantidadeLancamentos}`), margin, y); y += 6;
                     } else {
-                        pdf.text(`Patrimônio lançado: ${formatarMoeda(resumo.totalPatrimonio)}`, margin, y); y += 6;
-                        pdf.text(`Quantidade de lançamentos: ${resumo.quantidadeLancamentos}`, margin, y); y += 6;
+                        pdf.text(sanitizePdfText(`Patrimonio lancado: ${formatarMoeda(resumo.totalPatrimonio)}`), margin, y); y += 6;
+                        pdf.text(sanitizePdfText(`Quantidade de lancamentos: ${resumo.quantidadeLancamentos}`), margin, y); y += 6;
                     }
                     y += 2;
 
