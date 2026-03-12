@@ -1901,52 +1901,53 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 }
 
 
+
 /* ==== MeuCaixa V2.0 Intelligence Hub ==== */
 .wealth-hub{
   margin: 18px 0 8px;
   display: grid;
-  gap: 16px;
+  gap: 14px;
 }
 .wealth-hero{
   position: relative;
   overflow: hidden;
   border: 1px solid rgba(255,255,255,.08);
-  background: linear-gradient(135deg, rgba(17,24,39,.92), rgba(15,23,42,.76));
-  border-radius: 28px;
-  padding: 22px;
-  box-shadow: 0 24px 70px rgba(2,6,23,.26);
+  background: linear-gradient(135deg, rgba(17,24,39,.92), rgba(15,23,42,.80));
+  border-radius: 24px;
+  padding: 18px;
+  box-shadow: 0 18px 42px rgba(2,6,23,.22);
 }
 body.light-theme .wealth-hero,
 body.tema-claro .wealth-hero{
-  background: linear-gradient(135deg, rgba(255,255,255,.92), rgba(241,245,249,.82));
+  background: linear-gradient(135deg, rgba(255,255,255,.95), rgba(241,245,249,.90));
 }
 .wealth-hero::after{
   content:"";
   position:absolute;
-  inset:auto -40px -55px auto;
-  width:180px;
-  height:180px;
+  inset:auto -35px -55px auto;
+  width:140px;
+  height:140px;
   border-radius:50%;
-  background: radial-gradient(circle, rgba(16,185,129,.18), transparent 70%);
+  background: radial-gradient(circle, rgba(16,185,129,.14), transparent 70%);
   pointer-events:none;
 }
 .wealth-kicker{
   display:inline-flex;
   align-items:center;
   gap:8px;
-  padding: 8px 12px;
+  padding: 7px 12px;
   border-radius:999px;
-  font-size:.72rem;
+  font-size:.7rem;
   font-weight:800;
   letter-spacing:.08em;
   text-transform:uppercase;
   background: rgba(16,185,129,.12);
   color: var(--success);
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 .wealth-hero h3{
   margin:0;
-  font-size:1.25rem;
+  font-size:1.1rem;
   line-height:1.2;
   color: var(--text);
 }
@@ -1954,56 +1955,93 @@ body.tema-claro .wealth-hero{
   margin:8px 0 0;
   color: var(--text-muted);
   max-width: 760px;
+  font-size: .86rem;
+  line-height: 1.45;
 }
-.wealth-grid{
+.wealth-nav-grid{
   display:grid;
   grid-template-columns: repeat(4, minmax(0,1fr));
-  gap: 12px;
-  margin-top: 18px;
+  gap: 10px;
+  margin-top: 14px;
 }
-.wealth-stat{
-  border-radius: 22px;
+.wealth-nav-card,
+.wealth-tab-btn{
   border: 1px solid rgba(255,255,255,.08);
   background: rgba(255,255,255,.04);
-  padding: 16px;
-  min-height: 112px;
-}
-body.light-theme .wealth-stat,
-body.tema-claro .wealth-stat{
-  background: rgba(255,255,255,.72);
-}
-.wealth-stat span{
-  display:block;
-  font-size:.74rem;
-  color: var(--text-muted);
-  margin-bottom:8px;
-}
-.wealth-stat strong{
-  display:block;
   color: var(--text);
-  font-size:1.2rem;
+  border-radius: 18px;
+  padding: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+body.light-theme .wealth-nav-card,
+body.tema-claro .wealth-nav-card,
+body.light-theme .wealth-tab-btn,
+body.tema-claro .wealth-tab-btn{
+  background: rgba(255,255,255,.82);
+}
+.wealth-nav-card.active,
+.wealth-tab-btn.active{
+  border-color: rgba(16,185,129,.28);
+  background: linear-gradient(135deg, rgba(16,185,129,.14), rgba(6,182,212,.10));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+}
+.wealth-nav-card span,
+.wealth-tab-btn span{
+  display:block;
+  font-size:.72rem;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+.wealth-nav-card strong{
+  display:block;
+  font-size:.96rem;
   line-height:1.2;
 }
-.wealth-stat small{
+.wealth-nav-card small{
   display:block;
-  margin-top:8px;
+  margin-top: 6px;
   color: var(--text-muted);
+  font-size:.76rem;
+  line-height:1.35;
 }
-.wealth-panels{
-  display:grid;
-  grid-template-columns: 1.15fr .85fr;
-  gap:16px;
+.wealth-panel-shell{
+  border-radius: 24px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(15,23,42,.72);
+  box-shadow: 0 18px 46px rgba(2,6,23,.18);
+  padding: 16px;
+}
+body.light-theme .wealth-panel-shell,
+body.tema-claro .wealth-panel-shell{
+  background: rgba(255,255,255,.92);
+}
+.wealth-tabbar{
+  display:flex;
+  flex-wrap:wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.wealth-tab-btn{
+  flex: 1 1 170px;
+  min-height: 56px;
+}
+.wealth-panel{
+  display:none;
+}
+.wealth-panel.active{
+  display:block;
 }
 .wealth-card{
-  border-radius: 26px;
+  border-radius: 20px;
   border: 1px solid rgba(255,255,255,.08);
-  background: rgba(15,23,42,.78);
-  box-shadow: 0 18px 50px rgba(2,6,23,.18);
-  padding: 20px;
+  background: rgba(255,255,255,.03);
+  box-shadow: 0 10px 28px rgba(2,6,23,.12);
+  padding: 16px;
 }
 body.light-theme .wealth-card,
 body.tema-claro .wealth-card{
-  background: rgba(255,255,255,.88);
+  background: rgba(248,250,252,.95);
 }
 .wealth-card h4{
   margin:0;
@@ -2011,54 +2049,106 @@ body.tema-claro .wealth-card{
   align-items:center;
   gap:10px;
   color: var(--text);
-  font-size: 1rem;
+  font-size: .95rem;
 }
 .wealth-card p{
   margin:8px 0 0;
   color: var(--text-muted);
-  font-size:.83rem;
+  font-size:.82rem;
+  line-height: 1.45;
+}
+.wealth-grid{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+.wealth-stat,
+.wealth-mini,
+.wealth-insight,
+.wealth-upcoming-item{
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.04);
+  padding: 14px;
+  min-width: 0;
+}
+body.light-theme .wealth-stat,
+body.tema-claro .wealth-stat,
+body.light-theme .wealth-mini,
+body.tema-claro .wealth-mini,
+body.light-theme .wealth-insight,
+body.tema-claro .wealth-insight,
+body.light-theme .wealth-upcoming-item,
+body.tema-claro .wealth-upcoming-item{
+  background: rgba(255,255,255,.86);
+}
+.wealth-stat span,
+.wealth-mini span{
+  display:block;
+  font-size:.72rem;
+  color: var(--text-muted);
+  margin-bottom:6px;
+}
+.wealth-stat strong,
+.wealth-mini strong{
+  display:block;
+  color: var(--text);
+  font-size:1rem;
+  line-height:1.25;
+  word-break: break-word;
+}
+.wealth-stat small{
+  display:block;
+  margin-top:6px;
+  color: var(--text-muted);
+  font-size:.76rem;
+  line-height:1.35;
+}
+.wealth-panels{
+  display:grid;
+  grid-template-columns: 1fr;
+  gap:12px;
 }
 .wealth-mini-grid{
   display:grid;
   grid-template-columns: repeat(2, minmax(0,1fr));
-  gap: 12px;
-  margin-top: 16px;
+  gap: 10px;
+  margin-top: 14px;
 }
-.wealth-mini{
-  border-radius: 18px;
-  background: rgba(255,255,255,.04);
-  border: 1px solid rgba(255,255,255,.08);
-  padding: 14px;
+.wealth-insights,
+.wealth-upcoming{
+  display:grid;
+  gap:10px;
+  margin-top: 14px;
 }
-body.light-theme .wealth-mini,
-body.tema-claro .wealth-mini{
-  background: rgba(248,250,252,.92);
-}
-.wealth-mini span{
+.wealth-insight strong{
   display:block;
-  color: var(--text-muted);
-  font-size:.73rem;
-  margin-bottom:6px;
-}
-.wealth-mini strong{
   color: var(--text);
-  font-size:1rem;
+  margin-bottom:6px;
+  font-size: .88rem;
+}
+.wealth-insight span{
+  color: var(--text-muted);
+  font-size: .82rem;
+  line-height: 1.45;
 }
 .wealth-actions{
   display:grid;
   grid-template-columns: repeat(3,minmax(0,1fr));
-  gap: 12px;
-  margin-top: 16px;
+  gap: 10px;
+  margin-top: 14px;
 }
 .wealth-action-btn{
   border:none;
-  border-radius: 18px;
-  padding: 14px 16px;
+  border-radius: 16px;
+  padding: 13px 14px;
   font-weight: 800;
   cursor:pointer;
   background: linear-gradient(135deg, rgba(16,185,129,.15), rgba(6,182,212,.12));
   color: var(--text);
   border: 1px solid rgba(16,185,129,.18);
+  min-width: 0;
 }
 .wealth-action-btn.secondary{
   background: rgba(255,255,255,.04);
@@ -2066,78 +2156,99 @@ body.tema-claro .wealth-mini{
 }
 body.light-theme .wealth-action-btn.secondary,
 body.tema-claro .wealth-action-btn.secondary{
-  background: rgba(248,250,252,.92);
-}
-.wealth-insights{
-  display:grid;
-  gap:12px;
-  margin-top: 16px;
-}
-.wealth-insight{
-  border-radius: 18px;
-  padding: 14px 16px;
-  background: rgba(255,255,255,.04);
-  border: 1px solid rgba(255,255,255,.08);
-}
-body.light-theme .wealth-insight,
-body.tema-claro .wealth-insight{
   background: rgba(248,250,252,.95);
 }
-.wealth-insight strong{
-  display:block;
-  color: var(--text);
-  margin-bottom: 6px;
-}
-.wealth-insight span{
-  color: var(--text-muted);
-  font-size: .84rem;
-}
 .wealth-canvas-wrap{
-  margin-top: 16px;
-  min-height: 260px;
+  margin-top: 14px;
+  height: 220px;
 }
 .wealth-chart-placeholder{
-  min-height: 260px;
-}
-.wealth-upcoming{
-  display:grid;
-  gap: 10px;
-  margin-top: 16px;
+  width:100% !important;
+  height:100% !important;
+  display:block;
 }
 .wealth-upcoming-item{
   display:flex;
-  align-items:center;
+  align-items:flex-start;
   justify-content:space-between;
   gap:10px;
-  padding: 12px 14px;
-  border-radius: 16px;
-  border:1px solid rgba(255,255,255,.08);
-  background: rgba(255,255,255,.04);
-}
-body.light-theme .wealth-upcoming-item,
-body.tema-claro .wealth-upcoming-item{
-  background: rgba(248,250,252,.95);
 }
 .wealth-upcoming-item strong,
 .wealth-upcoming-item span{
   color: var(--text);
 }
+.wealth-upcoming-item span{
+  text-align:right;
+  font-size: .92rem;
+}
 .wealth-upcoming-item small{
   color: var(--text-muted);
   display:block;
+  margin-top: 4px;
+  line-height: 1.35;
 }
 .wealth-empty{
   color: var(--text-muted);
-  padding: 16px 0 4px;
+  padding: 6px 0 2px;
+  font-size: .84rem;
 }
 @media (max-width: 960px){
+  .wealth-nav-grid,
   .wealth-grid,
-  .wealth-actions,
   .wealth-mini-grid,
-  .wealth-panels{
+  .wealth-actions{
     grid-template-columns: 1fr;
   }
 }
+@media (max-width: 640px){
+  .wealth-hub{
+    margin-top: 14px;
+    gap: 12px;
+  }
+  .wealth-hero,
+  .wealth-panel-shell{
+    border-radius: 20px;
+    padding: 14px;
+  }
+  .wealth-kicker{
+    font-size:.66rem;
+    padding: 6px 10px;
+  }
+  .wealth-hero h3{
+    font-size:1rem;
+  }
+  .wealth-hero p,
+  .wealth-card p,
+  .wealth-insight span,
+  .wealth-upcoming-item small{
+    font-size:.8rem;
+  }
+  .wealth-nav-card,
+  .wealth-tab-btn,
+  .wealth-card,
+  .wealth-stat,
+  .wealth-mini,
+  .wealth-insight,
+  .wealth-upcoming-item,
+  .wealth-action-btn{
+    border-radius: 14px;
+    padding: 12px;
+  }
+  .wealth-tab-btn{
+    flex-basis: calc(50% - 4px);
+    min-height: 50px;
+  }
+  .wealth-upcoming-item{
+    flex-direction: column;
+  }
+  .wealth-upcoming-item span{
+    text-align:left;
+  }
+  .wealth-canvas-wrap{
+    height: 190px;
+  }
+}
+
 
 </style>
 </head>
@@ -2364,97 +2475,157 @@ body.tema-claro .wealth-upcoming-item{
 <div id="tabelaCorpo"></div>
 </main>
 
+
 <section class="wealth-hub" id="wealthHubV2">
   <div class="wealth-hero">
     <span class="wealth-kicker"><i class="fa-solid fa-gem"></i> MeuCaixa 2.0</span>
-    <h3>Central inteligente de patrimônio, projeção e automações</h3>
-    <p>Uma visão premium do futuro financeiro com evolução patrimonial, previsão automática, metas inteligentes, instalação do app e proteção contínua dos seus dados.</p>
-    <div class="wealth-grid">
-      <div class="wealth-stat">
-        <span>Patrimônio projetado em 12 meses</span>
-        <strong id="wealthProjected12m">R$ 0,00</strong>
-        <small id="wealthProjected12mHint">Com base no seu ritmo recente.</small>
-      </div>
-      <div class="wealth-stat">
-        <span>Ritmo médio mensal</span>
-        <strong id="wealthMonthlyRunRate">R$ 0,00</strong>
-        <small id="wealthMonthlyRunRateHint">Entradas - saídas - aportes.</small>
-      </div>
-      <div class="wealth-stat">
-        <span>Próximo fechamento estimado</span>
-        <strong id="wealthNextClosing">R$ 0,00</strong>
-        <small id="wealthNextClosingHint">Estimativa para os próximos 30 dias.</small>
-      </div>
-      <div class="wealth-stat">
-        <span>Backup automático</span>
-        <strong id="wealthBackupStatus">Ativo</strong>
-        <small id="wealthBackupHint">Última cópia: aguardando.</small>
-      </div>
+    <h3>Painel inteligente e organizado para celular</h3>
+    <p>As informações avançadas agora ficam separadas por painel. A tela principal continua limpa, e cada dado aparece apenas no lugar certo.</p>
+
+    <div class="wealth-nav-grid">
+      <button class="wealth-nav-card active" data-panel="overview" type="button">
+        <span>Resumo</span>
+        <strong id="wealthQuickProjected">R$ 0,00</strong>
+        <small>Projeção e fechamento do próximo ciclo.</small>
+      </button>
+      <button class="wealth-nav-card" data-panel="growth" type="button">
+        <span>Patrimônio</span>
+        <strong id="wealthQuickReserve">R$ 0,00</strong>
+        <small>Evolução da reserva e avanço mensal.</small>
+      </button>
+      <button class="wealth-nav-card" data-panel="planning" type="button">
+        <span>Planejamento</span>
+        <strong id="wealthQuickPlan">R$ 0,00</strong>
+        <small>Metas, previsões e riqueza futura.</small>
+      </button>
+      <button class="wealth-nav-card" data-panel="alerts" type="button">
+        <span>Alertas e backup</span>
+        <strong id="wealthQuickAlerts">Protegido</strong>
+        <small>Notificações, instalação do app e segurança.</small>
+      </button>
     </div>
   </div>
 
-  <div class="wealth-panels">
-    <div class="wealth-card">
-      <h4><i class="fa-solid fa-chart-line"></i> Evolução do patrimônio</h4>
-      <p>Leitura automática da sua reserva para mostrar a direção do seu crescimento mês a mês.</p>
-      <div class="wealth-canvas-wrap">
-        <canvas class="wealth-chart-placeholder" id="wealthGrowthChart"></canvas>
-      </div>
-      <div class="wealth-mini-grid">
-        <div class="wealth-mini">
-          <span>Maior avanço mensal</span>
-          <strong id="wealthBestMonth">R$ 0,00</strong>
-        </div>
-        <div class="wealth-mini">
-          <span>Reserva atual registrada</span>
-          <strong id="wealthCurrentReserve">R$ 0,00</strong>
+  <div class="wealth-panel-shell">
+    <div class="wealth-tabbar">
+      <button class="wealth-tab-btn active" data-panel="overview" type="button"><span>Painel</span>Resumo geral</button>
+      <button class="wealth-tab-btn" data-panel="growth" type="button"><span>Painel</span>Evolução do patrimônio</button>
+      <button class="wealth-tab-btn" data-panel="planning" type="button"><span>Painel</span>Metas e previsão</button>
+      <button class="wealth-tab-btn" data-panel="alerts" type="button"><span>Painel</span>Alertas, app e backup</button>
+    </div>
+
+    <div class="wealth-panel active" data-panel="overview">
+      <div class="wealth-card">
+        <h4><i class="fa-solid fa-table-cells-large"></i> Resumo geral do MeuCaixa 2.0</h4>
+        <p>Visão rápida do que realmente importa, sem excesso de blocos na tela inicial.</p>
+        <div class="wealth-grid">
+          <div class="wealth-stat">
+            <span>Patrimônio projetado em 12 meses</span>
+            <strong id="wealthProjected12m">R$ 0,00</strong>
+            <small id="wealthProjected12mHint">Com base no seu ritmo recente.</small>
+          </div>
+          <div class="wealth-stat">
+            <span>Ritmo médio mensal</span>
+            <strong id="wealthMonthlyRunRate">R$ 0,00</strong>
+            <small id="wealthMonthlyRunRateHint">Entradas - saídas - aportes.</small>
+          </div>
+          <div class="wealth-stat">
+            <span>Próximo fechamento estimado</span>
+            <strong id="wealthNextClosing">R$ 0,00</strong>
+            <small id="wealthNextClosingHint">Estimativa para os próximos 30 dias.</small>
+          </div>
+          <div class="wealth-stat">
+            <span>Status do backup</span>
+            <strong id="wealthBackupStatus">Protegido</strong>
+            <small id="wealthBackupHint">Última cópia: aguardando.</small>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="wealth-card">
-      <h4><i class="fa-solid fa-brain"></i> Metas inteligentes e previsões</h4>
-      <p>O sistema calcula o melhor próximo passo com base no seu comportamento financeiro real.</p>
-      <div class="wealth-insights" id="wealthInsights"></div>
-      <div class="wealth-actions">
-        <button class="wealth-action-btn" id="wealthEnableNotifications" type="button"><i class="fa-solid fa-bell"></i> Ativar alertas</button>
-        <button class="wealth-action-btn secondary" id="wealthInstallApp" type="button"><i class="fa-solid fa-mobile-screen-button"></i> Instalar app</button>
-        <button class="wealth-action-btn secondary" id="wealthExportBackup" type="button"><i class="fa-solid fa-cloud-arrow-down"></i> Backup agora</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="wealth-panels">
-    <div class="wealth-card">
-      <h4><i class="fa-solid fa-wand-magic-sparkles"></i> Previsão financeira automática</h4>
-      <p>Estimativas geradas com base nas suas receitas, gastos pagos, dívidas futuras e aportes em patrimônio.</p>
-      <div class="wealth-mini-grid">
-        <div class="wealth-mini">
-          <span>Entradas previstas 30 dias</span>
-          <strong id="wealthIncome30">R$ 0,00</strong>
+    <div class="wealth-panel" data-panel="growth">
+      <div class="wealth-card">
+        <h4><i class="fa-solid fa-chart-line"></i> Evolução do patrimônio</h4>
+        <p>Leitura automática da sua reserva para mostrar a direção do seu crescimento mês a mês.</p>
+        <div class="wealth-canvas-wrap">
+          <canvas class="wealth-chart-placeholder" id="wealthGrowthChart"></canvas>
         </div>
-        <div class="wealth-mini">
-          <span>Saídas previstas 30 dias</span>
-          <strong id="wealthExpense30">R$ 0,00</strong>
-        </div>
-        <div class="wealth-mini">
-          <span>Aporte médio estimado</span>
-          <strong id="wealthReserve30">R$ 0,00</strong>
-        </div>
-        <div class="wealth-mini">
-          <span>Riqueza potencial em 24 meses</span>
-          <strong id="wealthProjected24m">R$ 0,00</strong>
+        <div class="wealth-mini-grid">
+          <div class="wealth-mini">
+            <span>Maior avanço mensal</span>
+            <strong id="wealthBestMonth">R$ 0,00</strong>
+          </div>
+          <div class="wealth-mini">
+            <span>Reserva atual registrada</span>
+            <strong id="wealthCurrentReserve">R$ 0,00</strong>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="wealth-card">
-      <h4><i class="fa-solid fa-calendar-check"></i> Notificações reais de vencimento</h4>
-      <p>O app identifica compromissos próximos e pode avisar diretamente no navegador quando houver permissão.</p>
-      <div class="wealth-upcoming" id="wealthUpcomingList"></div>
+    <div class="wealth-panel" data-panel="planning">
+      <div class="wealth-panels">
+        <div class="wealth-card">
+          <h4><i class="fa-solid fa-brain"></i> Metas inteligentes</h4>
+          <p>O sistema calcula o melhor próximo passo com base no seu comportamento financeiro real.</p>
+          <div class="wealth-insights" id="wealthInsights"></div>
+        </div>
+        <div class="wealth-card">
+          <h4><i class="fa-solid fa-wand-magic-sparkles"></i> Previsão financeira automática</h4>
+          <p>Estimativas geradas com base nas suas receitas, gastos pagos, dívidas futuras e aportes em patrimônio.</p>
+          <div class="wealth-mini-grid">
+            <div class="wealth-mini">
+              <span>Entradas previstas 30 dias</span>
+              <strong id="wealthIncome30">R$ 0,00</strong>
+            </div>
+            <div class="wealth-mini">
+              <span>Saídas previstas 30 dias</span>
+              <strong id="wealthExpense30">R$ 0,00</strong>
+            </div>
+            <div class="wealth-mini">
+              <span>Aporte médio estimado</span>
+              <strong id="wealthReserve30">R$ 0,00</strong>
+            </div>
+            <div class="wealth-mini">
+              <span>Riqueza potencial em 24 meses</span>
+              <strong id="wealthProjected24m">R$ 0,00</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wealth-panel" data-panel="alerts">
+      <div class="wealth-panels">
+        <div class="wealth-card">
+          <h4><i class="fa-solid fa-calendar-check"></i> Notificações reais de vencimento</h4>
+          <p>O app identifica compromissos próximos e pode avisar diretamente no navegador quando houver permissão.</p>
+          <div class="wealth-upcoming" id="wealthUpcomingList"></div>
+        </div>
+        <div class="wealth-card">
+          <h4><i class="fa-solid fa-shield-heart"></i> App e proteção contínua</h4>
+          <p>Ferramentas operacionais que ficam fora da tela principal, mas prontas quando você precisar.</p>
+          <div class="wealth-mini-grid">
+            <div class="wealth-mini">
+              <span>Backup automático</span>
+              <strong id="wealthBackupStatusMirror">Protegido</strong>
+            </div>
+            <div class="wealth-mini">
+              <span>Última cópia registrada</span>
+              <strong id="wealthBackupHintMirror">Aguardando</strong>
+            </div>
+          </div>
+          <div class="wealth-actions">
+            <button class="wealth-action-btn" id="wealthEnableNotifications" type="button"><i class="fa-solid fa-bell"></i> Ativar alertas</button>
+            <button class="wealth-action-btn secondary" id="wealthInstallApp" type="button"><i class="fa-solid fa-mobile-screen-button"></i> Instalar app</button>
+            <button class="wealth-action-btn secondary" id="wealthExportBackup" type="button"><i class="fa-solid fa-cloud-arrow-down"></i> Backup agora</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
+
 
 <section class="bottom-charts">
 <div class="meta-panel-home hidden" id="metaPanelInfo" onclick="abrirGestaoMetas()" style="cursor:pointer;
@@ -6270,6 +6441,19 @@ function exportarDadosCSV() {
     $('#wealthBestMonth').textContent = currency(s.bestDelta);
     $('#wealthCurrentReserve').textContent = currency(s.reserveCurrent);
     $('#wealthProjected12mHint').textContent = s.monthlyRunRate >= 0 ? 'Tendência positiva detectada.' : 'Ajustes recomendados no curto prazo.';
+    const backupLabel = localStorage.getItem('meucaixa_auto_backup_v2') ? 'Protegido' : 'Pendente';
+    const quickProjected = $('#wealthQuickProjected');
+    const quickReserve = $('#wealthQuickReserve');
+    const quickPlan = $('#wealthQuickPlan');
+    const quickAlerts = $('#wealthQuickAlerts');
+    const backupStatusMirror = $('#wealthBackupStatusMirror');
+    const backupHintMirror = $('#wealthBackupHintMirror');
+    if(quickProjected) quickProjected.textContent = currency(s.projected12);
+    if(quickReserve) quickReserve.textContent = currency(s.reserveCurrent);
+    if(quickPlan) quickPlan.textContent = currency(s.projected24);
+    if(quickAlerts) quickAlerts.textContent = backupLabel;
+    if(backupStatusMirror) backupStatusMirror.textContent = $('#wealthBackupStatus') ? $('#wealthBackupStatus').textContent : backupLabel;
+    if(backupHintMirror) backupHintMirror.textContent = $('#wealthBackupHint') ? $('#wealthBackupHint').textContent.replace('Última cópia: ','') : 'Aguardando';
     $('#wealthMonthlyRunRateHint').textContent = s.monthlyRunRate >= 0 ? 'Seu caixa recente está gerando tração.' : 'Saídas recentes superaram as entradas.';
     $('#wealthNextClosingHint').textContent = `Receitas ${currency(s.income30)} • saídas ${currency(s.expense30)}.`;
 
@@ -6277,6 +6461,10 @@ function exportarDadosCSV() {
     renderUpcoming(s);
     renderChart(s);
     updateBackupStatus();
+    const backupStatusMirror = $('#wealthBackupStatusMirror');
+    const backupHintMirror = $('#wealthBackupHintMirror');
+    if(backupStatusMirror && $('#wealthBackupStatus')) backupStatusMirror.textContent = $('#wealthBackupStatus').textContent;
+    if(backupHintMirror && $('#wealthBackupHint')) backupHintMirror.textContent = $('#wealthBackupHint').textContent.replace('Última cópia: ','');
   }
 
   function maybeNotifyUpcoming(){
@@ -6301,6 +6489,36 @@ function exportarDadosCSV() {
       localStorage.setItem('meucaixa_notified_v2', JSON.stringify(sent));
     }catch(e){}
   }
+
+
+  function activateWealthPanel(panelName){
+    const hub = $('#wealthHubV2');
+    if(!hub) return;
+    hub.querySelectorAll('[data-panel]').forEach(el => {
+      const match = el.getAttribute('data-panel') === panelName;
+      if(el.classList.contains('wealth-panel') || el.classList.contains('wealth-nav-card') || el.classList.contains('wealth-tab-btn')){
+        el.classList.toggle('active', match);
+      }
+    });
+    if(panelName === 'growth'){
+      setTimeout(() => {
+        try{ renderChart(buildFinanceSnapshot()); }catch(e){}
+      }, 60);
+    }
+  }
+
+  function bindHubTabs(){
+    const hub = $('#wealthHubV2');
+    if(!hub || hub.dataset.tabsBound === '1') return;
+    hub.querySelectorAll('.wealth-nav-card, .wealth-tab-btn').forEach(btn => {
+      btn.addEventListener('click', function(){
+        const panel = this.getAttribute('data-panel') || 'overview';
+        activateWealthPanel(panel);
+      });
+    });
+    hub.dataset.tabsBound = '1';
+  }
+
 
   function bindHubActions(){
     const notifBtn = $('#wealthEnableNotifications');
@@ -6388,7 +6606,9 @@ function exportarDadosCSV() {
 
   if(document.readyState === 'loading'){
     document.addEventListener('DOMContentLoaded', function(){
-      bindHubActions();
+      bindHubTabs();
+      bindHubTabs();
+    bindHubActions();
       saveAutoBackup(false);
       setTimeout(renderHub, 180);
       setTimeout(maybeNotifyUpcoming, 260);
