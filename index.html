@@ -1964,23 +1964,23 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 <div class="auth-view hidden" id="viewCadastro">
 <h2 class="lock-title">Criar Conta</h2>
 <p class="lock-subtitle">Sua jornada financeira começa aqui.</p>
-<div class="input-group"><i class="fa-solid fa-user"></i><input class="lock-input" id="cadNome" placeholder="Como devemos te chamar?" type="text"/></div>
-<div class="input-group"><i class="fa-solid fa-envelope"></i><input autocomplete="email" autocapitalize="none" class="lock-input" id="cadEmail" inputmode="email" placeholder="Seu melhor e-mail" spellcheck="false" type="email"/></div>
-<div class="input-group"><i class="fa-solid fa-lock"></i><input autocomplete="new-password" autocapitalize="none" class="lock-input password" id="cadSenha" onkeypress="if(event.key === 'Enter') efetuarCadastro()" placeholder="Crie uma senha forte" spellcheck="false" type="password"/></div>
+<div class="input-group"><i class="fa-solid fa-user"></i><input class="lock-input" id="cadNome" placeholder="Como devemos te chamar?" type="text" autocomplete="name" maxlength="60"/ ></div>
+<div class="input-group"><i class="fa-solid fa-envelope"></i><input class="lock-input" id="cadEmail" placeholder="Seu melhor e-mail" type="email" autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false"/ ></div>
+<div class="input-group"><i class="fa-solid fa-lock"></i><input class="lock-input password" id="cadSenha" onkeypress="if(event.key === 'Enter') efetuarCadastro()" placeholder="Crie uma senha forte" type="password" autocomplete="new-password" minlength="8" maxlength="128"/ ></div>
 <button class="btn-login" onclick="efetuarCadastro()">CADASTRAR E ENTRAR</button>
 </div>
 <div class="auth-view hidden" id="viewLogin" style="justify-content: center; height: 100%;">
 <h2 class="lock-title" id="txtWelcomeBack">Olá, WENDEL!</h2>
 <p class="lock-subtitle">Que bom ter você de volta.
                 Digite sua senha.</p>
-<div class="input-group"><i class="fa-solid fa-key"></i><input autocomplete="current-password" autocapitalize="none" class="lock-input password" id="inputSenha" onkeypress="if(event.key === 'Enter') checkLogin()" placeholder="Sua senha secreta" spellcheck="false" type="password"/></div>
+<div class="input-group"><i class="fa-solid fa-key"></i><input class="lock-input password" id="inputSenha" onkeypress="if(event.key === 'Enter') checkLogin()" placeholder="Sua senha secreta" type="password" autocomplete="current-password" minlength="8" maxlength="128"/ ></div>
 <button class="btn-login" onclick="checkLogin()">ENTRAR NO MEUCAIXA</button>
 <button class="btn-forgot" onclick="recuperarSenha()">Esqueci minha senha</button>
 </div>
 <div class="auth-view hidden" id="viewRecuperar">
 <h2 class="lock-title">Recuperar Senha</h2>
 <p class="lock-subtitle">Não se preocupe, vamos resolver isso.</p>
-<div class="input-group"><i class="fa-solid fa-envelope"></i><input class="lock-input" id="recEmail" placeholder="Confirme seu e-mail cadastrado" type="email"/></div>
+<div class="input-group"><i class="fa-solid fa-envelope"></i><input class="lock-input" id="recEmail" placeholder="Confirme seu e-mail cadastrado" type="email" autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false"/ ></div>
 <button class="btn-login" onclick="enviarCodigoRecuperacao()">ENVIAR CÓDIGO</button>
 <button class="btn-forgot" onclick="mostrarViewLogin()"><i class="fa-solid fa-arrow-left"></i> Voltar ao Login</button>
 </div>
@@ -2754,6 +2754,9 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
             nome: savedConfig.nome || null,
             email: savedConfig.email || null,
             senhaHash: savedConfig.senhaHash || null,
+            senhaSalt: savedConfig.senhaSalt || null,
+            authVersion: savedConfig.authVersion || null,
+            passwordUpdatedAt: savedConfig.passwordUpdatedAt || null,
             moeda: savedConfig.moeda || "R$",
             metaMensal: parseFloat(savedConfig.metaMensal) || 0,
             metaAcumulado: parseFloat(savedConfig.metaAcumulado) || 0,
@@ -5974,8 +5977,7 @@ function exportarDadosCSV() {
 </script>
 
 
-<script>
-/* === MEUCAIXA SECURITY HARDENING PATCH === */
+<script id="meucaixa-security-hardening">
 (function(){
   const SECURITY_POLICY = {
     minPasswordLength: 8,
