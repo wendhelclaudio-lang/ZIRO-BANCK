@@ -1900,6 +1900,245 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
   .leitor-insight-strip{grid-template-columns:1fr}
 }
 
+
+/* ==== MeuCaixa V2.0 Intelligence Hub ==== */
+.wealth-hub{
+  margin: 18px 0 8px;
+  display: grid;
+  gap: 16px;
+}
+.wealth-hero{
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.08);
+  background: linear-gradient(135deg, rgba(17,24,39,.92), rgba(15,23,42,.76));
+  border-radius: 28px;
+  padding: 22px;
+  box-shadow: 0 24px 70px rgba(2,6,23,.26);
+}
+body.light-theme .wealth-hero,
+body.tema-claro .wealth-hero{
+  background: linear-gradient(135deg, rgba(255,255,255,.92), rgba(241,245,249,.82));
+}
+.wealth-hero::after{
+  content:"";
+  position:absolute;
+  inset:auto -40px -55px auto;
+  width:180px;
+  height:180px;
+  border-radius:50%;
+  background: radial-gradient(circle, rgba(16,185,129,.18), transparent 70%);
+  pointer-events:none;
+}
+.wealth-kicker{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding: 8px 12px;
+  border-radius:999px;
+  font-size:.72rem;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  background: rgba(16,185,129,.12);
+  color: var(--success);
+  margin-bottom: 12px;
+}
+.wealth-hero h3{
+  margin:0;
+  font-size:1.25rem;
+  line-height:1.2;
+  color: var(--text);
+}
+.wealth-hero p{
+  margin:8px 0 0;
+  color: var(--text-muted);
+  max-width: 760px;
+}
+.wealth-grid{
+  display:grid;
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+.wealth-stat{
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.04);
+  padding: 16px;
+  min-height: 112px;
+}
+body.light-theme .wealth-stat,
+body.tema-claro .wealth-stat{
+  background: rgba(255,255,255,.72);
+}
+.wealth-stat span{
+  display:block;
+  font-size:.74rem;
+  color: var(--text-muted);
+  margin-bottom:8px;
+}
+.wealth-stat strong{
+  display:block;
+  color: var(--text);
+  font-size:1.2rem;
+  line-height:1.2;
+}
+.wealth-stat small{
+  display:block;
+  margin-top:8px;
+  color: var(--text-muted);
+}
+.wealth-panels{
+  display:grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap:16px;
+}
+.wealth-card{
+  border-radius: 26px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(15,23,42,.78);
+  box-shadow: 0 18px 50px rgba(2,6,23,.18);
+  padding: 20px;
+}
+body.light-theme .wealth-card,
+body.tema-claro .wealth-card{
+  background: rgba(255,255,255,.88);
+}
+.wealth-card h4{
+  margin:0;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  color: var(--text);
+  font-size: 1rem;
+}
+.wealth-card p{
+  margin:8px 0 0;
+  color: var(--text-muted);
+  font-size:.83rem;
+}
+.wealth-mini-grid{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+.wealth-mini{
+  border-radius: 18px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  padding: 14px;
+}
+body.light-theme .wealth-mini,
+body.tema-claro .wealth-mini{
+  background: rgba(248,250,252,.92);
+}
+.wealth-mini span{
+  display:block;
+  color: var(--text-muted);
+  font-size:.73rem;
+  margin-bottom:6px;
+}
+.wealth-mini strong{
+  color: var(--text);
+  font-size:1rem;
+}
+.wealth-actions{
+  display:grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+.wealth-action-btn{
+  border:none;
+  border-radius: 18px;
+  padding: 14px 16px;
+  font-weight: 800;
+  cursor:pointer;
+  background: linear-gradient(135deg, rgba(16,185,129,.15), rgba(6,182,212,.12));
+  color: var(--text);
+  border: 1px solid rgba(16,185,129,.18);
+}
+.wealth-action-btn.secondary{
+  background: rgba(255,255,255,.04);
+  border-color: rgba(255,255,255,.08);
+}
+body.light-theme .wealth-action-btn.secondary,
+body.tema-claro .wealth-action-btn.secondary{
+  background: rgba(248,250,252,.92);
+}
+.wealth-insights{
+  display:grid;
+  gap:12px;
+  margin-top: 16px;
+}
+.wealth-insight{
+  border-radius: 18px;
+  padding: 14px 16px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+}
+body.light-theme .wealth-insight,
+body.tema-claro .wealth-insight{
+  background: rgba(248,250,252,.95);
+}
+.wealth-insight strong{
+  display:block;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.wealth-insight span{
+  color: var(--text-muted);
+  font-size: .84rem;
+}
+.wealth-canvas-wrap{
+  margin-top: 16px;
+  min-height: 260px;
+}
+.wealth-chart-placeholder{
+  min-height: 260px;
+}
+.wealth-upcoming{
+  display:grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+.wealth-upcoming-item{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  border:1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.04);
+}
+body.light-theme .wealth-upcoming-item,
+body.tema-claro .wealth-upcoming-item{
+  background: rgba(248,250,252,.95);
+}
+.wealth-upcoming-item strong,
+.wealth-upcoming-item span{
+  color: var(--text);
+}
+.wealth-upcoming-item small{
+  color: var(--text-muted);
+  display:block;
+}
+.wealth-empty{
+  color: var(--text-muted);
+  padding: 16px 0 4px;
+}
+@media (max-width: 960px){
+  .wealth-grid,
+  .wealth-actions,
+  .wealth-mini-grid,
+  .wealth-panels{
+    grid-template-columns: 1fr;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -2124,6 +2363,99 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 </div>
 <div id="tabelaCorpo"></div>
 </main>
+
+<section class="wealth-hub" id="wealthHubV2">
+  <div class="wealth-hero">
+    <span class="wealth-kicker"><i class="fa-solid fa-gem"></i> MeuCaixa 2.0</span>
+    <h3>Central inteligente de patrimônio, projeção e automações</h3>
+    <p>Uma visão premium do futuro financeiro com evolução patrimonial, previsão automática, metas inteligentes, instalação do app e proteção contínua dos seus dados.</p>
+    <div class="wealth-grid">
+      <div class="wealth-stat">
+        <span>Patrimônio projetado em 12 meses</span>
+        <strong id="wealthProjected12m">R$ 0,00</strong>
+        <small id="wealthProjected12mHint">Com base no seu ritmo recente.</small>
+      </div>
+      <div class="wealth-stat">
+        <span>Ritmo médio mensal</span>
+        <strong id="wealthMonthlyRunRate">R$ 0,00</strong>
+        <small id="wealthMonthlyRunRateHint">Entradas - saídas - aportes.</small>
+      </div>
+      <div class="wealth-stat">
+        <span>Próximo fechamento estimado</span>
+        <strong id="wealthNextClosing">R$ 0,00</strong>
+        <small id="wealthNextClosingHint">Estimativa para os próximos 30 dias.</small>
+      </div>
+      <div class="wealth-stat">
+        <span>Backup automático</span>
+        <strong id="wealthBackupStatus">Ativo</strong>
+        <small id="wealthBackupHint">Última cópia: aguardando.</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="wealth-panels">
+    <div class="wealth-card">
+      <h4><i class="fa-solid fa-chart-line"></i> Evolução do patrimônio</h4>
+      <p>Leitura automática da sua reserva para mostrar a direção do seu crescimento mês a mês.</p>
+      <div class="wealth-canvas-wrap">
+        <canvas class="wealth-chart-placeholder" id="wealthGrowthChart"></canvas>
+      </div>
+      <div class="wealth-mini-grid">
+        <div class="wealth-mini">
+          <span>Maior avanço mensal</span>
+          <strong id="wealthBestMonth">R$ 0,00</strong>
+        </div>
+        <div class="wealth-mini">
+          <span>Reserva atual registrada</span>
+          <strong id="wealthCurrentReserve">R$ 0,00</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="wealth-card">
+      <h4><i class="fa-solid fa-brain"></i> Metas inteligentes e previsões</h4>
+      <p>O sistema calcula o melhor próximo passo com base no seu comportamento financeiro real.</p>
+      <div class="wealth-insights" id="wealthInsights"></div>
+      <div class="wealth-actions">
+        <button class="wealth-action-btn" id="wealthEnableNotifications" type="button"><i class="fa-solid fa-bell"></i> Ativar alertas</button>
+        <button class="wealth-action-btn secondary" id="wealthInstallApp" type="button"><i class="fa-solid fa-mobile-screen-button"></i> Instalar app</button>
+        <button class="wealth-action-btn secondary" id="wealthExportBackup" type="button"><i class="fa-solid fa-cloud-arrow-down"></i> Backup agora</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="wealth-panels">
+    <div class="wealth-card">
+      <h4><i class="fa-solid fa-wand-magic-sparkles"></i> Previsão financeira automática</h4>
+      <p>Estimativas geradas com base nas suas receitas, gastos pagos, dívidas futuras e aportes em patrimônio.</p>
+      <div class="wealth-mini-grid">
+        <div class="wealth-mini">
+          <span>Entradas previstas 30 dias</span>
+          <strong id="wealthIncome30">R$ 0,00</strong>
+        </div>
+        <div class="wealth-mini">
+          <span>Saídas previstas 30 dias</span>
+          <strong id="wealthExpense30">R$ 0,00</strong>
+        </div>
+        <div class="wealth-mini">
+          <span>Aporte médio estimado</span>
+          <strong id="wealthReserve30">R$ 0,00</strong>
+        </div>
+        <div class="wealth-mini">
+          <span>Riqueza potencial em 24 meses</span>
+          <strong id="wealthProjected24m">R$ 0,00</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="wealth-card">
+      <h4><i class="fa-solid fa-calendar-check"></i> Notificações reais de vencimento</h4>
+      <p>O app identifica compromissos próximos e pode avisar diretamente no navegador quando houver permissão.</p>
+      <div class="wealth-upcoming" id="wealthUpcomingList"></div>
+    </div>
+  </div>
+</section>
+
 <section class="bottom-charts">
 <div class="meta-panel-home hidden" id="metaPanelInfo" onclick="abrirGestaoMetas()" style="cursor:pointer;
             border: 1px solid var(--success);">
@@ -5651,6 +5983,421 @@ function exportarDadosCSV() {
   } else {
     bindMetaInputs();
     melhorarAcessibilidadeAcoes();
+  }
+})();
+</script>
+
+
+<script>
+(function(){
+  const $ = (sel, root=document) => root.querySelector(sel);
+  const currency = (n) => {
+    const value = Number(n || 0);
+    try { return value.toLocaleString('pt-BR', {style:'currency', currency:'BRL'}); }
+    catch(e){ return `R$ ${value.toFixed(2).replace('.', ',')}`; }
+  };
+  const parseDate = (str) => {
+    if(!str) return null;
+    const d = new Date(str + 'T12:00:00');
+    return Number.isNaN(d.getTime()) ? null : d;
+  };
+  const diffDays = (a,b) => Math.ceil((a - b) / 86400000);
+  const monthKey = (dateLike) => {
+    const d = (dateLike instanceof Date) ? dateLike : parseDate(dateLike);
+    if(!d) return '';
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+  };
+
+  let wealthPromptEvent = null;
+  let wealthChart = null;
+
+  function getRegistrosSafe(){
+    try { return Array.isArray(window.registros) ? window.registros.slice() : []; }
+    catch(e){ return []; }
+  }
+
+  function getConfigSafe(){
+    try {
+      const cfg = window.appConfig || JSON.parse(localStorage.getItem('meucaixa_config') || '{}') || {};
+      return cfg;
+    } catch(e){ return {}; }
+  }
+
+  function buildFinanceSnapshot(){
+    const registros = getRegistrosSafe();
+    const cfg = getConfigSafe();
+    const now = new Date();
+    const next30 = new Date(now.getTime() + 30*86400000);
+
+    const monthly = {};
+    let reserveCurrent = 0;
+    let income30 = 0;
+    let expense30 = 0;
+    let reserveMonths = {};
+    let upcoming = [];
+
+    registros.forEach((r) => {
+      if(!r || !r.data) return;
+      const valor = parseFloat(r.valor) || 0;
+      const pago = parseFloat(r.pago) || 0;
+      const dt = parseDate(r.data);
+      if(!dt) return;
+      const key = monthKey(dt);
+      if(!monthly[key]) monthly[key] = { income:0, paidOut:0, reserve:0, debt:0 };
+      if(r.tipo === 'Receita'){
+        monthly[key].income += valor;
+        if(dt >= now && dt <= next30) income30 += valor;
+      } else if(r.tipo === 'Reserva'){
+        monthly[key].reserve += valor;
+        reserveMonths[key] = (reserveMonths[key] || 0) + valor;
+        if(dt <= now) reserveCurrent += valor;
+      } else {
+        monthly[key].paidOut += (pago || 0);
+        monthly[key].debt += Math.max(valor - (pago || 0), 0);
+        if(dt >= now && dt <= next30) {
+          expense30 += (r.tipo === 'Divida' || r.tipo === 'Juros') ? (valor - (pago || 0)) : valor;
+          upcoming.push({
+            desc: r.desc || r.tipo || 'Compromisso',
+            valor: (r.tipo === 'Divida' || r.tipo === 'Juros') ? Math.max(valor - (pago || 0), 0) : valor,
+            data: r.data,
+            tipo: r.tipo || 'Gasto'
+          });
+        }
+      }
+    });
+
+    const keys = Object.keys(monthly).sort();
+    const runRates = keys.slice(-6).map((key) => monthly[key].income - monthly[key].paidOut + monthly[key].reserve);
+    const monthlyRunRate = runRates.length ? runRates.reduce((a,b)=>a+b,0) / runRates.length : 0;
+
+    let cumulativeReserve = 0;
+    const growthSeries = Object.keys(reserveMonths).sort().map((key) => {
+      cumulativeReserve += reserveMonths[key];
+      return { key, value: cumulativeReserve, delta: reserveMonths[key] };
+    });
+    const bestDelta = growthSeries.length ? Math.max(...growthSeries.map(item => item.delta)) : 0;
+    const reserveAverage = growthSeries.length ? growthSeries.reduce((a,b)=>a+b.delta,0)/growthSeries.length : 0;
+    const target = parseFloat(cfg.metaMensal) || 0;
+    const accumulated = parseFloat(cfg.metaAcumulado) || 0;
+    const remain = Math.max(target - accumulated, 0);
+    const aporteIdeal = reserveAverage > 0 ? reserveAverage : (monthlyRunRate > 0 ? monthlyRunRate * 0.35 : 0);
+    const monthsToGoal = (aporteIdeal > 0 && remain > 0) ? Math.ceil(remain / aporteIdeal) : null;
+
+    const nextClosing = (typeof window.getSaldo === 'function') ? ((window.getSaldo() || 0) + income30 - expense30) : (monthlyRunRate + income30 - expense30);
+    const projected12 = reserveCurrent + (Math.max(monthlyRunRate, reserveAverage, 0) * 12);
+    const projected24 = reserveCurrent + (Math.max(monthlyRunRate, reserveAverage, 0) * 24);
+
+    upcoming = upcoming
+      .filter(item => item.valor > 0)
+      .sort((a,b) => parseDate(a.data) - parseDate(b.data))
+      .slice(0,5);
+
+    return {
+      cfg, monthlyRunRate, reserveCurrent, income30, expense30, nextClosing,
+      projected12, projected24, growthSeries, bestDelta, reserveAverage,
+      aporteIdeal, remain, monthsToGoal, upcoming
+    };
+  }
+
+  function updateBackupStatus(){
+    try{
+      const backupRaw = localStorage.getItem('meucaixa_auto_backup_v2');
+      const el = $('#wealthBackupStatus');
+      const hint = $('#wealthBackupHint');
+      if(!el || !hint) return;
+      if(!backupRaw){
+        el.textContent = 'Ativo';
+        hint.textContent = 'Última cópia: será gerada automaticamente.';
+        return;
+      }
+      const parsed = JSON.parse(backupRaw);
+      const stamp = parsed && parsed.savedAt ? new Date(parsed.savedAt) : null;
+      el.textContent = 'Protegido';
+      hint.textContent = stamp ? `Última cópia: ${stamp.toLocaleString('pt-BR')}` : 'Última cópia registrada.';
+    }catch(e){}
+  }
+
+  function saveAutoBackup(forceDownload){
+    try{
+      const snapshot = {
+        savedAt: new Date().toISOString(),
+        registros: getRegistrosSafe(),
+        config: getConfigSafe(),
+        theme: localStorage.getItem('meucaixa_theme') || '',
+        version: '2.0'
+      };
+      localStorage.setItem('meucaixa_auto_backup_v2', JSON.stringify(snapshot));
+      updateBackupStatus();
+      if(forceDownload){
+        const blob = new Blob([JSON.stringify(snapshot, null, 2)], {type:'application/json;charset=utf-8'});
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `meucaixa-backup-${new Date().toISOString().slice(0,10)}.json`;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+          URL.revokeObjectURL(a.href);
+          a.remove();
+        }, 300);
+      }
+      return snapshot;
+    }catch(e){
+      return null;
+    }
+  }
+
+  function renderInsights(snapshot){
+    const host = $('#wealthInsights');
+    if(!host) return;
+    const insights = [];
+    const runRate = snapshot.monthlyRunRate;
+    const reserveAvg = snapshot.reserveAverage;
+    const cfg = snapshot.cfg || {};
+    const metaNome = cfg.descMeta || ({
+      reserva:'Reserva de Emergência',
+      viagem:'Viagem / Férias',
+      veiculo:'Trocar de Veículo',
+      imovel:'Casa Própria / Reforma',
+      casamento:'Casamento / Festa',
+      educacao:'Estudos / Faculdade',
+      aposentadoria:'Aposentadoria',
+      quitacao:'Quitar Dívidas',
+      investimento:'Liberdade Financeira',
+      eletronico:'Eletrônicos / Setup',
+      outros:'Objetivo'
+    }[cfg.tipoMeta || 'reserva'] || 'Objetivo');
+
+    if((parseFloat(cfg.metaMensal) || 0) > 0){
+      const prazoTxt = snapshot.monthsToGoal ? `${snapshot.monthsToGoal} ${snapshot.monthsToGoal === 1 ? 'mês' : 'meses'}` : 'ritmo insuficiente';
+      insights.push({
+        title: `Meta ${metaNome}`,
+        text: snapshot.remain > 0
+          ? `Faltam ${currency(snapshot.remain)}. Mantendo um aporte inteligente de ${currency(snapshot.aporteIdeal)} por ciclo, a conclusão estimada fica em ${prazoTxt}.`
+          : `Sua meta já está abastecida. O sistema sugere transformar o excedente em uma nova reserva estratégica.`
+      });
+    } else {
+      insights.push({
+        title: 'Meta inteligente pronta',
+        text: `Você já tem base suficiente para ativar uma meta guiada. Um valor inicial sugerido é ${currency(Math.max(snapshot.reserveAverage * 6, 1000))}.`
+      });
+    }
+
+    insights.push({
+      title: 'Previsão operacional',
+      text: runRate >= 0
+        ? `Seu ritmo médio mensal está positivo em ${currency(runRate)}. O sistema projeta fechamento saudável caso você mantenha esse padrão.`
+        : `Seu ritmo médio mensal está negativo em ${currency(runRate)}. Reduzir saídas recorrentes deve ser a primeira prioridade.`
+    });
+
+    insights.push({
+      title: 'Patrimônio futuro',
+      text: `Com a tendência atual, sua reserva pode atingir ${currency(snapshot.projected12)} em 12 meses e ${currency(snapshot.projected24)} em 24 meses.`
+    });
+
+    host.innerHTML = insights.map(item => `
+      <div class="wealth-insight">
+        <strong>${item.title}</strong>
+        <span>${item.text}</span>
+      </div>
+    `).join('');
+  }
+
+  function renderUpcoming(snapshot){
+    const host = $('#wealthUpcomingList');
+    if(!host) return;
+    if(!snapshot.upcoming.length){
+      host.innerHTML = '<div class="wealth-empty">Nenhum vencimento relevante encontrado para os próximos 30 dias.</div>';
+      return;
+    }
+    host.innerHTML = snapshot.upcoming.map(item => {
+      const d = parseDate(item.data);
+      const label = d ? d.toLocaleDateString('pt-BR') : item.data;
+      return `<div class="wealth-upcoming-item">
+        <div>
+          <strong>${item.desc}</strong>
+          <small>${item.tipo} • vence em ${label}</small>
+        </div>
+        <span>${currency(item.valor)}</span>
+      </div>`;
+    }).join('');
+  }
+
+  function renderChart(snapshot){
+    const canvas = $('#wealthGrowthChart');
+    if(!canvas || typeof Chart === 'undefined') return;
+    const labels = snapshot.growthSeries.map(item => item.key.split('-').reverse().join('/'));
+    const values = snapshot.growthSeries.map(item => item.value);
+    if(wealthChart) wealthChart.destroy();
+    wealthChart = new Chart(canvas.getContext('2d'), {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [{
+          label: 'Patrimônio acumulado',
+          data: values,
+          borderWidth: 3,
+          tension: .28,
+          fill: true,
+          backgroundColor: 'rgba(16,185,129,0.12)',
+          borderColor: '#10b981',
+          pointRadius: 3,
+          pointHoverRadius: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { ticks: { color: getComputedStyle(document.body).getPropertyValue('--text-muted') || '#94a3b8' }, grid: { display: false } },
+          y: { ticks: { color: getComputedStyle(document.body).getPropertyValue('--text-muted') || '#94a3b8', callback: (v) => currency(v) }, grid: { color: 'rgba(148,163,184,.12)' } }
+        }
+      }
+    });
+  }
+
+  function renderHub(){
+    const hub = $('#wealthHubV2');
+    if(!hub) return;
+    const s = buildFinanceSnapshot();
+    $('#wealthProjected12m').textContent = currency(s.projected12);
+    $('#wealthMonthlyRunRate').textContent = currency(s.monthlyRunRate);
+    $('#wealthNextClosing').textContent = currency(s.nextClosing);
+    $('#wealthIncome30').textContent = currency(s.income30);
+    $('#wealthExpense30').textContent = currency(s.expense30);
+    $('#wealthReserve30').textContent = currency(Math.max(s.reserveAverage, 0));
+    $('#wealthProjected24m').textContent = currency(s.projected24);
+    $('#wealthBestMonth').textContent = currency(s.bestDelta);
+    $('#wealthCurrentReserve').textContent = currency(s.reserveCurrent);
+    $('#wealthProjected12mHint').textContent = s.monthlyRunRate >= 0 ? 'Tendência positiva detectada.' : 'Ajustes recomendados no curto prazo.';
+    $('#wealthMonthlyRunRateHint').textContent = s.monthlyRunRate >= 0 ? 'Seu caixa recente está gerando tração.' : 'Saídas recentes superaram as entradas.';
+    $('#wealthNextClosingHint').textContent = `Receitas ${currency(s.income30)} • saídas ${currency(s.expense30)}.`;
+
+    renderInsights(s);
+    renderUpcoming(s);
+    renderChart(s);
+    updateBackupStatus();
+  }
+
+  function maybeNotifyUpcoming(){
+    try{
+      if(!('Notification' in window) || Notification.permission !== 'granted') return;
+      const s = buildFinanceSnapshot();
+      const sent = JSON.parse(localStorage.getItem('meucaixa_notified_v2') || '{}');
+      const now = new Date();
+      s.upcoming.forEach(item => {
+        const d = parseDate(item.data);
+        if(!d) return;
+        const days = diffDays(d, now);
+        const key = `${item.desc}|${item.data}|${item.valor}`;
+        if(days >= 0 && days <= 3 && !sent[key]){
+          new Notification('MeuCaixa • vencimento próximo', {
+            body: `${item.desc} vence em ${days === 0 ? 'hoje' : days === 1 ? '1 dia' : days + ' dias'} • ${currency(item.valor)}`,
+            icon: './icon.svg'
+          });
+          sent[key] = new Date().toISOString();
+        }
+      });
+      localStorage.setItem('meucaixa_notified_v2', JSON.stringify(sent));
+    }catch(e){}
+  }
+
+  function bindHubActions(){
+    const notifBtn = $('#wealthEnableNotifications');
+    const installBtn = $('#wealthInstallApp');
+    const backupBtn = $('#wealthExportBackup');
+
+    if(notifBtn && notifBtn.dataset.bound !== '1'){
+      notifBtn.addEventListener('click', async function(){
+        if(!('Notification' in window)){
+          if(typeof showToast === 'function') showToast('Seu navegador não oferece suporte a notificações.', 'warning');
+          return;
+        }
+        const result = await Notification.requestPermission();
+        if(result === 'granted'){
+          maybeNotifyUpcoming();
+          if(typeof showToast === 'function') showToast('Alertas inteligentes ativados com sucesso!', 'success');
+        } else if(typeof showToast === 'function'){
+          showToast('Permissão de notificação não concedida.', 'warning');
+        }
+      });
+      notifBtn.dataset.bound = '1';
+    }
+
+    if(installBtn && installBtn.dataset.bound !== '1'){
+      installBtn.addEventListener('click', async function(){
+        if(wealthPromptEvent){
+          wealthPromptEvent.prompt();
+          const outcome = await wealthPromptEvent.userChoice;
+          wealthPromptEvent = null;
+          if(typeof showToast === 'function'){
+            showToast(outcome && outcome.outcome === 'accepted' ? 'Instalação iniciada.' : 'Instalação não confirmada.', 'success');
+          }
+        } else if(typeof showToast === 'function'){
+          showToast('Quando o navegador permitir, o botão de instalação ficará pronto automaticamente.', 'warning');
+        }
+      });
+      installBtn.dataset.bound = '1';
+    }
+
+    if(backupBtn && backupBtn.dataset.bound !== '1'){
+      backupBtn.addEventListener('click', function(){
+        saveAutoBackup(true);
+        if(typeof showToast === 'function') showToast('Backup premium exportado com sucesso!', 'success');
+      });
+      backupBtn.dataset.bound = '1';
+    }
+  }
+
+  window.addEventListener('beforeinstallprompt', function(e){
+    e.preventDefault();
+    wealthPromptEvent = e;
+    const btn = $('#wealthInstallApp');
+    if(btn){
+      btn.classList.remove('secondary');
+      btn.innerHTML = '<i class="fa-solid fa-mobile-screen-button"></i> Instalar app agora';
+    }
+  });
+
+  const originalRenderizarHubPatch = window.renderizar;
+  if(typeof originalRenderizarHubPatch === 'function' && !window.__wealthHubPatched){
+    window.renderizar = function(){
+      const result = originalRenderizarHubPatch.apply(this, arguments);
+      try{
+        saveAutoBackup(false);
+        renderHub();
+        maybeNotifyUpcoming();
+      }catch(e){}
+      return result;
+    };
+    window.__wealthHubPatched = true;
+  }
+
+  const originalSalvarConfigHubPatch = window.salvarConfig;
+  if(typeof originalSalvarConfigHubPatch === 'function' && !window.__wealthConfigPatched){
+    window.salvarConfig = function(){
+      const result = originalSalvarConfigHubPatch.apply(this, arguments);
+      setTimeout(function(){
+        saveAutoBackup(false);
+        renderHub();
+      }, 30);
+      return result;
+    };
+    window.__wealthConfigPatched = true;
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', function(){
+      bindHubActions();
+      saveAutoBackup(false);
+      setTimeout(renderHub, 180);
+      setTimeout(maybeNotifyUpcoming, 260);
+    });
+  } else {
+    bindHubActions();
+    saveAutoBackup(false);
+    setTimeout(renderHub, 180);
+    setTimeout(maybeNotifyUpcoming, 260);
   }
 })();
 </script>
