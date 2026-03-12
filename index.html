@@ -1,30 +1,26 @@
 <!DOCTYPE html>
+
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MeuCaixa - Comando de Ativos</title>
-    
-    <link rel="manifest" href="./manifest.json">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="./icon.svg">
-    <meta name="theme-color" content="#030712">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-    
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-   
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-    <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>MeuCaixa - Comando de Ativos</title>
+<link href="./manifest.json" rel="manifest"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
+<link href="./icon.svg" rel="apple-touch-icon"/>
+<meta content="#030712" name="theme-color"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
         /* VARIÁVEIS DE TEMAS */
         :root {
             --bg: #030712;
@@ -1860,796 +1856,734 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
     .launch-preview-value{font-size:1.8rem;}
 }
 
+
+/* Simplificação pontual: Gestão de Metas */
+.meta-goals-shell-simple{background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.015));}
+.meta-hero-simple{min-height:auto;padding:24px 24px 84px;background:linear-gradient(180deg,rgba(7,15,30,.90),rgba(3,7,18,.72));}
+.meta-hero-simple .meta-hero-copy{max-width:100%;}
+.meta-hero-simple h2{font-size:1.28rem;line-height:1.1;margin-bottom:8px;}
+.meta-hero-simple p{max-width:34ch;font-size:.88rem;line-height:1.45;}
+.meta-body-premium-simple{margin-top:-52px;}
+.meta-dashboard-card-simple{text-align:left;padding:20px;border-radius:24px;}
+.meta-summary-top{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:center;}
+.meta-summary-head{display:flex;flex-direction:column;gap:8px;min-width:0;}
+.meta-summary-head .meta-badge-motivational{margin:0;align-self:flex-start;}
+.meta-summary-head strong{font-size:1.08rem;color:var(--text);line-height:1.2;}
+.meta-summary-head span{color:var(--text-muted);font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;font-weight:700;}
+.meta-progress-ring-simple{width:136px;height:136px;margin:0;}
+.meta-simple-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:18px;}
+.meta-simple-item{padding:14px 15px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);}
+.meta-simple-item span,.meta-simple-chip span{display:block;font-size:.66rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.12em;font-weight:800;margin-bottom:6px;}
+.meta-simple-item strong,.meta-simple-chip strong{display:block;font-size:1rem;color:var(--text);line-height:1.25;}
+.meta-simple-footer{display:grid;grid-template-columns:220px minmax(0,1fr);gap:12px;margin-top:14px;}
+.meta-simple-chip,.meta-simple-tip{padding:14px 15px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);}
+.meta-simple-tip{display:flex;align-items:center;color:var(--text-muted);font-size:.82rem;line-height:1.45;}
+.meta-quick-actions-simple .btn-meta-quick{min-height:72px;font-size:.82rem;gap:8px;}
+.meta-quick-actions-simple .btn-meta-quick br{display:none;}
+.meta-quick-actions-simple .btn-meta-quick i{font-size:1.25rem;}
+@media (max-width:640px){
+  .meta-summary-top{grid-template-columns:1fr;justify-items:start;}
+  .meta-progress-ring-simple{width:124px;height:124px;}
+  .meta-simple-grid{grid-template-columns:1fr 1fr;}
+  .meta-simple-footer{grid-template-columns:1fr;}
+  .meta-hero-simple{padding:20px 18px 78px;}
+}
+
 </style>
 </head>
 <body>
-
-    <div id="toast-container"></div>
-
-    <div id="ios-prompt" class="hidden" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--card); border: 2px solid var(--accent); padding: 20px; border-radius: 16px; z-index: 100000; width: 90%; max-width: 350px; box-shadow: 0 10px 40px rgba(0,0,0,0.7); text-align: center;">
-        <h3 style="margin: 0 0 10px 0; color: var(--text); font-size: 1.1rem;"><i class="fa-brands fa-apple" style="margin-right: 5px;"></i> Instalar no iPhone</h3>
-        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px; line-height: 1.5;">
+<div id="toast-container"></div>
+<div class="hidden" id="ios-prompt" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--card); border: 2px solid var(--accent); padding: 20px; border-radius: 16px; z-index: 100000; width: 90%; max-width: 350px; box-shadow: 0 10px 40px rgba(0,0,0,0.7); text-align: center;">
+<h3 style="margin: 0 0 10px 0; color: var(--text); font-size: 1.1rem;"><i class="fa-brands fa-apple" style="margin-right: 5px;"></i> Instalar no iPhone</h3>
+<p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px; line-height: 1.5;">
             O Safari 
-            não instala apps automaticamente. Para ter o <b>MeuCaixa</b> no celular, toque em <i class="fa-solid fa-arrow-up-from-bracket" style="color: var(--accent); margin: 0 4px;"></i> <b>Compartilhar</b> e selecione <br><br><b>"Adicionar à Tela de Início"</b> <i class="fa-regular fa-square-plus" style="margin: 0 4px;"></i>.
+            não instala apps automaticamente. Para ter o <b>MeuCaixa</b> no celular, toque em <i class="fa-solid fa-arrow-up-from-bracket" style="color: var(--accent); margin: 0 4px;"></i> <b>Compartilhar</b> e selecione <br/><br/><b>"Adicionar à Tela de Início"</b> <i class="fa-regular fa-square-plus" style="margin: 0 4px;"></i>.
         </p>
-        <button onclick="document.getElementById('ios-prompt').style.display='none'" style="background: var(--accent); color: #fff; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 800; cursor: pointer; width: 100%;">ENTENDI</button>
-    </div>
-
-    <div id="android-install-prompt" class="hidden" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--card); border: 2px solid var(--success); padding: 20px; border-radius: 16px; z-index: 100000; width: 90%; max-width: 350px; box-shadow: 0 10px 40px rgba(0,0,0,0.7); text-align: center;">
-        <h3 style="margin: 0 0 10px 0; color: var(--text); font-size: 1.1rem;"><i class="fa-brands fa-android" style="margin-right: 5px; color: #3DDC84;"></i> Instalar Aplicativo</h3>
-        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px; line-height: 1.5;">
+<button onclick="document.getElementById('ios-prompt').style.display='none'" style="background: var(--accent); color: #fff; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 800; cursor: pointer; width: 100%;">ENTENDI</button>
+</div>
+<div class="hidden" id="android-install-prompt" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--card); border: 2px solid var(--success); padding: 20px; border-radius: 16px; z-index: 100000; width: 90%; max-width: 350px; box-shadow: 0 10px 40px rgba(0,0,0,0.7); text-align: center;">
+<h3 style="margin: 0 0 10px 0; color: var(--text); font-size: 1.1rem;"><i class="fa-brands fa-android" style="margin-right: 5px; color: #3DDC84;"></i> Instalar Aplicativo</h3>
+<p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px; line-height: 1.5;">
             Baixe o <b>MeuCaixa</b> diretamente no seu celular para uma experiência mais rápida e como um app nativo!
         </p>
-        <div style="display: flex; gap: 10px;">
-            <button onclick="installApp()" style="background: var(--success); color: #fff; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 800; cursor: pointer; flex: 2;"><i class="fa-solid fa-download"></i> BAIXAR AGORA</button>
-            <button onclick="document.getElementById('android-install-prompt').classList.add('hidden')" style="background: transparent; color: var(--text-muted); border: 1px solid var(--border); padding: 12px 10px; border-radius: 10px; font-weight: 800; cursor: pointer; flex: 1;">DEPOIS</button>
-        </div>
-    </div>
-
-    <div id="lock-screen" class="hidden">
-        <div class="login-card">
-            <div class="lock-avatar" id="loginAvatar"><i class="fa-solid fa-fingerprint"></i></div>
-            
-            <div id="viewCadastro" class="auth-view hidden">
-            
-                <h2 class="lock-title">Criar Conta</h2>
-                <p class="lock-subtitle">Sua jornada financeira começa aqui.</p>
-                <div class="input-group"><i class="fa-solid fa-user"></i><input type="text" id="cadNome" class="lock-input" placeholder="Como devemos te chamar?"></div>
-                <div class="input-group"><i class="fa-solid fa-envelope"></i><input type="email" id="cadEmail" class="lock-input" placeholder="Seu melhor e-mail"></div>
-                <div class="input-group"><i class="fa-solid fa-lock"></i><input type="password" id="cadSenha" 
-                class="lock-input password" placeholder="Crie uma senha forte" onkeypress="if(event.key === 'Enter') efetuarCadastro()"></div>
-                <button class="btn-login" onclick="efetuarCadastro()">CADASTRAR E ENTRAR</button>
-            </div>
-
-            <div id="viewLogin" class="auth-view hidden" style="justify-content: center; height: 100%;">
-                <h2 class="lock-title" id="txtWelcomeBack">Olá, WENDEL!</h2>
-                <p class="lock-subtitle">Que bom ter você de volta.
+<div style="display: flex; gap: 10px;">
+<button onclick="installApp()" style="background: var(--success); color: #fff; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 800; cursor: pointer; flex: 2;"><i class="fa-solid fa-download"></i> BAIXAR AGORA</button>
+<button onclick="document.getElementById('android-install-prompt').classList.add('hidden')" style="background: transparent; color: var(--text-muted); border: 1px solid var(--border); padding: 12px 10px; border-radius: 10px; font-weight: 800; cursor: pointer; flex: 1;">DEPOIS</button>
+</div>
+</div>
+<div class="hidden" id="lock-screen">
+<div class="login-card">
+<div class="lock-avatar" id="loginAvatar"><i class="fa-solid fa-fingerprint"></i></div>
+<div class="auth-view hidden" id="viewCadastro">
+<h2 class="lock-title">Criar Conta</h2>
+<p class="lock-subtitle">Sua jornada financeira começa aqui.</p>
+<div class="input-group"><i class="fa-solid fa-user"></i><input class="lock-input" id="cadNome" placeholder="Como devemos te chamar?" type="text"/></div>
+<div class="input-group"><i class="fa-solid fa-envelope"></i><input class="lock-input" id="cadEmail" placeholder="Seu melhor e-mail" type="email"/></div>
+<div class="input-group"><i class="fa-solid fa-lock"></i><input class="lock-input password" id="cadSenha" onkeypress="if(event.key === 'Enter') efetuarCadastro()" placeholder="Crie uma senha forte" type="password"/></div>
+<button class="btn-login" onclick="efetuarCadastro()">CADASTRAR E ENTRAR</button>
+</div>
+<div class="auth-view hidden" id="viewLogin" style="justify-content: center; height: 100%;">
+<h2 class="lock-title" id="txtWelcomeBack">Olá, WENDEL!</h2>
+<p class="lock-subtitle">Que bom ter você de volta.
                 Digite sua senha.</p>
-                <div class="input-group"><i class="fa-solid fa-key"></i><input type="password" id="inputSenha" class="lock-input password" placeholder="Sua senha secreta" onkeypress="if(event.key === 'Enter') checkLogin()"></div>
-                <button class="btn-login" onclick="checkLogin()">ENTRAR NO MEUCAIXA</button>
-                <button class="btn-forgot" onclick="recuperarSenha()">Esqueci minha senha</button>
-            </div>
-
-            <div id="viewRecuperar" class="auth-view hidden">
- 
-                <h2 class="lock-title">Recuperar Senha</h2>
-                <p class="lock-subtitle">Não se preocupe, vamos resolver isso.</p>
-                <div class="input-group"><i class="fa-solid fa-envelope"></i><input type="email" id="recEmail" class="lock-input" placeholder="Confirme seu e-mail cadastrado"></div>
-                <button class="btn-login" onclick="enviarCodigoRecuperacao()">ENVIAR CÓDIGO</button>
-                
-                <button class="btn-forgot" onclick="mostrarViewLogin()"><i class="fa-solid fa-arrow-left"></i> Voltar ao Login</button>
-            </div>
-        </div>
-    </div>
-
-    <header>
-        <div class="profile-section" onclick="toggleSidebar()">
-            <div class="avatar" id="headerAvatar">MC</div>
-            <div class="user-info">
-                <span>MEUCAIXA</span>
-            
-                <strong id="headerUserName">Usuário</strong>
-            </div>
-        </div>
-        <div style="display: flex;
+<div class="input-group"><i class="fa-solid fa-key"></i><input class="lock-input password" id="inputSenha" onkeypress="if(event.key === 'Enter') checkLogin()" placeholder="Sua senha secreta" type="password"/></div>
+<button class="btn-login" onclick="checkLogin()">ENTRAR NO MEUCAIXA</button>
+<button class="btn-forgot" onclick="recuperarSenha()">Esqueci minha senha</button>
+</div>
+<div class="auth-view hidden" id="viewRecuperar">
+<h2 class="lock-title">Recuperar Senha</h2>
+<p class="lock-subtitle">Não se preocupe, vamos resolver isso.</p>
+<div class="input-group"><i class="fa-solid fa-envelope"></i><input class="lock-input" id="recEmail" placeholder="Confirme seu e-mail cadastrado" type="email"/></div>
+<button class="btn-login" onclick="enviarCodigoRecuperacao()">ENVIAR CÓDIGO</button>
+<button class="btn-forgot" onclick="mostrarViewLogin()"><i class="fa-solid fa-arrow-left"></i> Voltar ao Login</button>
+</div>
+</div>
+</div>
+<header>
+<div class="profile-section" onclick="toggleSidebar()">
+<div class="avatar" id="headerAvatar">MC</div>
+<div class="user-info">
+<span>MEUCAIXA</span>
+<strong id="headerUserName">Usuário</strong>
+</div>
+</div>
+<div style="display: flex;
             gap: 10px; align-items: center;">
-            <button class="top-action-btn bell-btn" onclick="abrirNotificacoes()">
-                <i class="fa-solid fa-bell"></i>
-                <span id="badgeNotificacao" class="badge hidden">0</span>
-            </button>
-            <button class="top-action-btn system-trigger" onclick="openSystemDataModal()" aria-label="Abrir Sistema &amp; Dados">
-                <i class="fa-solid fa-cloud-arrow-up"></i>
-                <span class="btn-label">Sistema</span>
-            </button>
-            <button class="top-action-btn" onclick="toggleFantasma()" aria-label="Alternar modo fantasma">
-                <i id="eyeIcon" class="fa-solid fa-eye"></i>
-            </button>
-        </div>
-    </header>
-
-    <div class="sidebar" id="profileSidebar">
-        <div class="sidebar-scroll-area">
-            <div class="sidebar-top-bar">
-                <h3>Configurações Premium</h3>
-       
-                <button class="close-sidebar-btn" onclick="toggleSidebar()"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            
-            <div class="sidebar-profile-card">
-                <div class="avatar" id="sidebarAvatar">MC</div>
-                <h2 id="sidebarUserName">Usuário</h2>
-              
-                <span id="userEmailSidebar">usuario@local</span>
-                <div class="security-badge"><i class="fa-solid fa-shield-halved"></i> SEGURO (LOCAL)</div>
-            </div>
-            
-            <div class="sidebar-menu">
-                <div class="menu-group-title">Sua Conta</div>
-                
-     
-                <div class="menu-item" onclick="mudarNome()">
-                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--accent);
+<button class="top-action-btn bell-btn" onclick="abrirNotificacoes()">
+<i class="fa-solid fa-bell"></i>
+<span class="badge hidden" id="badgeNotificacao">0</span>
+</button>
+<button aria-label="Abrir Sistema &amp; Dados" class="top-action-btn system-trigger" onclick="openSystemDataModal()">
+<i class="fa-solid fa-cloud-arrow-up"></i>
+<span class="btn-label">Sistema</span>
+</button>
+<button aria-label="Alternar modo fantasma" class="top-action-btn" onclick="toggleFantasma()">
+<i class="fa-solid fa-eye" id="eyeIcon"></i>
+</button>
+</div>
+</header>
+<div class="sidebar" id="profileSidebar">
+<div class="sidebar-scroll-area">
+<div class="sidebar-top-bar">
+<h3>Configurações Premium</h3>
+<button class="close-sidebar-btn" onclick="toggleSidebar()"><i class="fa-solid fa-xmark"></i></button>
+</div>
+<div class="sidebar-profile-card">
+<div class="avatar" id="sidebarAvatar">MC</div>
+<h2 id="sidebarUserName">Usuário</h2>
+<span id="userEmailSidebar">usuario@local</span>
+<div class="security-badge"><i class="fa-solid fa-shield-halved"></i> SEGURO (LOCAL)</div>
+</div>
+<div class="sidebar-menu">
+<div class="menu-group-title">Sua Conta</div>
+<div class="menu-item" onclick="mudarNome()">
+<div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--accent);
                     background: rgba(0, 242, 255, 0.1);"><i class="fa-solid fa-user"></i></div><span>Editar Nome</span></div>
-                    <i class="fa-solid fa-chevron-right menu-chevron"></i>
-                </div>
-                
-                <input type="file" id="fotoPerfilInput" accept="image/*" style="display: none;" onchange="carregarNovaFoto(event)">
-                
-                <div class="menu-item" onclick="document.getElementById('fotoPerfilInput').click()">
-                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--accent);
+<i class="fa-solid fa-chevron-right menu-chevron"></i>
+</div>
+<input accept="image/*" id="fotoPerfilInput" onchange="carregarNovaFoto(event)" style="display: none;" type="file"/>
+<div class="menu-item" onclick="document.getElementById('fotoPerfilInput').click()">
+<div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--accent);
                     background: rgba(0, 242, 255, 0.1);"><i class="fa-solid fa-camera"></i></div><span>Alterar Foto</span></div>
-                    <i class="fa-solid fa-chevron-right menu-chevron"></i>
-                </div>
-
-                <div class="menu-item" onclick="abrirGestaoMetas()">
-                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--success);
+<i class="fa-solid fa-chevron-right menu-chevron"></i>
+</div>
+<div class="menu-item" onclick="abrirGestaoMetas()">
+<div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--success);
                     background: rgba(16, 185, 129, 0.1);"><i class="fa-solid fa-bullseye fa-beat"></i></div><span>Gestão de Metas</span></div>
-                    <i class="fa-solid fa-chevron-right menu-chevron"></i>
-                </div>
-
-                <div class="menu-group-title">Ajustes & Segurança</div>
-                
-                <div class="menu-item" onclick="configurarSenha()">
-                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--warning);
+<i class="fa-solid fa-chevron-right menu-chevron"></i>
+</div>
+<div class="menu-group-title">Ajustes &amp; Segurança</div>
+<div class="menu-item" onclick="configurarSenha()">
+<div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--warning);
                     background: rgba(245, 158, 11, 0.1);"><i class="fa-solid fa-lock"></i></div><span>Alterar Senha</span></div>
-                    <i class="fa-solid fa-chevron-right menu-chevron"></i>
-                </div>
-                
-                <div class="menu-item" onclick="document.getElementById('themeOptions').classList.toggle('open')">
-                    
-                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--accent); background: rgba(0, 242, 255, 0.1);"><i class="fa-solid fa-palette"></i></div><span>Aparência / Banco</span></div>
-                    <i class="fa-solid fa-chevron-down menu-chevron" style="opacity: 1;"></i>
-                </div>
-                
-                <div class="theme-selector" id="themeOptions">
-                    <div class="theme-selector-head">
-                        <div>
-                            <div class="theme-selector-kicker"><i class="fa-solid fa-wand-magic-sparkles"></i> Visual inteligente</div>
-                            <div class="theme-selector-title">Escolha uma identidade completa para o app</div>
-                            <p class="theme-selector-copy">Ao trocar o tema, o MeuCaixa passa a adotar a linguagem visual do banco escolhido com cores, brilho, contraste e atmosfera própria.</p>
-                        </div>
-                        <div class="theme-current-badge">
-                            <span>Tema atual</span>
-                            <strong id="themeCurrentLabel">Modo Escuro Premium</strong>
-                        </div>
-                    </div>
-                    <div class="theme-grid">
-                        <button type="button" class="theme-btn" data-theme-option="dark" onclick="mudarTema('dark')" style="--theme-accent:#00f2ff; --theme-bg:linear-gradient(135deg,#07111f 0%, #0c1728 55%, #11273c 100%); --theme-text:#f3f4f6; --theme-contrast:#03111d;">
-                            <span class="theme-btn-icon"><i class="fa-solid fa-moon-stars"></i></span>
-                            <div><strong>Escuro</strong><small>Tecnologia premium com brilho sofisticado e foco total nos dados.</small></div>
-                            <span class="theme-chip"><i class="fa-solid fa-sparkles"></i> Noturno elegante</span>
-                        </button>
-                        <button type="button" class="theme-btn" data-theme-option="light" onclick="mudarTema('light')" style="--theme-accent:#0ea5e9; --theme-bg:linear-gradient(135deg,#ffffff 0%, #f2f8ff 55%, #e9f3ff 100%); --theme-text:#0f172a; --theme-contrast:#ffffff;">
-                            <span class="theme-btn-icon"><i class="fa-solid fa-sun"></i></span>
-                            <div><strong>Claro</strong><small>Leve, limpo e muito prático para uso diário em ambientes claros.</small></div>
-                            <span class="theme-chip"><i class="fa-solid fa-circle-half-stroke"></i> Alta leitura</span>
-                        </button>
-                        <button type="button" class="theme-btn" data-theme-option="nubank" onclick="mudarTema('nubank')" style="--theme-accent:#820ad1; --theme-bg:linear-gradient(135deg,#ffffff 0%, #f7effd 54%, #efe2fb 100%); --theme-text:#221332; --theme-contrast:#ffffff;">
-                            <span class="theme-btn-icon"><i class="fa-solid fa-gem"></i></span>
-                            <div><strong>Nubank</strong><small>Minimalismo roxo com sensação moderna, jovem e extremamente refinada.</small></div>
-                            <span class="theme-chip"><i class="fa-solid fa-bolt"></i> Digital premium</span>
-                        </button>
-                        <button type="button" class="theme-btn" data-theme-option="santander" onclick="mudarTema('santander')" style="--theme-accent:#ec0000; --theme-bg:linear-gradient(135deg,#ffffff 0%, #fff4f2 55%, #ffe7e2 100%); --theme-text:#311515; --theme-contrast:#ffffff;">
-                            <span class="theme-btn-icon"><i class="fa-solid fa-fire-flame-curved"></i></span>
-                            <div><strong>Santander</strong><small>Visual institucional vermelho com cara de banco real e presença marcante.</small></div>
-                            <span class="theme-chip"><i class="fa-solid fa-building-columns"></i> Banco clássico</span>
-                        </button>
-                        <button type="button" class="theme-btn" data-theme-option="itau" onclick="mudarTema('itau')" style="--theme-accent:#ec7000; --theme-bg:linear-gradient(135deg,#ffffff 0%, #fff4e7 55%, #ffe7cb 100%); --theme-text:#08244c; --theme-contrast:#ffffff;">
-                            <span class="theme-btn-icon"><i class="fa-solid fa-shield-halved"></i></span>
-                            <div><strong>Itaú</strong><small>Laranja forte com azul institucional para uma leitura segura e sofisticada.</small></div>
-                            <span class="theme-chip"><i class="fa-solid fa-wallet"></i> Solidez visual</span>
-                        </button>
-                        <button type="button" class="theme-btn" data-theme-option="bradesco" onclick="mudarTema('bradesco')" style="--theme-accent:#cc092f; --theme-bg:linear-gradient(135deg,#ffffff 0%, #fff2f6 55%, #ffe2ec 100%); --theme-text:#2c1320; --theme-contrast:#ffffff;">
-                            <span class="theme-btn-icon"><i class="fa-solid fa-chart-line"></i></span>
-                            <div><strong>Bradesco</strong><small>Paleta executiva vinho com acabamento premium e aparência corporativa.</small></div>
-                            <span class="theme-chip"><i class="fa-solid fa-crown"></i> Executivo</span>
-                        </button>
-                    </div>
-                    <div class="theme-note"><strong style="color:var(--text);">Sugestão premium:</strong> os temas bancários agora não mudam só a cor de destaque. Eles influenciam a atmosfera visual do app para parecer uma interface própria de cada banco.</div>
-                </div>
-                
-                <div class="menu-group-title">Sistema & Dados</div>
-                <input type="file" id="fileInput" accept=".json, application/json, .csv, text/csv, text/plain, */*" style="display: none;" onchange="importarDados(event)">
-                <div class="sidebar-system-hint">
-                    <strong>Nova central exclusiva</strong>
+<i class="fa-solid fa-chevron-right menu-chevron"></i>
+</div>
+<div class="menu-item" onclick="document.getElementById('themeOptions').classList.toggle('open')">
+<div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--accent); background: rgba(0, 242, 255, 0.1);"><i class="fa-solid fa-palette"></i></div><span>Aparência / Banco</span></div>
+<i class="fa-solid fa-chevron-down menu-chevron" style="opacity: 1;"></i>
+</div>
+<div class="theme-selector" id="themeOptions">
+<div class="theme-selector-head">
+<div>
+<div class="theme-selector-kicker"><i class="fa-solid fa-wand-magic-sparkles"></i> Visual inteligente</div>
+<div class="theme-selector-title">Escolha uma identidade completa para o app</div>
+<p class="theme-selector-copy">Ao trocar o tema, o MeuCaixa passa a adotar a linguagem visual do banco escolhido com cores, brilho, contraste e atmosfera própria.</p>
+</div>
+<div class="theme-current-badge">
+<span>Tema atual</span>
+<strong id="themeCurrentLabel">Modo Escuro Premium</strong>
+</div>
+</div>
+<div class="theme-grid">
+<button class="theme-btn" data-theme-option="dark" onclick="mudarTema('dark')" style="--theme-accent:#00f2ff; --theme-bg:linear-gradient(135deg,#07111f 0%, #0c1728 55%, #11273c 100%); --theme-text:#f3f4f6; --theme-contrast:#03111d;" type="button">
+<span class="theme-btn-icon"><i class="fa-solid fa-moon-stars"></i></span>
+<div><strong>Escuro</strong><small>Tecnologia premium com brilho sofisticado e foco total nos dados.</small></div>
+<span class="theme-chip"><i class="fa-solid fa-sparkles"></i> Noturno elegante</span>
+</button>
+<button class="theme-btn" data-theme-option="light" onclick="mudarTema('light')" style="--theme-accent:#0ea5e9; --theme-bg:linear-gradient(135deg,#ffffff 0%, #f2f8ff 55%, #e9f3ff 100%); --theme-text:#0f172a; --theme-contrast:#ffffff;" type="button">
+<span class="theme-btn-icon"><i class="fa-solid fa-sun"></i></span>
+<div><strong>Claro</strong><small>Leve, limpo e muito prático para uso diário em ambientes claros.</small></div>
+<span class="theme-chip"><i class="fa-solid fa-circle-half-stroke"></i> Alta leitura</span>
+</button>
+<button class="theme-btn" data-theme-option="nubank" onclick="mudarTema('nubank')" style="--theme-accent:#820ad1; --theme-bg:linear-gradient(135deg,#ffffff 0%, #f7effd 54%, #efe2fb 100%); --theme-text:#221332; --theme-contrast:#ffffff;" type="button">
+<span class="theme-btn-icon"><i class="fa-solid fa-gem"></i></span>
+<div><strong>Nubank</strong><small>Minimalismo roxo com sensação moderna, jovem e extremamente refinada.</small></div>
+<span class="theme-chip"><i class="fa-solid fa-bolt"></i> Digital premium</span>
+</button>
+<button class="theme-btn" data-theme-option="santander" onclick="mudarTema('santander')" style="--theme-accent:#ec0000; --theme-bg:linear-gradient(135deg,#ffffff 0%, #fff4f2 55%, #ffe7e2 100%); --theme-text:#311515; --theme-contrast:#ffffff;" type="button">
+<span class="theme-btn-icon"><i class="fa-solid fa-fire-flame-curved"></i></span>
+<div><strong>Santander</strong><small>Visual institucional vermelho com cara de banco real e presença marcante.</small></div>
+<span class="theme-chip"><i class="fa-solid fa-building-columns"></i> Banco clássico</span>
+</button>
+<button class="theme-btn" data-theme-option="itau" onclick="mudarTema('itau')" style="--theme-accent:#ec7000; --theme-bg:linear-gradient(135deg,#ffffff 0%, #fff4e7 55%, #ffe7cb 100%); --theme-text:#08244c; --theme-contrast:#ffffff;" type="button">
+<span class="theme-btn-icon"><i class="fa-solid fa-shield-halved"></i></span>
+<div><strong>Itaú</strong><small>Laranja forte com azul institucional para uma leitura segura e sofisticada.</small></div>
+<span class="theme-chip"><i class="fa-solid fa-wallet"></i> Solidez visual</span>
+</button>
+<button class="theme-btn" data-theme-option="bradesco" onclick="mudarTema('bradesco')" style="--theme-accent:#cc092f; --theme-bg:linear-gradient(135deg,#ffffff 0%, #fff2f6 55%, #ffe2ec 100%); --theme-text:#2c1320; --theme-contrast:#ffffff;" type="button">
+<span class="theme-btn-icon"><i class="fa-solid fa-chart-line"></i></span>
+<div><strong>Bradesco</strong><small>Paleta executiva vinho com acabamento premium e aparência corporativa.</small></div>
+<span class="theme-chip"><i class="fa-solid fa-crown"></i> Executivo</span>
+</button>
+</div>
+<div class="theme-note"><strong style="color:var(--text);">Sugestão premium:</strong> os temas bancários agora não mudam só a cor de destaque. Eles influenciam a atmosfera visual do app para parecer uma interface própria de cada banco.</div>
+</div>
+<div class="menu-group-title">Sistema &amp; Dados</div>
+<input accept=".json, application/json, .csv, text/csv, text/plain, */*" id="fileInput" onchange="importarDados(event)" style="display: none;" type="file"/>
+<div class="sidebar-system-hint">
+<strong>Nova central exclusiva</strong>
                     Backup, restauração e exportações agora vivem em uma experiência dedicada, mais rápida e elegante.
                     <button onclick="document.getElementById('profileSidebar')?.classList.remove('open'); openSystemDataModal();"><i class="fa-solid fa-cloud-arrow-up" style="margin-right:8px;"></i>Abrir Sistema &amp; Dados</button>
-                </div>
-                
-                <div class="menu-item" onclick="limparMesAtual()">
-                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--warning); background: rgba(245, 158, 11, 0.1);"><i class="fa-solid fa-calendar-xmark"></i></div><span>Limpar Mês Atual</span></div>
-                </div>
-                
-                <div class="menu-item" onclick="limparTerminal()">
-                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--danger); background: rgba(239, 68, 68, 0.1);"><i class="fa-solid fa-trash"></i></div><span>Zerar Banco de Dados</span></div>
-                </div>
-
-                <div class="menu-item btn-logout-menu" onclick="sairApp()">
-                    <div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--danger);"><i class="fa-solid fa-right-from-bracket"></i></div><span>Sair (Logout)</span></div>
-                </div>
-            </div>
- 
-        </div>
-    </div>
-
-    <div class="month-selector">
-        <button onclick="mudarMes(-1)"><i class="fa-solid fa-chevron-left"></i></button>
-        <span id="mesDisplay">Mês Ano</span>
-        <button onclick="mudarMes(1)"><i class="fa-solid fa-chevron-right"></i></button>
-    </div>
-
-    <div class="balance-card">
-        <small>Saldo Exato da Conta</small>
-        <h1 id="totalSaldo">R$ 0,00</h1>
-    </div>
-
-    <div class="quick-stats">
-        <div class="mini-card" onclick="filtrarExtrato('Receita')"><i class="fa-solid fa-arrow-up" 
-            style="color:var(--success)"></i><span>Entradas</span><strong id="totalReceitas">R$ 0,00</strong></div>
-        <div class="mini-card" onclick="filtrarExtrato('Gasto')"><i class="fa-solid fa-arrow-down" style="color:var(--warning)"></i><span>Gastos</span><strong id="totalGastos">R$ 0,00</strong></div>
-        <div class="mini-card" onclick="filtrarExtrato('Divida')"><i class="fa-solid fa-barcode" style="color:var(--danger)"></i><span>Dívidas</span><strong id="totalDividas">R$ 0,00</strong></div>
-        <div class="mini-card" onclick="filtrarExtrato('Reserva')"><i class="fa-solid fa-vault" style="color:var(--reserve)"></i><span>Patrimônio</span><strong id="totalReserva">R$ 0,00</strong></div>
-    </div>
-
-    <main>
-        <div class="section-header">
-            <h3 id="txtExtrato">Histórico de Lançamentos</h3>
-            <button id="btnVoltar" class="hidden" onclick="filtrarExtrato('Tudo')" style="background: rgba(0, 0, 0, 0.05);
+</div>
+<div class="menu-item" onclick="limparMesAtual()">
+<div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--warning); background: rgba(245, 158, 11, 0.1);"><i class="fa-solid fa-calendar-xmark"></i></div><span>Limpar Mês Atual</span></div>
+</div>
+<div class="menu-item" onclick="limparTerminal()">
+<div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--danger); background: rgba(239, 68, 68, 0.1);"><i class="fa-solid fa-trash"></i></div><span>Zerar Banco de Dados</span></div>
+</div>
+<div class="menu-item btn-logout-menu" onclick="sairApp()">
+<div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--danger);"><i class="fa-solid fa-right-from-bracket"></i></div><span>Sair (Logout)</span></div>
+</div>
+</div>
+</div>
+</div>
+<div class="month-selector">
+<button onclick="mudarMes(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+<span id="mesDisplay">Mês Ano</span>
+<button onclick="mudarMes(1)"><i class="fa-solid fa-chevron-right"></i></button>
+</div>
+<div class="balance-card">
+<small>Saldo Exato da Conta</small>
+<h1 id="totalSaldo">R$ 0,00</h1>
+</div>
+<div class="quick-stats">
+<div class="mini-card" onclick="filtrarExtrato('Receita')"><i class="fa-solid fa-arrow-up" style="color:var(--success)"></i><span>Entradas</span><strong id="totalReceitas">R$ 0,00</strong></div>
+<div class="mini-card" onclick="filtrarExtrato('Gasto')"><i class="fa-solid fa-arrow-down" style="color:var(--warning)"></i><span>Gastos</span><strong id="totalGastos">R$ 0,00</strong></div>
+<div class="mini-card" onclick="filtrarExtrato('Divida')"><i class="fa-solid fa-barcode" style="color:var(--danger)"></i><span>Dívidas</span><strong id="totalDividas">R$ 0,00</strong></div>
+<div class="mini-card" onclick="filtrarExtrato('Reserva')"><i class="fa-solid fa-vault" style="color:var(--reserve)"></i><span>Patrimônio</span><strong id="totalReserva">R$ 0,00</strong></div>
+</div>
+<main>
+<div class="section-header">
+<h3 id="txtExtrato">Histórico de Lançamentos</h3>
+<button class="hidden" id="btnVoltar" onclick="filtrarExtrato('Tudo')" style="background: rgba(0, 0, 0, 0.05);
             color: var(--accent); border: 1px solid var(--accent); padding: 6px 12px; border-radius: 8px; font-size: 0.7rem; font-weight: 800;
             cursor: pointer;"><i class="fa-solid fa-chevron-left"></i> VOLTAR</button>
-        </div>
-
-        <div class="history-search-wrap">
-            <div class="history-search-shell" id="historySearchShell">
-                <div class="history-search-main">
-                    <div class="history-search-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
-                    <div class="history-search-field">
-                        <span class="history-search-label">Busca global magnética</span>
-                        <div class="history-search-input-row">
-                            <input type="search" id="historySearchInput" class="history-search-input" placeholder="Ex: oficina, boleto, salário, pix..." autocomplete="off" oninput="atualizarBuscaHistorico(this.value)">
-                        </div>
-                    </div>
-                </div>
-                <div class="history-search-meta">
-                    <div class="history-search-pill" id="historySearchSummary"><span>Digite para filtrar o histórico</span></div>
-                    <button type="button" class="history-search-clear hidden" id="historySearchClear" onclick="limparBuscaHistorico()"><i class="fa-solid fa-xmark" style="margin-right:6px;"></i>Limpar busca</button>
-                </div>
-            </div>
-        </div>
-        
-        <div id="forecastBannerArea"></div>
-        <div id="subFiltros" class="submenu-divida hidden">
-            <button class="sub-btn active" id="btnPendente" onclick="setSubFiltro('Pendente')">PENDENTES</button>
-            <button class="sub-btn" id="btnPago" onclick="setSubFiltro('Pago')">LIQUIDADAS</button>
-        </div>
-        
-        <div id="tabelaCorpo"></div>
-    </main>
-
-    <section class="bottom-charts">
-    
-        <div class="meta-panel-home hidden" id="metaPanelInfo" onclick="abrirGestaoMetas()" style="cursor:pointer;
+</div>
+<div class="history-search-wrap">
+<div class="history-search-shell" id="historySearchShell">
+<div class="history-search-main">
+<div class="history-search-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+<div class="history-search-field">
+<span class="history-search-label">Busca global magnética</span>
+<div class="history-search-input-row">
+<input autocomplete="off" class="history-search-input" id="historySearchInput" oninput="atualizarBuscaHistorico(this.value)" placeholder="Ex: oficina, boleto, salário, pix..." type="search"/>
+</div>
+</div>
+</div>
+<div class="history-search-meta">
+<div class="history-search-pill" id="historySearchSummary"><span>Digite para filtrar o histórico</span></div>
+<button class="history-search-clear hidden" id="historySearchClear" onclick="limparBuscaHistorico()" type="button"><i class="fa-solid fa-xmark" style="margin-right:6px;"></i>Limpar busca</button>
+</div>
+</div>
+</div>
+<div id="forecastBannerArea"></div>
+<div class="submenu-divida hidden" id="subFiltros">
+<button class="sub-btn active" id="btnPendente" onclick="setSubFiltro('Pendente')">PENDENTES</button>
+<button class="sub-btn" id="btnPago" onclick="setSubFiltro('Pago')">LIQUIDADAS</button>
+</div>
+<div id="tabelaCorpo"></div>
+</main>
+<section class="bottom-charts">
+<div class="meta-panel-home hidden" id="metaPanelInfo" onclick="abrirGestaoMetas()" style="cursor:pointer;
             border: 1px solid var(--success);">
-            <div class="meta-label-home">
-                <span id="lblTipoMetaApp">🎯 Meta Principal</span>
-                <span id="metaProgressoDisplay" style="color: var(--success);
+<div class="meta-label-home">
+<span id="lblTipoMetaApp">🎯 Meta Principal</span>
+<span id="metaProgressoDisplay" style="color: var(--success);
                 font-weight: 900; text-shadow: 0 0 10px rgba(16,185,129,0.3);">0%</span>
-            </div>
-            <div style="font-size: 0.7rem;
+</div>
+<div style="font-size: 0.7rem;
                 color: var(--text-muted);">Objetivo Final: <strong id="metaValorDisplay" style="color: var(--text);">R$ 0,00</strong></div>
-            <div class="meta-track-home"><div class="meta-fill-home" id="metaFillBarHome"></div></div>
-            <div style="font-size: 0.75rem;
-                color: var(--text-muted); text-align: right; font-weight: bold;" id="metaFaltaDisplay">Falta: R$ 0,00</div>
-        </div>
-
-        <div class="action-buttons">
-            <button class="action-btn" onclick="abrirModalGraficos()"><i class="fa-solid fa-chart-pie" style="margin-right: 4px;"></i> GRÁFICOS DETALHADOS</button>
-            <button class="action-btn" onclick="gerarPDFoficial()"><i class="fa-solid fa-file-invoice" style="margin-right: 4px;"></i> RELATÓRIOS PDF</button>
-            <button class="action-btn" onclick="abrirLeitorExtrato()" style="width: 100%;
+<div class="meta-track-home"><div class="meta-fill-home" id="metaFillBarHome"></div></div>
+<div id="metaFaltaDisplay" style="font-size: 0.75rem;
+                color: var(--text-muted); text-align: right; font-weight: bold;">Falta: R$ 0,00</div>
+</div>
+<div class="action-buttons">
+<button class="action-btn" onclick="abrirModalGraficos()"><i class="fa-solid fa-chart-pie" style="margin-right: 4px;"></i> GRÁFICOS DETALHADOS</button>
+<button class="action-btn" onclick="gerarPDFoficial()"><i class="fa-solid fa-file-invoice" style="margin-right: 4px;"></i> RELATÓRIOS PDF</button>
+<button class="action-btn" onclick="abrirLeitorExtrato()" style="width: 100%;
             border-color: var(--success); color: var(--success); background: rgba(16, 185, 129, 0.1);"><i class="fa-solid fa-wand-magic-sparkles" style="margin-right: 4px;"></i> LEITOR IA DE EXTRATOS</button>
-        </div>
-    </section>
-
-    <button class="fab" onclick="openModal()"><i class="fa-solid fa-plus"></i></button>
-    <div class="overlay" id="overlay" onclick="closeAll()"></div>
-
-    <div class="modal modal-small system-data-modal" id="modalSystemData">
-        <div class="system-data-modal-inner">
-            <div class="system-data-head">
-                <div>
-                    <span class="system-data-kicker"><i class="fa-solid fa-shield-heart"></i> Sistema &amp; Dados</span>
-                    <h2>Central premium de backup e exportação</h2>
-                    <p>Uma área elegante e objetiva para proteger seus dados, restaurar informações e gerar arquivos prontos para compartilhar.</p>
-                </div>
-                <button class="system-close-btn" onclick="closeSystemDataModal()" aria-label="Fechar Sistema &amp; Dados"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-
-            <div class="system-data-grid">
-                <button class="system-card" onclick="exportarBackupCompleto()" style="--card-glow: rgba(0,242,255,.22); --card-icon-bg: linear-gradient(135deg, #06b6d4, #22d3ee);">
-                    <span class="system-card-icon"><i class="fa-solid fa-cloud-arrow-down"></i></span>
-                    <strong>Salvar Backup JSON</strong>
-                    <p>Baixe uma cópia completa da base para segurança, migração ou restauração futura.</p>
-                    <span class="system-card-footer">Backup completo <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
-                </button>
-
-                <button class="system-card" onclick="document.getElementById('fileInput').click()" style="--card-glow: rgba(245,158,11,.24); --card-icon-bg: linear-gradient(135deg, #f59e0b, #fbbf24);">
-                    <span class="system-card-icon"><i class="fa-solid fa-file-import"></i></span>
-                    <strong>Restaurar Importação</strong>
-                    <p>Importe JSON ou CSV para reconstruir o ambiente sem depender de processos manuais.</p>
-                    <span class="system-card-footer">Trazer dados <i class="fa-solid fa-rotate-left"></i></span>
-                </button>
-
-                <button class="system-card" onclick="gerarPDFoficial()" style="--card-glow: rgba(239,68,68,.22); --card-icon-bg: linear-gradient(135deg, #ef4444, #fb7185);">
-                    <span class="system-card-icon"><i class="fa-solid fa-file-pdf"></i></span>
-                    <strong>Baixar PDF</strong>
-                    <p>Gere relatórios premium em PDF para prestação de contas, organização e compartilhamento.</p>
-                    <span class="system-card-footer">Relatório oficial <i class="fa-solid fa-file-arrow-down"></i></span>
-                </button>
-
-                <button class="system-card" onclick="exportarDadosCSV()" style="--card-glow: rgba(16,185,129,.22); --card-icon-bg: linear-gradient(135deg, #10b981, #34d399);">
-                    <span class="system-card-icon"><i class="fa-solid fa-file-csv"></i></span>
-                    <strong>Exportar Planilha CSV</strong>
-                    <p>Leve seus lançamentos para planilhas e análises externas com estrutura limpa e compatível.</p>
-                    <span class="system-card-footer">Pronto para planilha <i class="fa-solid fa-table"></i></span>
-                </button>
-            </div>
-
-            <div class="system-data-mini-note">
+</div>
+</section>
+<button class="fab" onclick="openModal()"><i class="fa-solid fa-plus"></i></button>
+<div class="overlay" id="overlay" onclick="closeAll()"></div>
+<div class="modal modal-small system-data-modal" id="modalSystemData">
+<div class="system-data-modal-inner">
+<div class="system-data-head">
+<div>
+<span class="system-data-kicker"><i class="fa-solid fa-shield-heart"></i> Sistema &amp; Dados</span>
+<h2>Central premium de backup e exportação</h2>
+<p>Uma área elegante e objetiva para proteger seus dados, restaurar informações e gerar arquivos prontos para compartilhar.</p>
+</div>
+<button aria-label="Fechar Sistema &amp; Dados" class="system-close-btn" onclick="closeSystemDataModal()"><i class="fa-solid fa-xmark"></i></button>
+</div>
+<div class="system-data-grid">
+<button class="system-card" onclick="exportarBackupCompleto()" style="--card-glow: rgba(0,242,255,.22); --card-icon-bg: linear-gradient(135deg, #06b6d4, #22d3ee);">
+<span class="system-card-icon"><i class="fa-solid fa-cloud-arrow-down"></i></span>
+<strong>Salvar Backup JSON</strong>
+<p>Baixe uma cópia completa da base para segurança, migração ou restauração futura.</p>
+<span class="system-card-footer">Backup completo <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+</button>
+<button class="system-card" onclick="document.getElementById('fileInput').click()" style="--card-glow: rgba(245,158,11,.24); --card-icon-bg: linear-gradient(135deg, #f59e0b, #fbbf24);">
+<span class="system-card-icon"><i class="fa-solid fa-file-import"></i></span>
+<strong>Restaurar Importação</strong>
+<p>Importe JSON ou CSV para reconstruir o ambiente sem depender de processos manuais.</p>
+<span class="system-card-footer">Trazer dados <i class="fa-solid fa-rotate-left"></i></span>
+</button>
+<button class="system-card" onclick="gerarPDFoficial()" style="--card-glow: rgba(239,68,68,.22); --card-icon-bg: linear-gradient(135deg, #ef4444, #fb7185);">
+<span class="system-card-icon"><i class="fa-solid fa-file-pdf"></i></span>
+<strong>Baixar PDF</strong>
+<p>Gere relatórios premium em PDF para prestação de contas, organização e compartilhamento.</p>
+<span class="system-card-footer">Relatório oficial <i class="fa-solid fa-file-arrow-down"></i></span>
+</button>
+<button class="system-card" onclick="exportarDadosCSV()" style="--card-glow: rgba(16,185,129,.22); --card-icon-bg: linear-gradient(135deg, #10b981, #34d399);">
+<span class="system-card-icon"><i class="fa-solid fa-file-csv"></i></span>
+<strong>Exportar Planilha CSV</strong>
+<p>Leve seus lançamentos para planilhas e análises externas com estrutura limpa e compatível.</p>
+<span class="system-card-footer">Pronto para planilha <i class="fa-solid fa-table"></i></span>
+</button>
+</div>
+<div class="system-data-mini-note">
                 Dica premium: esta central substitui a antiga lista solta e mantém todas as ações críticas em um único painel 2x2, mais intuitivo e muito mais elegante.
             </div>
-
-            <div class="update-center-card">
-                <div class="update-center-copy">
-                    <strong>Atualização do aplicativo</strong>
-                    <span>Quando uma nova versão for publicada, o app avisa o usuário e permite atualizar sem apagar histórico, reinstalar ou perder os dados salvos no aparelho.</span>
-                </div>
-                <div class="update-center-actions">
-                    <span class="update-pill-status" id="updateStatusPill"><i class="fa-solid fa-rotate"></i> App atualizado</span>
-                    <button class="update-action-btn secondary" type="button" onclick="verificarAtualizacaoManual()"><i class="fa-solid fa-arrows-rotate" style="margin-right:8px;"></i>Verificar agora</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal" id="modalForm">
-        <div style="display:flex;
-            justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <h2 id="modalTitle" style="margin:0; font-size:1.15rem;
-            color: var(--text);">Nova Operação</h2>
-            <i class="fa-solid fa-xmark" style="font-size:1.4rem; color:var(--text-muted);
-            cursor:pointer;" onclick="closeModal()"></i>
-        </div>
-        
-        <div id="blocoResumoGeral" class="resumo-quitacao hidden">
-            <h4 id="resumoTitulo" style="display: flex;
-            align-items: center; gap: 8px; margin-bottom: 15px; color: var(--text);">Resumo do Contrato</h4>
-            <div id="resumoConteudo"></div>
-        </div>
-
-        <span class="label-mini">Tipo</span>
-        <select id="tipo" onchange="atualizarSubmenu()">
-            <option value="Receita">Receita</option>
-            <option value="Fixo">Gasto Fixo</option>
-            <option value="Variavel">Gasto Variável</option>
-          
-            <option value="Divida">Dívida / Boleto</option>
-            <option value="Juros">💸 Dinheiro a Juros</option>
-            <option value="Reserva">Patrimônio</option>
-            <!-- Tipos ocultos para uso interno da IA -->
-            <option value="Ajuste" style="display:none;">Saldo Anterior do Banco</option>
-            <option value="AjusteNeg" style="display:none;">Saldo Negativo Anterior</option>
-        </select>
-
-        <div id="gridCategoriaBanco" style="display:grid;
-            grid-template-columns: 1fr; gap:10px;">
-            <div>
-                <span class="label-mini">Categoria</span>
-                <select id="submenu" onchange="definirDescricao()"></select>
-            </div>
-            <div id="blocoBanco" class="hidden">
-                <span class="label-mini">Instituição / Banco</span>
-       
-                <select id="banco">
-                    <option value="">Outros / Nenhum</option>
-                    <optgroup label="Bancos Digitais">
-                        <option value="Nubank">Nubank</option>
-                    
-                        <option value="Banco Inter">Banco Inter</option>
-                        <option value="C6 Bank">C6 Bank</option>
-                        <option value="PagBank">PagBank</option>
-                        <option value="PicPay">PicPay</option>
-                
-                        <option value="Neon">Neon</option>
-                        <option value="Next">Next</option>
-                        <option value="Mercado Pago">Mercado Pago</option>
-                        <option value="Banco Pan">Banco Pan</option>
-            
-                        <option value="Will Bank">Will Bank</option>
-                        <option value="Agibank">Agibank</option>
-                        <option value="Sofisa Direto">Sofisa Direto</option>
-                        <option value="Digio">Digio</option>
-        
-                        <option value="Banco Bmg">Banco Bmg</option>
-                        <option value="XP Investimentos">XP Investimentos</option>
-                        <option value="Rico">Rico</option>
-                        <option value="Banco BS2">Banco BS2</option>
- 
-                    </optgroup>
-                    <optgroup label="Bancos Tradicionais">
-                        <option value="Itaú">Itaú</option>
-                        <option value="Santander">Santander</option>
-         
-                        <option value="Bradesco">Bradesco</option>
-                        <option value="Banco do Brasil">Banco do Brasil</option>
-                        <option value="Caixa Econômica">Caixa Econômica</option>
-                        <option value="Banco Safra">Banco Safra</option>
- 
-                        <option value="BTG Pactual">BTG Pactual</option>
-                        <option value="Banco BV">Banco BV</option>
-                        <option value="Sicoob">Sicoob</option>
-                        
-                        <option value="Sicredi">Sicredi</option>
-                        <option value="Banrisul">Banrisul</option>
-                        <option value="Banco do Nordeste">Banco do Nordeste</option>
-                    </optgroup>
-                </select>
-       
-            </div>
-        </div>
-
-        <div id="blocoRecebimento" class="hidden">
-            <span class="label-mini">Forma de Recebimento</span>
-            <select id="formaRecebimento">
-                <option value="Pix">Pix</option>
-                <option value="Dinheiro">Dinheiro</option>
-                
-                <option value="Cartão">Cartão</option>
-                <option value="Outros">Outros</option>
-            </select>
-        </div>
-
-        <input type="text" id="desc" placeholder="Descrição Personalizada">
-
-        <div id="smartCategoryHint" class="smart-category-hint hidden">
-            <div class="smart-copy">
-                <i class="fa-solid fa-wand-magic-sparkles"></i>
-                <div>
-                    <div class="smart-title">Categoria inteligente detectada</div>
-                    <div class="smart-value" id="smartCategoryText">Uber → Transporte</div>
-                </div>
-            </div>
-            <span class="smart-badge" id="smartCategoryBadge">Automático</span>
-        </div>
-
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-            <div>
-                <span class="label-mini" id="lblValorMain">Valor (R$)</span>
-                <input type="number" id="valor" placeholder="0,00" step="0.01" inputmode="decimal">
-            </div>
-            
-            <div id="campoPago">
-                <span class="label-mini">Confirmado?</span>
-                <div class="toggle-pill">
-                    <input type="radio" id="status0" name="statusPagoRadio" value="0" checked>
-                    <label for="status0"><i class="fa-solid fa-clock"></i> Pendente</label>
-
-                    <input type="radio" id="status1" name="statusPagoRadio" value="1">
-                    <label for="status1"><i class="fa-solid fa-check-circle"></i> Pago</label>
-                </div>
-                <select id="selectPago" style="display: none;">
-                    <option value="0">Não</option>
-                    <option value="1">Sim</option>
-                </select>
-            </div>
-        </div>
-        
-        <div id="blocoDatas" style="display:grid; grid-template-columns: 1fr;
-            gap:10px;">
-            <div id="boxDataLancamento" class="hidden">
-                <span class="label-mini">Data de Lançamento</span>
-                <input type="date" id="dataLancamento">
-            </div>
-            <div>
-                <span class="label-mini" id="lblDataMain">Data da Operação</span>
-     
-                <input type="date" id="data">
-            </div>
-        </div>
-
-        <div id="blocoJuros" class="bloco-parcelas hidden" style="border-color: #f97316;">
-            <span class="label-mini" style="color: #f97316; margin-bottom: 10px; display: block;"><i class="fa-solid fa-calculator"></i> Cálculo de Juros Inteligente</span>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom: 10px;">
-                <div><span class="label-mini">Taxa de Juros (%)</span><input type="number" id="taxaJuros" value="20" min="0" oninput="calcularJuros()"></div>
-                <div><span class="label-mini">Frequência</span>
-                    <select id="freqJuros" onchange="calcularJuros()">
-                        <option value="Diario">Diário</option>
-                        <option value="Semanal" selected>Semanal</option>
-                        <option value="Mensal">Mensal</option>
-                    </select>
-                </div>
-            </div>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-                <div><span class="label-mini">Qtd. Parcelas</span><input type="number" id="qtdParcelasJuros" value="4" min="1" oninput="calcularJuros()"></div>
-                <div><span class="label-mini">Pagas Hoje</span><input type="number" id="pagasJuros" value="0" min="0"></div>
-            </div>
-            <div id="resumoJurosDisplay" style="margin-top: 15px; padding: 12px; background: rgba(249, 115, 22, 0.1); border-radius: 8px; border: 1px dashed #f97316; font-size: 0.85rem; color: var(--text);">
-                Total Pagar: <strong>R$ 0,00</strong> (Juros: R$ 0,00)<br>
-                Ficará: <strong style="color: #f97316;">1x de R$ 0,00</strong>
-            </div>
-        </div>
-        <div id="blocoParcelamento" class="bloco-parcelas hidden">
-            <div style="display:grid;
-                grid-template-columns: 1fr 1fr; gap:10px;">
-                <div><span class="label-mini">Total Parcelas</span><input type="number" id="parcelas" value="1" min="1"></div>
-                <div><span class="label-mini">Pagas</span><input type="number" id="parcelasPagas" value="0" min="0"></div>
-            </div>
-        </div>
-        
-        
-<div class="launch-preview-card" id="launchPreviewCard">
-    <div class="launch-preview-top">
-        <div>
-            <span class="launch-preview-kicker">Prévia do lançamento</span>
-            <div class="launch-preview-value" id="launchPreviewValue">R$ 0,00</div>
-        </div>
-        <div class="launch-preview-status pendente" id="launchPreviewStatus">
-            <i class="fa-solid fa-clock"></i>
-            <span>Pendente</span>
-        </div>
-    </div>
-    <div class="launch-preview-grid">
-        <div class="launch-preview-mini">
-            <span>Tipo</span>
-            <strong id="launchPreviewType">Salário</strong>
-        </div>
-        <div class="launch-preview-mini">
-            <span>Quando</span>
-            <strong id="launchPreviewDate">--/--/----</strong>
-        </div>
-        <div class="launch-preview-mini">
-            <span>Origem</span>
-            <strong id="launchPreviewOrigin">Pix</strong>
-        </div>
-    </div>
+<div class="update-center-card">
+<div class="update-center-copy">
+<strong>Atualização do aplicativo</strong>
+<span>Quando uma nova versão for publicada, o app avisa o usuário e permite atualizar sem apagar histórico, reinstalar ou perder os dados salvos no aparelho.</span>
 </div>
-
-        <div class="premium-dropzone" onclick="document.getElementById('comprovanteInput').click()">
-            <input type="file" id="comprovanteInput" accept="image/*,.pdf" style="display: none;" onchange="handleComprovante(event)">
-            <div class="dropzone-content">
-                <div class="icon-circle">
-                    <i class="fa-solid fa-cloud-arrow-up"></i>
-                </div>
-                <span class="dropzone-title">Comprovante de Pagamento</span>
-                <span class="dropzone-subtitle" id="txtNomeArqComp">Toque para anexar o comprovante...</span>
-            </div>
-            <input type="hidden" id="comprovanteBase64">
-        </div>
-        
-        <input type="hidden" id="editIndex">
-        <button class="btn-confirm" onclick="salvar()">SALVAR OPERAÇÃO</button>
-        <button id="btnExcluir" class="btn-delete hidden" onclick="excluirRegistro()">EXCLUIR</button>
-    </div>
-
-
-    <div class="modal" id="modalGestaoMetas" style="background: transparent; padding: 12px;">
-        <div class="meta-goals-shell">
-            <div class="meta-hero">
-                <div class="meta-hero-copy">
-                    <div class="meta-overline"><i class="fa-solid fa-sparkles"></i> Gestão de Metas Premium</div>
-                    <h2>Transforme objetivos em conquistas visíveis.</h2>
-                    <p>Uma área mais inteligente para acompanhar evolução, ajustar aportes e manter sua meta sempre viva e inspiradora.</p>
-                </div>
-                <button class="meta-close-btn" onclick="closeModal()" aria-label="Fechar painel de metas"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="meta-body-premium">
-                <div class="meta-dashboard-card">
-                    <div class="meta-badge-motivational" id="txtMetaMotivacional">🚀 VAMOS COMEÇAR!</div>
-                    <div class="meta-progress-wrapper">
-                        <div class="meta-progress-ring" id="metaProgressRing">
-                            <div class="meta-progress-core">
-                                <h3 class="meta-progress-text" id="txtGestaoProgresso">0.0%</h3>
-                                <span class="meta-progress-caption" id="txtDescricaoResumoMeta">concluído da sua meta</span>
-                            </div>
-                        </div>
-                        <div class="meta-progress-track-glow"><div class="meta-progress-fill-glow" id="gestaoFillBar"></div></div>
-                        <div class="meta-progress-meta"><span id="txtMetaNomePreview">Meta principal</span><span id="txtGestaoPeriodo">Aporte mensal</span></div>
-                    </div>
-                    <div class="meta-mini-insights">
-                        <div class="meta-mini-pill"><span>Guardado</span><strong id="txtGestaoGuardado">R$ 0,00</strong></div>
-                        <div class="meta-mini-pill"><span>Aporte ideal</span><strong id="txtAporteIdealResumo">R$ 0,00</strong></div>
-                        <div class="meta-mini-pill"><span>Categoria</span><strong id="txtGestaoTipo">Reserva</strong></div>
-                    </div>
-                    <div class="meta-stats-grid">
-                        <div class="meta-stat-box highlight"><span>Alvo Final</span><strong id="txtGestaoAlvo">R$ 0,00</strong><small>Valor total que você quer alcançar.</small></div>
-                        <div class="meta-stat-box danger"><span>Quanto Falta</span><strong id="txtGestaoFalta">R$ 0,00</strong><small>Diferença entre o alvo e o acumulado atual.</small></div>
-                    </div>
-                    <div class="meta-milestones">
-                        <div class="meta-milestones-header"><strong>Marcos da jornada</strong><span id="txtMilestoneResumo">Ative sua primeira meta</span></div>
-                        <div class="meta-milestone-track" id="metaMilestoneTrack">
-                            <div class="meta-milestone" data-step="25"><i class="fa-solid fa-seedling"></i><span>25%</span></div>
-                            <div class="meta-milestone" data-step="50"><i class="fa-solid fa-bolt"></i><span>50%</span></div>
-                            <div class="meta-milestone" data-step="75"><i class="fa-solid fa-fire"></i><span>75%</span></div>
-                            <div class="meta-milestone" data-step="100"><i class="fa-solid fa-crown"></i><span>100%</span></div>
-                        </div>
-                    </div>
-                    <div class="meta-tip-card"><i class="fa-solid fa-lightbulb"></i><span id="txtDicaAporte">Configure uma meta para ver dicas de aporte aqui.</span></div>
-                </div>
-
-                <div class="meta-quick-actions">
-                    <button class="btn-meta-quick deposit" onclick="prepararMovimentacaoMeta('add')"><i class="fa-solid fa-circle-arrow-up"></i>GUARDAR<br>DINHEIRO</button>
-                    <button class="btn-meta-quick withdraw" onclick="prepararMovimentacaoMeta('rem')"><i class="fa-solid fa-circle-arrow-down"></i>RESGATAR<br>DINHEIRO</button>
-                </div>
-
-                <div id="blocoMovimentacaoRapida" class="hidden meta-motion-card" style="animation: fadeIn 0.3s ease;">
-                    <div class="meta-section-title"><h4><i class="fa-solid fa-wave-square"></i> Movimentação rápida</h4><span id="lblAcaoRapida">Qual valor deseja guardar?</span></div>
-                    <input type="number" id="valorMovimentacaoMeta" placeholder="R$ 0,00" step="0.01" style="font-size: 1.5rem; font-weight: 800; color: #fff; background: transparent; border: none; border-bottom: 2px solid var(--accent); border-radius: 0; box-shadow: none; padding: 10px 5px; margin-bottom: 15px;">
-                    <div style="display: flex; gap: 10px;">
-                        <button class="btn-confirm" id="btnConfirmarAcaoMeta" style="flex: 2;" onclick="executarMovimentacaoMeta()">CONFIRMAR</button>
-                        <button class="btn-delete" style="flex: 1; padding: 16px;" onclick="document.getElementById('blocoMovimentacaoRapida').classList.add('hidden')">CANCELAR</button>
-                    </div>
-                </div>
-
-                <div class="meta-motion-card">
-                    <div class="meta-section-title"><h4><i class="fa-solid fa-sliders"></i> Configurações do objetivo</h4><span>Defina valor, ritmo e identidade da meta</span></div>
-                    <div class="meta-config-grid single" style="margin-bottom: 14px;">
-                        <div class="meta-field">
-                            <span class="label-mini"><i class="fa-solid fa-bullseye"></i> O que você quer alcançar?</span>
-                            <select id="tipoMeta" style="font-weight: bold; background: var(--input-bg);">
-                                <option value="reserva">🛡️ Reserva de Emergência</option>
-                                <option value="viagem">✈️ Viagem / Férias</option>
-                                <option value="veiculo">🚗 Trocar de Veículo</option>
-                                <option value="imovel">🏠 Casa Própria / Reforma</option>
-                                <option value="casamento">💍 Casamento / Festa</option>
-                                <option value="educacao">📚 Estudos / Faculdade</option>
-                                <option value="aposentadoria">🌅 Aposentadoria</option>
-                                <option value="quitacao">💸 Quitar Dívidas</option>
-                                <option value="investimento">📈 Liberdade Financeira</option>
-                                <option value="eletronico">💻 Eletrônicos / Setup</option>
-                                <option value="outros">🎯 Outro Objetivo</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="meta-input-row">
-                        <div class="meta-field"><span class="label-mini"><i class="fa-solid fa-sack-dollar"></i> Valor total do objetivo</span><input type="number" id="valorMetaInput" placeholder="Ex: 5000,00" step="0.01" style="background: var(--input-bg);"></div>
-                        <div class="meta-field"><span class="label-mini"><i class="fa-regular fa-calendar-days"></i> Frequência de aporte ideal</span><select id="periodoMeta" style="background: var(--input-bg);"><option value="Semanal">Por Semana</option><option value="Quinzenal">Por Quinzena</option><option value="Mensal">Por Mês</option><option value="Anual">Por Ano</option></select></div>
-                    </div>
-                    <div class="meta-config-grid single" style="margin-top: 14px;">
-                        <div class="meta-field"><span class="label-mini"><i class="fa-solid fa-signature"></i> Dê um nome para a meta</span><input type="text" id="descMetaInput" placeholder="Ex: Viagem para a Europa..." style="background: var(--input-bg);"></div>
-                    </div>
-                    <div class="meta-planner-strip">
-                        <div class="meta-plan-chip"><span>Visão atual</span><strong id="txtPreviewTituloMeta">Objetivo ainda sem nome</strong><small id="txtPreviewSubMeta">Escolha um foco para a sua próxima conquista.</small></div>
-                        <div class="meta-plan-chip"><span>Ritmo sugerido</span><strong id="txtPreviewAporte">R$ 0,00 por mês</strong><small id="txtPreviewHorizonte">Ajuste a frequência para recalcular o aporte ideal.</small></div>
-                        <div class="meta-plan-chip"><span>Status visual</span><strong id="txtPreviewStatus">Preparando sua meta</strong><small id="txtPreviewStatusSub">Assim que salvar, o painel superior será atualizado.</small></div>
-                    </div>
-                    <div class="meta-actions-stack">
-                        <button class="btn-confirm" style="background: linear-gradient(90deg, #00f2ff, #0284c7); color: #fff; font-weight: 800;" onclick="salvarConfiguracaoMeta()">SALVAR E ATUALIZAR DASHBOARD</button>
-                        <button class="btn-delete" style="border-color: rgba(239, 68, 68, 0.3); color: var(--danger); font-weight: 800;" onclick="zerarMetaCompleta()">EXCLUIR META ATUAL</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="modal modal-small" id="modalNotificacoes" style="z-index: 2500;
+<div class="update-center-actions">
+<span class="update-pill-status" id="updateStatusPill"><i class="fa-solid fa-rotate"></i> App atualizado</span>
+<button class="update-action-btn secondary" onclick="verificarAtualizacaoManual()" type="button"><i class="fa-solid fa-arrows-rotate" style="margin-right:8px;"></i>Verificar agora</button>
+</div>
+</div>
+</div>
+</div>
+<div class="modal" id="modalForm">
+<div style="display:flex;
+            justify-content:space-between; align-items:center; margin-bottom:20px;">
+<h2 id="modalTitle" style="margin:0; font-size:1.15rem;
+            color: var(--text);">Nova Operação</h2>
+<i class="fa-solid fa-xmark" onclick="closeModal()" style="font-size:1.4rem; color:var(--text-muted);
+            cursor:pointer;"></i>
+</div>
+<div class="resumo-quitacao hidden" id="blocoResumoGeral">
+<h4 id="resumoTitulo" style="display: flex;
+            align-items: center; gap: 8px; margin-bottom: 15px; color: var(--text);">Resumo do Contrato</h4>
+<div id="resumoConteudo"></div>
+</div>
+<span class="label-mini">Tipo</span>
+<select id="tipo" onchange="atualizarSubmenu()">
+<option value="Receita">Receita</option>
+<option value="Fixo">Gasto Fixo</option>
+<option value="Variavel">Gasto Variável</option>
+<option value="Divida">Dívida / Boleto</option>
+<option value="Juros">💸 Dinheiro a Juros</option>
+<option value="Reserva">Patrimônio</option>
+<!-- Tipos ocultos para uso interno da IA -->
+<option style="display:none;" value="Ajuste">Saldo Anterior do Banco</option>
+<option style="display:none;" value="AjusteNeg">Saldo Negativo Anterior</option>
+</select>
+<div id="gridCategoriaBanco" style="display:grid;
+            grid-template-columns: 1fr; gap:10px;">
+<div>
+<span class="label-mini">Categoria</span>
+<select id="submenu" onchange="definirDescricao()"></select>
+</div>
+<div class="hidden" id="blocoBanco">
+<span class="label-mini">Instituição / Banco</span>
+<select id="banco">
+<option value="">Outros / Nenhum</option>
+<optgroup label="Bancos Digitais">
+<option value="Nubank">Nubank</option>
+<option value="Banco Inter">Banco Inter</option>
+<option value="C6 Bank">C6 Bank</option>
+<option value="PagBank">PagBank</option>
+<option value="PicPay">PicPay</option>
+<option value="Neon">Neon</option>
+<option value="Next">Next</option>
+<option value="Mercado Pago">Mercado Pago</option>
+<option value="Banco Pan">Banco Pan</option>
+<option value="Will Bank">Will Bank</option>
+<option value="Agibank">Agibank</option>
+<option value="Sofisa Direto">Sofisa Direto</option>
+<option value="Digio">Digio</option>
+<option value="Banco Bmg">Banco Bmg</option>
+<option value="XP Investimentos">XP Investimentos</option>
+<option value="Rico">Rico</option>
+<option value="Banco BS2">Banco BS2</option>
+</optgroup>
+<optgroup label="Bancos Tradicionais">
+<option value="Itaú">Itaú</option>
+<option value="Santander">Santander</option>
+<option value="Bradesco">Bradesco</option>
+<option value="Banco do Brasil">Banco do Brasil</option>
+<option value="Caixa Econômica">Caixa Econômica</option>
+<option value="Banco Safra">Banco Safra</option>
+<option value="BTG Pactual">BTG Pactual</option>
+<option value="Banco BV">Banco BV</option>
+<option value="Sicoob">Sicoob</option>
+<option value="Sicredi">Sicredi</option>
+<option value="Banrisul">Banrisul</option>
+<option value="Banco do Nordeste">Banco do Nordeste</option>
+</optgroup>
+</select>
+</div>
+</div>
+<div class="hidden" id="blocoRecebimento">
+<span class="label-mini">Forma de Recebimento</span>
+<select id="formaRecebimento">
+<option value="Pix">Pix</option>
+<option value="Dinheiro">Dinheiro</option>
+<option value="Cartão">Cartão</option>
+<option value="Outros">Outros</option>
+</select>
+</div>
+<input id="desc" placeholder="Descrição Personalizada" type="text"/>
+<div class="smart-category-hint hidden" id="smartCategoryHint">
+<div class="smart-copy">
+<i class="fa-solid fa-wand-magic-sparkles"></i>
+<div>
+<div class="smart-title">Categoria inteligente detectada</div>
+<div class="smart-value" id="smartCategoryText">Uber → Transporte</div>
+</div>
+</div>
+<span class="smart-badge" id="smartCategoryBadge">Automático</span>
+</div>
+<div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+<div>
+<span class="label-mini" id="lblValorMain">Valor (R$)</span>
+<input id="valor" inputmode="decimal" placeholder="0,00" step="0.01" type="number"/>
+</div>
+<div id="campoPago">
+<span class="label-mini">Confirmado?</span>
+<div class="toggle-pill">
+<input checked="" id="status0" name="statusPagoRadio" type="radio" value="0"/>
+<label for="status0"><i class="fa-solid fa-clock"></i> Pendente</label>
+<input id="status1" name="statusPagoRadio" type="radio" value="1"/>
+<label for="status1"><i class="fa-solid fa-check-circle"></i> Pago</label>
+</div>
+<select id="selectPago" style="display: none;">
+<option value="0">Não</option>
+<option value="1">Sim</option>
+</select>
+</div>
+</div>
+<div id="blocoDatas" style="display:grid; grid-template-columns: 1fr;
+            gap:10px;">
+<div class="hidden" id="boxDataLancamento">
+<span class="label-mini">Data de Lançamento</span>
+<input id="dataLancamento" type="date"/>
+</div>
+<div>
+<span class="label-mini" id="lblDataMain">Data da Operação</span>
+<input id="data" type="date"/>
+</div>
+</div>
+<div class="bloco-parcelas hidden" id="blocoJuros" style="border-color: #f97316;">
+<span class="label-mini" style="color: #f97316; margin-bottom: 10px; display: block;"><i class="fa-solid fa-calculator"></i> Cálculo de Juros Inteligente</span>
+<div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom: 10px;">
+<div><span class="label-mini">Taxa de Juros (%)</span><input id="taxaJuros" min="0" oninput="calcularJuros()" type="number" value="20"/></div>
+<div><span class="label-mini">Frequência</span>
+<select id="freqJuros" onchange="calcularJuros()">
+<option value="Diario">Diário</option>
+<option selected="" value="Semanal">Semanal</option>
+<option value="Mensal">Mensal</option>
+</select>
+</div>
+</div>
+<div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+<div><span class="label-mini">Qtd. Parcelas</span><input id="qtdParcelasJuros" min="1" oninput="calcularJuros()" type="number" value="4"/></div>
+<div><span class="label-mini">Pagas Hoje</span><input id="pagasJuros" min="0" type="number" value="0"/></div>
+</div>
+<div id="resumoJurosDisplay" style="margin-top: 15px; padding: 12px; background: rgba(249, 115, 22, 0.1); border-radius: 8px; border: 1px dashed #f97316; font-size: 0.85rem; color: var(--text);">
+                Total Pagar: <strong>R$ 0,00</strong> (Juros: R$ 0,00)<br/>
+                Ficará: <strong style="color: #f97316;">1x de R$ 0,00</strong>
+</div>
+</div>
+<div class="bloco-parcelas hidden" id="blocoParcelamento">
+<div style="display:grid;
+                grid-template-columns: 1fr 1fr; gap:10px;">
+<div><span class="label-mini">Total Parcelas</span><input id="parcelas" min="1" type="number" value="1"/></div>
+<div><span class="label-mini">Pagas</span><input id="parcelasPagas" min="0" type="number" value="0"/></div>
+</div>
+</div>
+<div class="launch-preview-card" id="launchPreviewCard">
+<div class="launch-preview-top">
+<div>
+<span class="launch-preview-kicker">Prévia do lançamento</span>
+<div class="launch-preview-value" id="launchPreviewValue">R$ 0,00</div>
+</div>
+<div class="launch-preview-status pendente" id="launchPreviewStatus">
+<i class="fa-solid fa-clock"></i>
+<span>Pendente</span>
+</div>
+</div>
+<div class="launch-preview-grid">
+<div class="launch-preview-mini">
+<span>Tipo</span>
+<strong id="launchPreviewType">Salário</strong>
+</div>
+<div class="launch-preview-mini">
+<span>Quando</span>
+<strong id="launchPreviewDate">--/--/----</strong>
+</div>
+<div class="launch-preview-mini">
+<span>Origem</span>
+<strong id="launchPreviewOrigin">Pix</strong>
+</div>
+</div>
+</div>
+<div class="premium-dropzone" onclick="document.getElementById('comprovanteInput').click()">
+<input accept="image/*,.pdf" id="comprovanteInput" onchange="handleComprovante(event)" style="display: none;" type="file"/>
+<div class="dropzone-content">
+<div class="icon-circle">
+<i class="fa-solid fa-cloud-arrow-up"></i>
+</div>
+<span class="dropzone-title">Comprovante de Pagamento</span>
+<span class="dropzone-subtitle" id="txtNomeArqComp">Toque para anexar o comprovante...</span>
+</div>
+<input id="comprovanteBase64" type="hidden"/>
+</div>
+<input id="editIndex" type="hidden"/>
+<button class="btn-confirm" onclick="salvar()">SALVAR OPERAÇÃO</button>
+<button class="btn-delete hidden" id="btnExcluir" onclick="excluirRegistro()">EXCLUIR</button>
+</div>
+<div class="modal" id="modalGestaoMetas" style="background: transparent; padding: 12px;">
+<div class="meta-goals-shell meta-goals-shell-simple">
+<div class="meta-hero meta-hero-simple">
+<div class="meta-hero-copy">
+<div class="meta-overline"><i class="fa-solid fa-sparkles"></i> Gestão de Metas Premium</div>
+<h2>Gestão de metas, sem excessos.</h2>
+<p>Veja o progresso, o valor guardado e o próximo passo em um só lugar.</p>
+</div>
+<button aria-label="Fechar painel de metas" class="meta-close-btn" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+</div>
+<div class="meta-body-premium meta-body-premium-simple">
+<div class="meta-dashboard-card meta-dashboard-card-simple">
+<div class="meta-summary-top">
+<div class="meta-summary-head">
+<div class="meta-badge-motivational" id="txtMetaMotivacional">🚀 VAMOS COMEÇAR!</div>
+<strong id="txtMetaNomePreview">Meta principal</strong>
+<span id="txtGestaoPeriodo">Aporte mensal</span>
+</div>
+<div class="meta-progress-ring meta-progress-ring-simple" id="metaProgressRing">
+<div class="meta-progress-core">
+<h3 class="meta-progress-text" id="txtGestaoProgresso">0.0%</h3>
+<span class="meta-progress-caption" id="txtDescricaoResumoMeta">concluído da sua meta</span>
+</div>
+</div>
+</div>
+<div class="meta-progress-track-glow"><div class="meta-progress-fill-glow" id="gestaoFillBar"></div></div>
+<div class="meta-simple-grid">
+<div class="meta-simple-item">
+<span>Guardado</span>
+<strong id="txtGestaoGuardado">R$ 0,00</strong>
+</div>
+<div class="meta-simple-item">
+<span>Falta</span>
+<strong id="txtGestaoFalta">R$ 0,00</strong>
+</div>
+<div class="meta-simple-item">
+<span>Meta</span>
+<strong id="txtGestaoAlvo">R$ 0,00</strong>
+</div>
+<div class="meta-simple-item">
+<span>Aporte ideal</span>
+<strong id="txtAporteIdealResumo">R$ 0,00</strong>
+</div>
+</div>
+<div class="meta-simple-footer">
+<div class="meta-simple-chip">
+<span>Categoria</span>
+<strong id="txtGestaoTipo">Reserva</strong>
+</div>
+<div class="meta-simple-tip" id="txtDicaAporte">Configure uma meta para ver dicas de aporte aqui.</div>
+</div>
+<div class="hidden" id="txtMilestoneResumo">Ative sua primeira meta</div>
+</div>
+<div class="meta-quick-actions meta-quick-actions-simple">
+<button class="btn-meta-quick deposit" onclick="prepararMovimentacaoMeta('add')"><i class="fa-solid fa-circle-arrow-up"></i>Guardar</button>
+<button class="btn-meta-quick withdraw" onclick="prepararMovimentacaoMeta('rem')"><i class="fa-solid fa-circle-arrow-down"></i>Resgatar</button>
+</div>
+<div class="hidden meta-motion-card" id="blocoMovimentacaoRapida" style="animation: fadeIn 0.3s ease;">
+<div class="meta-section-title"><h4><i class="fa-solid fa-wave-square"></i> Movimentação rápida</h4><span id="lblAcaoRapida">Qual valor deseja guardar?</span></div>
+<input id="valorMovimentacaoMeta" placeholder="R$ 0,00" step="0.01" style="font-size: 1.5rem; font-weight: 800; color: #fff; background: transparent; border: none; border-bottom: 2px solid var(--accent); border-radius: 0; box-shadow: none; padding: 10px 5px; margin-bottom: 15px;" type="number"/>
+<div style="display: flex; gap: 10px;">
+<button class="btn-confirm" id="btnConfirmarAcaoMeta" onclick="executarMovimentacaoMeta()" style="flex: 2;">CONFIRMAR</button>
+<button class="btn-delete" onclick="document.getElementById('blocoMovimentacaoRapida').classList.add('hidden')" style="flex: 1; margin-top: 0;">CANCELAR</button>
+</div>
+</div>
+<div class="meta-motion-card">
+<div class="meta-section-title"><h4><i class="fa-solid fa-sliders"></i> Configurações do objetivo</h4><span>Defina valor, ritmo e identidade da meta</span></div>
+<div class="meta-config-grid single" style="margin-bottom: 14px;">
+<div class="meta-field">
+<span class="label-mini"><i class="fa-solid fa-bullseye"></i> O que você quer alcançar?</span>
+<select id="tipoMeta" style="font-weight: bold; background: var(--input-bg);">
+<option value="reserva">🛡️ Reserva de Emergência</option>
+<option value="viagem">✈️ Viagem / Férias</option>
+<option value="veiculo">🚗 Trocar de Veículo</option>
+<option value="imovel">🏠 Casa Própria / Reforma</option>
+<option value="casamento">💍 Casamento / Festa</option>
+<option value="educacao">📚 Estudos / Faculdade</option>
+<option value="aposentadoria">🌅 Aposentadoria</option>
+<option value="quitacao">💸 Quitar Dívidas</option>
+<option value="investimento">📈 Liberdade Financeira</option>
+<option value="eletronico">💻 Eletrônicos / Setup</option>
+<option value="outros">🎯 Outro Objetivo</option>
+</select>
+</div>
+</div>
+<div class="meta-input-row">
+<div class="meta-field"><span class="label-mini"><i class="fa-solid fa-sack-dollar"></i> Valor total do objetivo</span><input id="valorMetaInput" placeholder="Ex: 5000,00" step="0.01" style="background: var(--input-bg);" type="number"/></div>
+<div class="meta-field"><span class="label-mini"><i class="fa-regular fa-calendar-days"></i> Frequência de aporte ideal</span><select id="periodoMeta" style="background: var(--input-bg);"><option value="Semanal">Por Semana</option><option value="Quinzenal">Por Quinzena</option><option value="Mensal">Por Mês</option><option value="Anual">Por Ano</option></select></div>
+</div>
+<div class="meta-config-grid single" style="margin-top: 14px;">
+<div class="meta-field"><span class="label-mini"><i class="fa-solid fa-signature"></i> Dê um nome para a meta</span><input id="descMetaInput" placeholder="Ex: Viagem para a Europa..." style="background: var(--input-bg);" type="text"/></div>
+</div>
+<div class="meta-planner-strip">
+<div class="meta-plan-chip"><span>Visão atual</span><strong id="txtPreviewTituloMeta">Objetivo ainda sem nome</strong><small id="txtPreviewSubMeta">Escolha um foco para a sua próxima conquista.</small></div>
+<div class="meta-plan-chip"><span>Ritmo sugerido</span><strong id="txtPreviewAporte">R$ 0,00 por mês</strong><small id="txtPreviewHorizonte">Ajuste a frequência para recalcular o aporte ideal.</small></div>
+<div class="meta-plan-chip"><span>Status visual</span><strong id="txtPreviewStatus">Preparando sua meta</strong><small id="txtPreviewStatusSub">Assim que salvar, o painel superior será atualizado.</small></div>
+</div>
+<div class="meta-actions-stack">
+<button class="btn-confirm" onclick="salvarConfiguracaoMeta()" style="background: linear-gradient(90deg, #00f2ff, #0284c7); color: #fff; font-weight: 800;">SALVAR E ATUALIZAR DASHBOARD</button>
+<button class="btn-delete" onclick="zerarMetaCompleta()" style="border-color: rgba(239, 68, 68, 0.3); color: var(--danger); font-weight: 800;">EXCLUIR META ATUAL</button>
+</div>
+</div></div>
+</div>
+</div>
+<div class="modal modal-small" id="modalNotificacoes" style="z-index: 2500;
         padding: 25px 20px; background: linear-gradient(to bottom, var(--card), var(--bg));">
-        <div style="display:flex; justify-content:space-between; align-items:center;
+<div style="display:flex; justify-content:space-between; align-items:center;
             margin-bottom:20px;">
-            <div class="notif-header-glow" style="margin:0; padding: 10px 15px; width: auto;
+<div class="notif-header-glow" style="margin:0; padding: 10px 15px; width: auto;
             flex: 1;">
-                <h2 style="display: flex;
+<h2 style="display: flex;
                 align-items: center; gap: 10px;"><i class="fa-solid fa-bell fa-shake"></i> Central de Alertas</h2>
-            </div>
-            <i class="fa-solid fa-xmark" style="font-size:1.5rem;
+</div>
+<i class="fa-solid fa-xmark" onclick="closeModal()" style="font-size:1.5rem;
             color:var(--text-muted); cursor:pointer; background: var(--input-bg); width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%;
-            margin-left: 15px;" onclick="closeModal()"></i>
-        </div>
-        <p style="font-size: 0.85rem;
+            margin-left: 15px;"></i>
+</div>
+<p style="font-size: 0.85rem;
         color: var(--text-muted); margin-bottom: 20px; text-align: center;">Monitoramento inteligente das suas contas próximas ao vencimento ou em atraso.</p>
-        <div id="listaNotificacoes" style="background: transparent;
+<div id="listaNotificacoes" style="background: transparent;
         border: none; border-radius: 0; overflow: visible;">
-        </div>
-    </div>
-
-    <div class="modal" id="modalGraficos" style="background: var(--bg);">
-        <div style="display:flex;
+</div>
+</div>
+<div class="modal" id="modalGraficos" style="background: var(--bg);">
+<div style="display:flex;
             justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <h2 style="margin:0; font-size:1.15rem;
+<h2 style="margin:0; font-size:1.15rem;
             color: var(--text);">Análise do Mês Atual</h2>
-            <i class="fa-solid fa-xmark" style="font-size:1.4rem;
-            color:var(--text-muted); cursor:pointer;" onclick="closeModal()"></i>
-        </div>
-        
-        <div class="grafico-card">
-            <h4 class="grafico-title">Despesas por Categoria</h4>
-            <div style="position: relative;
+<i class="fa-solid fa-xmark" onclick="closeModal()" style="font-size:1.4rem;
+            color:var(--text-muted); cursor:pointer;"></i>
+</div>
+<div class="grafico-card">
+<h4 class="grafico-title">Despesas por Categoria</h4>
+<div style="position: relative;
                 height: 260px; width: 100%;">
-                <canvas id="chartCategorias"></canvas>
-            </div>
-        </div>
-
-        <div class="grafico-card">
-            <h4 class="grafico-title">Fluxo Diário de Caixa</h4>
-            <div style="position: relative;
+<canvas id="chartCategorias"></canvas>
+</div>
+</div>
+<div class="grafico-card">
+<h4 class="grafico-title">Fluxo Diário de Caixa</h4>
+<div style="position: relative;
                 height: 200px; width: 100%;">
-                <canvas id="chartEvolucao"></canvas>
-            </div>
-        </div>
-        
-        <div class="grafico-card">
-            <h4 class="grafico-title">Status de Pagamentos (Despesas)</h4>
-            <div style="position: relative;
+<canvas id="chartEvolucao"></canvas>
+</div>
+</div>
+<div class="grafico-card">
+<h4 class="grafico-title">Status de Pagamentos (Despesas)</h4>
+<div style="position: relative;
                 height: 120px; width: 100%;">
-                <canvas id="chartStatus"></canvas>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal" id="modalViewComprovante" style="z-index: 3000;">
-        <div style="display:flex;
+<canvas id="chartStatus"></canvas>
+</div>
+</div>
+</div>
+<div class="modal" id="modalViewComprovante" style="z-index: 3000;">
+<div style="display:flex;
             justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <h2 style="margin:0; font-size:1.15rem;
+<h2 style="margin:0; font-size:1.15rem;
             color: var(--text);">Visualizar Anexo</h2>
-            <i class="fa-solid fa-xmark" style="font-size:1.4rem; color:var(--text-muted);
-            cursor:pointer;" onclick="closeViewComprovante()"></i>
-        </div>
-        <div id="comprovanteContent" style="text-align:center;"></div>
-    </div>
-
-    
-    <div class="modal" id="modalLeitorExtrato" style="background: rgba(3, 7, 18, 0.95); backdrop-filter: blur(20px); border: 1px solid var(--accent); box-shadow: 0 0 30px rgba(0, 242, 255, 0.1); z-index: 3000;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <h2 style="margin:0; font-size:1.15rem; color: var(--accent); display:flex; align-items:center; gap:8px;">
-                <i class="fa-solid fa-microchip"></i> ZIRO-BANCK VAULT V3
+<i class="fa-solid fa-xmark" onclick="closeViewComprovante()" style="font-size:1.4rem; color:var(--text-muted);
+            cursor:pointer;"></i>
+</div>
+<div id="comprovanteContent" style="text-align:center;"></div>
+</div>
+<div class="modal" id="modalLeitorExtrato" style="background: rgba(3, 7, 18, 0.95); backdrop-filter: blur(20px); border: 1px solid var(--accent); box-shadow: 0 0 30px rgba(0, 242, 255, 0.1); z-index: 3000;">
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+<h2 style="margin:0; font-size:1.15rem; color: var(--accent); display:flex; align-items:center; gap:8px;">
+<i class="fa-solid fa-microchip"></i> ZIRO-BANCK VAULT V3
             </h2>
-            <i class="fa-solid fa-xmark" style="font-size:1.4rem; color:var(--text-muted); cursor:pointer;" onclick="closeModal()"></i>
-        </div>
-
-        <input type="file" id="extratoInput" accept="image/*,application/pdf" style="display: none;" onchange="processarExtratoImagem(event)">
-
-        <div id="leitorUploadArea">
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.4;">
+<i class="fa-solid fa-xmark" onclick="closeModal()" style="font-size:1.4rem; color:var(--text-muted); cursor:pointer;"></i>
+</div>
+<input accept="image/*,application/pdf" id="extratoInput" onchange="processarExtratoImagem(event)" style="display: none;" type="file"/>
+<div id="leitorUploadArea">
+<p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.4;">
                 Motor de Inteligência Financeira. Anexe o extrato do seu banco em PDF para que a IA analise e categorize seus lançamentos automaticamente. Processamento 100% privado.
             </p>
-            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                <button class="btn-confirm" onclick="document.getElementById('extratoInput').click()" style="background: linear-gradient(135deg, var(--success), #059669); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); width: 100%; margin: 0;">
-                    <i class="fa-solid fa-cloud-arrow-up fa-bounce"></i> CARREGAR EXTRATO PDF
+<div style="display: flex; gap: 10px; margin-bottom: 20px;">
+<button class="btn-confirm" onclick="document.getElementById('extratoInput').click()" style="background: linear-gradient(135deg, var(--success), #059669); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); width: 100%; margin: 0;">
+<i class="fa-solid fa-cloud-arrow-up fa-bounce"></i> CARREGAR EXTRATO PDF
                 </button>
-                
-            </div>
-        </div>
-
-        <div id="leitorRestoreArea" class="hidden" style="background: rgba(0, 242, 255, 0.05); border: 1px dashed var(--accent); padding: 25px 20px; border-radius: 16px; margin-bottom: 20px; text-align: center; box-shadow: inset 0 0 20px rgba(0,242,255,0.05);">
-            <i class="fa-solid fa-clock-rotate-left" style="font-size: 2.5rem; color: var(--accent); margin-bottom: 12px;"></i>
-            <h4 style="color: var(--text); margin: 0 0 8px 0; font-size: 1.15rem;">Sessão em Andamento</h4>
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.4;">Você possui um extrato carregado anteriormente com lançamentos pendentes de aprovação.</p>
-            <div style="display: flex; gap: 10px;">
-                <button onclick="continuarExtrato()" style="flex: 2; background: linear-gradient(135deg, var(--accent), #0284c7); color: #fff; border: none; padding: 12px; border-radius: 10px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 10px rgba(0,242,255,0.2);"><i class="fa-solid fa-play"></i> CONTINUAR EXTRATO</button>
-                <button onclick="novoExtrato()" style="flex: 1; background: transparent; color: var(--text-muted); border: 1px solid var(--border); padding: 12px; border-radius: 10px; font-weight: 800; cursor: pointer;"><i class="fa-solid fa-trash"></i> NOVO</button>
-            </div>
-        </div>
-
-        <div id="leitorLoading" class="hidden" style="text-align:center; padding:20px; color:var(--accent);">
-            <i class="fa-solid fa-microchip fa-flip" style="font-size: 2rem; margin-bottom:10px;"></i>
-            <p style="font-size: 0.9rem; font-weight: bold; letter-spacing: 1px;">EXTRAINDO DADOS...</p>
-        </div>
-
-        <div id="leitorResult" class="hidden">
-            <div class="grafico-card" style="padding: 15px; margin-bottom: 15px; background: rgba(0,0,0,0.5); border: 1px solid var(--border);">
-                <span class="label-mini" style="text-align: center; color: var(--accent);">Fluxo Financeiro Encontrado</span>
-                <div style="position: relative; height: 180px; width: 100%;">
-                    <canvas id="chartLeitor"></canvas>
-                </div>
-            </div>
-
-            <h4 style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px;">Reconciliação Editável:</h4>
-            <div id="leitorLista"></div>
-        </div>
-    </div>
-
-    <div id="pdf-container"></div>
-
-    <script>
+</div>
+</div>
+<div class="hidden" id="leitorRestoreArea" style="background: rgba(0, 242, 255, 0.05); border: 1px dashed var(--accent); padding: 25px 20px; border-radius: 16px; margin-bottom: 20px; text-align: center; box-shadow: inset 0 0 20px rgba(0,242,255,0.05);">
+<i class="fa-solid fa-clock-rotate-left" style="font-size: 2.5rem; color: var(--accent); margin-bottom: 12px;"></i>
+<h4 style="color: var(--text); margin: 0 0 8px 0; font-size: 1.15rem;">Sessão em Andamento</h4>
+<p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.4;">Você possui um extrato carregado anteriormente com lançamentos pendentes de aprovação.</p>
+<div style="display: flex; gap: 10px;">
+<button onclick="continuarExtrato()" style="flex: 2; background: linear-gradient(135deg, var(--accent), #0284c7); color: #fff; border: none; padding: 12px; border-radius: 10px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 10px rgba(0,242,255,0.2);"><i class="fa-solid fa-play"></i> CONTINUAR EXTRATO</button>
+<button onclick="novoExtrato()" style="flex: 1; background: transparent; color: var(--text-muted); border: 1px solid var(--border); padding: 12px; border-radius: 10px; font-weight: 800; cursor: pointer;"><i class="fa-solid fa-trash"></i> NOVO</button>
+</div>
+</div>
+<div class="hidden" id="leitorLoading" style="text-align:center; padding:20px; color:var(--accent);">
+<i class="fa-solid fa-microchip fa-flip" style="font-size: 2rem; margin-bottom:10px;"></i>
+<p style="font-size: 0.9rem; font-weight: bold; letter-spacing: 1px;">EXTRAINDO DADOS...</p>
+</div>
+<div class="hidden" id="leitorResult">
+<div class="grafico-card" style="padding: 15px; margin-bottom: 15px; background: rgba(0,0,0,0.5); border: 1px solid var(--border);">
+<span class="label-mini" style="text-align: center; color: var(--accent);">Fluxo Financeiro Encontrado</span>
+<div style="position: relative; height: 180px; width: 100%;">
+<canvas id="chartLeitor"></canvas>
+</div>
+</div>
+<h4 style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px;">Reconciliação Editável:</h4>
+<div id="leitorLista"></div>
+</div>
+</div>
+<div id="pdf-container"></div>
+<script>
         let db;
         let registros = [];
         const requestDB = indexedDB.open("MeuCaixaApp", 1);
@@ -5116,8 +5050,6 @@ function exportarDadosCSV() {
             });
         }
     </script>
-    
-    
 <script id="premium-sidebar-upgrade-script">
 (function(){
   function upgradeSidebar(){
@@ -5192,8 +5124,6 @@ function exportarDadosCSV() {
   window.addEventListener('load', upgradeSidebar);
 })();
 </script>
-
-    
 <script id="meta-premium-live-preview">
 (function(){
   function bindMetaPreview(){
@@ -5212,8 +5142,7 @@ function exportarDadosCSV() {
   window.addEventListener('load', bindMetaPreview);
 })();
 </script>
-
-    <script>
+<script>
       let appServiceWorkerRegistration = null;
       let appWaitingWorker = null;
       let appRefreshingByUpdate = false;
@@ -5436,19 +5365,16 @@ function exportarDadosCSV() {
 })();
 
 </script>
-
-    <div class="app-update-banner" id="appUpdateBanner" aria-live="polite">
-        <div class="app-update-copy">
-            <strong>Nova atualização disponível</strong>
-            <span>Toque em atualizar para carregar a versão mais recente do app sem reinstalar.</span>
-        </div>
-        <div class="app-update-actions">
-            <button class="update-action-btn secondary" type="button" onclick="dispensarAtualizacao()">Depois</button>
-            <button class="update-action-btn primary" type="button" onclick="aplicarAtualizacao()"><i class="fa-solid fa-cloud-arrow-down" style="margin-right:8px;"></i>Atualizar agora</button>
-        </div>
-    </div>
-
-
+<div aria-live="polite" class="app-update-banner" id="appUpdateBanner">
+<div class="app-update-copy">
+<strong>Nova atualização disponível</strong>
+<span>Toque em atualizar para carregar a versão mais recente do app sem reinstalar.</span>
+</div>
+<div class="app-update-actions">
+<button class="update-action-btn secondary" onclick="dispensarAtualizacao()" type="button">Depois</button>
+<button class="update-action-btn primary" onclick="aplicarAtualizacao()" type="button"><i class="fa-solid fa-cloud-arrow-down" style="margin-right:8px;"></i>Atualizar agora</button>
+</div>
+</div>
 <script>
 (function(){
     function moedaBR(v){
@@ -5539,6 +5465,5 @@ function exportarDadosCSV() {
     }
 })();
 </script>
-
 </body>
 </html>
