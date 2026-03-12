@@ -1764,6 +1764,102 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
     border:1px solid rgba(165,180,252,0.20);
 }
 
+
+/* PREVIA DO LANCAMENTO */
+.launch-preview-card{
+    background: linear-gradient(145deg, rgba(8,15,32,0.96), rgba(10,24,56,0.92));
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 22px;
+    padding: 18px;
+    margin: 18px 0 16px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 14px 32px rgba(0,0,0,0.18);
+}
+.launch-preview-card::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+        radial-gradient(circle at right center, color-mix(in srgb, var(--accent) 28%, transparent), transparent 24%),
+        linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0));
+    pointer-events:none;
+}
+.launch-preview-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:12px;
+    margin-bottom:14px;
+}
+.launch-preview-kicker{
+    display:block;
+    font-size:.72rem;
+    letter-spacing:1.2px;
+    text-transform:uppercase;
+    color:var(--text-muted);
+    font-weight:800;
+    margin-bottom:4px;
+}
+.launch-preview-value{
+    font-size:2.1rem;
+    line-height:1;
+    font-weight:800;
+    color:var(--text);
+}
+.launch-preview-status{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:8px 12px;
+    border-radius:999px;
+    font-size:.76rem;
+    font-weight:800;
+    border:1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.06);
+    white-space:nowrap;
+}
+.launch-preview-status.pendente{
+    color: var(--warning);
+    border-color: color-mix(in srgb, var(--warning) 68%, rgba(255,255,255,0.08));
+    background: color-mix(in srgb, var(--warning) 12%, rgba(255,255,255,0.04));
+}
+.launch-preview-status.pago{
+    color: var(--success);
+    border-color: color-mix(in srgb, var(--success) 68%, rgba(255,255,255,0.08));
+    background: color-mix(in srgb, var(--success) 12%, rgba(255,255,255,0.04));
+}
+.launch-preview-grid{
+    display:grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap:12px;
+}
+.launch-preview-mini{
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 12px 14px;
+}
+.launch-preview-mini span{
+    display:block;
+    font-size:.68rem;
+    text-transform:uppercase;
+    letter-spacing:.9px;
+    color:var(--text-muted);
+    font-weight:800;
+    margin-bottom:6px;
+}
+.launch-preview-mini strong{
+    display:block;
+    font-size:1.04rem;
+    color:var(--text);
+    font-weight:700;
+}
+@media (max-width: 720px){
+    .launch-preview-grid{grid-template-columns:1fr;}
+    .launch-preview-value{font-size:1.8rem;}
+}
+
 </style>
 </head>
 <body>
@@ -2289,6 +2385,34 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
             </div>
         </div>
         
+        
+<div class="launch-preview-card" id="launchPreviewCard">
+    <div class="launch-preview-top">
+        <div>
+            <span class="launch-preview-kicker">Prévia do lançamento</span>
+            <div class="launch-preview-value" id="launchPreviewValue">R$ 0,00</div>
+        </div>
+        <div class="launch-preview-status pendente" id="launchPreviewStatus">
+            <i class="fa-solid fa-clock"></i>
+            <span>Pendente</span>
+        </div>
+    </div>
+    <div class="launch-preview-grid">
+        <div class="launch-preview-mini">
+            <span>Tipo</span>
+            <strong id="launchPreviewType">Salário</strong>
+        </div>
+        <div class="launch-preview-mini">
+            <span>Quando</span>
+            <strong id="launchPreviewDate">--/--/----</strong>
+        </div>
+        <div class="launch-preview-mini">
+            <span>Origem</span>
+            <strong id="launchPreviewOrigin">Pix</strong>
+        </div>
+    </div>
+</div>
+
         <div class="premium-dropzone" onclick="document.getElementById('comprovanteInput').click()">
             <input type="file" id="comprovanteInput" accept="image/*,.pdf" style="display: none;" onchange="handleComprovante(event)">
             <div class="dropzone-content">
@@ -5320,6 +5444,98 @@ function closeSystemDataModal(){
             <button class="update-action-btn primary" type="button" onclick="aplicarAtualizacao()"><i class="fa-solid fa-cloud-arrow-down" style="margin-right:8px;"></i>Atualizar agora</button>
         </div>
     </div>
+
+
+<script>
+(function(){
+    function moedaBR(v){
+        const n = Number(v || 0);
+        return n.toLocaleString('pt-BR', { style:'currency', currency:'BRL' });
+    }
+    function formatarDataBR(valor){
+        if(!valor) return '--/--/----';
+        const p = String(valor).split('-');
+        if(p.length === 3) return `${p[2]}/${p[1]}/${p[0]}`;
+        return valor;
+    }
+    function limparEmoji(txt){
+        return String(txt || '').replace(/[\u{1F300}-\u{1FAFF}\u2600-\u27BF]/gu,'').trim();
+    }
+    function textoSelect(id){
+        const el = document.getElementById(id);
+        if(!el) return '';
+        const opt = el.options && el.selectedIndex >= 0 ? el.options[el.selectedIndex] : null;
+        return opt ? opt.textContent.trim() : (el.value || '');
+    }
+    function origemLancamento(){
+        const formaRecebimento = document.getElementById('formaRecebimento');
+        const banco = document.getElementById('banco');
+        const blocoRecebimento = document.getElementById('blocoRecebimento');
+        const blocoBanco = document.getElementById('blocoBanco');
+
+        if(blocoRecebimento && !blocoRecebimento.classList.contains('hidden') && formaRecebimento){
+            return formaRecebimento.value || 'Pix';
+        }
+        if(blocoBanco && !blocoBanco.classList.contains('hidden') && banco){
+            return banco.value || 'Outros / Nenhum';
+        }
+        return (formaRecebimento && formaRecebimento.value) || (banco && banco.value) || 'Pix';
+    }
+    function tipoLancamento(){
+        const desc = (document.getElementById('desc') || {}).value || '';
+        if(desc.trim()) return desc.trim();
+        const submenu = textoSelect('submenu');
+        if(submenu) return limparEmoji(submenu);
+        const tipo = textoSelect('tipo');
+        return tipo || 'Lançamento';
+    }
+    function statusLancamento(){
+        const pago = document.getElementById('status1');
+        return pago && pago.checked ? 'Pago' : 'Pendente';
+    }
+    function atualizarPreviaLancamento(){
+        const valor = (document.getElementById('valor') || {}).value || 0;
+        const data = (document.getElementById('data') || {}).value || '';
+        const status = statusLancamento();
+        const statusEl = document.getElementById('launchPreviewStatus');
+        const statusLabel = statusEl ? statusEl.querySelector('span') : null;
+        const statusIcon = statusEl ? statusEl.querySelector('i') : null;
+
+        const valorEl = document.getElementById('launchPreviewValue');
+        const tipoEl = document.getElementById('launchPreviewType');
+        const dataEl = document.getElementById('launchPreviewDate');
+        const origemEl = document.getElementById('launchPreviewOrigin');
+
+        if(valorEl) valorEl.textContent = moedaBR(valor);
+        if(tipoEl) tipoEl.textContent = tipoLancamento();
+        if(dataEl) dataEl.textContent = formatarDataBR(data);
+        if(origemEl) origemEl.textContent = origemLancamento();
+
+        if(statusEl){
+            statusEl.classList.remove('pendente','pago');
+            statusEl.classList.add(status === 'Pago' ? 'pago' : 'pendente');
+        }
+        if(statusLabel) statusLabel.textContent = status;
+        if(statusIcon) statusIcon.className = status === 'Pago' ? 'fa-solid fa-circle-check' : 'fa-solid fa-clock';
+    }
+    function bindPreview(){
+        ['tipo','submenu','banco','formaRecebimento','desc','valor','data','status0','status1'].forEach(function(id){
+            const el = document.getElementById(id);
+            if(!el) return;
+            ['input','change','keyup'].forEach(function(evt){
+                el.addEventListener(evt, atualizarPreviaLancamento);
+            });
+        });
+        atualizarPreviaLancamento();
+        window.atualizarPreviaLancamento = atualizarPreviaLancamento;
+    }
+    if(document.readyState === 'loading'){
+        document.addEventListener('DOMContentLoaded', bindPreview);
+    } else {
+        bindPreview();
+    }
+})();
+</script>
 
 </body>
 </html>
