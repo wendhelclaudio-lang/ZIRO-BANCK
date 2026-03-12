@@ -5,39 +5,19 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
 <title>MeuCaixa - Comando de Ativos</title>
-<link href="./manifest.json" rel="manifest"/>
-<meta content="yes" name="mobile-web-app-capable"/>
-<meta content="MeuCaixa" name="apple-mobile-web-app-title"/>
-<meta content="MeuCaixa" name="application-name"/>
-<meta content="portrait" name="screen-orientation"/>
-<script>
-(function(){
-  try {
-    const manifestData = {
-      name: "MeuCaixa - Comando de Ativos",
-      short_name: "MeuCaixa",
-      start_url: "./",
-      scope: "./",
-      display: "standalone",
-      orientation: "portrait",
-      background_color: "#030712",
-      theme_color: "#030712",
-      icons: [
-        { src: "./icon.svg", sizes: "192x192", type: "image/svg+xml", purpose: "any maskable" },
-        { src: "./icon.svg", sizes: "512x512", type: "image/svg+xml", purpose: "any maskable" }
-      ]
-    };
-    const blob = new Blob([JSON.stringify(manifestData)], {type: 'application/manifest+json'});
-    const blobUrl = URL.createObjectURL(blob);
-    const manifestLink = document.querySelector('link[rel="manifest"]');
-    if (manifestLink) manifestLink.setAttribute('href', blobUrl);
-  } catch(e) {}
-})();
-</script>
+<link href="./manifest_pwa_fullscreen.json" rel="manifest" id="appManifest"/>
 <meta content="yes" name="apple-mobile-web-app-capable"/>
 <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
 <link href="./icon.svg" rel="apple-touch-icon"/>
 <meta content="#030712" name="theme-color"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="application-name" content="MeuCaixa"/>
+<meta name="apple-mobile-web-app-title" content="MeuCaixa"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="theme-color" content="#030712" media="(prefers-color-scheme: dark)"/>
+<meta name="theme-color" content="#030712" media="(prefers-color-scheme: light)"/>
+
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -53,61 +33,6 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 <style>
-
-html, body {
-  min-height: 100%;
-  overscroll-behavior-y: none;
-}
-body {
-  padding-top: env(safe-area-inset-top, 0px);
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-}
-#pwaStandaloneHint {
-  position: fixed;
-  top: max(12px, env(safe-area-inset-top, 0px));
-  left: 12px;
-  right: 12px;
-  z-index: 10000;
-  display: none;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 12px 14px;
-  border-radius: 16px;
-  border: 1px solid rgba(0, 242, 255, 0.25);
-  background: rgba(3, 7, 18, 0.96);
-  box-shadow: 0 10px 30px rgba(0,0,0,.35);
-  color: #e5f7ff;
-  backdrop-filter: blur(10px);
-}
-#pwaStandaloneHint.visible { display: flex; }
-#pwaStandaloneHint .hint-text {
-  font-size: 12px;
-  line-height: 1.4;
-}
-#pwaStandaloneHint .hint-actions {
-  display:flex;
-  gap:8px;
-  flex-shrink:0;
-}
-#pwaStandaloneHint button {
-  border: 0;
-  border-radius: 999px;
-  padding: 10px 12px;
-  font-weight: 700;
-  cursor: pointer;
-}
-#pwaStandaloneHint .primary {
-  background: linear-gradient(135deg, #00f2ff, #10b981);
-  color: #04111d;
-}
-#pwaStandaloneHint .ghost {
-  background: rgba(255,255,255,.08);
-  color: #fff;
-}
-@media (display-mode: standalone) {
-  #pwaStandaloneHint { display:none !important; }
-}
         /* VARIÁVEIS DE TEMAS */
         :root {
             --bg: #030712;
@@ -2103,15 +2028,29 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
             margin: 12px 0 0;
         }
 </style>
+
+<style>
+.pwa-install-overlay{position:fixed;inset:0;z-index:99999;background:rgba(2,6,23,.88);backdrop-filter:blur(10px);display:none;align-items:flex-end;justify-content:center;padding:18px}.pwa-install-overlay.show{display:flex}.pwa-install-sheet{width:min(520px,100%);background:linear-gradient(180deg,#0f172a,#111827);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:18px 18px 16px;color:#fff;box-shadow:0 20px 80px rgba(0,0,0,.45)}.pwa-install-sheet h3{margin:0 0 8px;font-size:1.2rem}.pwa-install-sheet p{margin:0 0 12px;color:rgba(255,255,255,.8);line-height:1.45}.pwa-install-steps{margin:0 0 14px;padding-left:20px;color:rgba(255,255,255,.9)}.pwa-install-actions{display:flex;gap:10px;flex-wrap:wrap}.pwa-install-actions button{border:none;border-radius:14px;padding:12px 16px;font-weight:700;cursor:pointer}.pwa-primary{background:linear-gradient(135deg,#22d3ee,#14b8a6);color:#04111d}.pwa-secondary{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.12)}
+html.pwa-standalone,body.pwa-standalone{height:100%;overflow:hidden}body.pwa-standalone{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
+</style>
 </head>
 <body>
-<div id="pwaStandaloneHint" aria-live="polite">
-  <div class="hint-text"><strong>Abra pelo app instalado.</strong><br/>A barra do site só some quando o MeuCaixa é aberto em modo PWA/standalone.</div>
-  <div class="hint-actions">
-    <button class="primary" id="btnInstallStandalone">Instalar</button>
-    <button class="ghost" id="btnFecharStandaloneHint">Fechar</button>
+<div class="pwa-install-overlay" id="pwaInstallOverlay" aria-hidden="true">
+  <div class="pwa-install-sheet">
+    <h3>Instale o MeuCaixa para remover a barra do navegador</h3>
+    <p>No celular, a barra do site só desaparece quando o app é aberto como PWA instalado. Este modo abre em tela cheia, com aparência de app.</p>
+    <ol class="pwa-install-steps" id="pwaInstallSteps">
+      <li>Toque no menu do navegador</li>
+      <li>Escolha <strong>Instalar app</strong> ou <strong>Adicionar à tela inicial</strong></li>
+      <li>Abra o MeuCaixa pelo ícone instalado</li>
+    </ol>
+    <div class="pwa-install-actions">
+      <button class="pwa-primary" id="pwaInstallNowBtn">Instalar agora</button>
+      <button class="pwa-secondary" id="pwaInstallCloseBtn">Entendi</button>
+    </div>
   </div>
 </div>
+
 <div id="toast-container"></div>
 <div class="hidden" id="ios-prompt" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--card); border: 2px solid var(--accent); padding: 20px; border-radius: 16px; z-index: 100000; width: 90%; max-width: 350px; box-shadow: 0 10px 40px rgba(0,0,0,0.7); text-align: center;">
 <h3 style="margin: 0 0 10px 0; color: var(--text); font-size: 1.1rem;"><i class="fa-brands fa-apple" style="margin-right: 5px;"></i> Instalar no iPhone</h3>
@@ -3257,16 +3196,6 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 
         
         let deferredInstallPrompt = null;
-        function appEstaEmModoStandalone() {
-            return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-        }
-
-        function updateStandaloneHint() {
-            const hint = document.getElementById('pwaStandaloneHint');
-            if (!hint) return;
-            hint.classList.toggle('visible', !appEstaEmModoStandalone());
-        }
-
 
         function updateInstallButtons() {
             const canInstall = !!deferredInstallPrompt && !window.matchMedia('(display-mode: standalone)').matches && !window.navigator.standalone;
@@ -3274,20 +3203,10 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
             document.getElementById('btnInstallCadastro')?.classList.toggle('visible', canInstall);
         }
 
-        
-        document.getElementById('btnInstallStandalone')?.addEventListener('click', instalarApp);
-        document.getElementById('btnFecharStandaloneHint')?.addEventListener('click', () => {
-            document.getElementById('pwaStandaloneHint')?.classList.remove('visible');
-        });
-        updateStandaloneHint();
-        window.addEventListener('resize', updateStandaloneHint);
-        window.addEventListener('pageshow', updateStandaloneHint);
-
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredInstallPrompt = e;
             updateInstallButtons();
-            updateStandaloneHint();
         });
 
         window.addEventListener('appinstalled', () => {
@@ -3297,7 +3216,7 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 
         async function instalarApp() {
             if (!deferredInstallPrompt) {
-                showToast("Instale o MeuCaixa na tela inicial para abrir sem a barra do navegador.", "warning");
+                showToast("No navegador, use 'Adicionar à tela inicial' para abrir sem a barra do site.", "warning");
                 return;
             }
             deferredInstallPrompt.prompt();
@@ -6492,5 +6411,28 @@ function exportarDadosCSV() {
 </script>
 
 <!-- Firebase auth rebuilt v2 -->
+
+<script>
+(function(){
+  const manifestData={name:'MeuCaixa - Comando de Ativos',short_name:'MeuCaixa',id:'./?source=pwa',start_url:'./index.html?source=pwa',scope:'./',display:'fullscreen',display_override:['fullscreen','standalone','minimal-ui'],background_color:'#030712',theme_color:'#030712',orientation:'portrait-primary',icons:[{src:'./icon.svg',sizes:'192x192 512x512',type:'image/svg+xml',purpose:'any maskable'}]};
+  try{const blob=new Blob([JSON.stringify(manifestData)],{type:'application/manifest+json'});const url=URL.createObjectURL(blob);const el=document.getElementById('appManifest');if(el)el.href=url;}catch(e){}
+  const mq=window.matchMedia?window.matchMedia('(display-mode: standalone), (display-mode: fullscreen)'):null;
+  const isStandalone=()=> (mq&&mq.matches) || window.navigator.standalone===true || document.referrer.startsWith('android-app://');
+  const overlay=document.getElementById('pwaInstallOverlay');
+  const nowBtn=document.getElementById('pwaInstallNowBtn');
+  const closeBtn=document.getElementById('pwaInstallCloseBtn');
+  let deferred=null;
+  function applyStandalone(){const yes=isStandalone();document.documentElement.classList.toggle('pwa-standalone',yes);document.body.classList.toggle('pwa-standalone',yes);if(overlay)overlay.classList.toggle('show',!yes);}
+  window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;if(nowBtn)nowBtn.textContent='Instalar agora';applyStandalone();});
+  window.addEventListener('appinstalled',()=>{deferred=null;localStorage.setItem('meucaixa_pwa_installed','1');if(overlay)overlay.classList.remove('show');setTimeout(()=>location.href='./index.html?source=pwa',300);});
+  if(nowBtn) nowBtn.addEventListener('click', async()=>{
+    if(deferred){await deferred.prompt(); try{await deferred.userChoice;}catch(e){} return;}
+    alert('Para remover a barra do navegador, instale o MeuCaixa pelo menu do navegador e abra pelo ícone instalado.');
+  });
+  if(closeBtn) closeBtn.addEventListener('click',()=>overlay&&overlay.classList.remove('show'));
+  setTimeout(applyStandalone,150);
+  if(mq&&mq.addEventListener)mq.addEventListener('change',applyStandalone);
+})();
+</script>
 </body>
 </html>
