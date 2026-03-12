@@ -20,6 +20,7 @@
 <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <style>
         /* VARIÁVEIS DE TEMAS */
         :root {
@@ -4186,95 +4187,137 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 
         // EXPORTAR RELATÓRIO PDF
         function gerarPDFoficial() {
-            if(registros.length === 0) return showToast("Não há dados para exportar.", "error");
+            if (registros.length === 0) return showToast("Não há dados para exportar.", "error");
+
+            const jsPDFCtor = (window.jspdf && window.jspdf.jsPDF) || window.jsPDF;
+            if (!jsPDFCtor) {
+                showToast("Biblioteca de PDF indisponível no momento.", "error");
+                return;
+            }
+
             showToast("Gerando Relatório Oficial...", "success");
-            
-            const container = document.getElementById('pdf-container');
+
             const mesFormatado = formatarMesAno(dataVisualizacao);
-            let html = `
-                <div style="border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px;">
-                    <h1 style="color:#000; margin: 0 0 5px 0; font-size: 24px;">MeuCaixa - Extrato Consolidado</h1>
-                    <p style="margin:0; color:#555; font-size: 14px;"><strong>Cliente:</strong> ${appConfig.nome} |
-                    <strong>Período:</strong> ${mesFormatado}</p>
-                </div>
-                <table style="width:100%; border-collapse: collapse; font-size: 12px; margin-bottom: 30px;">
-                    <tr style="background:#f5f5f5; border-bottom: 2px solid #ccc;">
-                        <th style="padding:12px 8px; text-align:left;">Lançamento</th>
-        
-                        <th style="padding:12px 8px; text-align:left;">Vencimento</th>
-                        <th style="padding:12px 8px; text-align:left;">Descrição / Banco</th>
-                        <th style="padding:12px 8px; text-align:center;">Anexo</th>
-                        <th 
-                        style="padding:12px 8px; text-align:right;">Valor (R$)</th>
-                        <th style="padding:12px 8px; text-align:center;">Status</th>
-                    </tr>
-            `;
             const prefixoMes = `${dataVisualizacao.getFullYear()}-${String(dataVisualizacao.getMonth() + 1).padStart(2, '0')}`;
-            const registrosDoMes = registros.filter(r => r.data.startsWith(prefixoMes)).sort((a, b) => new Date(a.data) - new Date(b.data));
-            let totalEntradas = 0, totalSaidas = 0;
 
-            registrosDoMes.forEach(r => {
-                let v = parseFloat(r.valor) || 0;
-                let status = (parseFloat(r.pago) >= v && v > 0) ? "PAGO" : "PENDENTE";
-                let corStatus = status === 'PAGO' ? '#10b981' : '#ef4444';
-                
-                let corValor = r.tipo === 'Receita' ? '#10b981' : '#111';
-                
-                if(r.tipo === 'Receita' && status === 'PAGO') totalEntradas += v;
-                if(r.tipo !== 'Receita' && r.tipo !== 'Reserva') totalSaidas += v; 
-                
-        
-                let dtLanc = (r.dataLancamento || r.data).split('-').reverse().join('/');
-                let dtVenc = r.data.split('-').reverse().join('/');
-                let bancoInfo = r.banco ? `<br><span style="color:#666; font-size:10px;">${r.banco}</span>` : '';
-                let hasAnexo = r.comprovante ? 'Sim' : '-';
+            const registrosDoMes = registros
+                .filter(r => (r.data || '').startsWith(prefixoMes))
+                .sort((a, b) => new Date(a.data) - new Date(b.data));
 
-                html += `
-  
-                <tr style="border-bottom:1px solid #eee;">
-                    <td style="padding:12px 8px; color:#555;">${dtLanc}</td>
-                    <td style="padding:12px 8px;
-                    font-weight:bold;">${dtVenc}</td>
-                    <td style="padding:12px 8px;"><strong>${r.desc}</strong>${bancoInfo}</td>
-                    <td style="padding:12px 8px;
-                    text-align:center; color:#666;">${hasAnexo}</td>
-                    <td style="padding:12px 8px;
-                    color:${corValor}; text-align:right; font-weight:bold;">${formatarMoeda(v).replace('R$', '')}</td>
-                    <td style="padding:12px 8px;
-                    text-align:center; font-weight:bold; color:${corStatus};">${status}</td>
-                </tr>`;
-            });
-            html += `</table>`;
-            html += `
-                <div style="text-align:right;
-                    font-size: 14px; background: #f9f9f9; padding: 15px; border-radius: 8px; width: 250px;
-                    float: right;">
-                    <p style="margin:0 0 5px 0;">Total Receitas: <strong style="color:#10b981">${formatarMoeda(totalEntradas)}</strong></p>
-                    <p style="margin:0;">Total Despesas: <strong style="color:#ef4444">${formatarMoeda(totalSaidas)}</strong></p>
-                </div>
-            `;
-            
-        
-            container.innerHTML = html;
-            
-            html2pdf().from(container).set({
-                margin: 10,
-                filename: `Relatorio_MeuCaixa_${mesFormatado.replace(' ', '_')}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-            
-                html2canvas: { scale: 2, useCORS: true },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            }).save().then(() => {
-                container.innerHTML = '';
+            const pdf = new jsPDFCtor({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true });
+            const pageWidth = pdf.internal.pageSize.getWidth();
+            const pageHeight = pdf.internal.pageSize.getHeight();
+            const margin = 12;
+            const usableWidth = pageWidth - (margin * 2);
+            let y = 16;
+
+            const addPageIfNeeded = (needed = 8) => {
+                if (y + needed > pageHeight - 14) {
+                    pdf.addPage();
+                    y = 16;
+                }
+            };
+
+            const writeWrapped = (textValue, x, maxWidth, lineHeight = 5, opts = {}) => {
+                const lines = pdf.splitTextToSize(String(textValue ?? ''), maxWidth);
+                lines.forEach((line) => {
+                    addPageIfNeeded(lineHeight + 2);
+                    pdf.text(String(line), x, y, opts);
+                    y += lineHeight;
+                });
+                return lines.length;
+            };
+
+            try {
+                pdf.setFillColor(255, 255, 255);
+                pdf.rect(0, 0, pageWidth, pageHeight, 'F');
+                pdf.setTextColor(0, 0, 0);
+
+                pdf.setFont('helvetica', 'bold');
+                pdf.setFontSize(18);
+                pdf.text('MeuCaixa - Extrato Consolidado', margin, y);
+                y += 8;
+
+                pdf.setFont('helvetica', 'normal');
+                pdf.setFontSize(10);
+                pdf.text(`Cliente: ${appConfig?.nome || 'Usuário'}`, margin, y);
+                y += 5;
+                pdf.text(`Período: ${mesFormatado}`, margin, y);
+                y += 8;
+
+                pdf.setDrawColor(0, 0, 0);
+                pdf.line(margin, y, pageWidth - margin, y);
+                y += 7;
+
+                let totalEntradas = 0;
+                let totalSaidas = 0;
+
+                if (!registrosDoMes.length) {
+                    pdf.setFontSize(11);
+                    pdf.text('Nenhum lançamento encontrado para este período.', margin, y);
+                    y += 8;
+                } else {
+                    registrosDoMes.forEach((r, index) => {
+                        let v = parseFloat(r.valor) || 0;
+                        let status = (parseFloat(r.pago) >= v && v > 0) ? 'PAGO' : 'PENDENTE';
+
+                        if (r.tipo === 'Receita' && status === 'PAGO') totalEntradas += v;
+                        if (r.tipo !== 'Receita' && r.tipo !== 'Reserva') totalSaidas += v;
+
+                        addPageIfNeeded(26);
+
+                        pdf.setFont('helvetica', 'bold');
+                        pdf.setFontSize(11);
+                        const titulo = `${index + 1}. ${r.desc || 'Lançamento sem descrição'}`;
+                        const titleLines = pdf.splitTextToSize(titulo, usableWidth - 45);
+                        pdf.text(titleLines, margin, y);
+
+                        pdf.setFont('helvetica', 'normal');
+                        pdf.setFontSize(10);
+                        pdf.text(formatarMoeda(v), pageWidth - margin, y, { align: 'right' });
+
+                        y += titleLines.length * 5;
+
+                        const dtLanc = ((r.dataLancamento || r.data || '') + '').split('-').reverse().join('/');
+                        const dtVenc = ((r.data || '') + '').split('-').reverse().join('/');
+                        const banco = r.banco ? `Banco: ${r.banco}` : 'Banco: -';
+                        const anexo = r.comprovante ? 'Anexo: Sim' : 'Anexo: -';
+
+                        pdf.setFontSize(9);
+                        pdf.setTextColor(80, 80, 80);
+                        writeWrapped(`Lançamento: ${dtLanc}   |   Vencimento: ${dtVenc}`, margin, usableWidth, 4.5);
+                        writeWrapped(`${banco}   |   Status: ${status}   |   ${anexo}`, margin, usableWidth, 4.5);
+
+                        pdf.setTextColor(0, 0, 0);
+                        y += 1;
+                        pdf.setDrawColor(220, 220, 220);
+                        pdf.line(margin, y, pageWidth - margin, y);
+                        y += 6;
+                    });
+                }
+
+                addPageIfNeeded(20);
+                pdf.setFont('helvetica', 'bold');
+                pdf.setFontSize(12);
+                pdf.text('Resumo do período', margin, y);
+                y += 7;
+
+                pdf.setFont('helvetica', 'normal');
+                pdf.setFontSize(11);
+                pdf.text(`Total Receitas: ${formatarMoeda(totalEntradas)}`, margin, y);
+                y += 6;
+                pdf.text(`Total Despesas: ${formatarMoeda(totalSaidas)}`, margin, y);
+                y += 6;
+                pdf.text(`Saldo: ${formatarMoeda(totalEntradas - totalSaidas)}`, margin, y);
+
+                const nomeArquivo = `Relatorio_MeuCaixa_${mesFormatado.replace(/\s+/g, '_')}.pdf`;
+                pdf.save(nomeArquivo);
                 showToast("PDF salvo com sucesso!", "success");
-            }).catch(err => 
-            {
-                container.innerHTML = '';
+            } catch (error) {
+                console.error('Erro ao gerar PDF:', error);
                 showToast("Erro ao gerar PDF.", "error");
-            });
+            }
         }
-
-        
 
 
     function abrirLeitorExtrato() {
