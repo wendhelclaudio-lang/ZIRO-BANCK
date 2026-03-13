@@ -3,13 +3,15 @@
 <html lang="pt-br">
 <head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
-<title>MeuCaixa - Comando de Ativos • Fullscreen v8 • Auth v7 • Auth v7</title><!-- auth-firebase-v4-google-redirect-fix -->
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>MeuCaixa - Comando de Ativos • Top Blend v8 • Auth v7 • Auth v7</title><!-- auth-firebase-v4-google-redirect-fix -->
 <link href="./manifest.json" rel="manifest"/>
 <meta content="yes" name="apple-mobile-web-app-capable"/>
 <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
 <link href="./icon.svg" rel="apple-touch-icon"/>
-<meta content="#030712" name="theme-color"/>
+<meta content="#0b1730" name="theme-color"/>
+<meta content="#0b1730" name="msapplication-navbutton-color"/>
+<meta content="#0b1730" name="apple-mobile-web-app-status-bar-style"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -159,52 +161,65 @@
             --theme-contrast: #ffffff;
         }
 
-
+        
         :root {
             --safe-top: env(safe-area-inset-top, 0px);
-            --safe-right: env(safe-area-inset-right, 0px);
             --safe-bottom: env(safe-area-inset-bottom, 0px);
-            --safe-left: env(safe-area-inset-left, 0px);
+            --app-top-bg: linear-gradient(180deg, rgba(9,19,40,0.98) 0%, rgba(7,15,32,0.96) 100%);
+            --app-top-line: color-mix(in srgb, var(--accent) 68%, transparent);
         }
         html, body {
-            width: 100%;
+            background: #0b1730 !important;
             min-height: 100%;
             min-height: 100dvh;
-            min-height: -webkit-fill-available;
-            background: #030712;
-        }
-        html {
-            background: #030712;
+            -webkit-tap-highlight-color: transparent;
         }
         body {
-            padding-top: 0 !important;
-            padding-right: 0 !important;
-            padding-bottom: 0 !important;
-            padding-left: 0 !important;
-            overscroll-behavior: none;
-            -webkit-tap-highlight-color: transparent;
+            overscroll-behavior-y: none;
         }
         body::before {
             content: '';
             position: fixed;
-            inset: 0;
-            background: var(--bg-gradient);
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center top;
-            z-index: -2;
+            inset: 0 0 auto 0;
+            height: calc(var(--safe-top) + 116px);
+            background: radial-gradient(circle at 20% 30%, rgba(0,242,255,0.12), transparent 38%),
+                        radial-gradient(circle at 82% 18%, rgba(0,242,255,0.10), transparent 28%),
+                        var(--app-top-bg);
+            z-index: -1;
+            pointer-events: none;
+        }
+        .app-top-shell {
+            position: sticky;
+            top: 0;
+            z-index: 130;
+            margin: 0;
+            padding-top: var(--safe-top);
+            background: transparent;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+        }
+        .app-top-shell::before {
+            content: '';
+            position: absolute;
+            inset: 0 0 auto 0;
+            height: calc(var(--safe-top) + 92px);
+            background: radial-gradient(circle at 18% 36%, rgba(0,242,255,0.10), transparent 36%),
+                        radial-gradient(circle at 82% 20%, rgba(0,242,255,0.08), transparent 24%),
+                        var(--app-top-bg);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            box-shadow: 0 18px 48px rgba(0,0,0,0.30);
             pointer-events: none;
         }
 
         * { box-sizing: border-box; outline: none;
             transition: background-color 0.3s, color 0.3s, border-color 0.3s; }
         body { font-family: 'Ubuntu', system-ui, sans-serif;
-            background: var(--bg-gradient); color: var(--text); margin: 0; padding: 0; overflow-x: hidden; font-size: 0.95rem;
+            background: var(--bg); color: var(--text); margin: 0; padding: 0; overflow-x: hidden; font-size: 0.95rem;
         }
 
         /* TELA DE BLOQUEIO */
         #lock-screen { position: fixed;
-            inset: 0; width: 100%; height: 100dvh; min-height: -webkit-fill-available; background: #030712; backdrop-filter: none; -webkit-backdrop-filter: none; z-index: 99999;
+            top: 0; left: 0; width: 100%; height: 100%; background: #030712; backdrop-filter: none; -webkit-backdrop-filter: none; z-index: 99999;
             display: flex; justify-content: center; align-items: center; padding: 20px; transition: opacity 0.5s ease, visibility 0.5s;
         }
         [data-theme="light"] #lock-screen, [data-theme="santander"] #lock-screen, [data-theme="itau"] #lock-screen, [data-theme="bradesco"] #lock-screen, [data-theme="nubank"] #lock-screen { background: #f8fbff;
@@ -213,7 +228,7 @@
             padding: 40px 30px; width: 100%; max-width: 380px; box-shadow: 0 30px 60px rgba(0,0,0,0.4); display: flex; flex-direction: column; align-items: center; position: relative;
             text-align: center; }
         .lock-avatar { width: 80px; height: 80px; border-radius: 22px;
-            background: linear-gradient(135deg, var(--accent), #0a192f); display: flex; align-items: center; justify-content: center; font-size: 2.2rem; color: white; margin-bottom: calc(20px + var(--safe-bottom));
+            background: linear-gradient(135deg, var(--accent), #0a192f); display: flex; align-items: center; justify-content: center; font-size: 2.2rem; color: white; margin-bottom: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.2); background-size: cover; background-position: center; font-weight: 800; position: relative;
         }
         .lock-avatar i { font-size: 2.8rem; animation: pulseGlow 2s infinite ease-in-out;
@@ -239,7 +254,7 @@
         }
         .btn-login { width: 100%; background: linear-gradient(135deg, var(--accent), var(--success)); color: #fff; border: none;
             padding: 16px; border-radius: 16px; font-weight: 800; font-size: 1rem; cursor: pointer; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3); margin-top: 10px;
-            margin-bottom: calc(20px + var(--safe-bottom)); transition: transform 0.2s; }
+            margin-bottom: 20px; transition: transform 0.2s; }
         .btn-login:active { transform: translateY(2px);
             box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2); }
         .btn-forgot { background: none;
@@ -252,7 +267,7 @@
 
         /* TOAST */
         #toast-container { position: fixed;
-            bottom: calc(20px + var(--safe-bottom)); left: 50%; transform: translateX(-50%); z-index: 100000; display: flex; flex-direction: column; gap: 10px; pointer-events: none; width: 90%;
+            bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 100000; display: flex; flex-direction: column; gap: 10px; pointer-events: none; width: 90%;
             max-width: 350px;}
         .toast { background: var(--card); color: var(--text); padding: 16px 20px; border-radius: 12px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 15px; font-weight: 500; font-size: 0.9rem; animation: slideUp 0.3s ease forwards;
@@ -267,39 +282,27 @@
         } to { opacity: 1; transform: translateY(0); } }
 
         /* HEADER */
-        header { background: var(--bg);
-            padding: calc(18px + var(--safe-top)) calc(22px + var(--safe-right)) 18px calc(22px + var(--safe-left));
-            display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--border);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
-        header::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            right: 0;
-            top: calc(-1 * var(--safe-top));
-            height: var(--safe-top);
-            background: inherit;
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border-bottom: 0;
-        }
+        header { background: transparent;
+            padding: 14px 18px 16px;
+            display: flex; justify-content: space-between; align-items: center; position: relative; top: 0; z-index: 131; border-bottom: 1px solid transparent;
+            box-shadow: none; min-height: 82px; }
         .profile-section { display: flex;
-            align-items: center; gap: 14px; cursor: pointer; }
+            align-items: center; gap: 14px; cursor: pointer; position: relative; z-index: 2; min-width: 0; }
         .avatar { width: 44px; height: 44px;
             border-radius: 14px; background: linear-gradient(135deg, var(--accent), #0a192f); display: flex; align-items: center; justify-content: center; font-weight: bold; color: #ffffff; border: 2px solid var(--border);
             font-size: 1.3rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2); overflow: hidden; background-size: cover; background-position: center;
         }
         .user-info span { font-size: 0.65rem; color: var(--text-muted); letter-spacing: 1px; display: block;
             text-transform: uppercase; margin-bottom: 2px; }
-        .user-info strong { font-size: 0.95rem; color: var(--text);
-            letter-spacing: 0.5px;}
+        .user-info strong { font-size: 1rem; color: var(--text);
+            letter-spacing: 0.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 38vw;}
         .bell-btn { background:none; border:1px solid var(--border); color:var(--text); padding:8px 10px; border-radius:10px; cursor:pointer;
             position:relative; display: flex; align-items: center; justify-content: center; height: 38px; width: 38px;
         }
         .badge { position:absolute; top:-5px; right:-5px; background:var(--danger); color:white; font-size:0.6rem; font-weight:bold; border-radius:50%; width:18px; height:18px;
             display:flex; align-items:center; justify-content:center; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
-        .top-action-btn { background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02)); border:1px solid rgba(255,255,255,0.08); color:var(--text); padding:8px 10px; border-radius:14px; cursor:pointer;
-            position:relative; display:flex; align-items:center; justify-content:center; height:40px; width:40px; backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: 0 12px 24px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.08); }
+        .top-action-btn { background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02)); border:1px solid rgba(255,255,255,0.08); color:var(--text); padding:8px 10px; border-radius:18px; cursor:pointer;
+            position:relative; display:flex; align-items:center; justify-content:center; height:48px; width:48px; backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: 0 12px 24px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.08); z-index: 2; }
         .top-action-btn:hover { transform: translateY(-2px); box-shadow: 0 16px 28px rgba(0,0,0,0.24), 0 0 0 1px rgba(255,255,255,0.05), 0 0 24px color-mix(in srgb, var(--accent) 24%, transparent); }
         .top-action-btn.system-trigger { width:auto; padding:0 14px; gap:8px; background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 18%, rgba(255,255,255,0.08)), rgba(255,255,255,0.04)); }
         .top-action-btn.system-trigger .btn-label { font-size: .74rem; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; }
@@ -767,7 +770,7 @@
         }
 
         /* LISTA DE OPERAÇÕES */
-        main { padding: 0 calc(22px + var(--safe-right)) calc(22px + var(--safe-bottom)) calc(22px + var(--safe-left));
+        main { padding: 6px 22px 22px;
         }
         .section-header { display: flex; justify-content: space-between; align-items: center; margin: 20px 0 15px;
         }
@@ -924,7 +927,7 @@
         
         /* META PANEL NA HOME */
         .meta-panel-home { background: var(--card);
-            padding: 20px; border-radius: 16px; border: 1px solid var(--border); margin-bottom: calc(20px + var(--safe-bottom)); box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            padding: 20px; border-radius: 16px; border: 1px solid var(--border); margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
         .meta-label-home { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: bold; margin-bottom: 8px;
             color: var(--text); align-items: center;}
@@ -980,7 +983,7 @@
 
         /* RESUMO DO CONTRATO NA NOVA OPERAÇÃO */
         .resumo-quitacao { background: linear-gradient(145deg, var(--card), var(--bg));
-            border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: calc(20px + var(--safe-bottom)); box-shadow: 0 8px 20px rgba(0,0,0,0.15); position: relative; overflow: hidden;
+            border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); position: relative; overflow: hidden;
         }
         .resumo-quitacao::before { content: ''; position: absolute; top: 0; left: 0; right: 0;
             height: 3px; background: linear-gradient(90deg, var(--accent), var(--success)); }
@@ -1020,7 +1023,7 @@
 
         /* GRÁFICOS FUTURISTAS NO MODAL */
         .grafico-card { background: var(--card);
-            border: 1px solid var(--border); border-radius: 20px; padding: 20px; margin-bottom: calc(20px + var(--safe-bottom)); box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            border: 1px solid var(--border); border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.2);
         }
         .grafico-title { font-size: 0.75rem; color: var(--accent); text-transform: uppercase;
             margin: 0 0 15px 0; text-align: center; letter-spacing: 1px; font-weight: 800;
@@ -1091,7 +1094,7 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
-            margin-bottom: calc(20px + var(--safe-bottom));
+            margin-bottom: 20px;
         }
         .premium-dropzone:hover, .premium-dropzone:active {
             border-color: var(--accent);
@@ -1275,7 +1278,7 @@
         }
         
         .notif-header-glow { display: flex;
-            align-items: center; gap: 10px; background: linear-gradient(90deg, rgba(239, 68, 68, 0.1), transparent); padding: 15px 20px; border-radius: 16px; margin-bottom: calc(20px + var(--safe-bottom));
+            align-items: center; gap: 10px; background: linear-gradient(90deg, rgba(239, 68, 68, 0.1), transparent); padding: 15px 20px; border-radius: 16px; margin-bottom: 20px;
             border-left: 4px solid var(--danger); }
         .notif-header-glow h2 { margin: 0; font-size: 1.15rem;
             color: var(--danger); text-shadow: 0 0 10px rgba(239,68,68,0.3); }
@@ -1287,7 +1290,7 @@
     
     /* PREMIUM FEATURES STYLES */
     .split-panel { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; margin-top: 15px; display: none; border: 1px dashed var(--accent); }
-    .forecast-banner { background: linear-gradient(90deg, #ef4444, #f97316); color: white; padding: 12px 20px; border-radius: 12px; margin-bottom: calc(20px + var(--safe-bottom)); font-weight: bold; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3); font-size: 0.85rem; }
+    .forecast-banner { background: linear-gradient(90deg, #ef4444, #f97316); color: white; padding: 12px 20px; border-radius: 12px; margin-bottom: 20px; font-weight: bold; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3); font-size: 0.85rem; }
     
 
 /* === PREMIUM SIDEBAR EXPERIENCE OVERRIDES === */
@@ -2085,7 +2088,7 @@ window.themeCatalog = window.themeCatalog || {
 </head>
 <body>
 <div id="toast-container"></div>
-<div class="hidden" id="ios-prompt" style="position: fixed; bottom: calc(20px + var(--safe-bottom)); left: 50%; transform: translateX(-50%); background: var(--card); border: 2px solid var(--accent); padding: 20px; border-radius: 16px; z-index: 100000; width: 90%; max-width: 350px; box-shadow: 0 10px 40px rgba(0,0,0,0.7); text-align: center;">
+<div class="hidden" id="ios-prompt" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--card); border: 2px solid var(--accent); padding: 20px; border-radius: 16px; z-index: 100000; width: 90%; max-width: 350px; box-shadow: 0 10px 40px rgba(0,0,0,0.7); text-align: center;">
 <h3 style="margin: 0 0 10px 0; color: var(--text); font-size: 1.1rem;"><i class="fa-brands fa-apple" style="margin-right: 5px;"></i> Instalar no iPhone</h3>
 <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px; line-height: 1.5;">
             O Safari 
@@ -2093,7 +2096,7 @@ window.themeCatalog = window.themeCatalog || {
         </p>
 <button onclick="document.getElementById('ios-prompt').style.display='none'" style="background: var(--accent); color: #fff; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 800; cursor: pointer; width: 100%;">ENTENDI</button>
 </div>
-<div class="hidden" id="android-install-prompt" style="position: fixed; bottom: calc(20px + var(--safe-bottom)); left: 50%; transform: translateX(-50%); background: var(--card); border: 2px solid var(--success); padding: 20px; border-radius: 16px; z-index: 100000; width: 90%; max-width: 350px; box-shadow: 0 10px 40px rgba(0,0,0,0.7); text-align: center;">
+<div class="hidden" id="android-install-prompt" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--card); border: 2px solid var(--success); padding: 20px; border-radius: 16px; z-index: 100000; width: 90%; max-width: 350px; box-shadow: 0 10px 40px rgba(0,0,0,0.7); text-align: center;">
 <h3 style="margin: 0 0 10px 0; color: var(--text); font-size: 1.1rem;"><i class="fa-brands fa-android" style="margin-right: 5px; color: #3DDC84;"></i> Instalar Aplicativo</h3>
 <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px; line-height: 1.5;">
             Baixe o <b>MeuCaixa</b> diretamente no seu celular para uma experiência mais rápida e como um app nativo!
@@ -2131,7 +2134,7 @@ window.themeCatalog = window.themeCatalog || {
 </div>
 </div>
 </div>
-<header>
+<div class="app-top-shell"><header>
 <div class="profile-section" onclick="toggleSidebar()">
 <div class="avatar" id="headerAvatar">MC</div>
 <div class="user-info">
@@ -2153,7 +2156,7 @@ window.themeCatalog = window.themeCatalog || {
 <i class="fa-solid fa-eye" id="eyeIcon"></i>
 </button>
 </div>
-</header>
+</header></div>
 <div class="sidebar" id="profileSidebar">
 <div class="sidebar-scroll-area">
 <div class="sidebar-top-bar">
@@ -2754,7 +2757,7 @@ window.themeCatalog = window.themeCatalog || {
             margin-left: 15px;"></i>
 </div>
 <p style="font-size: 0.85rem;
-        color: var(--text-muted); margin-bottom: calc(20px + var(--safe-bottom)); text-align: center;">Monitoramento inteligente das suas contas próximas ao vencimento ou em atraso.</p>
+        color: var(--text-muted); margin-bottom: 20px; text-align: center;">Monitoramento inteligente das suas contas próximas ao vencimento ou em atraso.</p>
 <div id="listaNotificacoes" style="background: transparent;
         border: none; border-radius: 0; overflow: visible;">
 </div>
@@ -2808,19 +2811,19 @@ window.themeCatalog = window.themeCatalog || {
 </div>
 <input accept="image/*,application/pdf" id="extratoInput" onchange="processarExtratoImagem(event)" style="display: none;" type="file"/>
 <div id="leitorUploadArea">
-<p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: calc(20px + var(--safe-bottom)); line-height: 1.4;">
+<p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.4;">
                 Motor de Inteligência Financeira. Anexe o extrato do seu banco em PDF para que a IA analise e categorize seus lançamentos automaticamente. Processamento 100% privado.
             </p>
-<div style="display: flex; gap: 10px; margin-bottom: calc(20px + var(--safe-bottom));">
+<div style="display: flex; gap: 10px; margin-bottom: 20px;">
 <button class="btn-confirm" onclick="document.getElementById('extratoInput').click()" style="background: linear-gradient(135deg, var(--success), #059669); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); width: 100%; margin: 0;">
 <i class="fa-solid fa-cloud-arrow-up fa-bounce"></i> CARREGAR EXTRATO PDF
                 </button>
 </div>
 </div>
-<div class="hidden" id="leitorRestoreArea" style="background: rgba(0, 242, 255, 0.05); border: 1px dashed var(--accent); padding: 25px 20px; border-radius: 16px; margin-bottom: calc(20px + var(--safe-bottom)); text-align: center; box-shadow: inset 0 0 20px rgba(0,242,255,0.05);">
+<div class="hidden" id="leitorRestoreArea" style="background: rgba(0, 242, 255, 0.05); border: 1px dashed var(--accent); padding: 25px 20px; border-radius: 16px; margin-bottom: 20px; text-align: center; box-shadow: inset 0 0 20px rgba(0,242,255,0.05);">
 <i class="fa-solid fa-clock-rotate-left" style="font-size: 2.5rem; color: var(--accent); margin-bottom: 12px;"></i>
 <h4 style="color: var(--text); margin: 0 0 8px 0; font-size: 1.15rem;">Sessão em Andamento</h4>
-<p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: calc(20px + var(--safe-bottom)); line-height: 1.4;">Você possui um extrato carregado anteriormente com lançamentos pendentes de aprovação.</p>
+<p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.4;">Você possui um extrato carregado anteriormente com lançamentos pendentes de aprovação.</p>
 <div style="display: flex; gap: 10px;">
 <button onclick="continuarExtrato()" style="flex: 2; background: linear-gradient(135deg, var(--accent), #0284c7); color: #fff; border: none; padding: 12px; border-radius: 10px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 10px rgba(0,242,255,0.2);"><i class="fa-solid fa-play"></i> CONTINUAR EXTRATO</button>
 <button onclick="novoExtrato()" style="flex: 1; background: transparent; color: var(--text-muted); border: 1px solid var(--border); padding: 12px; border-radius: 10px; font-weight: 800; cursor: pointer;"><i class="fa-solid fa-trash"></i> NOVO</button>
@@ -5533,7 +5536,7 @@ async function processarRedirectGoogle() {
                     <strong style="color: var(--danger); font-size: 1.2rem;">${formatarMoeda(saidas)}</strong>
                 </div>
             </div>
-            <div style="font-size: 0.65rem; color: var(--text-muted); text-align: center; margin-bottom: calc(20px + var(--safe-bottom)); padding: 0 10px; line-height: 1.4;">
+            <div style="font-size: 0.65rem; color: var(--text-muted); text-align: center; margin-bottom: 20px; padding: 0 10px; line-height: 1.4;">
                 <i class="fa-solid fa-circle-info"></i> <b>Nota da IA:</b> Se as saídas superam as entradas, significa que você usou um saldo que já estava na conta antes deste extrato começar.
             </div>`;
         }
@@ -5665,7 +5668,7 @@ window.filtroAtivoIA = { tipo: null, valor: null };
             limparBtn = document.createElement('div');
             limparBtn.id = 'btnLimparFiltroIA';
             limparBtn.innerHTML = '<i class="fa-solid fa-filter-circle-xmark"></i> LIMPAR FILTRO ATIVO';
-            limparBtn.style = 'background: var(--danger); color: white; padding: 14px 15px; border-radius: 12px; font-size: 0.8rem; font-weight: 800; cursor: pointer; text-align: center; margin-bottom: calc(20px + var(--safe-bottom)); box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4); display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s;';
+            limparBtn.style = 'background: var(--danger); color: white; padding: 14px 15px; border-radius: 12px; font-size: 0.8rem; font-weight: 800; cursor: pointer; text-align: center; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4); display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s;';
             limparBtn.onmouseover = () => { limparBtn.style.transform = 'scale(0.98)'; };
             limparBtn.onmouseout = () => { limparBtn.style.transform = 'scale(1)'; };
             limparBtn.onclick = () => window.filtrarExtratoIA(window.filtroAtivoIA.tipo, window.filtroAtivoIA.valor); // Toggle off
