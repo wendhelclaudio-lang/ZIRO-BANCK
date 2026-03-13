@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-<title>MeuCaixa - Comando de Ativos • Auth v6 • Auth v6</title><!-- auth-firebase-v4-google-redirect-fix -->
+<title>MeuCaixa - Comando de Ativos • Auth v7 • Auth v7</title><!-- auth-firebase-v4-google-redirect-fix -->
 <link href="./manifest.json" rel="manifest"/>
 <meta content="yes" name="apple-mobile-web-app-capable"/>
 <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
@@ -2410,7 +2410,7 @@ window.themeCatalog = window.themeCatalog || {
 <div id="resumoConteudo"></div>
 </div>
 <span class="label-mini">Tipo</span>
-<select id="tipo" onchange="atualizarSubmenu()">
+<select id="tipo" onchange="atualizarSubmenuRobusto()">
 <option value="Receita">Receita</option>
 <option value="Fixo">Gasto Fixo</option>
 <option value="Variavel">Gasto Variável</option>
@@ -2869,6 +2869,7 @@ window.themeCatalog = window.themeCatalog || {
         let firebaseReady = false;
         let firebaseDb = null;
         let currentFirebaseUser = null;
+        let authResolved = false;
 
         try {
             if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
@@ -2940,21 +2941,20 @@ window.themeCatalog = window.themeCatalog || {
             firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(console.error);
             firebase.auth().onAuthStateChanged(async (user) => {
                 currentFirebaseUser = user || null;
+                authResolved = true;
                 if (user) {
                     sessionStorage.setItem('isLoggedIn', 'true');
                     try {
                         await carregarPerfilFirebase(user);
                         await persistirSessaoFirebase(user);
                         limparEstadoGoogleRedirect();
-                        checkAppSecurity();
                     } catch (e) {
                         console.error('Falha ao sincronizar sessão Firebase:', e);
                     }
                 } else {
                     sessionStorage.removeItem('isLoggedIn');
-                    document.getElementById('lock-screen')?.classList.remove('hidden');
-                    checkAppSecurity();
                 }
+                checkAppSecurity();
             });
         }
 
@@ -3091,12 +3091,20 @@ window.themeCatalog = window.themeCatalog || {
         }
 
         function checkAppSecurity() {
-            if (currentFirebaseUser && sessionStorage.getItem('isLoggedIn')) {
-                document.getElementById('lock-screen')?.classList.add('hidden');
+            const lock = document.getElementById('lock-screen');
+            const hadSession = sessionStorage.getItem('isLoggedIn') === 'true';
+
+            if (!authResolved && hadSession) {
+                lock?.classList.add('hidden');
                 return;
             }
 
-            document.getElementById('lock-screen')?.classList.remove('hidden');
+            if (currentFirebaseUser && (hadSession || authResolved)) {
+                lock?.classList.add('hidden');
+                return;
+            }
+
+            lock?.classList.remove('hidden');
             const hasKnownAccount = !!appConfig.email;
 
             if (!hasKnownAccount) {
@@ -3121,19 +3129,9 @@ window.themeCatalog = window.themeCatalog || {
                         av.innerHTML = '<i class="fa-solid fa-fingerprint"></i>';
                     }
                 }
+
+                preencherEmailLogin(appConfig.email || '');
             }
-        }
-
-        async 
-        function sanitizeEmail(value) {
-            return String(value || '').trim().toLowerCase();
-        }
-
-        function preencherEmailLogin(email) {
-            const loginEmail = document.getElementById('inputEmail');
-            const recEmail = document.getElementById('recEmail');
-            if (loginEmail && email) loginEmail.value = email;
-            if (recEmail && email) recEmail.value = email;
         }
 
         function mostrarViewCadastro() {
@@ -3526,6 +3524,7 @@ async function processarRedirectGoogle() {
         checkTheme();
         document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => { try { processarRedirectGoogle(); } catch (e) { console.error('Falha no redirect do Google:', e); } }, 30);
+            setTimeout(() => { try { atualizarSubmenuRobusto(); } catch (e) { console.error('Falha ao inicializar categorias:', e); } }, 60);
         });
         window.addEventListener('focus', () => {
             setTimeout(() => { try { processarRedirectGoogle(); } catch (e) { console.error('Falha no redirect do Google:', e); } }, 120);
@@ -4557,17 +4556,35 @@ async function processarRedirectGoogle() {
                 resumo?.classList.add('hidden');
                 if (document.getElementById('lblValorMain')) document.getElementById('lblValorMain').innerText = "Valor (R$)";
                 resetForm(); 
-                atualizarSubmenu();
+                atualizarSubmenuRobusto();
             }
         }
         
        
+        function atualizarSubmenuRobusto() {
+            try {
+                const tipoEl = document.getElementById('tipo');
+                if (!tipoEl) return;
+                const t = tipoEl.value || 'Fixo';
+                if (!opcoesSubmenu[t] || !Array.isArray(opcoesSubmenu[t]) || !opcoesSubmenu[t].length) {
+                    tipoEl.value = 'Fixo';
+                }
+                atualizarSubmenu();
+                const sub = document.getElementById('submenu');
+                if (sub && !sub.value && sub.options.length) sub.selectedIndex = 0;
+            } catch (e) {
+                console.error('Falha ao atualizar categorias:', e);
+            }
+        }
+
         function atualizarSubmenu() {
             const t = document.getElementById('tipo')?.value;
             const sub = document.getElementById('submenu'); 
             if (sub && t) {
+                const options = (opcoesSubmenu[t] && opcoesSubmenu[t].length ? opcoesSubmenu[t] : opcoesSubmenu['Fixo']);
                 sub.innerHTML = '';
-                opcoesSubmenu[t].forEach(opt => sub.innerHTML += `<option value="${opt}">${opt}</option>`);
+                options.forEach(opt => sub.innerHTML += `<option value="${opt}">${opt}</option>`);
+                if (!sub.value && sub.options.length) sub.selectedIndex = 0;
                 
                 const isEdit = document.getElementById('editIndex')?.value !== "";
                 const isDivida = t === 'Divida' || t === 'Juros';
@@ -5832,12 +5849,15 @@ function exportarDadosCSV() {
         
         function iniciarApp() {
             carregarConfig();
-            checkAppSecurity(); 
-            renderizar(); 
+            renderizar();
+            setTimeout(() => {
+                if (authResolved || !sessionStorage.getItem('isLoggedIn')) checkAppSecurity();
+            }, 120);
             const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
             const isStandalone = ('standalone' in window.navigator) && window.navigator.standalone;
             if (isIos && !isStandalone) { setTimeout(() => { const prompt = document.getElementById('ios-prompt'); if(prompt) prompt.classList.remove('hidden'); }, 2000);
             }
+            try { atualizarSubmenu(); } catch (e) { console.error('Falha ao iniciar categorias:', e); }
         }
 
         
