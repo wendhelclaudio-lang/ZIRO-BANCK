@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-<title>MeuCaixa - Comando de Ativos</title><!-- auth-firebase-v2 -->
+<title>MeuCaixa - Comando de Ativos</title><!-- auth-firebase-v4-google-redirect-fix -->
 <link href="./manifest.json" rel="manifest"/>
 <meta content="yes" name="apple-mobile-web-app-capable"/>
 <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
@@ -3267,9 +3267,9 @@ async function processarRedirectGoogle() {
             provider.setCustomParameters({ prompt: 'select_account' });
             try {
                 const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-                // Em navegador comum (inclusive celular), prioriza popup.
-                // Redirect fica só para app instalado/standalone ou fallback real.
-                if (isStandalone) {
+                const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || '');
+                // Em celular e PWA, redirect é mais estável que popup.
+                if (isStandalone || isMobile) {
                     marcarEstadoGoogleRedirect();
                     showToast("Abrindo Google para autenticação...", "success");
                     setTimeout(() => { try { firebase.auth().signInWithRedirect(provider); } catch(e) { console.error(e); } }, 80);
@@ -3451,8 +3451,7 @@ async function processarRedirectGoogle() {
             location.reload();
         }
 
-        processarRedirectGoogle();
-const themeCatalog = {
+        const themeCatalog = {
             dark: { name: 'Modo Escuro Premium', color: '#030712' },
             light: { name: 'Modo Claro Inteligente', color: '#f8fbff' },
             nubank: { name: 'Identidade Nubank', color: '#820ad1' },
@@ -3479,6 +3478,7 @@ const themeCatalog = {
             applyThemeMeta(savedTheme);
         }
         checkTheme();
+        window.addEventListener('load', () => { setTimeout(() => { try { processarRedirectGoogle(); } catch (e) { console.error('Falha no redirect do Google:', e); } }, 60); });
         function mudarTema(tema) {
             document.documentElement.setAttribute('data-theme', tema);
             localStorage.setItem('meucaixa_theme', tema);
