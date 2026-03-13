@@ -5453,8 +5453,26 @@ async function processarRedirectGoogle() {
 
             const classificarRegistroPDF = (r = {}) => {
                 const tipo = normalizarTipoPDF(r.tipo);
-                if (tipo === 'receita' || tipo === 'ajuste') return 'entrada';
-                if (tipo === 'reserva') return 'patrimonio';
+                const categoria = normalizarTipoPDF(r.categoria);
+                const valorRaw = parseFloat(r?.valor);
+                const isEntradaFlag = typeof r?.isEntrada === 'boolean' ? r.isEntrada : null;
+
+                if (isEntradaFlag === true) return 'entrada';
+                if (isEntradaFlag === false) return 'saida';
+
+                if (['receita', 'ajuste'].includes(tipo)) return 'entrada';
+                if (['reserva', 'patrimonio', 'patrimônio'].includes(tipo)) return 'patrimonio';
+
+                if ([
+                    'fixo', 'variavel', 'variável', 'divida', 'dívida', 'juros',
+                    'ajusteneg', 'ajuste negativo', 'saida', 'saída', 'despesa'
+                ].includes(tipo)) return 'saida';
+
+                if (categoria.includes('reserva') || categoria.includes('patrimonio') || categoria.includes('patrimônio')) {
+                    return 'patrimonio';
+                }
+
+                if (!Number.isNaN(valorRaw) && valorRaw < 0) return 'saida';
                 return 'saida';
             };
 
@@ -5541,7 +5559,9 @@ async function processarRedirectGoogle() {
 
             const analisarRegistros = (lista) => {
                 let totalEntradas = 0;
+                let totalEntradasRegistradas = 0;
                 let totalSaidas = 0;
+                let totalSaidasRegistradas = 0;
                 let totalPatrimonio = 0;
                 let totalPendencias = 0;
                 let quantidadeLancamentos = 0;
@@ -5553,15 +5573,27 @@ async function processarRedirectGoogle() {
 
                     quantidadeLancamentos += 1;
 
-                    if (grupo === 'entrada') totalEntradas += pago;
+                    if (grupo === 'entrada') {
+                        totalEntradas += pago;
+                        totalEntradasRegistradas += valor;
+                    }
                     if (grupo === 'saida') {
                         totalSaidas += pago;
+                        totalSaidasRegistradas += valor;
                         totalPendencias += Math.max(valor - pago, 0);
                     }
                     if (grupo === 'patrimonio') totalPatrimonio += valor;
                 });
 
-                return { totalEntradas, totalSaidas, totalPatrimonio, totalPendencias, quantidadeLancamentos };
+                return {
+                    totalEntradas,
+                    totalEntradasRegistradas,
+                    totalSaidas,
+                    totalSaidasRegistradas,
+                    totalPatrimonio,
+                    totalPendencias,
+                    quantidadeLancamentos
+                };
             };
 
             const desenharListaLancamentos = (lista, tituloSecao = 'Movimentações do período', opcoes = {}) => {
@@ -5710,7 +5742,8 @@ async function processarRedirectGoogle() {
                             entradas: colecoesRelatorio.entrada.length,
                             saidas: colecoesRelatorio.saida.length,
                             patrimonio: colecoesRelatorio.patrimonio.length
-                        }
+                        },
+                        tiposEncontrados: Array.from(new Set((registrosBase || []).map(r => String(r?.tipo || '').trim()).filter(Boolean)))
                     });
 
                     pdf.setFont('helvetica', 'bold');
@@ -5721,7 +5754,9 @@ async function processarRedirectGoogle() {
                     pdf.setFontSize(11);
 
                     if (tipoRelatorio !== 'patrimonio') {
+                        pdf.text(sanitizePdfText(`Total Receitas registradas: ${formatarMoeda(resumo.totalEntradasRegistradas)}`), margin, y); y += 6;
                         pdf.text(sanitizePdfText(`Total Receitas liquidadas: ${formatarMoeda(resumo.totalEntradas)}`), margin, y); y += 6;
+                        pdf.text(sanitizePdfText(`Total Saídas registradas: ${formatarMoeda(resumo.totalSaidasRegistradas)}`), margin, y); y += 6;
                         pdf.text(sanitizePdfText(`Total Saídas liquidadas: ${formatarMoeda(resumo.totalSaidas)}`), margin, y); y += 6;
                         pdf.text(sanitizePdfText(`Saldo apurado: ${formatarMoeda(resumo.totalEntradas - resumo.totalSaidas)}`), margin, y); y += 6;
                         pdf.text(sanitizePdfText(`Pendências em aberto: ${formatarMoeda(resumo.totalPendencias)}`), margin, y); y += 6;
@@ -5756,9 +5791,18 @@ async function processarRedirectGoogle() {
                     if (tipoRelatorio === 'patrimonio') {
                         desenharListaLancamentos(colecoesRelatorio.patrimonio, 'Movimentações patrimoniais');
                     } else {
-                        desenharListaLancamentos(colecoesRelatorio.entrada, tipoRelatorio === 'anual' ? 'Entradas do ano' : 'Entradas do mês', { ignorarSeVazio: true });
-                        desenharListaLancamentos(colecoesRelatorio.saida, tipoRelatorio === 'anual' ? 'Saídas do ano' : 'Saídas do mês', { ignorarSeVazio: true });
-                        desenharListaLancamentos(colecoesRelatorio.patrimonio, tipoRelatorio === 'anual' ? 'Aportes em patrimônio do ano' : 'Aportes em patrimônio do mês', { ignorarSeVazio: true });
+                        const listaPrincipal = ordenarPorData(
+                            (registrosBase || []).filter(r => classificarRegistroPDF(r) !== 'patrimonio')
+                        );
+                        desenharListaLancamentos(
+                            listaPrincipal,
+                            tipoRelatorio === 'anual' ? 'Movimentações do ano' : 'Movimentações do mês'
+                        );
+                        desenharListaLancamentos(
+                            colecoesRelatorio.patrimonio,
+                            tipoRelatorio === 'anual' ? 'Aportes em patrimônio do ano' : 'Aportes em patrimônio do mês',
+                            { ignorarSeVazio: true }
+                        );
                     }
                 }
 
