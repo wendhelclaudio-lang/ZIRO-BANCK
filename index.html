@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-<title>MeuCaixa - Comando de Ativos • Cinematic Video Redesign v18</title><!-- auth-firebase-v4-google-redirect-fix -->
+<title>MeuCaixa - Comando de Ativos • Layout Optimized v19</title><!-- auth-firebase-v4-google-redirect-fix -->
 <link href="./manifest.json" rel="manifest"/>
 <meta content="yes" name="apple-mobile-web-app-capable"/>
 <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
@@ -2971,16 +2971,257 @@ input:focus, select:focus, textarea:focus{
   }
 }
 
+
+/* === v19 HOTFIX: temas simplificados + gráficos detalhados otimizados === */
+#themeOptions.theme-selector{
+  display:none;
+  width:min(100%, 560px);
+  margin:14px 0 0;
+  padding:18px;
+  border-radius:24px;
+  border:1px solid color-mix(in srgb, var(--accent) 18%, var(--border));
+  background: var(--panel-surface) !important;
+  box-shadow: var(--card-shadow);
+}
+#themeOptions.theme-selector.open{ display:grid; gap:16px; }
+#themeOptions .theme-selector-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+}
+#themeOptions .theme-selector-title{
+  font-size:1.02rem;
+  letter-spacing:-.01em;
+}
+#themeOptions .theme-selector-copy{
+  margin:8px 0 0;
+  max-width:40ch;
+  line-height:1.5;
+}
+#themeOptions .theme-current-badge{
+  min-width:172px;
+  border-radius:18px;
+  padding:14px 16px;
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  border:1px solid color-mix(in srgb, var(--accent) 18%, var(--border));
+}
+#themeOptions .theme-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+#themeOptions .theme-btn{
+  min-height:126px;
+  align-items:flex-start;
+  gap:12px;
+}
+#themeOptions .theme-btn .theme-chip{
+  margin-top:auto;
+}
+#themeOptions .theme-note{
+  margin:0;
+  border-radius:18px;
+  padding:14px 16px;
+  background: color-mix(in srgb, var(--card) 82%, transparent);
+  border:1px solid color-mix(in srgb, var(--accent) 12%, var(--border));
+  color:var(--text-muted);
+  line-height:1.5;
+}
+#modalGraficos{
+  width:min(980px, calc(100vw - 22px));
+  max-height:min(90vh, 920px);
+  overflow:auto;
+  padding:22px;
+  border-radius:28px;
+  background: var(--panel-surface) !important;
+  border:1px solid color-mix(in srgb, var(--accent) 16%, var(--border));
+  box-shadow: 0 28px 70px rgba(0,0,0,.34);
+}
+#modalGraficos::-webkit-scrollbar{ width:8px; }
+#modalGraficos::-webkit-scrollbar-thumb{
+  background: color-mix(in srgb, var(--accent) 24%, transparent);
+  border-radius:999px;
+}
+.graficos-modal-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+  margin-bottom:18px;
+}
+.graficos-modal-kicker{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 14px;
+  border-radius:999px;
+  font-size:.72rem;
+  font-weight:800;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border:1px solid color-mix(in srgb, var(--accent) 18%, var(--border));
+}
+.graficos-modal-title{
+  margin:14px 0 6px;
+  font-size:1.28rem;
+  line-height:1.12;
+  color:var(--text);
+}
+.graficos-modal-copy{
+  margin:0;
+  color:var(--text-muted);
+  line-height:1.55;
+  max-width:56ch;
+}
+.graficos-close-btn{
+  width:46px;
+  height:46px;
+  border:1px solid color-mix(in srgb, var(--accent) 14%, var(--border));
+  border-radius:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--text-muted);
+  background: color-mix(in srgb, var(--card) 88%, transparent);
+  cursor:pointer;
+  flex-shrink:0;
+}
+.graficos-summary-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:14px;
+  margin-bottom:16px;
+}
+.graficos-summary-card{
+  min-height:110px;
+  padding:16px;
+  border-radius:22px;
+  border:1px solid color-mix(in srgb, var(--accent) 10%, var(--border));
+  background: linear-gradient(160deg, color-mix(in srgb, var(--card) 94%, transparent), color-mix(in srgb, var(--card) 88%, transparent));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
+}
+.graficos-summary-card span{
+  display:block;
+  margin-bottom:10px;
+  font-size:.72rem;
+  font-weight:800;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--text-muted);
+}
+.graficos-summary-card strong{
+  display:block;
+  font-size:1.12rem;
+  line-height:1.2;
+  color:var(--text);
+}
+.graficos-summary-card small{
+  display:block;
+  margin-top:10px;
+  color:var(--text-muted);
+  line-height:1.45;
+}
+.graficos-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);
+  gap:16px;
+}
+#modalGraficos .grafico-card{
+  margin:0;
+  padding:18px;
+  border-radius:24px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--card) 96%, transparent), color-mix(in srgb, var(--card) 90%, transparent)) !important;
+  border:1px solid color-mix(in srgb, var(--accent) 11%, var(--border)) !important;
+  box-shadow: 0 18px 32px rgba(0,0,0,.16), inset 0 1px 0 rgba(255,255,255,.05) !important;
+}
+#modalGraficos .grafico-card--wide{ grid-column:1 / -1; }
+.grafico-card-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+  margin-bottom:14px;
+}
+#modalGraficos .grafico-title{
+  margin:0 0 4px;
+  text-align:left;
+  font-size:.78rem;
+  letter-spacing:.12em;
+}
+.grafico-card-subtitle{
+  margin:0;
+  color:var(--text-muted);
+  line-height:1.45;
+  font-size:.9rem;
+}
+.chart-shell{
+  position:relative;
+  width:100%;
+}
+.chart-shell--donut{ height:320px; }
+.chart-shell--line{ height:250px; }
+.chart-shell--bar{ height:170px; }
+.grafico-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 12px;
+  border-radius:999px;
+  font-size:.72rem;
+  font-weight:700;
+  color:var(--text);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  border:1px solid color-mix(in srgb, var(--accent) 16%, var(--border));
+  white-space:nowrap;
+}
+[data-theme="light"] #modalGraficos{
+  box-shadow: 0 24px 56px rgba(15,23,42,.12);
+}
+[data-theme="light"] .graficos-summary-card,
+[data-theme="light"] #modalGraficos .grafico-card{
+  box-shadow: 0 16px 30px rgba(15,23,42,.06), inset 0 1px 0 rgba(255,255,255,.65) !important;
+}
+@media (max-width: 860px){
+  .graficos-summary-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .graficos-grid{ grid-template-columns:1fr; }
+}
+@media (max-width: 640px){
+  #themeOptions.theme-selector{
+    width:100%;
+    padding:16px;
+    border-radius:22px;
+  }
+  #themeOptions .theme-selector-head{
+    flex-direction:column;
+  }
+  #themeOptions .theme-current-badge{
+    width:100%;
+    min-width:0;
+  }
+  #themeOptions .theme-grid{
+    grid-template-columns:1fr;
+  }
+  #modalGraficos{
+    width:min(100vw - 14px, 100%);
+    max-height:90vh;
+    padding:18px 16px 20px;
+    border-radius:24px;
+  }
+  .graficos-summary-grid{ grid-template-columns:1fr; }
+  .chart-shell--donut{ height:280px; }
+  .chart-shell--line{ height:220px; }
+  .chart-shell--bar{ height:155px; }
+}
+
 </style>
 
 <script>
 window.themeCatalog = window.themeCatalog || {
   dark: { name: 'Modo Escuro Premium', color: '#030712' },
-  light: { name: 'Modo Claro Inteligente', color: '#f8fbff' },
-  nubank: { name: 'Identidade Nubank', color: '#820ad1' },
-  santander: { name: 'Identidade Santander', color: '#ec0000' },
-  itau: { name: 'Identidade Itaú', color: '#ec7000' },
-  bradesco: { name: 'Identidade Bradesco', color: '#cc092f' }
+  light: { name: 'Modo Claro Inteligente', color: '#f8fbff' }
 };
 </script>
 
@@ -3093,15 +3334,15 @@ window.themeCatalog = window.themeCatalog || {
 <i class="fa-solid fa-chevron-right menu-chevron"></i>
 </div>
 <div class="menu-item" onclick="document.getElementById('themeOptions').classList.toggle('open')">
-<div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--accent); background: rgba(0, 242, 255, 0.1);"><i class="fa-solid fa-palette"></i></div><span>Aparência / Banco</span></div>
+<div class="menu-item-left"><div class="menu-icon-wrap" style="color: var(--accent); background: rgba(0, 242, 255, 0.1);"><i class="fa-solid fa-circle-half-stroke"></i></div><span>Aparência</span></div>
 <i class="fa-solid fa-chevron-down menu-chevron" style="opacity: 1;"></i>
 </div>
 <div class="theme-selector" id="themeOptions">
 <div class="theme-selector-head">
 <div>
-<div class="theme-selector-kicker"><i class="fa-solid fa-wand-magic-sparkles"></i> Visual inteligente</div>
-<div class="theme-selector-title">Escolha uma identidade completa para o app</div>
-<p class="theme-selector-copy">Ao trocar o tema, o MeuCaixa passa a adotar a linguagem visual do banco escolhido com cores, brilho, contraste e atmosfera própria.</p>
+<div class="theme-selector-kicker"><i class="fa-solid fa-circle-half-stroke"></i> Aparência oficial</div>
+<div class="theme-selector-title">Escolha entre o modo escuro ou claro</div>
+<p class="theme-selector-copy">O app passa a usar apenas os dois temas principais para manter desempenho, leitura fiel e consistência visual em todo o sistema.</p>
 </div>
 <div class="theme-current-badge">
 <span>Tema atual</span>
@@ -3111,36 +3352,16 @@ window.themeCatalog = window.themeCatalog || {
 <div class="theme-grid">
 <button class="theme-btn" data-theme-option="dark" onclick="mudarTema('dark')" style="--theme-accent:#00f2ff; --theme-bg:linear-gradient(135deg,#07111f 0%, #0c1728 55%, #11273c 100%); --theme-text:#f3f4f6; --theme-contrast:#03111d;" type="button">
 <span class="theme-btn-icon"><i class="fa-solid fa-moon-stars"></i></span>
-<div><strong>Escuro</strong><small>Tecnologia premium com brilho sofisticado e foco total nos dados.</small></div>
-<span class="theme-chip"><i class="fa-solid fa-sparkles"></i> Noturno elegante</span>
+<div><strong>Escuro</strong><small>Modo principal com contraste alto, profundidade premium e foco total nos dados.</small></div>
+<span class="theme-chip"><i class="fa-solid fa-sparkles"></i> Padrão noturno</span>
 </button>
 <button class="theme-btn" data-theme-option="light" onclick="mudarTema('light')" style="--theme-accent:#0ea5e9; --theme-bg:linear-gradient(135deg,#ffffff 0%, #f2f8ff 55%, #e9f3ff 100%); --theme-text:#0f172a; --theme-contrast:#ffffff;" type="button">
 <span class="theme-btn-icon"><i class="fa-solid fa-sun"></i></span>
-<div><strong>Claro</strong><small>Leve, limpo e muito prático para uso diário em ambientes claros.</small></div>
-<span class="theme-chip"><i class="fa-solid fa-circle-half-stroke"></i> Alta leitura</span>
-</button>
-<button class="theme-btn" data-theme-option="nubank" onclick="mudarTema('nubank')" style="--theme-accent:#820ad1; --theme-bg:linear-gradient(135deg,#ffffff 0%, #f7effd 54%, #efe2fb 100%); --theme-text:#221332; --theme-contrast:#ffffff;" type="button">
-<span class="theme-btn-icon"><i class="fa-solid fa-gem"></i></span>
-<div><strong>Nubank</strong><small>Minimalismo roxo com sensação moderna, jovem e extremamente refinada.</small></div>
-<span class="theme-chip"><i class="fa-solid fa-bolt"></i> Digital premium</span>
-</button>
-<button class="theme-btn" data-theme-option="santander" onclick="mudarTema('santander')" style="--theme-accent:#ec0000; --theme-bg:linear-gradient(135deg,#ffffff 0%, #fff4f2 55%, #ffe7e2 100%); --theme-text:#311515; --theme-contrast:#ffffff;" type="button">
-<span class="theme-btn-icon"><i class="fa-solid fa-fire-flame-curved"></i></span>
-<div><strong>Santander</strong><small>Visual institucional vermelho com cara de banco real e presença marcante.</small></div>
-<span class="theme-chip"><i class="fa-solid fa-building-columns"></i> Banco clássico</span>
-</button>
-<button class="theme-btn" data-theme-option="itau" onclick="mudarTema('itau')" style="--theme-accent:#ec7000; --theme-bg:linear-gradient(135deg,#ffffff 0%, #fff4e7 55%, #ffe7cb 100%); --theme-text:#08244c; --theme-contrast:#ffffff;" type="button">
-<span class="theme-btn-icon"><i class="fa-solid fa-shield-halved"></i></span>
-<div><strong>Itaú</strong><small>Laranja forte com azul institucional para uma leitura segura e sofisticada.</small></div>
-<span class="theme-chip"><i class="fa-solid fa-wallet"></i> Solidez visual</span>
-</button>
-<button class="theme-btn" data-theme-option="bradesco" onclick="mudarTema('bradesco')" style="--theme-accent:#cc092f; --theme-bg:linear-gradient(135deg,#ffffff 0%, #fff2f6 55%, #ffe2ec 100%); --theme-text:#2c1320; --theme-contrast:#ffffff;" type="button">
-<span class="theme-btn-icon"><i class="fa-solid fa-chart-line"></i></span>
-<div><strong>Bradesco</strong><small>Paleta executiva vinho com acabamento premium e aparência corporativa.</small></div>
-<span class="theme-chip"><i class="fa-solid fa-crown"></i> Executivo</span>
+<div><strong>Claro</strong><small>Modo limpo e equilibrado com leitura fiel para uso diário em ambientes claros.</small></div>
+<span class="theme-chip"><i class="fa-solid fa-eye"></i> Alta leitura</span>
 </button>
 </div>
-<div class="theme-note"><strong style="color:var(--text);">Sugestão premium:</strong> os temas bancários agora não mudam só a cor de destaque. Eles influenciam a atmosfera visual do app para parecer uma interface própria de cada banco.</div>
+<div class="theme-note"><strong style="color:var(--text);">Otimização aplicada:</strong> os temas bancários foram removidos para deixar o app mais leve, estável e visualmente consistente ao alternar entre claro e escuro.</div>
 </div>
 <div class="menu-group-title">Sistema &amp; Dados</div>
 <input accept=".json, application/json, .csv, text/csv, text/plain, */*" id="fileInput" onchange="importarDados(event)" style="display: none;" type="file"/>
@@ -3650,32 +3871,72 @@ window.themeCatalog = window.themeCatalog || {
 </div>
 </div>
 <div class="modal" id="modalGraficos" style="background: var(--bg);">
-<div style="display:flex;
-            justify-content:space-between; align-items:center; margin-bottom:20px;">
-<h2 style="margin:0; font-size:1.15rem;
-            color: var(--text);">Análise do Mês Atual</h2>
-<i class="fa-solid fa-xmark" onclick="closeModal()" style="font-size:1.4rem;
-            color:var(--text-muted); cursor:pointer;"></i>
+<div class="graficos-modal-head">
+<div>
+<span class="graficos-modal-kicker"><i class="fa-solid fa-chart-line"></i> gráficos detalhados</span>
+<h2 class="graficos-modal-title">Leitura inteligente do mês atual</h2>
+<p class="graficos-modal-copy">Painel otimizado para mostrar entradas, saídas, categorias e status de pagamentos com contraste fiel no modo escuro e no modo claro.</p>
 </div>
-<div class="grafico-card">
-<h4 class="grafico-title">Despesas por Categoria</h4>
-<div style="position: relative;
-                height: 260px; width: 100%;">
+<button aria-label="Fechar gráficos detalhados" class="graficos-close-btn" onclick="closeModal()" type="button"><i class="fa-solid fa-xmark"></i></button>
+</div>
+<div class="graficos-summary-grid">
+<div class="graficos-summary-card">
+<span>Entradas</span>
+<strong id="graficoResumoEntradas">R$ 0,00</strong>
+<small>Receitas reconhecidas no período atual.</small>
+</div>
+<div class="graficos-summary-card">
+<span>Saídas</span>
+<strong id="graficoResumoSaidas">R$ 0,00</strong>
+<small>Despesas do mês com leitura consolidada.</small>
+</div>
+<div class="graficos-summary-card">
+<span>Saldo</span>
+<strong id="graficoResumoSaldo">R$ 0,00</strong>
+<small id="graficoResumoSaldoTexto">O resultado mensal aparece aqui automaticamente.</small>
+</div>
+<div class="graficos-summary-card">
+<span>Despesas mapeadas</span>
+<strong id="graficoResumoDespesas">0 categoria(s)</strong>
+<small id="graficoResumoDespesasTexto">Assim que houver movimentação, o painel detalha tudo.</small>
+</div>
+</div>
+<div class="graficos-grid">
+<div class="grafico-card grafico-card--wide">
+<div class="grafico-card-head">
+<div>
+<h4 class="grafico-title">Despesas por categoria</h4>
+<p class="grafico-card-subtitle">Distribuição das maiores saídas do mês com legenda completa e leitura adaptada ao tema ativo.</p>
+</div>
+<span class="grafico-badge"><i class="fa-solid fa-layer-group"></i> visão consolidada</span>
+</div>
+<div class="chart-shell chart-shell--donut">
 <canvas id="chartCategorias"></canvas>
 </div>
 </div>
 <div class="grafico-card">
-<h4 class="grafico-title">Fluxo Diário de Caixa</h4>
-<div style="position: relative;
-                height: 200px; width: 100%;">
+<div class="grafico-card-head">
+<div>
+<h4 class="grafico-title">Fluxo diário de caixa</h4>
+<p class="grafico-card-subtitle">Comparação entre entradas e saídas ao longo dos dias do mês.</p>
+</div>
+<span class="grafico-badge"><i class="fa-solid fa-wave-square"></i> fluxo diário</span>
+</div>
+<div class="chart-shell chart-shell--line">
 <canvas id="chartEvolucao"></canvas>
 </div>
 </div>
 <div class="grafico-card">
-<h4 class="grafico-title">Status de Pagamentos (Despesas)</h4>
-<div style="position: relative;
-                height: 120px; width: 100%;">
+<div class="grafico-card-head">
+<div>
+<h4 class="grafico-title">Status de pagamentos</h4>
+<p class="grafico-card-subtitle">Quanto já foi pago e quanto ainda permanece pendente nas despesas.</p>
+</div>
+<span class="grafico-badge"><i class="fa-solid fa-badge-check"></i> quitação</span>
+</div>
+<div class="chart-shell chart-shell--bar">
 <canvas id="chartStatus"></canvas>
+</div>
 </div>
 </div>
 </div>
@@ -4996,37 +5257,47 @@ async function processarRedirectGoogle() {
             location.reload();
         }
 
+        
+        const SIMPLE_THEME_MAP = Object.freeze({
+            dark: 'dark',
+            light: 'light',
+            nubank: 'dark',
+            santander: 'light',
+            itau: 'light',
+            bradesco: 'light'
+        });
+        function normalizeThemeName(theme) {
+            const key = String(theme || '').trim().toLowerCase();
+            return SIMPLE_THEME_MAP[key] || 'dark';
+        }
+
         var themeCatalog = window.themeCatalog || {
             dark: { name: 'Modo Escuro Premium', color: '#030712' },
-            light: { name: 'Modo Claro Inteligente', color: '#f8fbff' },
-            nubank: { name: 'Identidade Nubank', color: '#820ad1' },
-            santander: { name: 'Identidade Santander', color: '#ec0000' },
-            itau: { name: 'Identidade Itaú', color: '#ec7000' },
-            bradesco: { name: 'Identidade Bradesco', color: '#cc092f' }
+            light: { name: 'Modo Claro Inteligente', color: '#f8fbff' }
         };
         window.themeCatalog = themeCatalog;
         function getThemeCatalogSafe() {
             const fallback = {
                 dark: { name: 'Modo Escuro Premium', color: '#030712' },
-                light: { name: 'Modo Claro Inteligente', color: '#f8fbff' },
-                nubank: { name: 'Identidade Nubank', color: '#820ad1' },
-                santander: { name: 'Identidade Santander', color: '#ec0000' },
-                itau: { name: 'Identidade Itaú', color: '#ec7000' },
-                bradesco: { name: 'Identidade Bradesco', color: '#cc092f' }
+                light: { name: 'Modo Claro Inteligente', color: '#f8fbff' }
             };
             if (!window.themeCatalog) window.themeCatalog = fallback;
             if (!window.themeCatalog.dark) window.themeCatalog.dark = fallback.dark;
+            if (!window.themeCatalog.light) window.themeCatalog.light = fallback.light;
             return window.themeCatalog;
         }
         function applyThemeMeta(theme) {
             const catalog = getThemeCatalogSafe();
             const metaTheme = document.querySelector('meta[name="theme-color"]');
-            const entry = catalog[theme] || catalog.dark;
+            const normalizedTheme = normalizeThemeName(theme);
+            const entry = catalog[normalizedTheme] || catalog.dark;
             if (metaTheme && entry && entry.color) metaTheme.setAttribute('content', entry.color);
         }
         function syncThemeSelector() {
             const catalog = getThemeCatalogSafe();
-            const activeTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+            const activeTheme = normalizeThemeName(document.documentElement.getAttribute('data-theme') || localStorage.getItem('meucaixa_theme') || 'dark');
+            document.documentElement.setAttribute('data-theme', activeTheme);
+            localStorage.setItem('meucaixa_theme', activeTheme);
             document.querySelectorAll('[data-theme-option]').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.themeOption === activeTheme);
             });
@@ -5037,8 +5308,9 @@ async function processarRedirectGoogle() {
         }
         function checkTheme() {
             getThemeCatalogSafe();
-            const savedTheme = localStorage.getItem('meucaixa_theme') || 'dark';
+            const savedTheme = normalizeThemeName(localStorage.getItem('meucaixa_theme') || 'dark');
             document.documentElement.setAttribute('data-theme', savedTheme);
+            localStorage.setItem('meucaixa_theme', savedTheme);
             applyThemeMeta(savedTheme);
         }
         checkTheme();
@@ -5057,11 +5329,15 @@ async function processarRedirectGoogle() {
             setTimeout(() => { try { processarRedirectGoogle(); } catch (e) { console.error('Falha no redirect do Google:', e); } }, 120);
         });
         function mudarTema(tema) {
-            document.documentElement.setAttribute('data-theme', tema);
-            localStorage.setItem('meucaixa_theme', tema);
+            const temaNormalizado = normalizeThemeName(tema);
+            document.documentElement.setAttribute('data-theme', temaNormalizado);
+            localStorage.setItem('meucaixa_theme', temaNormalizado);
             syncThemeSelector();
             closeAll();
             renderizar();
+            if (document.getElementById('modalGraficos')?.classList.contains('open')) {
+                setTimeout(() => { try { renderizarGraficos(); } catch (e) { console.error('Falha ao atualizar gráficos após trocar tema:', e); } }, 80);
+            }
         }
 
         function salvarConfig(options = {}) {
@@ -6272,77 +6548,299 @@ async function processarRedirectGoogle() {
             renderizarGraficos();
         }
 
+        
         function renderizarGraficos() {
-            let fontColor = getComputedStyle(document.body).getPropertyValue('--text-muted').trim() ||
-            '#999';
-            let gridColor = getComputedStyle(document.body).getPropertyValue('--border').trim() || '#333';
+            const rootStyles = getComputedStyle(document.documentElement);
+            const bodyStyles = getComputedStyle(document.body);
+            const textColor = rootStyles.getPropertyValue('--text').trim() || '#f3f4f6';
+            const fontColor = rootStyles.getPropertyValue('--text-muted').trim() || '#94a3b8';
+            const gridColor = rootStyles.getPropertyValue('--border').trim() || 'rgba(148,163,184,0.18)';
+            const accent = rootStyles.getPropertyValue('--accent').trim() || '#00f2ff';
+            const accent2 = rootStyles.getPropertyValue('--accent-2').trim() || '#10b981';
+            const success = rootStyles.getPropertyValue('--success').trim() || '#10b981';
+            const danger = rootStyles.getPropertyValue('--danger').trim() || '#ef4444';
+            const warning = rootStyles.getPropertyValue('--warning').trim() || '#f59e0b';
+            const reserve = rootStyles.getPropertyValue('--reserve').trim() || '#8b5cf6';
+            const cardColor = rootStyles.getPropertyValue('--card').trim() || bodyStyles.getPropertyValue('--card').trim() || '#111827';
+            const isMobile = window.innerWidth <= 760;
             const prefixoMes = `${dataVisualizacao.getFullYear()}-${String(dataVisualizacao.getMonth() + 1).padStart(2, '0')}`;
-            
-            let despesasCategoria = {};
-            let pagoVal = 0, pendenteVal = 0;
-            let fluxoDiario = {};
-            
-            const regsMes = registros.filter(r => r.data.startsWith(prefixoMes));
-            regsMes.forEach(r => {
-                if(r.tipo === 'Fixo' || r.tipo === 'Variavel' || r.tipo === 'Divida' || r.tipo === 'Juros') {
-                    let cat = r.categoria || r.tipo;
-                    if(cat.includes(' ')) cat = cat.split(' ').slice(1).join(' ');
-                    
-                    despesasCategoria[cat] = (despesasCategoria[cat] || 0) + parseFloat(r.valor);
-                    let p = parseFloat(r.pago) || 0;
-                    pagoVal += p;
-                    pendenteVal += (parseFloat(r.valor) - p);
-                }
-       
-                 let dia = parseInt(r.data.split('-')[2]);
-                if(!fluxoDiario[dia]) fluxoDiario[dia] = { in: 0, out: 0 };
-                if (r.tipo === 'Receita' && parseFloat(r.pago) > 0) fluxoDiario[dia].in += parseFloat(r.valor);
-                else if (r.tipo !== 'Receita' && r.tipo !== 'Reserva' && parseFloat(r.pago) > 0) fluxoDiario[dia].out += parseFloat(r.pago);
-       
-             });
 
-            if(chartCategorias) chartCategorias.destroy();
+            const despesasCategoria = {};
+            const fluxoDiario = {};
+            let totalEntradas = 0;
+            let totalSaidas = 0;
+            let pagoVal = 0;
+            let pendenteVal = 0;
+
+            const regsMes = registros.filter(r => (r?.data || '').startsWith(prefixoMes));
+            regsMes.forEach(r => {
+                const valor = parseFloat(r.valor) || 0;
+                const pagoOriginal = parseFloat(r.pago);
+                const pago = Number.isFinite(pagoOriginal) ? pagoOriginal : 0;
+                const tipo = r.tipo || '';
+                const isReceita = tipo === 'Receita';
+                const isDespesaPrincipal = tipo === 'Fixo' || tipo === 'Variavel' || tipo === 'Divida' || tipo === 'Juros';
+                const isSaidaFinanceira = !isReceita && tipo !== 'Reserva' && tipo !== 'Ajuste' && tipo !== 'AjusteNeg';
+
+                if (isReceita) {
+                    totalEntradas += valor;
+                }
+
+                if (isDespesaPrincipal) {
+                    let cat = r.categoria || tipo;
+                    if (typeof cat === 'string' && cat.includes(' ')) cat = cat.split(' ').slice(1).join(' ');
+                    despesasCategoria[cat] = (despesasCategoria[cat] || 0) + valor;
+                    const pagoLimitado = Math.max(0, Math.min(pago, valor));
+                    pagoVal += pagoLimitado;
+                    pendenteVal += Math.max(0, valor - pagoLimitado);
+                }
+
+                if (isSaidaFinanceira) {
+                    totalSaidas += valor;
+                }
+
+                const dia = parseInt(String(r.data || '').split('-')[2], 10);
+                if (!Number.isFinite(dia)) return;
+                if (!fluxoDiario[dia]) fluxoDiario[dia] = { in: 0, out: 0 };
+
+                if (isReceita) {
+                    fluxoDiario[dia].in += valor;
+                } else if (isSaidaFinanceira) {
+                    fluxoDiario[dia].out += valor;
+                }
+            });
+
+            const saldo = totalEntradas - totalSaidas;
+            const resumoEntradas = document.getElementById('graficoResumoEntradas');
+            const resumoSaidas = document.getElementById('graficoResumoSaidas');
+            const resumoSaldo = document.getElementById('graficoResumoSaldo');
+            const resumoSaldoTexto = document.getElementById('graficoResumoSaldoTexto');
+            const resumoDespesas = document.getElementById('graficoResumoDespesas');
+            const resumoDespesasTexto = document.getElementById('graficoResumoDespesasTexto');
+
+            if (resumoEntradas) resumoEntradas.textContent = formatarMoeda(totalEntradas);
+            if (resumoSaidas) resumoSaidas.textContent = formatarMoeda(totalSaidas);
+            if (resumoSaldo) resumoSaldo.textContent = formatarMoeda(saldo);
+            if (resumoSaldoTexto) {
+                resumoSaldoTexto.textContent = saldo >= 0
+                    ? 'Seu mês está com saldo positivo até agora.'
+                    : 'As saídas estão acima das entradas no período.';
+            }
+
+            const categoriaEntries = Object.entries(despesasCategoria).sort((a, b) => b[1] - a[1]);
+            if (resumoDespesas) resumoDespesas.textContent = `${categoriaEntries.length} categoria(s)`;
+            if (resumoDespesasTexto) {
+                resumoDespesasTexto.textContent = categoriaEntries.length
+                    ? `A maior categoria atual é ${categoriaEntries[0][0]}.`
+                    : 'Ainda não há despesas categorizadas neste mês.';
+            }
+
+            let catLabels = [];
+            let catData = [];
+            if (categoriaEntries.length) {
+                const principais = categoriaEntries.slice(0, 6);
+                const restante = categoriaEntries.slice(6).reduce((acc, [, val]) => acc + val, 0);
+                catLabels = principais.map(([label]) => label);
+                catData = principais.map(([, val]) => val);
+                if (restante > 0) {
+                    catLabels.push('Outros');
+                    catData.push(restante);
+                }
+            } else {
+                catLabels = ['Sem dados'];
+                catData = [1];
+            }
+
+            const palette = [warning, danger, reserve, accent2, accent, '#3b82f6', '#f97316'];
+
+            const compactMoney = (value) => {
+                const num = Number(value) || 0;
+                if (Math.abs(num) >= 1000) {
+                    const compact = new Intl.NumberFormat('pt-BR', { notation: 'compact', maximumFractionDigits: 1 }).format(num);
+                    return `R$ ${compact}`;
+                }
+                return formatarMoeda(num);
+            };
+
+            if (chartCategorias) chartCategorias.destroy();
             const canvasCat = document.getElementById('chartCategorias');
             if (canvasCat) {
                 const ctxCat = canvasCat.getContext('2d');
-                let catLabels = Object.keys(despesasCategoria);
-                let catData = Object.values(despesasCategoria);
-                let bgColors = ['#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4', '#ec4899', '#10b981', '#3b82f6'];
-                if(catData.length === 0) { catLabels = ["Sem dados"]; catData = [1]; bgColors = ['#333333'];
-                }
-
                 chartCategorias = new Chart(ctxCat, {
                     type: 'doughnut',
-                    data: { labels: catLabels, datasets: [{ data: catData, backgroundColor: bgColors, borderColor: '#111827', borderWidth: 2, hoverOffset: 10 }] },
-                    options: { 
-                        responsive: true, maintainAspectRatio: false, layout: { padding: 10 }, plugins: { legend: { position: 'right', labels: { color: fontColor, font: {size: 11, family: "'Ubuntu', sans-serif"}, padding: 15, usePointStyle: true } }, tooltip: { callbacks: { label: function(context) { return (catLabels[0] === "Sem dados") ? " Nenhuma despesa" : ' ' + context.label + ': ' + formatarMoeda(context.raw); } } } }, cutout: '75%' }
+                    data: {
+                        labels: catLabels,
+                        datasets: [{
+                            data: catData,
+                            backgroundColor: catLabels[0] === 'Sem dados' ? [gridColor] : palette.slice(0, catData.length),
+                            borderColor: cardColor,
+                            borderWidth: 3,
+                            hoverOffset: 10
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        layout: { padding: isMobile ? 4 : 10 },
+                        plugins: {
+                            legend: {
+                                position: isMobile ? 'bottom' : 'right',
+                                labels: {
+                                    color: fontColor,
+                                    boxWidth: 12,
+                                    boxHeight: 12,
+                                    usePointStyle: true,
+                                    pointStyle: 'circle',
+                                    padding: 16,
+                                    font: { size: isMobile ? 11 : 12, family: "'Ubuntu', sans-serif", weight: '700' }
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return (catLabels[0] === 'Sem dados')
+                                            ? ' Nenhuma despesa registrada'
+                                            : ` ${context.label}: ${formatarMoeda(context.raw)}`;
+                                    }
+                                }
+                            }
+                        },
+                        cutout: isMobile ? '66%' : '72%'
+                    }
                 });
             }
 
-            if(chartEvolucao) chartEvolucao.destroy();
+            if (chartEvolucao) chartEvolucao.destroy();
             const canvasEvolucao = document.getElementById('chartEvolucao');
-            if(canvasEvolucao) {
+            if (canvasEvolucao) {
                 const ctxEvo = canvasEvolucao.getContext('2d');
-                let diasArr = Array.from({length: 31}, (_, i) => i + 1);
-                let dataIn = diasArr.map(d => fluxoDiario[d] ? fluxoDiario[d].in : 0);
-                let dataOut = diasArr.map(d => fluxoDiario[d] ? fluxoDiario[d].out : 0);
+                const diasArr = Array.from({ length: 31 }, (_, i) => i + 1);
+                const dataIn = diasArr.map(d => fluxoDiario[d] ? fluxoDiario[d].in : 0);
+                const dataOut = diasArr.map(d => fluxoDiario[d] ? fluxoDiario[d].out : 0);
                 chartEvolucao = new Chart(ctxEvo, {
                     type: 'line',
-                    data: { labels: diasArr, datasets: [{ label: 'Entrou', data: dataIn, borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.1)', fill: true, tension: 0.4, pointRadius: 0 }, { label: 'Saiu', data: dataOut, borderColor: '#ef4444', backgroundColor: 'transparent', tension: 0.4, pointRadius: 0 }] },
-                 
-                    options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, scales: { x: { grid: { color: gridColor }, ticks: { color: fontColor, maxTicksLimit: 10 } }, y: { grid: { color: gridColor }, ticks: { display: false } } }, plugins: { legend: { display: false } } }
+                    data: {
+                        labels: diasArr,
+                        datasets: [
+                            {
+                                label: 'Entradas',
+                                data: dataIn,
+                                borderColor: success,
+                                backgroundColor: 'rgba(16, 185, 129, 0.14)',
+                                fill: true,
+                                tension: 0.35,
+                                pointRadius: 0,
+                                borderWidth: 2.2
+                            },
+                            {
+                                label: 'Saídas',
+                                data: dataOut,
+                                borderColor: danger,
+                                backgroundColor: 'rgba(239, 68, 68, 0.04)',
+                                fill: false,
+                                tension: 0.35,
+                                pointRadius: 0,
+                                borderWidth: 2.2
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: { mode: 'index', intersect: false },
+                        scales: {
+                            x: {
+                                grid: { color: gridColor },
+                                ticks: {
+                                    color: fontColor,
+                                    maxTicksLimit: isMobile ? 6 : 10,
+                                    font: { family: "'Ubuntu', sans-serif", weight: '700' }
+                                }
+                            },
+                            y: {
+                                grid: { color: gridColor },
+                                ticks: {
+                                    color: fontColor,
+                                    callback: (value) => compactMoney(value),
+                                    font: { family: "'Ubuntu', sans-serif", weight: '700' }
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    color: textColor,
+                                    usePointStyle: true,
+                                    pointStyle: 'circle',
+                                    padding: 16,
+                                    font: { size: 12, family: "'Ubuntu', sans-serif", weight: '700' }
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: (context) => ` ${context.dataset.label}: ${formatarMoeda(context.raw)}`
+                                }
+                            }
+                        }
+                    }
                 });
             }
 
-            if(chartStatus) chartStatus.destroy();
+            if (chartStatus) chartStatus.destroy();
             const canvasStatus = document.getElementById('chartStatus');
             if (canvasStatus) {
                 const ctxStatus = canvasStatus.getContext('2d');
                 chartStatus = new Chart(ctxStatus, {
                     type: 'bar',
-                    data: { labels: ['Total'], datasets: [{ label: 'Pago', data: [pagoVal], backgroundColor: '#10b981', borderRadius: 6, barThickness: 25 }, { label: 'Pendente', data: [pendenteVal], backgroundColor: '#ef4444', borderRadius: 6, barThickness: 25 }] },
-                    options: { indexAxis: 'y', responsive: true, 
-                        maintainAspectRatio: false, scales: { x: { stacked: true, display: false }, y: { stacked: true, display: false } }, plugins: { legend: { position: 'bottom', labels: { color: fontColor, font: {size: 11, family: "'Ubuntu', sans-serif"}, usePointStyle: true } }, tooltip: { callbacks: { label: function(context) { return ' ' + context.dataset.label + ': ' + formatarMoeda(context.raw); } } } } }
+                    data: {
+                        labels: ['Despesas do mês'],
+                        datasets: [
+                            { label: 'Pago', data: [pagoVal], backgroundColor: success, borderRadius: 8, barThickness: 26 },
+                            { label: 'Pendente', data: [pendenteVal], backgroundColor: danger, borderRadius: 8, barThickness: 26 }
+                        ]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                stacked: true,
+                                grid: { color: gridColor },
+                                ticks: {
+                                    color: fontColor,
+                                    callback: (value) => compactMoney(value),
+                                    font: { family: "'Ubuntu', sans-serif", weight: '700' }
+                                }
+                            },
+                            y: {
+                                stacked: true,
+                                grid: { display: false },
+                                ticks: {
+                                    color: textColor,
+                                    font: { family: "'Ubuntu', sans-serif", weight: '700' }
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    color: textColor,
+                                    usePointStyle: true,
+                                    pointStyle: 'circle',
+                                    padding: 16,
+                                    font: { size: 12, family: "'Ubuntu', sans-serif", weight: '700' }
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: (context) => ` ${context.dataset.label}: ${formatarMoeda(context.raw)}`
+                                }
+                            }
+                        }
+                    }
                 });
             }
         }
