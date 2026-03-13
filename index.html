@@ -3438,6 +3438,246 @@ input:focus, select:focus, textarea:focus{
   }
 }
 
+/* === v21 REFINO: aparência oficial limpa, compacta e fiel === */
+#themeOptions.theme-selector{
+  width:100% !important;
+  margin:14px 0 0 !important;
+  padding:20px !important;
+  border-radius:24px !important;
+  border:1px solid rgba(0,242,255,.16) !important;
+  background:linear-gradient(180deg, rgba(6,16,34,.96) 0%, rgba(7,18,36,.92) 100%) !important;
+  box-shadow:0 16px 34px rgba(0,0,0,.22) !important;
+}
+#themeOptions.theme-selector.open{
+  display:grid !important;
+  gap:16px !important;
+}
+#themeOptions .theme-selector-head{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) auto !important;
+  gap:12px !important;
+  align-items:start !important;
+}
+#themeOptions .theme-selector-intro{
+  min-width:0 !important;
+}
+#themeOptions .theme-selector-kicker{
+  display:inline-flex !important;
+  align-items:center !important;
+  gap:8px !important;
+  width:max-content !important;
+  padding:8px 14px !important;
+  border-radius:999px !important;
+  border:1px solid rgba(0,242,255,.18) !important;
+  background:rgba(0,242,255,.08) !important;
+  color:var(--accent) !important;
+  font-size:.74rem !important;
+  font-weight:800 !important;
+  letter-spacing:.12em !important;
+  text-transform:uppercase !important;
+}
+#themeOptions .theme-selector-title{
+  margin:14px 0 8px !important;
+  color:var(--text) !important;
+  font-size:1.34rem !important;
+  line-height:1.16 !important;
+  letter-spacing:-.03em !important;
+}
+#themeOptions .theme-selector-copy{
+  margin:0 !important;
+  max-width:56ch !important;
+  color:var(--text-muted) !important;
+  font-size:.96rem !important;
+  line-height:1.58 !important;
+}
+#themeOptions .theme-current-badge{
+  min-width:195px !important;
+  padding:14px 16px !important;
+  border-radius:18px !important;
+  border:1px solid rgba(0,242,255,.14) !important;
+  background:rgba(0,242,255,.07) !important;
+  display:flex !important;
+  flex-direction:column !important;
+  gap:6px !important;
+}
+#themeOptions .theme-current-badge span{
+  color:var(--text-muted) !important;
+  font-size:.72rem !important;
+  font-weight:800 !important;
+  letter-spacing:.12em !important;
+  text-transform:uppercase !important;
+}
+#themeOptions .theme-current-badge strong{
+  color:var(--text) !important;
+  font-size:1rem !important;
+  line-height:1.25 !important;
+}
+#themeOptions .theme-grid{
+  display:grid !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:14px !important;
+}
+#themeOptions .theme-btn{
+  position:relative !important;
+  display:grid !important;
+  grid-template-columns:auto minmax(0,1fr) !important;
+  grid-template-areas:"icon copy" "icon chip" !important;
+  align-items:start !important;
+  gap:14px 14px !important;
+  min-height:0 !important;
+  padding:18px !important;
+  border-radius:20px !important;
+  border:1px solid rgba(255,255,255,.08) !important;
+  background:rgba(255,255,255,.03) !important;
+  box-shadow:none !important;
+  overflow:hidden !important;
+  text-align:left !important;
+  transition:transform .16s ease, border-color .16s ease, background .16s ease, box-shadow .16s ease !important;
+}
+#themeOptions .theme-btn::before{
+  content:none !important;
+}
+#themeOptions .theme-btn:hover{
+  transform:translateY(-1px) !important;
+  border-color:rgba(255,255,255,.14) !important;
+  background:rgba(255,255,255,.045) !important;
+}
+#themeOptions .theme-btn.active{
+  border-color:var(--theme-accent) !important;
+  background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03)), var(--theme-bg) !important;
+  box-shadow:0 0 0 1px rgba(255,255,255,.04), 0 10px 24px rgba(0,0,0,.18) !important;
+}
+#themeOptions .theme-btn-icon{
+  grid-area:icon !important;
+  width:54px !important;
+  height:54px !important;
+  border-radius:16px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  font-size:1.2rem !important;
+  color:var(--theme-contrast) !important;
+  background:var(--theme-accent) !important;
+  box-shadow:0 10px 22px rgba(0,0,0,.18) !important;
+}
+#themeOptions .theme-btn-copy{
+  grid-area:copy !important;
+  min-width:0 !important;
+  display:grid !important;
+  gap:8px !important;
+}
+#themeOptions .theme-btn strong{
+  margin:0 !important;
+  color:var(--theme-text) !important;
+  font-size:1.08rem !important;
+  line-height:1.2 !important;
+}
+#themeOptions .theme-btn small{
+  margin:0 !important;
+  color:rgba(243,244,246,.76) !important;
+  font-size:.93rem !important;
+  line-height:1.5 !important;
+}
+#themeOptions .theme-btn[data-theme-option="light"] small{
+  color:rgba(15,23,42,.72) !important;
+}
+#themeOptions .theme-btn .theme-chip{
+  grid-area:chip !important;
+  justify-self:start !important;
+  margin-top:2px !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  gap:8px !important;
+  padding:8px 12px !important;
+  border-radius:999px !important;
+  border:1px solid rgba(255,255,255,.12) !important;
+  background:rgba(255,255,255,.05) !important;
+  color:var(--theme-text) !important;
+  font-size:.76rem !important;
+  font-weight:800 !important;
+  letter-spacing:.04em !important;
+}
+#themeOptions .theme-note{
+  display:flex !important;
+  align-items:flex-start !important;
+  gap:10px !important;
+  margin:0 !important;
+  padding:14px 16px !important;
+  border-radius:18px !important;
+  border:1px solid rgba(255,255,255,.08) !important;
+  background:rgba(255,255,255,.03) !important;
+  color:var(--text-muted) !important;
+  font-size:.93rem !important;
+  line-height:1.55 !important;
+}
+#themeOptions .theme-note i{
+  margin-top:2px !important;
+  color:var(--accent) !important;
+}
+[data-theme="light"] #themeOptions.theme-selector{
+  border-color:rgba(14,165,233,.18) !important;
+  background:linear-gradient(180deg, #f8fbff 0%, #eef5ff 100%) !important;
+  box-shadow:0 12px 28px rgba(15,23,42,.08) !important;
+}
+[data-theme="light"] #themeOptions .theme-selector-kicker{
+  border-color:rgba(14,165,233,.18) !important;
+  background:rgba(14,165,233,.08) !important;
+  color:#0284c7 !important;
+}
+[data-theme="light"] #themeOptions .theme-current-badge{
+  border-color:rgba(14,165,233,.16) !important;
+  background:rgba(14,165,233,.08) !important;
+}
+[data-theme="light"] #themeOptions .theme-btn{
+  border-color:rgba(15,23,42,.08) !important;
+  background:rgba(255,255,255,.9) !important;
+}
+[data-theme="light"] #themeOptions .theme-btn:hover{
+  border-color:rgba(15,23,42,.12) !important;
+  background:#ffffff !important;
+}
+[data-theme="light"] #themeOptions .theme-btn.active{
+  box-shadow:0 0 0 1px rgba(14,165,233,.12), 0 10px 22px rgba(15,23,42,.08) !important;
+}
+[data-theme="light"] #themeOptions .theme-btn .theme-chip{
+  border-color:rgba(15,23,42,.08) !important;
+  background:rgba(248,250,252,.96) !important;
+}
+[data-theme="light"] #themeOptions .theme-note{
+  border-color:rgba(15,23,42,.08) !important;
+  background:rgba(255,255,255,.78) !important;
+}
+@media (max-width:640px){
+  #themeOptions.theme-selector{
+    padding:18px !important;
+    border-radius:22px !important;
+  }
+  #themeOptions .theme-selector-head{
+    grid-template-columns:1fr !important;
+  }
+  #themeOptions .theme-current-badge{
+    min-width:0 !important;
+    width:100% !important;
+  }
+  #themeOptions .theme-grid{
+    grid-template-columns:1fr !important;
+    gap:12px !important;
+  }
+  #themeOptions .theme-btn{
+    padding:16px !important;
+    border-radius:18px !important;
+  }
+  #themeOptions .theme-selector-title{
+    font-size:1.22rem !important;
+  }
+  #themeOptions .theme-selector-copy,
+  #themeOptions .theme-btn small,
+  #themeOptions .theme-note{
+    font-size:.92rem !important;
+  }
+}
+
+
 </style>
 
 <script>
@@ -3561,29 +3801,35 @@ window.themeCatalog = window.themeCatalog || {
 </div>
 <div class="theme-selector" id="themeOptions">
 <div class="theme-selector-head">
-<div>
+<div class="theme-selector-intro">
 <div class="theme-selector-kicker"><i class="fa-solid fa-circle-half-stroke"></i> Aparência oficial</div>
-<div class="theme-selector-title">Escolha entre o modo escuro ou claro</div>
-<p class="theme-selector-copy">O app passa a usar apenas os dois temas principais para manter desempenho, leitura fiel e consistência visual em todo o sistema.</p>
+<div class="theme-selector-title">Escolha como o app deve aparecer</div>
+<p class="theme-selector-copy">Agora o MeuCaixa usa somente os dois temas oficiais para ficar mais leve, mais elegante e com cores fiéis ao alternar entre escuro e claro.</p>
 </div>
 <div class="theme-current-badge">
-<span>Tema atual</span>
+<span>Tema em uso</span>
 <strong id="themeCurrentLabel">Modo Escuro Premium</strong>
 </div>
 </div>
 <div class="theme-grid">
 <button class="theme-btn" data-theme-option="dark" onclick="mudarTema('dark')" style="--theme-accent:#00f2ff; --theme-bg:linear-gradient(135deg,#07111f 0%, #0c1728 55%, #11273c 100%); --theme-text:#f3f4f6; --theme-contrast:#03111d;" type="button">
 <span class="theme-btn-icon"><i class="fa-solid fa-moon-stars"></i></span>
-<div><strong>Escuro</strong><small>Modo principal com contraste alto, profundidade premium e foco total nos dados.</small></div>
-<span class="theme-chip"><i class="fa-solid fa-sparkles"></i> Padrão noturno</span>
+<div class="theme-btn-copy">
+<strong>Escuro</strong>
+<small>Mais contraste, profundidade premium e foco total nos dados para o uso principal.</small>
+</div>
+<span class="theme-chip"><i class="fa-solid fa-check"></i> Recomendado</span>
 </button>
 <button class="theme-btn" data-theme-option="light" onclick="mudarTema('light')" style="--theme-accent:#0ea5e9; --theme-bg:linear-gradient(135deg,#ffffff 0%, #f2f8ff 55%, #e9f3ff 100%); --theme-text:#0f172a; --theme-contrast:#ffffff;" type="button">
 <span class="theme-btn-icon"><i class="fa-solid fa-sun"></i></span>
-<div><strong>Claro</strong><small>Modo limpo e equilibrado com leitura fiel para uso diário em ambientes claros.</small></div>
-<span class="theme-chip"><i class="fa-solid fa-eye"></i> Alta leitura</span>
+<div class="theme-btn-copy">
+<strong>Claro</strong>
+<small>Visual limpo e fiel para ambientes claros, mantendo leitura equilibrada em todo o app.</small>
+</div>
+<span class="theme-chip"><i class="fa-solid fa-eye"></i> Leitura clara</span>
 </button>
 </div>
-<div class="theme-note"><strong style="color:var(--text);">Otimização aplicada:</strong> os temas bancários foram removidos para deixar o app mais leve, estável e visualmente consistente ao alternar entre claro e escuro.</div>
+<div class="theme-note"><i class="fa-solid fa-bolt"></i><span>Alternância simplificada: apenas os dois temas oficiais ficam ativos para garantir desempenho, consistência e transição visual mais bonita.</span></div>
 </div>
 <div class="menu-group-title">Sistema &amp; Dados</div>
 <input accept=".json, application/json, .csv, text/csv, text/plain, */*" id="fileInput" onchange="importarDados(event)" style="display: none;" type="file"/>
