@@ -3,8 +3,8 @@
 <html lang="pt-br">
 <head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-<title>MeuCaixa - Comando de Ativos • Top Blend v8 • Auth v7 • Auth v7</title><!-- auth-firebase-v4-google-redirect-fix -->
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<title>MeuCaixa - Comando de Ativos • Top Fix v9 • Auth v7 • Auth v7</title><!-- auth-firebase-v4-google-redirect-fix -->
 <link href="./manifest.json" rel="manifest"/>
 <meta content="yes" name="apple-mobile-web-app-capable"/>
 <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
@@ -209,6 +209,40 @@
             border-bottom: 1px solid rgba(255,255,255,0.06);
             box-shadow: 0 18px 48px rgba(0,0,0,0.30);
             pointer-events: none;
+        }
+
+        
+        html {
+            background: #091328 !important;
+        }
+        body {
+            background: #091328 !important;
+        }
+        .statusbar-fill {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: max(34px, env(safe-area-inset-top, 0px) + 18px);
+            background:
+                radial-gradient(circle at 18% 42%, rgba(0,242,255,0.16), transparent 34%),
+                radial-gradient(circle at 82% 18%, rgba(0,242,255,0.11), transparent 24%),
+                linear-gradient(180deg, #0c1730 0%, #081122 100%);
+            z-index: 9999;
+            pointer-events: none;
+        }
+        .app-top-shell {
+            margin-top: calc(-1 * max(18px, env(safe-area-inset-top, 0px)));
+            padding-top: max(18px, env(safe-area-inset-top, 0px));
+        }
+        header {
+            padding-top: 6px !important;
+        }
+        main {
+            padding-top: 0 !important;
+        }
+        .month-selector {
+            margin-top: 6px !important;
         }
 
         * { box-sizing: border-box; outline: none;
@@ -2087,6 +2121,7 @@ window.themeCatalog = window.themeCatalog || {
 
 </head>
 <body>
+<div class="statusbar-fill"></div>
 <div id="toast-container"></div>
 <div class="hidden" id="ios-prompt" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--card); border: 2px solid var(--accent); padding: 20px; border-radius: 16px; z-index: 100000; width: 90%; max-width: 350px; box-shadow: 0 10px 40px rgba(0,0,0,0.7); text-align: center;">
 <h3 style="margin: 0 0 10px 0; color: var(--text); font-size: 1.1rem;"><i class="fa-brands fa-apple" style="margin-right: 5px;"></i> Instalar no iPhone</h3>
