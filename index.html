@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-<title>MeuCaixa - Comando de Ativos • Stable v7.4 • Stable v7.4 • Auth v7 • Auth v7</title><!-- auth-firebase-v4-google-redirect-fix -->
+<title>MeuCaixa - Comando de Ativos • Firebase Cloud Save v8</title><!-- auth-firebase-v4-google-redirect-fix -->
 <link href="./manifest.json" rel="manifest"/>
 <meta content="yes" name="apple-mobile-web-app-capable"/>
 <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
@@ -2837,6 +2837,9 @@ window.themeCatalog = window.themeCatalog || {
             const tx = db.transaction("financeiro", "readwrite");
             const store = tx.objectStore("financeiro");
             store.put(registros, "registros_lista");
+            if (currentFirebaseUser?.uid) {
+                salvarDadosFirebase(currentFirebaseUser.uid).catch(err => console.error('Falha ao sincronizar registros no Firebase:', err));
+            }
         }
         
         let modoFantasma = false, filtroAtual = "Tudo", subFiltro = "Pendente", dataVisualizacao = new Date();
@@ -2886,6 +2889,55 @@ window.themeCatalog = window.themeCatalog || {
         function getFirebaseConfigRef(uid) {
             return firebaseDb.collection('usuarios').doc(uid).collection('configuracoes').doc('app');
         }
+
+        function getFirebaseFinanceRef(uid) {
+            return firebaseDb.collection('usuarios').doc(uid).collection('dados').doc('financeiro');
+        }
+
+        function serializarRegistrosFirebase() {
+            try {
+                return JSON.parse(JSON.stringify(Array.isArray(registros) ? registros : []));
+            } catch (e) {
+                console.error('Falha ao serializar registros para Firebase:', e);
+                return [];
+            }
+        }
+
+        async function salvarDadosFirebase(uid) {
+            if (!firebaseReady || !uid) return;
+            const payload = {
+                uid,
+                registros: serializarRegistrosFirebase(),
+                learningMap: JSON.parse(JSON.stringify(learningMap || {})),
+                totalRegistros: Array.isArray(registros) ? registros.length : 0,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+            await getFirebaseFinanceRef(uid).set(payload, { merge: true });
+        }
+
+        async function carregarDadosFirebase(user) {
+            if (!firebaseReady || !user) return false;
+            const snap = await getFirebaseFinanceRef(user.uid).get();
+
+            if (snap.exists) {
+                const data = snap.data() || {};
+                if (Array.isArray(data.registros)) {
+                    registros = data.registros;
+                    try { salvarDB(); } catch (e) { console.error('Falha ao espelhar registros locais:', e); }
+                }
+                if (data.learningMap && typeof data.learningMap === 'object') {
+                    learningMap = data.learningMap || {};
+                    try { localStorage.setItem('ziro_learning', JSON.stringify(learningMap)); } catch (e) {}
+                }
+                return true;
+            }
+
+            if ((Array.isArray(registros) && registros.length) || (learningMap && Object.keys(learningMap).length)) {
+                await salvarDadosFirebase(user.uid);
+            }
+            return false;
+        }
+
 
         async function salvarPerfilFirebase(uid) {
             if (!firebaseReady || !uid) return;
@@ -2946,6 +2998,7 @@ window.themeCatalog = window.themeCatalog || {
                     sessionStorage.setItem('isLoggedIn', 'true');
                     try {
                         await carregarPerfilFirebase(user);
+                        await carregarDadosFirebase(user);
                         await persistirSessaoFirebase(user);
                         limparEstadoGoogleRedirect();
                     } catch (e) {
@@ -5682,6 +5735,9 @@ window.commitVault = function(id, dataISO, valor, bancoInferido, catInferida) {
     if(!learningMap) learningMap = {};
     learningMap[descInput.toUpperCase()] = tipoInput;
     localStorage.setItem('ziro_learning', JSON.stringify(learningMap));
+    if (currentFirebaseUser?.uid) {
+        salvarDadosFirebase(currentFirebaseUser.uid).catch(err => console.error('Falha ao sincronizar aprendizado no Firebase:', err));
+    }
     
     if(tipoInput === 'Receita' && valor >= 1000 && appConfig && appConfig.metaMensal > 0) {
         let suggest = (valor * 0.20).toFixed(2);
