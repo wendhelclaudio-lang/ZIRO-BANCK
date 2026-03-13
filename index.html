@@ -3267,17 +3267,24 @@ async function processarRedirectGoogle() {
             provider.setCustomParameters({ prompt: 'select_account' });
             try {
                 const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-                const isMobile = /android|iphone|ipad|ipod/i.test(navigator.userAgent);
-                if (isStandalone || isMobile) {
+                // Em navegador comum (inclusive celular), prioriza popup.
+                // Redirect fica só para app instalado/standalone ou fallback real.
+                if (isStandalone) {
                     marcarEstadoGoogleRedirect();
                     showToast("Abrindo Google para autenticação...", "success");
                     setTimeout(() => { try { firebase.auth().signInWithRedirect(provider); } catch(e) { console.error(e); } }, 80);
                     return;
                 }
+
                 const cred = await firebase.auth().signInWithPopup(provider);
-                await persistirSessaoFirebase(cred.user);
-                limparEstadoGoogleRedirect();
-                showToast("Login com Google realizado com sucesso!", "success");
+                if (cred && cred.user) {
+                    await persistirSessaoFirebase(cred.user);
+                    await carregarPerfilFirebase(cred.user);
+                    limparEstadoGoogleRedirect();
+                    showToast("Login com Google realizado com sucesso!", "success");
+                    return;
+                }
+                showToast("Não foi possível concluir o login com Google.", "error");
             } catch (e) {
                 console.error(e);
                 if (['auth/popup-blocked','auth/popup-closed-by-user','auth/cancelled-popup-request','auth/operation-not-supported-in-this-environment'].includes(e?.code)) {
@@ -3293,6 +3300,8 @@ async function processarRedirectGoogle() {
                     ? 'Domínio não autorizado no Firebase.'
                     : e?.code === 'auth/account-exists-with-different-credential'
                     ? 'Este e-mail já usa outro método de login.'
+                    : e?.message
+                    ? ('Google: ' + e.message)
                     : 'Não foi possível entrar com Google.';
                 showToast(msg, "error");
             }
