@@ -167,10 +167,10 @@
 
         /* TELA DE BLOQUEIO */
         #lock-screen { position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%; background: rgba(3, 7, 18, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 99999;
+            top: 0; left: 0; width: 100%; height: 100%; background: #030712; backdrop-filter: none; -webkit-backdrop-filter: none; z-index: 99999;
             display: flex; justify-content: center; align-items: center; padding: 20px; transition: opacity 0.5s ease, visibility 0.5s;
         }
-        [data-theme="light"] #lock-screen, [data-theme="santander"] #lock-screen, [data-theme="itau"] #lock-screen, [data-theme="bradesco"] #lock-screen, [data-theme="nubank"] #lock-screen { background: rgba(255, 255, 255, 0.85);
+        [data-theme="light"] #lock-screen, [data-theme="santander"] #lock-screen, [data-theme="itau"] #lock-screen, [data-theme="bradesco"] #lock-screen, [data-theme="nubank"] #lock-screen { background: #f8fbff;
         }
         .login-card { background: var(--card); border: 1px solid var(--border); border-radius: 28px;
             padding: 40px 30px; width: 100%; max-width: 380px; box-shadow: 0 30px 60px rgba(0,0,0,0.4); display: flex; flex-direction: column; align-items: center; position: relative;
@@ -2931,7 +2931,10 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
                 if (user) {
                     sessionStorage.setItem('isLoggedIn', 'true');
                     try {
+                        await carregarPerfilFirebase(user);
                         await persistirSessaoFirebase(user);
+                        limparEstadoGoogleRedirect();
+                        checkAppSecurity();
                     } catch (e) {
                         console.error('Falha ao sincronizar sessão Firebase:', e);
                     }
@@ -3210,24 +3213,45 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
             preencherEmailLogin(appConfig.email || '');
         }
 
-        async function processarRedirectGoogle() {
+        
+        function limparEstadoGoogleRedirect() {
+            try { localStorage.removeItem('googleRedirectPending'); } catch (e) {}
+        }
+
+        function marcarEstadoGoogleRedirect() {
+            try { localStorage.setItem('googleRedirectPending', '1'); } catch (e) {}
+        }
+
+async function processarRedirectGoogle() {
             if (!firebaseReady) return;
             try {
                 const result = await firebase.auth().getRedirectResult();
                 if (result && result.user) {
-                    sessionStorage.removeItem('googleRedirectPending');
+                    limparEstadoGoogleRedirect();
                     await persistirSessaoFirebase(result.user);
+                    await carregarPerfilFirebase(result.user);
+                    checkAppSecurity();
                     showToast("Login com Google realizado com sucesso!", "success");
                     return;
                 }
-                if (sessionStorage.getItem('googleRedirectPending') === '1' && firebase.auth().currentUser) {
-                    sessionStorage.removeItem('googleRedirectPending');
-                    await persistirSessaoFirebase(firebase.auth().currentUser);
+
+                const pending = localStorage.getItem('googleRedirectPending') === '1';
+                const current = firebase.auth().currentUser;
+                if (pending && current) {
+                    limparEstadoGoogleRedirect();
+                    await persistirSessaoFirebase(current);
+                    await carregarPerfilFirebase(current);
+                    checkAppSecurity();
                     showToast("Login com Google realizado com sucesso!", "success");
+                    return;
+                }
+
+                if (pending && !current) {
+                    showToast("Selecione uma conta Google para continuar.", "warning");
                 }
             } catch (e) {
                 console.error(e);
-                sessionStorage.removeItem('googleRedirectPending');
+                limparEstadoGoogleRedirect();
                 const msg = e?.code === 'auth/unauthorized-domain'
                     ? 'Domínio não autorizado no Firebase.'
                     : e?.code === 'auth/account-exists-with-different-credential'
@@ -3245,18 +3269,20 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
                 const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
                 const isMobile = /android|iphone|ipad|ipod/i.test(navigator.userAgent);
                 if (isStandalone || isMobile) {
-                    sessionStorage.setItem('googleRedirectPending', '1');
-                    await firebase.auth().signInWithRedirect(provider);
+                    marcarEstadoGoogleRedirect();
+                    showToast("Abrindo Google para autenticação...", "success");
+                    setTimeout(() => { try { firebase.auth().signInWithRedirect(provider); } catch(e) { console.error(e); } }, 80);
                     return;
                 }
                 const cred = await firebase.auth().signInWithPopup(provider);
                 await persistirSessaoFirebase(cred.user);
+                limparEstadoGoogleRedirect();
                 showToast("Login com Google realizado com sucesso!", "success");
             } catch (e) {
                 console.error(e);
                 if (['auth/popup-blocked','auth/popup-closed-by-user','auth/cancelled-popup-request','auth/operation-not-supported-in-this-environment'].includes(e?.code)) {
                     try {
-                        sessionStorage.setItem('googleRedirectPending', '1');
+                        marcarEstadoGoogleRedirect();
                         await firebase.auth().signInWithRedirect(provider);
                         return;
                     } catch (redirectErr) {
