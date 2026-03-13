@@ -5475,32 +5475,6 @@ html[data-theme="light"] #themeOptions .theme-btn[data-theme-option="dark"] .the
 <div><span class="label-mini">Pagas</span><input id="parcelasPagas" min="0" type="number" value="0"/></div>
 </div>
 </div>
-<div class="launch-preview-card" id="launchPreviewCard">
-<div class="launch-preview-top">
-<div>
-<span class="launch-preview-kicker">Prévia do lançamento</span>
-<div class="launch-preview-value" id="launchPreviewValue">R$ 0,00</div>
-</div>
-<div class="launch-preview-status pendente" id="launchPreviewStatus">
-<i class="fa-solid fa-clock"></i>
-<span>Pendente</span>
-</div>
-</div>
-<div class="launch-preview-grid">
-<div class="launch-preview-mini">
-<span>Tipo</span>
-<strong id="launchPreviewType">Salário</strong>
-</div>
-<div class="launch-preview-mini">
-<span>Quando</span>
-<strong id="launchPreviewDate">--/--/----</strong>
-</div>
-<div class="launch-preview-mini">
-<span>Origem</span>
-<strong id="launchPreviewOrigin">Pix</strong>
-</div>
-</div>
-</div>
 <div class="premium-dropzone" onclick="document.getElementById('comprovanteInput').click()">
 <input accept="image/*,.pdf" id="comprovanteInput" onchange="handleComprovante(event)" style="display: none;" type="file"/>
 <div class="dropzone-content">
@@ -10383,6 +10357,8 @@ function exportarDadosCSV() {
         if(statusIcon) statusIcon.className = status === 'Pago' ? 'fa-solid fa-circle-check' : 'fa-solid fa-clock';
     }
     function bindPreview(){
+        const card = document.getElementById('launchPreviewCard');
+        if(!card) return;
         ['tipo','submenu','banco','formaRecebimento','desc','valor','data','status0','status1'].forEach(function(id){
             const el = document.getElementById(id);
             if(!el) return;
