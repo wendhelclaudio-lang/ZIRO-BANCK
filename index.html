@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-<title>MeuCaixa - Comando de Ativos</title>
+<title>MeuCaixa - Comando de Ativos • New Layout v8 • Auth v7 • Auth v7</title><!-- auth-firebase-v4-google-redirect-fix -->
 <link href="./manifest.json" rel="manifest"/>
 <meta content="yes" name="apple-mobile-web-app-capable"/>
 <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
@@ -21,6 +21,9 @@
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 <style>
         /* VARIÁVEIS DE TEMAS */
         :root {
@@ -164,10 +167,10 @@
 
         /* TELA DE BLOQUEIO */
         #lock-screen { position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%; background: rgba(3, 7, 18, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 99999;
+            top: 0; left: 0; width: 100%; height: 100%; background: #030712; backdrop-filter: none; -webkit-backdrop-filter: none; z-index: 99999;
             display: flex; justify-content: center; align-items: center; padding: 20px; transition: opacity 0.5s ease, visibility 0.5s;
         }
-        [data-theme="light"] #lock-screen, [data-theme="santander"] #lock-screen, [data-theme="itau"] #lock-screen, [data-theme="bradesco"] #lock-screen, [data-theme="nubank"] #lock-screen { background: rgba(255, 255, 255, 0.85);
+        [data-theme="light"] #lock-screen, [data-theme="santander"] #lock-screen, [data-theme="itau"] #lock-screen, [data-theme="bradesco"] #lock-screen, [data-theme="nubank"] #lock-screen { background: #f8fbff;
         }
         .login-card { background: var(--card); border: 1px solid var(--border); border-radius: 28px;
             padding: 40px 30px; width: 100%; max-width: 380px; box-shadow: 0 30px 60px rgba(0,0,0,0.4); display: flex; flex-direction: column; align-items: center; position: relative;
@@ -1936,7 +1939,240 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
             .pdf-mode-modal { max-width: 96vw; }
         }
 
+
+
+        .btn-google {
+            width: 100%;
+            background: #ffffff;
+            color: #111827;
+            border: 1px solid rgba(148,163,184,0.35);
+            padding: 14px 16px;
+            border-radius: 16px;
+            font-weight: 800;
+            font-size: 0.95rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0 10px 24px rgba(0,0,0,0.15);
+        }
+        .btn-google i { color: #ea4335; font-size: 1.1rem; }
+
+        .btn-install {
+            width: 100%;
+            background: rgba(255,255,255,0.04);
+            color: var(--text);
+            border: 1px dashed rgba(148,163,184,0.35);
+            padding: 13px 16px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 0.92rem;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 6px;
+        }
+        .btn-install.visible { display:flex; }
+        .auth-status-note {
+            width: 100%;
+            margin-top: 10px;
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            line-height: 1.45;
+        }
+
+        .auth-divider {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin: 8px 0 16px;
+        }
+        .auth-divider::before, .auth-divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+        .auth-link-row {
+            display:flex;
+            gap:10px;
+            width:100%;
+            justify-content:center;
+            flex-wrap:wrap;
+            margin-top: 6px;
+        }
+        .auth-note {
+            width: 100%;
+            font-size: 0.75rem;
+            line-height: 1.5;
+            color: var(--text-muted);
+            text-align: center;
+            margin: 12px 0 0;
+        }
+
+/* ===== Layout refresh v8 ===== */
+:root{
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+html, body{
+  background: #04101d !important;
+}
+body{
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+header{
+  position: relative !important;
+  top: auto !important;
+  z-index: 10 !important;
+  padding: calc(18px + var(--safe-top)) 16px 14px 16px !important;
+  background:
+    radial-gradient(circle at 15% 10%, rgba(0,242,255,0.10), transparent 28%),
+    radial-gradient(circle at 88% 8%, rgba(0,242,255,0.08), transparent 22%),
+    linear-gradient(180deg, rgba(9,18,37,0.98), rgba(7,14,29,0.98)) !important;
+  border-bottom: 1px solid rgba(0,242,255,0.18) !important;
+  box-shadow: 0 18px 32px rgba(0,0,0,0.28) !important;
+}
+.profile-section{
+  gap: 12px !important;
+  min-width: 0;
+}
+.avatar{
+  width: 52px !important;
+  height: 52px !important;
+  border-radius: 18px !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  box-shadow: 0 14px 24px rgba(0,0,0,0.28) !important;
+}
+.user-info span{
+  letter-spacing: .16em !important;
+  font-size: .72rem !important;
+  color: rgba(255,255,255,0.62) !important;
+}
+.user-info strong{
+  font-size: 1.15rem !important;
+  line-height: 1.05 !important;
+  max-width: 34vw;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.top-action-btn{
+  width: 50px !important;
+  height: 50px !important;
+  border-radius: 18px !important;
+  background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.025)) !important;
+  border: 1px solid rgba(255,255,255,0.07) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 12px 20px rgba(0,0,0,0.22) !important;
+}
+.top-action-btn.system-trigger{
+  background: linear-gradient(180deg, rgba(138,244,255,0.18), rgba(138,244,255,0.07)) !important;
+}
+.top-action-btn .btn-label{ display:none !important; }
+
+main{
+  padding: 14px 16px calc(110px + var(--safe-bottom)) 16px !important;
+}
+.month-selector{
+  padding: 8px 0 0 0 !important;
+  margin: 0 0 14px 0 !important;
+  align-items: center !important;
+}
+.month-selector button{
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 18px !important;
+  background: rgba(255,255,255,0.05) !important;
+  border: 1px solid rgba(255,255,255,0.06) !important;
+}
+.month-selector span{
+  font-size: 1.7rem !important;
+  font-weight: 800 !important;
+  letter-spacing: .08em !important;
+  text-align: center;
+  color: #7ff2ff !important;
+  text-transform: uppercase !important;
+}
+.balance-card, .summary-card, .card, .glass-card{
+  border-radius: 26px !important;
+  backdrop-filter: blur(18px) !important;
+  -webkit-backdrop-filter: blur(18px) !important;
+}
+.dashboard-summary, .summary-grid{
+  gap: 14px !important;
+}
+.summary-grid{
+  grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+}
+.summary-card{
+  min-height: 132px !important;
+  padding: 20px 18px !important;
+  background: linear-gradient(180deg, rgba(14,24,45,0.96), rgba(10,18,35,0.96)) !important;
+  border: 1px solid rgba(255,255,255,0.06) !important;
+}
+.summary-card .value{
+  font-size: 1.85rem !important;
+}
+.history-section{
+  margin-top: 20px !important;
+}
+.history-section h3, .history-section-title{
+  font-size: 1.2rem !important;
+  letter-spacing: .12em !important;
+  margin-bottom: 14px !important;
+}
+.search-panel, .search-box, .search-card{
+  border-radius: 28px !important;
+  padding: 18px !important;
+  background: linear-gradient(180deg, rgba(11,23,41,0.98), rgba(8,17,32,0.98)) !important;
+  border: 1px solid rgba(0,242,255,0.28) !important;
+  box-shadow: 0 18px 34px rgba(0,0,0,0.24) !important;
+}
+input, select, textarea{
+  border-radius: 18px !important;
+}
+#floatingButton, .fab, .floating-button, .add-button{
+  bottom: calc(22px + var(--safe-bottom)) !important;
+  right: 18px !important;
+  width: 74px !important;
+  height: 74px !important;
+  border-radius: 24px !important;
+  box-shadow: 0 18px 40px rgba(79,242,255,0.28) !important;
+}
+.sidebar{
+  width: min(88vw, 390px) !important;
+}
+@media (max-width: 640px){
+  .profile-section{ max-width: calc(100% - 178px); }
+  header > div:last-child{ gap: 8px !important; }
+  .top-action-btn{ width: 48px !important; height: 48px !important; }
+  .summary-card{ min-height: 122px !important; }
+}
+
 </style>
+
+<script>
+window.themeCatalog = window.themeCatalog || {
+  dark: { name: 'Modo Escuro Premium', color: '#030712' },
+  light: { name: 'Modo Claro Inteligente', color: '#f8fbff' },
+  nubank: { name: 'Identidade Nubank', color: '#820ad1' },
+  santander: { name: 'Identidade Santander', color: '#ec0000' },
+  itau: { name: 'Identidade Itaú', color: '#ec7000' },
+  bradesco: { name: 'Identidade Bradesco', color: '#cc092f' }
+};
+</script>
+
 </head>
 <body>
 <div id="toast-container"></div>
@@ -1965,23 +2201,23 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 <h2 class="lock-title">Criar Conta</h2>
 <p class="lock-subtitle">Sua jornada financeira começa aqui.</p>
 <div class="input-group"><i class="fa-solid fa-user"></i><input class="lock-input" id="cadNome" placeholder="Como devemos te chamar?" type="text"/></div>
-<div class="input-group"><i class="fa-solid fa-envelope"></i><input class="lock-input" id="cadEmail" placeholder="Seu melhor e-mail" type="email"/></div>
-<div class="input-group"><i class="fa-solid fa-lock"></i><input class="lock-input password" id="cadSenha" onkeypress="if(event.key === 'Enter') efetuarCadastro()" placeholder="Crie uma senha forte" type="password"/></div>
-<button class="btn-login" onclick="efetuarCadastro()">CADASTRAR E ENTRAR</button>
+<div class="input-group"><i class="fa-solid fa-envelope"></i><input autocapitalize="none" autocomplete="email" class="lock-input" id="cadEmail" inputmode="email" placeholder="Seu melhor e-mail" spellcheck="false" type="email"/></div>
+<div class="input-group"><i class="fa-solid fa-lock"></i><input autocapitalize="none" autocomplete="new-password" class="lock-input password" id="cadSenha" onkeypress="if(event.key === 'Enter') efetuarCadastro()" placeholder="Crie uma senha forte" spellcheck="false" type="password"/></div>
+<div class="auth-divider">ou</div><button class="btn-google" onclick="loginGoogle()" type="button"><i class="fa-brands fa-google"></i> Continuar com Google</button><p class="auth-note">Ao criar sua conta por e-mail, enviamos uma verificação para seu Gmail.</p><button class="btn-forgot" onclick="mostrarViewLogin()" type="button">Já tenho conta</button><button class="btn-login" onclick="efetuarCadastro()">CADASTRAR E ENTRAR</button>
 </div>
 <div class="auth-view hidden" id="viewLogin" style="justify-content: center; height: 100%;">
 <h2 class="lock-title" id="txtWelcomeBack">Olá, WENDEL!</h2>
 <p class="lock-subtitle">Que bom ter você de volta.
                 Digite sua senha.</p>
-<div class="input-group"><i class="fa-solid fa-key"></i><input class="lock-input password" id="inputSenha" onkeypress="if(event.key === 'Enter') checkLogin()" placeholder="Sua senha secreta" type="password"/></div>
+<div class="input-group"><i class="fa-solid fa-envelope"></i><input autocapitalize="none" autocomplete="email" class="lock-input" id="inputEmail" inputmode="email" placeholder="Seu e-mail cadastrado" spellcheck="false" type="email"/></div><div class="input-group"><i class="fa-solid fa-key"></i><input autocapitalize="none" autocomplete="current-password" class="lock-input password" id="inputSenha" onkeypress="if(event.key === 'Enter') checkLogin()" placeholder="Sua senha secreta" spellcheck="false" type="password"/></div>
 <button class="btn-login" onclick="checkLogin()">ENTRAR NO MEUCAIXA</button>
-<button class="btn-forgot" onclick="recuperarSenha()">Esqueci minha senha</button>
+<div class="auth-divider">ou</div><button class="btn-google" onclick="loginGoogle()" type="button"><i class="fa-brands fa-google"></i> Entrar com Google</button><div class="auth-link-row"><button class="btn-forgot" onclick="mostrarViewCadastro()" type="button">Criar conta</button><button class="btn-forgot" onclick="reenviarVerificacaoEmail()" type="button">Reenviar verificação</button></div><button class="btn-forgot" onclick="recuperarSenha()">Esqueci minha senha</button><div class="auth-status-note" id="authModeHint">Para usar como aplicativo, instale o MeuCaixa na tela inicial.</div>
 </div>
 <div class="auth-view hidden" id="viewRecuperar">
 <h2 class="lock-title">Recuperar Senha</h2>
-<p class="lock-subtitle">Não se preocupe, vamos resolver isso.</p>
+<p class="lock-subtitle">Enviaremos um link oficial de redefinição para o seu Gmail.</p>
 <div class="input-group"><i class="fa-solid fa-envelope"></i><input class="lock-input" id="recEmail" placeholder="Confirme seu e-mail cadastrado" type="email"/></div>
-<button class="btn-login" onclick="enviarCodigoRecuperacao()">ENVIAR CÓDIGO</button>
+<button class="btn-login" onclick="enviarCodigoRecuperacao()">ENVIAR LINK DE RECUPERAÇÃO</button>
 <button class="btn-forgot" onclick="mostrarViewLogin()"><i class="fa-solid fa-arrow-left"></i> Voltar ao Login</button>
 </div>
 </div>
@@ -2018,8 +2254,8 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 <div class="sidebar-profile-card">
 <div class="avatar" id="sidebarAvatar">MC</div>
 <h2 id="sidebarUserName">Usuário</h2>
-<span id="userEmailSidebar">usuario@local</span>
-<div class="security-badge"><i class="fa-solid fa-shield-halved"></i> SEGURO (LOCAL)</div>
+<span id="userEmailSidebar">usuario@firebase</span>
+<div class="security-badge"><i class="fa-solid fa-shield-halved"></i> SEGURO (FIREBASE)</div>
 </div>
 <div class="sidebar-menu">
 <div class="menu-group-title">Sua Conta</div>
@@ -2202,8 +2438,8 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 <div class="pdf-mode-icon"><i class="fa-solid fa-calendar-days"></i></div>
 </div>
 <div class="pdf-mode-actions">
-<button class="pdf-mini-btn primary" type="button" onclick="gerarPDFoficial('simples','mensal')">Simples</button>
-<button class="pdf-mini-btn secondary" type="button" onclick="gerarPDFoficial('detalhado','mensal')">Detalhado</button>
+<button class="pdf-mini-btn primary" onclick="gerarPDFoficial('simples','mensal')" type="button">Simples</button>
+<button class="pdf-mini-btn secondary" onclick="gerarPDFoficial('detalhado','mensal')" type="button">Detalhado</button>
 </div>
 </div>
 <div class="pdf-mode-card">
@@ -2215,8 +2451,8 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 <div class="pdf-mode-icon"><i class="fa-solid fa-calendar"></i></div>
 </div>
 <div class="pdf-mode-actions">
-<button class="pdf-mini-btn primary" type="button" onclick="gerarPDFoficial('simples','anual')">Simples</button>
-<button class="pdf-mini-btn secondary" type="button" onclick="gerarPDFoficial('detalhado','anual')">Detalhado</button>
+<button class="pdf-mini-btn primary" onclick="gerarPDFoficial('simples','anual')" type="button">Simples</button>
+<button class="pdf-mini-btn secondary" onclick="gerarPDFoficial('detalhado','anual')" type="button">Detalhado</button>
 </div>
 </div>
 <div class="pdf-mode-card">
@@ -2228,8 +2464,8 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 <div class="pdf-mode-icon"><i class="fa-solid fa-chart-line"></i></div>
 </div>
 <div class="pdf-mode-actions">
-<button class="pdf-mini-btn primary" type="button" onclick="gerarPDFoficial('simples','patrimonio')">Simples</button>
-<button class="pdf-mini-btn secondary" type="button" onclick="gerarPDFoficial('detalhado','patrimonio')">Detalhado</button>
+<button class="pdf-mini-btn primary" onclick="gerarPDFoficial('simples','patrimonio')" type="button">Simples</button>
+<button class="pdf-mini-btn secondary" onclick="gerarPDFoficial('detalhado','patrimonio')" type="button">Detalhado</button>
 </div>
 </div>
 <div class="pdf-mode-card">
@@ -2241,16 +2477,15 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 <div class="pdf-mode-icon"><i class="fa-solid fa-bullseye"></i></div>
 </div>
 <div class="pdf-mode-actions">
-<button class="pdf-mini-btn primary" type="button" onclick="gerarPDFoficial('simples','metas')">Simples</button>
-<button class="pdf-mini-btn secondary" type="button" onclick="gerarPDFoficial('detalhado','metas')">Detalhado</button>
+<button class="pdf-mini-btn primary" onclick="gerarPDFoficial('simples','metas')" type="button">Simples</button>
+<button class="pdf-mini-btn secondary" onclick="gerarPDFoficial('detalhado','metas')" type="button">Detalhado</button>
 </div>
 </div>
 </div>
 <div class="pdf-mode-footer">
-<button class="secondary-btn" type="button" onclick="closePDFModal()">Cancelar</button>
+<button class="secondary-btn" onclick="closePDFModal()" type="button">Cancelar</button>
 </div>
 </div>
-
 <div class="modal modal-small system-data-modal" id="modalSystemData">
 <div class="system-data-modal-inner">
 <div class="system-data-head">
@@ -2316,7 +2551,7 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 <div id="resumoConteudo"></div>
 </div>
 <span class="label-mini">Tipo</span>
-<select id="tipo" onchange="atualizarSubmenu()">
+<select id="tipo" onchange="atualizarSubmenuRobusto()">
 <option value="Receita">Receita</option>
 <option value="Fixo">Gasto Fixo</option>
 <option value="Variavel">Gasto Variável</option>
@@ -2687,7 +2922,7 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
 <p style="font-size: 0.9rem; font-weight: bold; letter-spacing: 1px;">EXTRAINDO DADOS...</p>
 </div>
 <div class="hidden" id="leitorResult">
-<div id="leitorInsightStrip" class="leitor-insight-strip"></div>
+<div class="leitor-insight-strip" id="leitorInsightStrip"></div>
 <div class="grafico-card" style="padding: 15px; margin-bottom: 15px; background: rgba(0,0,0,0.5); border: 1px solid var(--border);">
 <span class="label-mini" style="text-align: center; color: var(--accent);">Fluxo Financeiro Encontrado</span>
 <div style="position: relative; height: 180px; width: 100%;">
@@ -2753,7 +2988,7 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
         let appConfig = {
             nome: savedConfig.nome || null,
             email: savedConfig.email || null,
-            senhaHash: savedConfig.senhaHash || null,
+            senhaHash: null,
             moeda: savedConfig.moeda || "R$",
             metaMensal: parseFloat(savedConfig.metaMensal) || 0,
             metaAcumulado: parseFloat(savedConfig.metaAcumulado) || 0,
@@ -2762,6 +2997,107 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
             descMeta: savedConfig.descMeta || "",
             fotoPerfil: savedConfig.fotoPerfil || null
         };
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAx7xUVHeAaxjLVpOmf3Lb71NFC53oH3LQ",
+            authDomain: "meucaixa-bb371.firebaseapp.com",
+            projectId: "meucaixa-bb371",
+            storageBucket: "meucaixa-bb371.firebasestorage.app",
+            messagingSenderId: "1033413848066",
+            appId: "1:1033413848066:web:682751e3a811edbe7a8b1b"
+        };
+
+        let firebaseReady = false;
+        let firebaseDb = null;
+        let currentFirebaseUser = null;
+        let authResolved = false;
+
+        try {
+            if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+            firebaseDb = firebase.firestore();
+            firebaseReady = true;
+        } catch (e) {
+            console.error('Falha ao iniciar Firebase:', e);
+        }
+
+        function getFirebaseProfileRef(uid) {
+            return firebaseDb.collection('usuarios').doc(uid).collection('perfil').doc('dados');
+        }
+
+        function getFirebaseConfigRef(uid) {
+            return firebaseDb.collection('usuarios').doc(uid).collection('configuracoes').doc('app');
+        }
+
+        async function salvarPerfilFirebase(uid) {
+            if (!firebaseReady || !uid) return;
+            const perfilPayload = {
+                uid,
+                nome: appConfig.nome || '',
+                email: appConfig.email || '',
+                fotoPerfil: appConfig.fotoPerfil || null,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+            const configPayload = {
+                uid,
+                moeda: appConfig.moeda || 'R$',
+                metaMensal: Number(appConfig.metaMensal) || 0,
+                metaAcumulado: Number(appConfig.metaAcumulado) || 0,
+                tipoMeta: appConfig.tipoMeta || 'reserva',
+                periodoMeta: appConfig.periodoMeta || 'Mensal',
+                descMeta: appConfig.descMeta || '',
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+            await getFirebaseProfileRef(uid).set(perfilPayload, { merge: true });
+            await getFirebaseConfigRef(uid).set(configPayload, { merge: true });
+        }
+
+        async function carregarPerfilFirebase(user) {
+            if (!firebaseReady || !user) return;
+            const perfilSnap = await getFirebaseProfileRef(user.uid).get();
+            const configSnap = await getFirebaseConfigRef(user.uid).get();
+
+            if (perfilSnap.exists) {
+                const perfil = perfilSnap.data() || {};
+                appConfig.nome = (perfil.nome || appConfig.nome || user.displayName || '').toUpperCase() || null;
+                appConfig.email = (perfil.email || appConfig.email || user.email || '').toLowerCase() || null;
+                appConfig.fotoPerfil = perfil.fotoPerfil || appConfig.fotoPerfil || user.photoURL || null;
+            } else {
+                appConfig.nome = (appConfig.nome || user.displayName || '').toUpperCase() || null;
+                appConfig.email = (appConfig.email || user.email || '').toLowerCase() || null;
+            }
+
+            if (configSnap.exists) {
+                const cfg = configSnap.data() || {};
+                appConfig.moeda = cfg.moeda || appConfig.moeda || 'R$';
+                appConfig.metaMensal = Number(cfg.metaMensal ?? appConfig.metaMensal ?? 0);
+                appConfig.metaAcumulado = Number(cfg.metaAcumulado ?? appConfig.metaAcumulado ?? 0);
+                appConfig.tipoMeta = cfg.tipoMeta || appConfig.tipoMeta || 'reserva';
+                appConfig.periodoMeta = cfg.periodoMeta || appConfig.periodoMeta || 'Mensal';
+                appConfig.descMeta = cfg.descMeta || appConfig.descMeta || '';
+            }
+            salvarConfig();
+        }
+
+        if (firebaseReady) {
+            firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(console.error);
+            firebase.auth().onAuthStateChanged(async (user) => {
+                currentFirebaseUser = user || null;
+                authResolved = true;
+                if (user) {
+                    sessionStorage.setItem('isLoggedIn', 'true');
+                    try {
+                        await carregarPerfilFirebase(user);
+                        await persistirSessaoFirebase(user);
+                        limparEstadoGoogleRedirect();
+                    } catch (e) {
+                        console.error('Falha ao sincronizar sessão Firebase:', e);
+                    }
+                } else {
+                    sessionStorage.removeItem('isLoggedIn');
+                }
+                checkAppSecurity();
+            });
+        }
 
         // SINTETIZADOR DE ÁUDIO POR BANCO
         function playBankSound(bankName) {
@@ -2896,111 +3232,392 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
         }
 
         function checkAppSecurity() {
-            if(!appConfig.email || !appConfig.senhaHash) {
-                document.getElementById('lock-screen')?.classList.remove('hidden');
+            const lock = document.getElementById('lock-screen');
+            const hadSession = sessionStorage.getItem('isLoggedIn') === 'true';
+
+            if (!authResolved && hadSession) {
+                lock?.classList.add('hidden');
+                return;
+            }
+
+            if (currentFirebaseUser && (hadSession || authResolved)) {
+                lock?.classList.add('hidden');
+                return;
+            }
+
+            lock?.classList.remove('hidden');
+            const hasKnownAccount = !!appConfig.email;
+
+            if (!hasKnownAccount) {
                 document.getElementById('viewCadastro')?.classList.remove('hidden');
                 document.getElementById('viewLogin')?.classList.add('hidden');
-            } else if(!sessionStorage.getItem('isLoggedIn')) {
-                document.getElementById('lock-screen')?.classList.remove('hidden');
+                document.getElementById('viewRecuperar')?.classList.add('hidden');
+            } else {
                 document.getElementById('viewLogin')?.classList.remove('hidden');
                 document.getElementById('viewCadastro')?.classList.add('hidden');
-                
+                document.getElementById('viewRecuperar')?.classList.add('hidden');
+
                 const welcome = document.getElementById('txtWelcomeBack');
                 if (welcome) welcome.innerText = `Olá, ${(appConfig.nome || 'Usuário').split(' ')[0]}!`;
-                
+
                 const av = document.getElementById('loginAvatar');
                 if (av) {
-                    if (appConfig.fotoPerfil) { av.style.backgroundImage = `url(${appConfig.fotoPerfil})`;
-                    av.innerHTML = ""; } 
-                    else { av.style.backgroundImage = "none";
-                    av.innerHTML = '<i class="fa-solid fa-fingerprint"></i>'; }
+                    if (appConfig.fotoPerfil) {
+                        av.style.backgroundImage = `url(${appConfig.fotoPerfil})`;
+                        av.innerHTML = "";
+                    } else {
+                        av.style.backgroundImage = "none";
+                        av.innerHTML = '<i class="fa-solid fa-fingerprint"></i>';
+                    }
                 }
-            } else {
-                document.getElementById('lock-screen')?.classList.add('hidden');
+
+                preencherEmailLogin(appConfig.email || '');
             }
         }
 
-        function efetuarCadastro() {
-            const nome = document.getElementById('cadNome')?.value.trim();
-            const email = document.getElementById('cadEmail')?.value.trim();
-            const senha = document.getElementById('cadSenha')?.value.trim();
-
-            if(!nome || !email || !senha) return showToast("Preencha todos os campos!", "error");
-            appConfig.nome = nome.toUpperCase();
-            appConfig.email = email.toLowerCase();
-            appConfig.senhaHash = senha;
-            
-            sessionStorage.setItem('isLoggedIn', 'true');
-            document.getElementById('lock-screen')?.classList.add('hidden');
-            
-            salvarConfig(); 
-            showToast("Conta criada com sucesso!", "success");
+        function mostrarViewCadastro() {
+            document.getElementById('viewLogin')?.classList.add('hidden');
+            document.getElementById('viewRecuperar')?.classList.add('hidden');
+            document.getElementById('viewCadastro')?.classList.remove('hidden');
         }
 
-        function checkLogin() {
-            const input = document.getElementById('inputSenha')?.value;
-            if(input === appConfig.senhaHash) {
-                sessionStorage.setItem('isLoggedIn', 'true');
-                document.getElementById('lock-screen')?.classList.add('hidden');
-                if (document.getElementById('inputSenha')) document.getElementById('inputSenha').value = "";
-                carregarConfig();
-                renderizar();
-                
-                if (sessionStorage.getItem('hasPendingAlert') === 'true') {
+        function prepararTelaAuth(user = null) {
+            const lock = document.getElementById('lock-screen');
+            if (lock) lock.classList.remove('hidden');
+
+            const loginView = document.getElementById('viewLogin');
+            const cadView = document.getElementById('viewCadastro');
+            const recView = document.getElementById('viewRecuperar');
+            recView?.classList.add('hidden');
+
+            const knownEmail = sanitizeEmail(user?.email || appConfig.email || '');
+            const knownName = (user?.displayName || appConfig.nome || 'Usuário').trim();
+            const welcome = document.getElementById('txtWelcomeBack');
+            if (welcome) welcome.innerText = `Olá, ${knownName.split(' ')[0]}!`;
+
+            preencherEmailLogin(knownEmail);
+
+            const av = document.getElementById('loginAvatar');
+            if (av) {
+                const photo = user?.photoURL || appConfig.fotoPerfil;
+                if (photo) {
+                    av.style.backgroundImage = `url(${photo})`;
+                    av.innerHTML = '';
+                } else {
+                    av.style.backgroundImage = 'none';
+                    av.innerHTML = '<i class="fa-solid fa-fingerprint"></i>';
+                }
+            }
+
+            if (knownEmail) {
+                loginView?.classList.remove('hidden');
+                cadView?.classList.add('hidden');
+            } else {
+                loginView?.classList.add('hidden');
+                cadView?.classList.remove('hidden');
+            }
+        }
+
+        
+        let deferredInstallPrompt = null;
+
+        function updateInstallButtons() {
+            const canInstall = !!deferredInstallPrompt && !window.matchMedia('(display-mode: standalone)').matches && !window.navigator.standalone;
+            document.getElementById('btnInstallLogin')?.classList.toggle('visible', canInstall);
+            document.getElementById('btnInstallCadastro')?.classList.toggle('visible', canInstall);
+        }
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredInstallPrompt = e;
+            updateInstallButtons();
+        });
+
+        window.addEventListener('appinstalled', () => {
+            deferredInstallPrompt = null;
+            updateInstallButtons();
+        });
+
+        async function instalarApp() {
+            if (!deferredInstallPrompt) {
+                showToast("No navegador, use 'Adicionar à tela inicial' para abrir sem a barra do site.", "warning");
+                return;
+            }
+            deferredInstallPrompt.prompt();
+            try { await deferredInstallPrompt.userChoice; } catch(e) {}
+            deferredInstallPrompt = null;
+            updateInstallButtons();
+        }
+
+        async function persistirSessaoFirebase(credUser) {
+            currentFirebaseUser = credUser || firebase.auth().currentUser || null;
+            if (!currentFirebaseUser) return;
+            appConfig.nome = (currentFirebaseUser.displayName || appConfig.nome || 'Usuário').toUpperCase();
+            appConfig.email = sanitizeEmail(currentFirebaseUser.email || appConfig.email || '');
+            appConfig.fotoPerfil = currentFirebaseUser.photoURL || appConfig.fotoPerfil || null;
+            await salvarPerfilFirebase(currentFirebaseUser.uid);
+            sessionStorage.setItem('isLoggedIn', 'true');
+            document.getElementById('lock-screen')?.classList.add('hidden');
+            salvarConfig();
+            carregarConfig();
+            renderizar();
+            preencherEmailLogin(appConfig.email || '');
+        }
+
+        
+        function limparEstadoGoogleRedirect() {
+            try { localStorage.removeItem('googleRedirectPending'); } catch (e) {}
+        }
+
+        function marcarEstadoGoogleRedirect() {
+            try { localStorage.setItem('googleRedirectPending', '1'); } catch (e) {}
+        }
+        async function limparServiceWorkersAuth() {
+            try {
+                if ('serviceWorker' in navigator) {
+                    const regs = await navigator.serviceWorker.getRegistrations();
+                    await Promise.all(regs.map(r => r.unregister().catch(() => {})));
+                }
+            } catch (e) {
+                console.error('Falha ao limpar service workers para auth:', e);
+            }
+        }
+
+
+async function processarRedirectGoogle() {
+            if (!firebaseReady) return;
+            try {
+                const result = await firebase.auth().getRedirectResult();
+                if (result && result.user) {
+                    limparEstadoGoogleRedirect();
+                    await persistirSessaoFirebase(result.user);
+                    await carregarPerfilFirebase(result.user);
+                    checkAppSecurity();
+                    showToast("Login com Google realizado com sucesso!", "success");
+                    return;
+                }
+
+                const pending = localStorage.getItem('googleRedirectPending') === '1';
+                const current = firebase.auth().currentUser;
+                if (pending && current) {
+                    limparEstadoGoogleRedirect();
+                    await persistirSessaoFirebase(current);
+                    await carregarPerfilFirebase(current);
+                    checkAppSecurity();
+                    showToast("Login com Google realizado com sucesso!", "success");
+                    return;
+                }
+
+                if (pending && !current) {
+                    showToast("Selecione uma conta Google para continuar.", "warning");
+                }
+            } catch (e) {
+                console.error(e);
+                limparEstadoGoogleRedirect();
+                const msg = e?.code === 'auth/unauthorized-domain'
+                    ? 'Domínio não autorizado no Firebase.'
+                    : e?.code === 'auth/account-exists-with-different-credential'
+                    ? 'Este e-mail já usa outro método de login.'
+                    : 'Não foi possível concluir o login com Google.';
+                showToast(msg, "error");
+            }
+        }
+
+        async function loginGoogle() {
+            if (!firebaseReady) return showToast("Firebase não inicializado.", "error");
+            const provider = new firebase.auth.GoogleAuthProvider();
+            provider.setCustomParameters({ prompt: 'select_account' });
+            try { firebase.auth().languageCode = 'pt-BR'; } catch (e) {}
+
+            try {
+                // Tenta popup primeiro em qualquer ambiente. No mobile, se falhar, cai para redirect.
+                const cred = await firebase.auth().signInWithPopup(provider);
+                if (cred && cred.user) {
+                    await persistirSessaoFirebase(cred.user);
+                    await carregarPerfilFirebase(cred.user);
+                    limparEstadoGoogleRedirect();
+                    showToast("Login com Google realizado com sucesso!", "success");
+                    return;
+                }
+            } catch (e) {
+                console.error('Falha no popup Google:', e);
+                if (!['auth/popup-blocked','auth/popup-closed-by-user','auth/cancelled-popup-request','auth/operation-not-supported-in-this-environment'].includes(e?.code)) {
+                    const msg = e?.code === 'auth/unauthorized-domain'
+                        ? 'Domínio não autorizado no Firebase.'
+                        : e?.code === 'auth/account-exists-with-different-credential'
+                        ? 'Este e-mail já usa outro método de login.'
+                        : e?.message
+                        ? ('Google: ' + e.message)
+                        : 'Não foi possível entrar com Google.';
+                    showToast(msg, "error");
+                    return;
+                }
+            }
+
+            try {
+                marcarEstadoGoogleRedirect();
+                await limparServiceWorkersAuth();
+                showToast("Abrindo Google para autenticação...", "success");
+                setTimeout(() => {
+                    firebase.auth().signInWithRedirect(provider).catch(err => {
+                        console.error('Falha no redirect Google:', err);
+                        limparEstadoGoogleRedirect();
+                        showToast(err?.message ? ('Google: ' + err.message) : 'Não foi possível entrar com Google.', "error");
+                    });
+                }, 120);
+                return;
+            } catch (redirectErr) {
+                console.error(redirectErr);
+                limparEstadoGoogleRedirect();
+                showToast(redirectErr?.message ? ('Google: ' + redirectErr.message) : 'Não foi possível entrar com Google.', "error");
+            }
+        }
+
+        async function efetuarCadastro() {
+            const nome = document.getElementById('cadNome')?.value.trim();
+            const email = sanitizeEmail(document.getElementById('cadEmail')?.value);
+            const senha = document.getElementById('cadSenha')?.value.trim();
+
+            if (!nome || !email || !senha) return showToast("Preencha todos os campos!", "error");
+            if (senha.length < 8) return showToast("Use uma senha com pelo menos 8 caracteres.", "warning");
+            if (!firebaseReady) return showToast("Firebase não inicializado.", "error");
+
+            try {
+                const cred = await firebase.auth().createUserWithEmailAndPassword(email, senha);
+                if (cred.user) {
+                    await cred.user.updateProfile({ displayName: nome });
+                    try { await cred.user.sendEmailVerification(); } catch (e) { console.error(e); }
+                    currentFirebaseUser = cred.user;
+                }
+                appConfig.nome = nome.toUpperCase();
+                appConfig.email = email;
+                appConfig.fotoPerfil = null;
+                await persistirSessaoFirebase(cred.user);
+                showToast("Conta criada com sucesso. Enviamos a verificação para seu Gmail.", "success");
+            } catch (e) {
+                console.error(e);
+                const msg = e?.code === 'auth/email-already-in-use'
+                    ? 'Este e-mail já está cadastrado.'
+                    : e?.code === 'auth/weak-password'
+                    ? 'Use uma senha mais forte.'
+                    : 'Não foi possível criar sua conta.';
+                showToast(msg, "error");
+            }
+        }
+
+        async function checkLogin() {
+            const senha = document.getElementById('inputSenha')?.value.trim();
+            const email = sanitizeEmail(document.getElementById('inputEmail')?.value || appConfig.email);
+            if (!email || !senha) return showToast("Informe seu e-mail e senha para entrar.", "error");
+            if (!firebaseReady) return showToast("Firebase não inicializado.", "error");
+
+            try {
+                const cred = await firebase.auth().signInWithEmailAndPassword(email, senha);
+                await carregarPerfilFirebase(cred.user);
+                await persistirSessaoFirebase(cred.user);
+
+                if (!cred.user.emailVerified && cred.user.providerData.some(p => p.providerId === 'password')) {
+                    try { await cred.user.sendEmailVerification(); } catch (e) { console.error(e); }
+                    showToast("Entrou com sucesso. Também reenviamos a verificação para seu Gmail.", "warning");
+                } else if (sessionStorage.getItem('hasPendingAlert') === 'true') {
                     playNotificationSound();
                     showToast("Você tem notificações na Central de Alertas!", "warning");
                 } else {
-                    showToast(`Acesso Liberado!`, "success");
+                    showToast("Acesso liberado!", "success");
                 }
-            } else {
-                showToast("Senha Incorreta", "error");
+                if (document.getElementById('inputSenha')) document.getElementById('inputSenha').value = "";
+            } catch (e) {
+                console.error(e);
+                showToast("E-mail ou senha incorretos.", "error");
                 if (document.getElementById('inputSenha')) document.getElementById('inputSenha').value = "";
             }
         }
 
         function recuperarSenha() {
             document.getElementById('viewLogin')?.classList.add('hidden');
+            document.getElementById('viewCadastro')?.classList.add('hidden');
             document.getElementById('viewRecuperar')?.classList.remove('hidden');
+            const loginEmail = document.getElementById('inputEmail')?.value || appConfig.email || '';
+            if (document.getElementById('recEmail') && loginEmail) document.getElementById('recEmail').value = loginEmail;
         }
 
         function mostrarViewLogin() {
             document.getElementById('viewRecuperar')?.classList.add('hidden');
+            document.getElementById('viewCadastro')?.classList.add('hidden');
             document.getElementById('viewLogin')?.classList.remove('hidden');
+            preencherEmailLogin(appConfig.email || '');
         }
 
-        function enviarCodigoRecuperacao() {
-            const email = document.getElementById('recEmail')?.value.trim().toLowerCase();
-            if(email !== appConfig.email) return showToast("E-mail não confere com o cadastrado.", "error");
-            let codigoGerado = Math.floor(100000 + Math.random() * 900000).toString();
-            alert(`[SIMULAÇÃO DE ENVIO PARA O EMAIL]\n\nCódigo de verificação enviado para ${email}:\n\n${codigoGerado}`);
-            let inputCodigo = prompt("Digite o código de 6 dígitos:");
-            if(inputCodigo === codigoGerado) {
-                let novaSenha = prompt("Código correto! Digite sua NOVA senha:");
-                if(novaSenha && novaSenha.trim().length > 0) {
-                    appConfig.senhaHash = novaSenha.trim();
-                    sessionStorage.setItem('isLoggedIn', 'true');
-                    document.getElementById('lock-screen')?.classList.add('hidden');
-                    salvarConfig();
-                    showToast("Senha redefinida com sucesso!", "success");
-                }
-            } else { showToast("Código inválido.", "error");
+        async function reenviarVerificacaoEmail() {
+            if (!firebaseReady) return showToast("Firebase não inicializado.", "error");
+            const user = firebase.auth().currentUser;
+            if (!user) return showToast("Entre na conta para reenviar a verificação.", "warning");
+            try {
+                await user.sendEmailVerification();
+                showToast("Verificação reenviada para seu Gmail.", "success");
+            } catch (e) {
+                console.error(e);
+                showToast("Não foi possível reenviar a verificação.", "error");
             }
         }
 
-        function configurarSenha() {
-            let novaSenha = prompt("Digite a sua NOVA SENHA / PIN para o aplicativo:");
-            if(novaSenha && novaSenha.trim().length > 0) {
-                appConfig.senhaHash = novaSenha.trim();
-                salvarConfig();
+        async function enviarCodigoRecuperacao() {
+            const email = sanitizeEmail(document.getElementById('recEmail')?.value || document.getElementById('inputEmail')?.value);
+            if (!email) return showToast("Digite seu e-mail.", "error");
+            if (!firebaseReady) return showToast("Firebase não inicializado.", "error");
+            try {
+                await firebase.auth().sendPasswordResetEmail(email);
+                showToast("Enviamos o link de recuperação para seu Gmail.", "success");
+                preencherEmailLogin(email);
+                mostrarViewLogin();
+            } catch (e) {
+                console.error(e);
+                showToast("Não foi possível enviar o e-mail de recuperação.", "error");
+            }
+        }
+
+        async function configurarSenha() {
+            if (!firebaseReady || !currentFirebaseUser) return showToast("Faça login novamente para alterar a senha.", "error");
+
+            const providerIds = (currentFirebaseUser.providerData || []).map(p => p.providerId);
+            if (!providerIds.includes('password')) {
+                return showToast("Sua conta usa Google. Para trocar a senha do Google, faça isso na sua conta Google.", "warning");
+            }
+
+            const senhaAtual = prompt("Digite sua senha atual:");
+            if (!senhaAtual) return;
+
+            let novaSenha = prompt("Digite a sua NOVA SENHA:");
+            if (!novaSenha || !novaSenha.trim()) return;
+            novaSenha = novaSenha.trim();
+            if (novaSenha.length < 8) return showToast("Use pelo menos 8 caracteres na nova senha.", "warning");
+
+            try {
+                const credential = firebase.auth.EmailAuthProvider.credential(currentFirebaseUser.email, senhaAtual.trim());
+                await currentFirebaseUser.reauthenticateWithCredential(credential);
+                await currentFirebaseUser.updatePassword(novaSenha);
                 showToast("Senha alterada com sucesso!", "success");
                 closeAll();
+            } catch (e) {
+                console.error(e);
+                const msg = e?.code === 'auth/wrong-password'
+                    ? 'A senha atual está incorreta.'
+                    : 'Por segurança, entre novamente antes de trocar a senha.';
+                showToast(msg, "warning");
             }
         }
 
-        function sairApp() { sessionStorage.removeItem('isLoggedIn');
-            location.reload(); }
+        async function sairApp() {
+            sessionStorage.removeItem('isLoggedIn');
+            try {
+                if (firebaseReady) await firebase.auth().signOut();
+            } catch (e) {
+                console.error(e);
+            }
+            location.reload();
+        }
 
-        const themeCatalog = {
+        var themeCatalog = window.themeCatalog || {
             dark: { name: 'Modo Escuro Premium', color: '#030712' },
             light: { name: 'Modo Claro Inteligente', color: '#f8fbff' },
             nubank: { name: 'Identidade Nubank', color: '#820ad1' },
@@ -3008,25 +3625,51 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
             itau: { name: 'Identidade Itaú', color: '#ec7000' },
             bradesco: { name: 'Identidade Bradesco', color: '#cc092f' }
         };
+        window.themeCatalog = themeCatalog;
+        function getThemeCatalogSafe() {
+            const fallback = {
+                dark: { name: 'Modo Escuro Premium', color: '#030712' },
+                light: { name: 'Modo Claro Inteligente', color: '#f8fbff' },
+                nubank: { name: 'Identidade Nubank', color: '#820ad1' },
+                santander: { name: 'Identidade Santander', color: '#ec0000' },
+                itau: { name: 'Identidade Itaú', color: '#ec7000' },
+                bradesco: { name: 'Identidade Bradesco', color: '#cc092f' }
+            };
+            if (!window.themeCatalog) window.themeCatalog = fallback;
+            if (!window.themeCatalog.dark) window.themeCatalog.dark = fallback.dark;
+            return window.themeCatalog;
+        }
         function applyThemeMeta(theme) {
+            const catalog = getThemeCatalogSafe();
             const metaTheme = document.querySelector('meta[name="theme-color"]');
-            if (metaTheme) metaTheme.setAttribute('content', (themeCatalog[theme] || themeCatalog.dark).color);
+            const entry = catalog[theme] || catalog.dark;
+            if (metaTheme && entry && entry.color) metaTheme.setAttribute('content', entry.color);
         }
         function syncThemeSelector() {
+            const catalog = getThemeCatalogSafe();
             const activeTheme = document.documentElement.getAttribute('data-theme') || 'dark';
             document.querySelectorAll('[data-theme-option]').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.themeOption === activeTheme);
             });
             const currentLabel = document.getElementById('themeCurrentLabel');
-            if (currentLabel) currentLabel.innerText = (themeCatalog[activeTheme] || themeCatalog.dark).name;
+            const entry = catalog[activeTheme] || catalog.dark;
+            if (currentLabel && entry) currentLabel.innerText = entry.name;
             applyThemeMeta(activeTheme);
         }
         function checkTheme() {
+            getThemeCatalogSafe();
             const savedTheme = localStorage.getItem('meucaixa_theme') || 'dark';
             document.documentElement.setAttribute('data-theme', savedTheme);
             applyThemeMeta(savedTheme);
         }
         checkTheme();
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => { try { processarRedirectGoogle(); } catch (e) { console.error('Falha no redirect do Google:', e); } }, 30);
+            setTimeout(() => { try { atualizarSubmenuRobusto(); } catch (e) { console.error('Falha ao inicializar categorias:', e); } }, 60);
+        });
+        window.addEventListener('focus', () => {
+            setTimeout(() => { try { processarRedirectGoogle(); } catch (e) { console.error('Falha no redirect do Google:', e); } }, 120);
+        });
         function mudarTema(tema) {
             document.documentElement.setAttribute('data-theme', tema);
             localStorage.setItem('meucaixa_theme', tema);
@@ -3035,7 +3678,15 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
             renderizar();
         }
 
-        function salvarConfig() { localStorage.setItem('meucaixa_config', JSON.stringify(appConfig)); carregarConfig(); syncThemeSelector(); renderizar();
+        function salvarConfig() {
+            const configToSave = { ...appConfig, senhaHash: null, senhaSalt: null, authVersion: null, passwordUpdatedAt: null };
+            localStorage.setItem('meucaixa_config', JSON.stringify(configToSave));
+            carregarConfig();
+            syncThemeSelector();
+            renderizar();
+            if (currentFirebaseUser) {
+                salvarPerfilFirebase(currentFirebaseUser.uid).catch(err => console.error('Falha ao sincronizar config no Firebase:', err));
+            }
         }
 
         function carregarConfig() {
@@ -3043,6 +3694,7 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
             if (document.getElementById('headerUserName')) document.getElementById('headerUserName').innerText = appConfig.nome;
             if (document.getElementById('sidebarUserName')) document.getElementById('sidebarUserName').innerText = appConfig.nome;
             if (document.getElementById('userEmailSidebar')) document.getElementById('userEmailSidebar').innerText = appConfig.email;
+            document.querySelectorAll('.security-badge').forEach(el => el.innerHTML = '<i class="fa-solid fa-shield-halved"></i> SEGURO (FIREBASE)');
             
             let avatares = [document.getElementById('headerAvatar'), document.getElementById('sidebarAvatar')];
             let iniciais = appConfig.nome.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
@@ -4045,17 +4697,35 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
                 resumo?.classList.add('hidden');
                 if (document.getElementById('lblValorMain')) document.getElementById('lblValorMain').innerText = "Valor (R$)";
                 resetForm(); 
-                atualizarSubmenu();
+                atualizarSubmenuRobusto();
             }
         }
         
        
+        function atualizarSubmenuRobusto() {
+            try {
+                const tipoEl = document.getElementById('tipo');
+                if (!tipoEl) return;
+                const t = tipoEl.value || 'Fixo';
+                if (!opcoesSubmenu[t] || !Array.isArray(opcoesSubmenu[t]) || !opcoesSubmenu[t].length) {
+                    tipoEl.value = 'Fixo';
+                }
+                atualizarSubmenu();
+                const sub = document.getElementById('submenu');
+                if (sub && !sub.value && sub.options.length) sub.selectedIndex = 0;
+            } catch (e) {
+                console.error('Falha ao atualizar categorias:', e);
+            }
+        }
+
         function atualizarSubmenu() {
             const t = document.getElementById('tipo')?.value;
             const sub = document.getElementById('submenu'); 
             if (sub && t) {
+                const options = (opcoesSubmenu[t] && opcoesSubmenu[t].length ? opcoesSubmenu[t] : opcoesSubmenu['Fixo']);
                 sub.innerHTML = '';
-                opcoesSubmenu[t].forEach(opt => sub.innerHTML += `<option value="${opt}">${opt}</option>`);
+                options.forEach(opt => sub.innerHTML += `<option value="${opt}">${opt}</option>`);
+                if (!sub.value && sub.options.length) sub.selectedIndex = 0;
                 
                 const isEdit = document.getElementById('editIndex')?.value !== "";
                 const isDivida = t === 'Divida' || t === 'Juros';
@@ -5320,12 +5990,15 @@ function exportarDadosCSV() {
         
         function iniciarApp() {
             carregarConfig();
-            checkAppSecurity(); 
-            renderizar(); 
+            renderizar();
+            setTimeout(() => {
+                if (authResolved || !sessionStorage.getItem('isLoggedIn')) checkAppSecurity();
+            }, 120);
             const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
             const isStandalone = ('standalone' in window.navigator) && window.navigator.standalone;
             if (isIos && !isStandalone) { setTimeout(() => { const prompt = document.getElementById('ios-prompt'); if(prompt) prompt.classList.remove('hidden'); }, 2000);
             }
+            try { atualizarSubmenu(); } catch (e) { console.error('Falha ao iniciar categorias:', e); }
         }
 
         
@@ -5554,6 +6227,9 @@ function exportarDadosCSV() {
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', async () => {
           try {
+            const authPending = localStorage.getItem('googleRedirectPending') === '1';
+            const lockVisible = !document.getElementById('lock-screen')?.classList.contains('hidden');
+            if (authPending || lockVisible) return;
             const registration = await navigator.serviceWorker.register('./sw.js');
             appServiceWorkerRegistration = registration;
 
@@ -5795,7 +6471,6 @@ function exportarDadosCSV() {
     }
 })();
 </script>
-
 <script>
 (function(){
   const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
@@ -5973,5 +6648,6 @@ function exportarDadosCSV() {
 })();
 </script>
 
+<!-- Firebase auth rebuilt v2 -->
 </body>
 </html>
