@@ -5445,17 +5445,39 @@ async function processarRedirectGoogle() {
                 metas: 'Metas'
             };
 
-            const registrosDoMes = registros
-                .filter(r => (r.data || '').startsWith(prefixoMes))
-                .sort((a, b) => new Date(a.data) - new Date(b.data));
+            const ordenarPorData = (lista = []) => [...lista].sort((a, b) => new Date(a?.data || 0) - new Date(b?.data || 0));
+            const normalizarTipoPDF = (tipo) => String(tipo || '').trim().toLowerCase();
+            const valorRegistro = (r) => Math.max(parseFloat(r?.valor) || 0, 0);
+            const valorPagoRegistro = (r) => Math.max(parseFloat(r?.pago) || 0, 0);
+            const valorPagoEfetivo = (r) => Math.min(valorRegistro(r), valorPagoRegistro(r));
 
-            const registrosDoAno = registros
-                .filter(r => (r.data || '').startsWith(`${anoAtual}-`))
-                .sort((a, b) => new Date(a.data) - new Date(b.data));
+            const classificarRegistroPDF = (r = {}) => {
+                const tipo = normalizarTipoPDF(r.tipo);
+                if (tipo === 'receita' || tipo === 'ajuste') return 'entrada';
+                if (tipo === 'reserva') return 'patrimonio';
+                return 'saida';
+            };
 
-            const registrosPatrimonio = registros
-                .filter(r => String(r.tipo || '').toLowerCase() === 'reserva')
-                .sort((a, b) => new Date(a.data) - new Date(b.data));
+            const obterStatusRegistroPDF = (r = {}) => {
+                const valor = valorRegistro(r);
+                const pago = valorPagoEfetivo(r);
+                if (valor <= 0) return 'PENDENTE';
+                if (pago >= valor) return 'PAGO';
+                if (pago > 0) return 'PARCIAL';
+                return 'PENDENTE';
+            };
+
+            const registrosDoMes = ordenarPorData(
+                registros.filter(r => (r.data || '').startsWith(prefixoMes))
+            );
+
+            const registrosDoAno = ordenarPorData(
+                registros.filter(r => (r.data || '').startsWith(`${anoAtual}-`))
+            );
+
+            const registrosPatrimonio = ordenarPorData(
+                registros.filter(r => classificarRegistroPDF(r) === 'patrimonio')
+            );
 
             let registrosBase = registrosDoMes;
             let periodoRelatorio = mesFormatado;
@@ -5470,6 +5492,12 @@ async function processarRedirectGoogle() {
                 registrosBase = [];
                 periodoRelatorio = mesFormatado;
             }
+
+            const colecoesRelatorio = (registrosBase || []).reduce((acc, registro) => {
+                const grupo = classificarRegistroPDF(registro);
+                acc[grupo].push(registro);
+                return acc;
+            }, { entrada: [], saida: [], patrimonio: [] });
 
             showToast(`Gerando ${tipoTitulo[tipoRelatorio] || 'relatório'} ${modo === 'simples' ? 'simples' : 'detalhado'}...`, "success");
 
@@ -5519,23 +5547,31 @@ async function processarRedirectGoogle() {
                 let quantidadeLancamentos = 0;
 
                 (lista || []).forEach((r) => {
-                    const v = parseFloat(r.valor) || 0;
-                    const pagoAtual = parseFloat(r.pago) || 0;
-                    const status = (pagoAtual >= v && v > 0) ? 'PAGO' : 'PENDENTE';
+                    const grupo = classificarRegistroPDF(r);
+                    const valor = valorRegistro(r);
+                    const pago = valorPagoEfetivo(r);
+
                     quantidadeLancamentos += 1;
-                    if (r.tipo === 'Receita' && status === 'PAGO') totalEntradas += v;
-                    if (r.tipo !== 'Receita' && r.tipo !== 'Reserva') totalSaidas += v;
-                    if (r.tipo === 'Reserva') totalPatrimonio += v;
-                    if (status === 'PENDENTE' && r.tipo !== 'Receita') totalPendencias += Math.max(v - pagoAtual, 0);
+
+                    if (grupo === 'entrada') totalEntradas += pago;
+                    if (grupo === 'saida') {
+                        totalSaidas += pago;
+                        totalPendencias += Math.max(valor - pago, 0);
+                    }
+                    if (grupo === 'patrimonio') totalPatrimonio += valor;
                 });
 
                 return { totalEntradas, totalSaidas, totalPatrimonio, totalPendencias, quantidadeLancamentos };
             };
 
-            const desenharListaLancamentos = (lista, tituloSecao = 'Movimentações do período') => {
+            const desenharListaLancamentos = (lista, tituloSecao = 'Movimentações do período', opcoes = {}) => {
+                const { ignorarSeVazio = false } = opcoes;
+
                 if (!lista.length) {
+                    if (ignorarSeVazio || modo === 'simples') return;
+                    addPageIfNeeded(12);
                     pdf.setFontSize(11);
-                    pdf.text(sanitizePdfText('Nenhum lançamento encontrado para este recorte.'), margin, y);
+                    pdf.text(sanitizePdfText(`Nenhum item em ${tituloSecao.toLowerCase()}.`), margin, y);
                     y += 8;
                     return;
                 }
@@ -5549,10 +5585,13 @@ async function processarRedirectGoogle() {
                 y += 7;
 
                 lista.forEach((r, index) => {
-                    let v = parseFloat(r.valor) || 0;
-                    let status = (parseFloat(r.pago) >= v && v > 0) ? 'PAGO' : 'PENDENTE';
+                    const valor = valorRegistro(r);
+                    const pago = valorPagoEfetivo(r);
+                    const pendente = Math.max(valor - pago, 0);
+                    const status = obterStatusRegistroPDF(r);
+                    const grupo = classificarRegistroPDF(r);
 
-                    addPageIfNeeded(26);
+                    addPageIfNeeded(30);
 
                     pdf.setFont('helvetica', 'bold');
                     pdf.setFontSize(11);
@@ -5562,7 +5601,7 @@ async function processarRedirectGoogle() {
 
                     pdf.setFont('helvetica', 'normal');
                     pdf.setFontSize(10);
-                    pdf.text(sanitizePdfText(formatarMoeda(v)), pageWidth - margin, y, { align: 'right' });
+                    pdf.text(sanitizePdfText(formatarMoeda(valor)), pageWidth - margin, y, { align: 'right' });
 
                     y += titleLines.length * 5;
 
@@ -5571,11 +5610,20 @@ async function processarRedirectGoogle() {
                     const banco = r.banco ? `Banco: ${r.banco}` : 'Banco: -';
                     const categoria = r.categoria ? `Categoria: ${r.categoria}` : `Tipo: ${r.tipo || '-'}`;
                     const anexo = r.comprovante ? 'Anexo: Sim' : 'Anexo: -';
+                    const rotuloGrupo = grupo === 'entrada' ? 'Entrada' : (grupo === 'patrimonio' ? 'Patrimônio' : 'Saída');
 
                     pdf.setFontSize(9);
                     pdf.setTextColor(80, 80, 80);
                     writeWrapped(`Lançamento: ${dtLanc}   |   Vencimento: ${dtVenc}`, margin, usableWidth, 4.5);
-                    writeWrapped(`${banco}   |   ${categoria}   |   Status: ${status}   |   ${anexo}`, margin, usableWidth, 4.5);
+                    writeWrapped(`${rotuloGrupo}   |   ${banco}   |   ${categoria}   |   Status: ${status}   |   ${anexo}`, margin, usableWidth, 4.5);
+
+                    if (grupo === 'entrada') {
+                        writeWrapped(`Recebido: ${formatarMoeda(pago)}   |   Previsto: ${formatarMoeda(valor)}`, margin, usableWidth, 4.5);
+                    } else if (grupo === 'patrimonio') {
+                        writeWrapped(`Aporte lançado: ${formatarMoeda(valor)}`, margin, usableWidth, 4.5);
+                    } else {
+                        writeWrapped(`Pago: ${formatarMoeda(pago)}   |   Previsto: ${formatarMoeda(valor)}   |   Em aberto: ${formatarMoeda(pendente)}`, margin, usableWidth, 4.5);
+                    }
 
                     pdf.setTextColor(0, 0, 0);
                     y += 1;
@@ -5653,6 +5701,18 @@ async function processarRedirectGoogle() {
                 } else {
                     const resumo = analisarRegistros(registrosBase);
 
+                    console.info('[MeuCaixa][PDF] Relatório consolidado', {
+                        tipoRelatorio,
+                        modo,
+                        periodoRelatorio,
+                        totais: resumo,
+                        secoes: {
+                            entradas: colecoesRelatorio.entrada.length,
+                            saidas: colecoesRelatorio.saida.length,
+                            patrimonio: colecoesRelatorio.patrimonio.length
+                        }
+                    });
+
                     pdf.setFont('helvetica', 'bold');
                     pdf.setFontSize(12);
                     pdf.text(sanitizePdfText(tipoRelatorio === 'patrimonio' ? 'Resumo patrimonial' : 'Resumo do periodo'), margin, y);
@@ -5661,29 +5721,31 @@ async function processarRedirectGoogle() {
                     pdf.setFontSize(11);
 
                     if (tipoRelatorio !== 'patrimonio') {
-                        pdf.text(sanitizePdfText(`Total Receitas: ${formatarMoeda(resumo.totalEntradas)}`), margin, y); y += 6;
-                        pdf.text(sanitizePdfText(`Total Despesas: ${formatarMoeda(resumo.totalSaidas)}`), margin, y); y += 6;
+                        pdf.text(sanitizePdfText(`Total Receitas liquidadas: ${formatarMoeda(resumo.totalEntradas)}`), margin, y); y += 6;
+                        pdf.text(sanitizePdfText(`Total Saídas liquidadas: ${formatarMoeda(resumo.totalSaidas)}`), margin, y); y += 6;
                         pdf.text(sanitizePdfText(`Saldo apurado: ${formatarMoeda(resumo.totalEntradas - resumo.totalSaidas)}`), margin, y); y += 6;
-                        pdf.text(sanitizePdfText(`Pendencias abertas: ${formatarMoeda(resumo.totalPendencias)}`), margin, y); y += 6;
+                        pdf.text(sanitizePdfText(`Pendências em aberto: ${formatarMoeda(resumo.totalPendencias)}`), margin, y); y += 6;
                     }
 
                     if (tipoRelatorio === 'patrimonio') {
                         const patrimonioAno = registrosPatrimonio
                             .filter(r => (r.data || '').startsWith(`${anoAtual}-`))
-                            .reduce((acc, r) => acc + (parseFloat(r.valor) || 0), 0);
+                            .reduce((acc, r) => acc + valorRegistro(r), 0);
                         pdf.text(sanitizePdfText(`Patrimonio acumulado: ${formatarMoeda(resumo.totalPatrimonio)}`), margin, y); y += 6;
                         pdf.text(sanitizePdfText(`Aportes em ${anoAtual}: ${formatarMoeda(patrimonioAno)}`), margin, y); y += 6;
-                        pdf.text(sanitizePdfText(`Movimentacoes patrimoniais: ${resumo.quantidadeLancamentos}`), margin, y); y += 6;
+                        pdf.text(sanitizePdfText(`Movimentações patrimoniais: ${resumo.quantidadeLancamentos}`), margin, y); y += 6;
                     } else {
-                        pdf.text(sanitizePdfText(`Patrimonio lancado: ${formatarMoeda(resumo.totalPatrimonio)}`), margin, y); y += 6;
-                        pdf.text(sanitizePdfText(`Quantidade de lancamentos: ${resumo.quantidadeLancamentos}`), margin, y); y += 6;
+                        pdf.text(sanitizePdfText(`Patrimônio lançado: ${formatarMoeda(resumo.totalPatrimonio)}`), margin, y); y += 6;
+                        pdf.text(sanitizePdfText(`Quantidade de lançamentos: ${resumo.quantidadeLancamentos}`), margin, y); y += 6;
+                        pdf.text(sanitizePdfText(`Entradas registradas: ${colecoesRelatorio.entrada.length}`), margin, y); y += 6;
+                        pdf.text(sanitizePdfText(`Saídas registradas: ${colecoesRelatorio.saida.length}`), margin, y); y += 6;
                     }
                     y += 2;
 
                     pdf.setFontSize(9.5);
                     pdf.setTextColor(80, 80, 80);
                     const mensagemResumo = {
-                        mensal: 'Leitura mensal pensada para fechamento rápido, acompanhamento do ciclo atual e organização do orçamento.',
+                        mensal: 'Leitura mensal pensada para fechamento rápido, com receitas, saídas, pendências e patrimônio lançados no ciclo atual.',
                         anual: 'Consolidação anual para analisar desempenho, sazonalidade de gastos e evolução financeira ao longo do ano.',
                         patrimonio: 'Visão patrimonial focada na construção de reserva, evolução dos aportes e fortalecimento do caixa.',
                     };
@@ -5691,12 +5753,13 @@ async function processarRedirectGoogle() {
                     pdf.setTextColor(0, 0, 0);
                     y += 4;
 
-                    desenharListaLancamentos(
-                        registrosBase,
-                        tipoRelatorio === 'anual' ? 'Movimentações do ano' :
-                        tipoRelatorio === 'patrimonio' ? 'Movimentações patrimoniais' :
-                        'Movimentações do mês'
-                    );
+                    if (tipoRelatorio === 'patrimonio') {
+                        desenharListaLancamentos(colecoesRelatorio.patrimonio, 'Movimentações patrimoniais');
+                    } else {
+                        desenharListaLancamentos(colecoesRelatorio.entrada, tipoRelatorio === 'anual' ? 'Entradas do ano' : 'Entradas do mês', { ignorarSeVazio: true });
+                        desenharListaLancamentos(colecoesRelatorio.saida, tipoRelatorio === 'anual' ? 'Saídas do ano' : 'Saídas do mês', { ignorarSeVazio: true });
+                        desenharListaLancamentos(colecoesRelatorio.patrimonio, tipoRelatorio === 'anual' ? 'Aportes em patrimônio do ano' : 'Aportes em patrimônio do mês', { ignorarSeVazio: true });
+                    }
                 }
 
                 const nomeArquivo = `Relatorio_MeuCaixa_${tipoSlug[tipoRelatorio] || 'Relatorio'}_${modo === 'simples' ? 'Simples' : 'Detalhado'}_${periodoRelatorio.replace(/[^\wÀ-ÿ-]+/g, '_')}.pdf`;
