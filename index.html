@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-<title>MeuCaixa - Comando de Ativos • Firebase Cloud Save v8</title><!-- auth-firebase-v4-google-redirect-fix -->
+<title>MeuCaixa - Comando de Ativos • Categorias Firebase v9</title><!-- auth-firebase-v4-google-redirect-fix -->
 <link href="./manifest.json" rel="manifest"/>
 <meta content="yes" name="apple-mobile-web-app-capable"/>
 <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
@@ -2837,9 +2837,6 @@ window.themeCatalog = window.themeCatalog || {
             const tx = db.transaction("financeiro", "readwrite");
             const store = tx.objectStore("financeiro");
             store.put(registros, "registros_lista");
-            if (currentFirebaseUser?.uid) {
-                salvarDadosFirebase(currentFirebaseUser.uid).catch(err => console.error('Falha ao sincronizar registros no Firebase:', err));
-            }
         }
         
         let modoFantasma = false, filtroAtual = "Tudo", subFiltro = "Pendente", dataVisualizacao = new Date();
@@ -2890,54 +2887,81 @@ window.themeCatalog = window.themeCatalog || {
             return firebaseDb.collection('usuarios').doc(uid).collection('configuracoes').doc('app');
         }
 
-        function getFirebaseFinanceRef(uid) {
-            return firebaseDb.collection('usuarios').doc(uid).collection('dados').doc('financeiro');
+        function getFirebaseCategoriesRef(uid) {
+            return firebaseDb.collection('usuarios').doc(uid).collection('categorias').doc('dados');
         }
 
-        function serializarRegistrosFirebase() {
+        function normalizarCategoriasFirebase(payload) {
+            const base = {};
+            const source = payload && typeof payload === 'object' ? payload : {};
+            const keys = ['Receita', 'Fixo', 'Variavel', 'Divida', 'Juros', 'Reserva', 'Ajuste', 'AjusteNeg'];
+
+            keys.forEach((key) => {
+                const arr = Array.isArray(source[key]) ? source[key] : [];
+                base[key] = [...new Set(arr.map(v => String(v || '').trim()).filter(Boolean))];
+            });
+
+            return base;
+        }
+
+        function snapshotCategoriasLocais() {
             try {
-                return JSON.parse(JSON.stringify(Array.isArray(registros) ? registros : []));
+                return normalizarCategoriasFirebase(opcoesSubmenu || {});
             } catch (e) {
-                console.error('Falha ao serializar registros para Firebase:', e);
-                return [];
+                console.error('Falha ao capturar categorias locais:', e);
+                return normalizarCategoriasFirebase({});
             }
         }
 
-        async function salvarDadosFirebase(uid) {
+        async function salvarCategoriasFirebase(uid) {
             if (!firebaseReady || !uid) return;
-            const payload = {
+            const categorias = snapshotCategoriasLocais();
+            await getFirebaseCategoriesRef(uid).set({
                 uid,
-                registros: serializarRegistrosFirebase(),
-                learningMap: JSON.parse(JSON.stringify(learningMap || {})),
-                totalRegistros: Array.isArray(registros) ? registros.length : 0,
+                categorias,
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-            };
-            await getFirebaseFinanceRef(uid).set(payload, { merge: true });
+            }, { merge: true });
+            try {
+                localStorage.setItem('meucaixa_categorias', JSON.stringify(categorias));
+            } catch (e) {
+                console.error('Falha ao espelhar categorias localmente:', e);
+            }
         }
 
-        async function carregarDadosFirebase(user) {
+        async function carregarCategoriasFirebase(user) {
             if (!firebaseReady || !user) return false;
-            const snap = await getFirebaseFinanceRef(user.uid).get();
+
+            const ref = getFirebaseCategoriesRef(user.uid);
+            const snap = await ref.get();
 
             if (snap.exists) {
                 const data = snap.data() || {};
-                if (Array.isArray(data.registros)) {
-                    registros = data.registros;
-                    try { salvarDB(); } catch (e) { console.error('Falha ao espelhar registros locais:', e); }
-                }
-                if (data.learningMap && typeof data.learningMap === 'object') {
-                    learningMap = data.learningMap || {};
-                    try { localStorage.setItem('ziro_learning', JSON.stringify(learningMap)); } catch (e) {}
-                }
+                const categorias = normalizarCategoriasFirebase(data.categorias || {});
+                Object.keys(categorias).forEach((key) => {
+                    opcoesSubmenu[key] = categorias[key];
+                });
+                try {
+                    localStorage.setItem('meucaixa_categorias', JSON.stringify(snapshotCategoriasLocais()));
+                } catch (e) {}
+                try { atualizarSubmenuRobusto(); } catch (e) {}
                 return true;
             }
 
-            if ((Array.isArray(registros) && registros.length) || (learningMap && Object.keys(learningMap).length)) {
-                await salvarDadosFirebase(user.uid);
+            const localCategoriasRaw = localStorage.getItem('meucaixa_categorias');
+            if (localCategoriasRaw) {
+                try {
+                    const localCategorias = normalizarCategoriasFirebase(JSON.parse(localCategoriasRaw));
+                    Object.keys(localCategorias).forEach((key) => {
+                        if (localCategorias[key].length) opcoesSubmenu[key] = localCategorias[key];
+                    });
+                } catch (e) {
+                    console.error('Falha ao ler categorias locais:', e);
+                }
             }
+
+            await salvarCategoriasFirebase(user.uid);
             return false;
         }
-
 
         async function salvarPerfilFirebase(uid) {
             if (!firebaseReady || !uid) return;
@@ -2998,7 +3022,7 @@ window.themeCatalog = window.themeCatalog || {
                     sessionStorage.setItem('isLoggedIn', 'true');
                     try {
                         await carregarPerfilFirebase(user);
-                        await carregarDadosFirebase(user);
+                        await carregarCategoriasFirebase(user);
                         await persistirSessaoFirebase(user);
                         limparEstadoGoogleRedirect();
                     } catch (e) {
@@ -3904,6 +3928,18 @@ async function processarRedirectGoogle() {
             "AjusteNeg": ["🏦 Saldo Inicial Negativo", "⚖️ Correção Negativa"]
         };
 
+        try {
+            const categoriasLocais = JSON.parse(localStorage.getItem('meucaixa_categorias') || 'null');
+            if (categoriasLocais && typeof categoriasLocais === 'object') {
+                ['Receita', 'Fixo', 'Variavel', 'Divida', 'Juros', 'Reserva', 'Ajuste', 'AjusteNeg'].forEach((key) => {
+                    if (Array.isArray(categoriasLocais[key]) && categoriasLocais[key].length) {
+                        opcoesSubmenu[key] = [...new Set(categoriasLocais[key].map(v => String(v || '').trim()).filter(Boolean))];
+                    }
+                });
+            }
+        } catch (e) {
+            console.error('Falha ao restaurar categorias locais:', e);
+        }
 
         // CATEGORIAS INTELIGENTES AUTOMÁTICAS
         const SMART_CATEGORY_RULES = [
@@ -5735,9 +5771,6 @@ window.commitVault = function(id, dataISO, valor, bancoInferido, catInferida) {
     if(!learningMap) learningMap = {};
     learningMap[descInput.toUpperCase()] = tipoInput;
     localStorage.setItem('ziro_learning', JSON.stringify(learningMap));
-    if (currentFirebaseUser?.uid) {
-        salvarDadosFirebase(currentFirebaseUser.uid).catch(err => console.error('Falha ao sincronizar aprendizado no Firebase:', err));
-    }
     
     if(tipoInput === 'Receita' && valor >= 1000 && appConfig && appConfig.metaMensal > 0) {
         let suggest = (valor * 0.20).toFixed(2);
