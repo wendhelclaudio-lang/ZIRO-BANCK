@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-<title>MeuCaixa - Comando de Ativos • Stable v7.1 • Auth v7 • Auth v7</title><!-- auth-firebase-v4-google-redirect-fix -->
+<title>MeuCaixa - Comando de Ativos • Auth v7 • Auth v7</title><!-- auth-firebase-v4-google-redirect-fix -->
 <link href="./manifest.json" rel="manifest"/>
 <meta content="yes" name="apple-mobile-web-app-capable"/>
 <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
@@ -3149,7 +3149,7 @@ window.themeCatalog = window.themeCatalog || {
             const recView = document.getElementById('viewRecuperar');
             recView?.classList.add('hidden');
 
-            const knownEmail = (typeof sanitizeEmail==="function"?sanitizeEmail:(v=>String(v||"").trim().toLowerCase()))(user?.email || appConfig.email || '');
+            const knownEmail = sanitizeEmail(user?.email || appConfig.email || '');
             const knownName = (user?.displayName || appConfig.nome || 'Usuário').trim();
             const welcome = document.getElementById('txtWelcomeBack');
             if (welcome) welcome.innerText = `Olá, ${knownName.split(' ')[0]}!`;
@@ -3212,7 +3212,7 @@ window.themeCatalog = window.themeCatalog || {
             currentFirebaseUser = credUser || firebase.auth().currentUser || null;
             if (!currentFirebaseUser) return;
             appConfig.nome = (currentFirebaseUser.displayName || appConfig.nome || 'Usuário').toUpperCase();
-            appConfig.email = (typeof sanitizeEmail==="function"?sanitizeEmail:(v=>String(v||"").trim().toLowerCase()))(currentFirebaseUser.email || appConfig.email || '');
+            appConfig.email = sanitizeEmail(currentFirebaseUser.email || appConfig.email || '');
             appConfig.fotoPerfil = currentFirebaseUser.photoURL || appConfig.fotoPerfil || null;
             await salvarPerfilFirebase(currentFirebaseUser.uid);
             sessionStorage.setItem('isLoggedIn', 'true');
@@ -3282,15 +3282,6 @@ async function processarRedirectGoogle() {
             }
         }
 
-
-        function (typeof sanitizeEmail==="function"?sanitizeEmail:(v=>String(v||"").trim().toLowerCase()))(value) {
-            try {
-                return String(value || '').trim().toLowerCase();
-            } catch (e) {
-                return '';
-            }
-        }
-
         async function loginGoogle() {
             if (!firebaseReady) return showToast("Firebase não inicializado.", "error");
             const provider = new firebase.auth.GoogleAuthProvider();
@@ -3343,7 +3334,7 @@ async function processarRedirectGoogle() {
 
         async function efetuarCadastro() {
             const nome = document.getElementById('cadNome')?.value.trim();
-            const email = (typeof sanitizeEmail==="function"?sanitizeEmail:(v=>String(v||"").trim().toLowerCase()))(document.getElementById('cadEmail')?.value);
+            const email = sanitizeEmail(document.getElementById('cadEmail')?.value);
             const senha = document.getElementById('cadSenha')?.value.trim();
 
             if (!nome || !email || !senha) return showToast("Preencha todos os campos!", "error");
@@ -3375,7 +3366,7 @@ async function processarRedirectGoogle() {
 
         async function checkLogin() {
             const senha = document.getElementById('inputSenha')?.value.trim();
-            const email = (typeof sanitizeEmail==="function"?sanitizeEmail:(v=>String(v||"").trim().toLowerCase()))(document.getElementById('inputEmail')?.value || appConfig.email);
+            const email = sanitizeEmail(document.getElementById('inputEmail')?.value || appConfig.email);
             if (!email || !senha) return showToast("Informe seu e-mail e senha para entrar.", "error");
             if (!firebaseReady) return showToast("Firebase não inicializado.", "error");
 
@@ -3430,7 +3421,7 @@ async function processarRedirectGoogle() {
         }
 
         async function enviarCodigoRecuperacao() {
-            const email = (typeof sanitizeEmail==="function"?sanitizeEmail:(v=>String(v||"").trim().toLowerCase()))(document.getElementById('recEmail')?.value || document.getElementById('inputEmail')?.value);
+            const email = sanitizeEmail(document.getElementById('recEmail')?.value || document.getElementById('inputEmail')?.value);
             if (!email) return showToast("Digite seu e-mail.", "error");
             if (!firebaseReady) return showToast("Firebase não inicializado.", "error");
             try {
