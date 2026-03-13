@@ -2905,6 +2905,29 @@ window.themeCatalog = window.themeCatalog || {
             return result;
         }
 
+        function lerCategoriasLocalSeguro() {
+            try {
+                return JSON.parse(localStorage.getItem('meucaixa_categorias') || 'null') || {};
+            } catch (e) {
+                return {};
+            }
+        }
+
+        function persistirCategoriasLocalSeguro(categorias) {
+            try {
+                localStorage.setItem('meucaixa_categorias', JSON.stringify(normalizarCategoriasPayload(categorias)));
+            } catch (e) {}
+        }
+
+        function categoriasPossuemConteudo(categorias) {
+            const normalized = normalizarCategoriasPayload(categorias);
+            return Object.values(normalized).some(arr => Array.isArray(arr) && arr.length);
+        }
+
+        function categoriasSaoIguais(a, b) {
+            return JSON.stringify(normalizarCategoriasPayload(a)) === JSON.stringify(normalizarCategoriasPayload(b));
+        }
+
         function snapshotCategoriasAtuais() {
             try {
                 return normalizarCategoriasPayload(opcoesSubmenu || {});
@@ -2914,72 +2937,81 @@ window.themeCatalog = window.themeCatalog || {
             }
         }
 
-        function mergeCategoriasSeguro(localCats, cloudCats) {
-            const a = normalizarCategoriasPayload(localCats);
-            const b = normalizarCategoriasPayload(cloudCats);
-            const merged = {};
-            Object.keys(a).forEach((key) => {
-                merged[key] = [...new Set([...(a[key] || []), ...(b[key] || [])])];
+        function mergeCategoriasSeguro(...sources) {
+            const merged = normalizarCategoriasPayload({});
+            sources.forEach((source) => {
+                const normalized = normalizarCategoriasPayload(source);
+                Object.keys(merged).forEach((key) => {
+                    merged[key] = [...new Set([...(merged[key] || []), ...(normalized[key] || [])])];
+                });
             });
             return merged;
         }
 
-        function aplicarCategoriasNoSistema(categorias) {
+        function aplicarCategoriasNoSistema(categorias, options = {}) {
+            const opts = options && typeof options === 'object' ? options : {};
+            const shouldPersistLocal = opts.persistLocal !== false;
+            const shouldRefreshUi = opts.refreshUi !== false;
             const merged = normalizarCategoriasPayload(categorias);
             Object.keys(merged).forEach((key) => {
                 if (merged[key].length) opcoesSubmenu[key] = merged[key];
             });
-            try { localStorage.setItem('meucaixa_categorias', JSON.stringify(snapshotCategoriasAtuais())); } catch (e) {}
-            try { atualizarSubmenuRobusto(); } catch (e) {}
+            if (shouldPersistLocal) persistirCategoriasLocalSeguro(snapshotCategoriasAtuais());
+            if (shouldRefreshUi) {
+                try { atualizarSubmenuRobusto(); } catch (e) {}
+            }
+        }
+
+        async function sincronizarCategoriasFirebaseSeguro(uid) {
+            if (!firebaseReady || !uid) {
+                const fallback = mergeCategoriasSeguro(snapshotCategoriasAtuais(), lerCategoriasLocalSeguro());
+                aplicarCategoriasNoSistema(fallback);
+                return fallback;
+            }
+
+            const localCats = lerCategoriasLocalSeguro();
+            const baseCats = snapshotCategoriasAtuais();
+            let cloudCats = {};
+            let cloudExists = false;
+
+            try {
+                const snap = await getFirebaseCategoriesRef(uid).get();
+                cloudExists = !!snap.exists;
+                cloudCats = ((snap.data() || {}).categorias) || {};
+            } catch (e) {
+                console.error('Falha ao ler categorias do Firebase:', e);
+            }
+
+            const merged = mergeCategoriasSeguro(baseCats, localCats, cloudCats);
+            aplicarCategoriasNoSistema(merged);
+
+            const cloudVazio = !categoriasPossuemConteudo(cloudCats);
+            const precisaSubir = !cloudExists || cloudVazio || !categoriasSaoIguais(cloudCats, merged);
+
+            if (precisaSubir && categoriasPossuemConteudo(merged)) {
+                try {
+                    await getFirebaseCategoriesRef(uid).set({
+                        uid,
+                        categorias: merged,
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    }, { merge: true });
+                } catch (e) {
+                    console.error('Falha ao salvar categorias no Firebase:', e);
+                }
+            }
+
+            return merged;
         }
 
         async function salvarCategoriasFirebase(uid) {
             if (!firebaseReady || !uid) return;
-            const categorias = snapshotCategoriasAtuais();
-            await getFirebaseCategoriesRef(uid).set({
-                uid,
-                categorias,
-                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-            }, { merge: true });
-            try { localStorage.setItem('meucaixa_categorias', JSON.stringify(categorias)); } catch (e) {}
+            return sincronizarCategoriasFirebaseSeguro(uid);
         }
 
         async function carregarCategoriasFirebase(user) {
             if (!firebaseReady || !user) return false;
-
-            let localCats = {};
-            try {
-                localCats = JSON.parse(localStorage.getItem('meucaixa_categorias') || 'null') || {};
-            } catch (e) {
-                localCats = {};
-            }
-
-            const snap = await getFirebaseCategoriesRef(user.uid).get();
-
-            if (snap.exists) {
-                const cloudCats = ((snap.data() || {}).categorias) || {};
-                const merged = mergeCategoriasSeguro(localCats, cloudCats);
-                aplicarCategoriasNoSistema(merged);
-
-                const hasDifference = JSON.stringify(normalizarCategoriasPayload(cloudCats)) !== JSON.stringify(normalizarCategoriasPayload(merged));
-                if (hasDifference) {
-                    await getFirebaseCategoriesRef(user.uid).set({
-                        uid: user.uid,
-                        categorias: merged,
-                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                    }, { merge: true });
-                }
-                return true;
-            }
-
-            const current = mergeCategoriasSeguro(snapshotCategoriasAtuais(), localCats);
-            aplicarCategoriasNoSistema(current);
-            await getFirebaseCategoriesRef(user.uid).set({
-                uid: user.uid,
-                categorias: current,
-                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-            }, { merge: true });
-            return false;
+            const merged = await sincronizarCategoriasFirebaseSeguro(user.uid);
+            return categoriasPossuemConteudo(merged);
         }
 
 
@@ -3713,6 +3745,13 @@ async function processarRedirectGoogle() {
         checkTheme();
         document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => { try { processarRedirectGoogle(); } catch (e) { console.error('Falha no redirect do Google:', e); } }, 30);
+            setTimeout(() => {
+                try {
+                    aplicarCategoriasNoSistema(mergeCategoriasSeguro(snapshotCategoriasAtuais(), lerCategoriasLocalSeguro()));
+                } catch (e) {
+                    console.error('Falha ao aplicar categorias locais:', e);
+                }
+            }, 45);
             setTimeout(() => { try { atualizarSubmenuRobusto(); } catch (e) { console.error('Falha ao inicializar categorias:', e); } }, 60);
         });
         window.addEventListener('focus', () => {
