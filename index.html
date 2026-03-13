@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-<title>MeuCaixa - Comando de Ativos • Stable v7.3 • Auth v7 • Auth v7</title><!-- auth-firebase-v4-google-redirect-fix -->
+<title>MeuCaixa - Comando de Ativos • Stable v7.4 • Stable v7.4 • Auth v7 • Auth v7</title><!-- auth-firebase-v4-google-redirect-fix -->
 <link href="./manifest.json" rel="manifest"/>
 <meta content="yes" name="apple-mobile-web-app-capable"/>
 <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
@@ -3244,7 +3244,40 @@ window.themeCatalog = window.themeCatalog || {
 
 
 
-        function sanitizeEmail(value) {
+        
+        function preencherEmailLogin(email, nome) {
+            try {
+                const emailValue = String(email || '').trim();
+                const nomeValue = String(nome || '').trim();
+
+                const emailInputs = [
+                    document.getElementById('loginEmail'),
+                    document.getElementById('email'),
+                    document.querySelector('input[type="email"]'),
+                    document.querySelector('[data-auth-email]')
+                ].filter(Boolean);
+
+                emailInputs.forEach(input => {
+                    try { input.value = emailValue; } catch (e) {}
+                });
+
+                const nomeTargets = [
+                    document.getElementById('loginGreetingName'),
+                    document.getElementById('welcomeName'),
+                    document.getElementById('userFirstName')
+                ].filter(Boolean);
+
+                if (nomeValue) {
+                    nomeTargets.forEach(el => {
+                        try { el.textContent = nomeValue; } catch (e) {}
+                    });
+                }
+            } catch (e) {
+                console.error('Falha em preencherEmailLogin:', e);
+            }
+        }
+
+function sanitizeEmail(value) {
             try {
                 return String(value || '').trim().toLowerCase();
             } catch (e) {
