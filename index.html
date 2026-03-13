@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-<title>MeuCaixa - Comando de Ativos</title><!-- auth-firebase-v4-google-redirect-fix -->
+<title>MeuCaixa - Comando de Ativos • Auth v5</title><!-- auth-firebase-v4-google-redirect-fix -->
 <link href="./manifest.json" rel="manifest"/>
 <meta content="yes" name="apple-mobile-web-app-capable"/>
 <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
@@ -3221,6 +3221,17 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
         function marcarEstadoGoogleRedirect() {
             try { localStorage.setItem('googleRedirectPending', '1'); } catch (e) {}
         }
+        async function limparServiceWorkersAuth() {
+            try {
+                if ('serviceWorker' in navigator) {
+                    const regs = await navigator.serviceWorker.getRegistrations();
+                    await Promise.all(regs.map(r => r.unregister().catch(() => {})));
+                }
+            } catch (e) {
+                console.error('Falha ao limpar service workers para auth:', e);
+            }
+        }
+
 
 async function processarRedirectGoogle() {
             if (!firebaseReady) return;
@@ -3265,17 +3276,10 @@ async function processarRedirectGoogle() {
             if (!firebaseReady) return showToast("Firebase não inicializado.", "error");
             const provider = new firebase.auth.GoogleAuthProvider();
             provider.setCustomParameters({ prompt: 'select_account' });
-            try {
-                const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-                const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || '');
-                // Em celular e PWA, redirect é mais estável que popup.
-                if (isStandalone || isMobile) {
-                    marcarEstadoGoogleRedirect();
-                    showToast("Abrindo Google para autenticação...", "success");
-                    setTimeout(() => { try { firebase.auth().signInWithRedirect(provider); } catch(e) { console.error(e); } }, 80);
-                    return;
-                }
+            try { firebase.auth().languageCode = 'pt-BR'; } catch (e) {}
 
+            try {
+                // Tenta popup primeiro em qualquer ambiente. No mobile, se falhar, cai para redirect.
                 const cred = await firebase.auth().signInWithPopup(provider);
                 if (cred && cred.user) {
                     await persistirSessaoFirebase(cred.user);
@@ -3284,26 +3288,37 @@ async function processarRedirectGoogle() {
                     showToast("Login com Google realizado com sucesso!", "success");
                     return;
                 }
-                showToast("Não foi possível concluir o login com Google.", "error");
             } catch (e) {
-                console.error(e);
-                if (['auth/popup-blocked','auth/popup-closed-by-user','auth/cancelled-popup-request','auth/operation-not-supported-in-this-environment'].includes(e?.code)) {
-                    try {
-                        marcarEstadoGoogleRedirect();
-                        await firebase.auth().signInWithRedirect(provider);
-                        return;
-                    } catch (redirectErr) {
-                        console.error(redirectErr);
-                    }
+                console.error('Falha no popup Google:', e);
+                if (!['auth/popup-blocked','auth/popup-closed-by-user','auth/cancelled-popup-request','auth/operation-not-supported-in-this-environment'].includes(e?.code)) {
+                    const msg = e?.code === 'auth/unauthorized-domain'
+                        ? 'Domínio não autorizado no Firebase.'
+                        : e?.code === 'auth/account-exists-with-different-credential'
+                        ? 'Este e-mail já usa outro método de login.'
+                        : e?.message
+                        ? ('Google: ' + e.message)
+                        : 'Não foi possível entrar com Google.';
+                    showToast(msg, "error");
+                    return;
                 }
-                const msg = e?.code === 'auth/unauthorized-domain'
-                    ? 'Domínio não autorizado no Firebase.'
-                    : e?.code === 'auth/account-exists-with-different-credential'
-                    ? 'Este e-mail já usa outro método de login.'
-                    : e?.message
-                    ? ('Google: ' + e.message)
-                    : 'Não foi possível entrar com Google.';
-                showToast(msg, "error");
+            }
+
+            try {
+                marcarEstadoGoogleRedirect();
+                await limparServiceWorkersAuth();
+                showToast("Abrindo Google para autenticação...", "success");
+                setTimeout(() => {
+                    firebase.auth().signInWithRedirect(provider).catch(err => {
+                        console.error('Falha no redirect Google:', err);
+                        limparEstadoGoogleRedirect();
+                        showToast(err?.message ? ('Google: ' + err.message) : 'Não foi possível entrar com Google.', "error");
+                    });
+                }, 120);
+                return;
+            } catch (redirectErr) {
+                console.error(redirectErr);
+                limparEstadoGoogleRedirect();
+                showToast(redirectErr?.message ? ('Google: ' + redirectErr.message) : 'Não foi possível entrar com Google.', "error");
             }
         }
 
@@ -3451,7 +3466,7 @@ async function processarRedirectGoogle() {
             location.reload();
         }
 
-        const themeCatalog = {
+        var themeCatalog = window.themeCatalog || {
             dark: { name: 'Modo Escuro Premium', color: '#030712' },
             light: { name: 'Modo Claro Inteligente', color: '#f8fbff' },
             nubank: { name: 'Identidade Nubank', color: '#820ad1' },
@@ -3459,6 +3474,7 @@ async function processarRedirectGoogle() {
             itau: { name: 'Identidade Itaú', color: '#ec7000' },
             bradesco: { name: 'Identidade Bradesco', color: '#cc092f' }
         };
+        window.themeCatalog = themeCatalog;
         function applyThemeMeta(theme) {
             const metaTheme = document.querySelector('meta[name="theme-color"]');
             if (metaTheme) metaTheme.setAttribute('content', (themeCatalog[theme] || themeCatalog.dark).color);
@@ -3478,7 +3494,12 @@ async function processarRedirectGoogle() {
             applyThemeMeta(savedTheme);
         }
         checkTheme();
-        window.addEventListener('load', () => { setTimeout(() => { try { processarRedirectGoogle(); } catch (e) { console.error('Falha no redirect do Google:', e); } }, 60); });
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => { try { processarRedirectGoogle(); } catch (e) { console.error('Falha no redirect do Google:', e); } }, 30);
+        });
+        window.addEventListener('focus', () => {
+            setTimeout(() => { try { processarRedirectGoogle(); } catch (e) { console.error('Falha no redirect do Google:', e); } }, 120);
+        });
         function mudarTema(tema) {
             document.documentElement.setAttribute('data-theme', tema);
             localStorage.setItem('meucaixa_theme', tema);
@@ -6015,6 +6036,9 @@ function exportarDadosCSV() {
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', async () => {
           try {
+            const authPending = localStorage.getItem('googleRedirectPending') === '1';
+            const lockVisible = !document.getElementById('lock-screen')?.classList.contains('hidden');
+            if (authPending || lockVisible) return;
             const registration = await navigator.serviceWorker.register('./sw.js');
             appServiceWorkerRegistration = registration;
 
