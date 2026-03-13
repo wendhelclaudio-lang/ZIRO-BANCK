@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-<title>MeuCaixa - Comando de Ativos • Auth v5</title><!-- auth-firebase-v4-google-redirect-fix -->
+<title>MeuCaixa - Comando de Ativos • Auth v6 • Auth v6</title><!-- auth-firebase-v4-google-redirect-fix -->
 <link href="./manifest.json" rel="manifest"/>
 <meta content="yes" name="apple-mobile-web-app-capable"/>
 <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
@@ -2020,6 +2020,18 @@ header{backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);}
             margin: 12px 0 0;
         }
 </style>
+
+<script>
+window.themeCatalog = window.themeCatalog || {
+  dark: { name: 'Modo Escuro Premium', color: '#030712' },
+  light: { name: 'Modo Claro Inteligente', color: '#f8fbff' },
+  nubank: { name: 'Identidade Nubank', color: '#820ad1' },
+  santander: { name: 'Identidade Santander', color: '#ec0000' },
+  itau: { name: 'Identidade Itaú', color: '#ec7000' },
+  bradesco: { name: 'Identidade Bradesco', color: '#cc092f' }
+};
+</script>
+
 </head>
 <body>
 <div id="toast-container"></div>
@@ -3475,20 +3487,38 @@ async function processarRedirectGoogle() {
             bradesco: { name: 'Identidade Bradesco', color: '#cc092f' }
         };
         window.themeCatalog = themeCatalog;
+        function getThemeCatalogSafe() {
+            const fallback = {
+                dark: { name: 'Modo Escuro Premium', color: '#030712' },
+                light: { name: 'Modo Claro Inteligente', color: '#f8fbff' },
+                nubank: { name: 'Identidade Nubank', color: '#820ad1' },
+                santander: { name: 'Identidade Santander', color: '#ec0000' },
+                itau: { name: 'Identidade Itaú', color: '#ec7000' },
+                bradesco: { name: 'Identidade Bradesco', color: '#cc092f' }
+            };
+            if (!window.themeCatalog) window.themeCatalog = fallback;
+            if (!window.themeCatalog.dark) window.themeCatalog.dark = fallback.dark;
+            return window.themeCatalog;
+        }
         function applyThemeMeta(theme) {
+            const catalog = getThemeCatalogSafe();
             const metaTheme = document.querySelector('meta[name="theme-color"]');
-            if (metaTheme) metaTheme.setAttribute('content', (themeCatalog[theme] || themeCatalog.dark).color);
+            const entry = catalog[theme] || catalog.dark;
+            if (metaTheme && entry && entry.color) metaTheme.setAttribute('content', entry.color);
         }
         function syncThemeSelector() {
+            const catalog = getThemeCatalogSafe();
             const activeTheme = document.documentElement.getAttribute('data-theme') || 'dark';
             document.querySelectorAll('[data-theme-option]').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.themeOption === activeTheme);
             });
             const currentLabel = document.getElementById('themeCurrentLabel');
-            if (currentLabel) currentLabel.innerText = (themeCatalog[activeTheme] || themeCatalog.dark).name;
+            const entry = catalog[activeTheme] || catalog.dark;
+            if (currentLabel && entry) currentLabel.innerText = entry.name;
             applyThemeMeta(activeTheme);
         }
         function checkTheme() {
+            getThemeCatalogSafe();
             const savedTheme = localStorage.getItem('meucaixa_theme') || 'dark';
             document.documentElement.setAttribute('data-theme', savedTheme);
             applyThemeMeta(savedTheme);
