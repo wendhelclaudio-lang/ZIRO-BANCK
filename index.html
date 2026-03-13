@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-<title>MeuCaixa - Comando de Ativos • Categorias Firebase Final v10 • Rescue Cloud Save + Categorias v9.1 • Rescue Cloud Save + Categorias v9.1</title><!-- auth-firebase-v4-google-redirect-fix -->
+<title>MeuCaixa - Comando de Ativos • Categorias Firebase Final v11 • Sync Shield + Backup Seguro v12</title><!-- auth-firebase-v4-google-redirect-fix -->
 <link href="./manifest.json" rel="manifest"/>
 <meta content="yes" name="apple-mobile-web-app-capable"/>
 <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
@@ -2833,15 +2833,28 @@ window.themeCatalog = window.themeCatalog || {
             };
         }
 
-        function salvarDB() {
-            const tx = db.transaction("financeiro", "readwrite");
-            const store = tx.objectStore("financeiro");
-            store.put(registros, "registros_lista");
-            if (currentFirebaseUser?.uid) {
-                salvarDadosFirebase(currentFirebaseUser.uid).catch(err => console.error('Falha ao sincronizar registros no Firebase:', err));
+        function salvarDB(options = {}) {
+            const opts = options && typeof options === 'object' ? options : {};
+            const shouldSyncFirebase = opts.syncFirebase !== false;
+            const reason = opts.reason || 'salvar-db';
+
+            try {
+                if (!db) {
+                    localStorage.setItem('foton_db', JSON.stringify(Array.isArray(registros) ? registros : []));
+                } else {
+                    const tx = db.transaction("financeiro", "readwrite");
+                    const store = tx.objectStore("financeiro");
+                    store.put(Array.isArray(registros) ? registros : [], "registros_lista");
+                }
+            } catch (e) {
+                console.error('Falha ao persistir registros localmente:', e);
+            }
+
+            if (shouldSyncFirebase && currentFirebaseUser?.uid) {
+                solicitarSincronizacaoFinanceira(reason);
             }
         }
-        
+
         let modoFantasma = false, filtroAtual = "Tudo", subFiltro = "Pendente", dataVisualizacao = new Date();
         let chartCategorias = null, chartStatus = null, chartEvolucao = null, chartLeitorInstance = null;
         let acaoMetaAtual = '';
@@ -2882,7 +2895,296 @@ window.themeCatalog = window.themeCatalog || {
             console.error('Falha ao iniciar Firebase:', e);
         }
 
-        function getFirebaseProfileRef(uid) {
+        
+        const syncDebugPrefix = '[MeuCaixa Sync]';
+        const syncManager = {
+            queue: Promise.resolve(),
+            timers: {},
+            lastFingerprint: {},
+            inflightFingerprint: {},
+            pendingResolves: {}
+        };
+
+        function logSync(scope, level, message, extra = null) {
+            try {
+                const method = (level && typeof console[level] === 'function') ? level : 'log';
+                const prefix = `${syncDebugPrefix}[${scope}] ${message}`;
+                if (extra !== null && extra !== undefined) console[method](prefix, extra);
+                else console[method](prefix);
+            } catch (e) {}
+        }
+
+        function safeClone(value, fallback) {
+            try {
+                return JSON.parse(JSON.stringify(value));
+            } catch (e) {
+                return fallback;
+            }
+        }
+
+        function ordenarProfundamente(value) {
+            if (Array.isArray(value)) return value.map(ordenarProfundamente);
+            if (value && typeof value === 'object') {
+                return Object.keys(value).sort().reduce((acc, key) => {
+                    acc[key] = ordenarProfundamente(value[key]);
+                    return acc;
+                }, {});
+            }
+            return value;
+        }
+
+        function gerarFingerprint(value) {
+            try {
+                return JSON.stringify(ordenarProfundamente(value));
+            } catch (e) {
+                return '';
+            }
+        }
+
+        function normalizarNumeroSeguro(value) {
+            const num = Number(value);
+            return Number.isFinite(num) ? num : 0;
+        }
+
+        function registroTemConteudo(registro) {
+            if (!registro || typeof registro !== 'object') return false;
+            return !!(
+                String(registro.tipo || '').trim() ||
+                String(registro.desc || '').trim() ||
+                String(registro.data || '').trim() ||
+                normalizarNumeroSeguro(registro.valor) > 0 ||
+                normalizarNumeroSeguro(registro.pago) > 0
+            );
+        }
+
+        function criarChaveRegistro(registro) {
+            const comprovante = String(registro?.comprovante || '');
+            const base = {
+                tipo: String(registro?.tipo || '').trim(),
+                desc: String(registro?.desc || '').trim(),
+                categoria: String(registro?.categoria || '').trim(),
+                valor: normalizarNumeroSeguro(registro?.valor),
+                pago: normalizarNumeroSeguro(registro?.pago),
+                data: String(registro?.data || '').trim(),
+                dataLancamento: String(registro?.dataLancamento || registro?.data || '').trim(),
+                banco: String(registro?.banco || '').trim(),
+                forma: String(registro?.forma || '').trim(),
+                hora: String(registro?.hora || '').trim(),
+                comprovanteResumo: comprovante ? `${comprovante.slice(0, 32)}::${comprovante.length}` : ''
+            };
+            return gerarFingerprint(base);
+        }
+
+        function consolidarRegistroSeguro(base, incoming) {
+            const atual = (base && typeof base === 'object') ? base : {};
+            const extra = (incoming && typeof incoming === 'object') ? incoming : {};
+            const valorAtual = normalizarNumeroSeguro(atual.valor);
+            const valorExtra = normalizarNumeroSeguro(extra.valor);
+            const pagoAtual = normalizarNumeroSeguro(atual.pago);
+            const pagoExtra = normalizarNumeroSeguro(extra.pago);
+
+            return {
+                ...atual,
+                ...extra,
+                tipo: extra.tipo || atual.tipo || '',
+                desc: extra.desc || atual.desc || '',
+                categoria: extra.categoria || atual.categoria || '',
+                valor: valorExtra > 0 ? valorExtra : valorAtual,
+                pago: Math.max(pagoAtual, pagoExtra),
+                data: extra.data || atual.data || '',
+                dataLancamento: extra.dataLancamento || atual.dataLancamento || extra.data || atual.data || '',
+                banco: extra.banco || atual.banco || '',
+                forma: extra.forma || atual.forma || null,
+                comprovante: extra.comprovante || atual.comprovante || null,
+                hora: extra.hora || atual.hora || ''
+            };
+        }
+
+        function mergeRegistrosSeguro(...sources) {
+            const map = new Map();
+            sources.forEach((source) => {
+                const lista = Array.isArray(source) ? source : [];
+                lista.forEach((registro) => {
+                    if (!registroTemConteudo(registro)) return;
+                    const chave = criarChaveRegistro(registro);
+                    if (!chave) return;
+                    if (!map.has(chave)) map.set(chave, safeClone(registro, registro));
+                    else map.set(chave, consolidarRegistroSeguro(map.get(chave), registro));
+                });
+            });
+            return Array.from(map.values());
+        }
+
+        function registrosPossuemConteudo(lista) {
+            return Array.isArray(lista) && lista.some(registroTemConteudo);
+        }
+
+        function lerLearningMapLocalSeguro() {
+            try {
+                return JSON.parse(localStorage.getItem('ziro_learning') || 'null') || {};
+            } catch (e) {
+                return {};
+            }
+        }
+
+        function persistirLearningMapLocalSeguro(map) {
+            try {
+                localStorage.setItem('ziro_learning', JSON.stringify((map && typeof map === 'object') ? map : {}));
+            } catch (e) {}
+        }
+
+        function learningMapPossuiConteudo(map) {
+            return !!(map && typeof map === 'object' && Object.keys(map).length);
+        }
+
+        function mergeLearningMapSeguro(...sources) {
+            const merged = {};
+            sources.forEach((source) => {
+                if (!source || typeof source !== 'object') return;
+                Object.keys(source).forEach((key) => {
+                    merged[key] = source[key];
+                });
+            });
+            return merged;
+        }
+
+        function extrairConfigSeguroParaPersistencia(config) {
+            const source = (config && typeof config === 'object') ? config : {};
+            return {
+                nome: source.nome || null,
+                email: source.email || null,
+                moeda: source.moeda || 'R$',
+                metaMensal: normalizarNumeroSeguro(source.metaMensal),
+                metaAcumulado: normalizarNumeroSeguro(source.metaAcumulado),
+                tipoMeta: source.tipoMeta || 'reserva',
+                periodoMeta: source.periodoMeta || 'Mensal',
+                descMeta: source.descMeta || '',
+                fotoPerfil: source.fotoPerfil || null
+            };
+        }
+
+        function possuiConfigUtil(config) {
+            const safe = extrairConfigSeguroParaPersistencia(config);
+            return !!(
+                safe.nome ||
+                safe.email ||
+                safe.fotoPerfil ||
+                safe.descMeta ||
+                safe.metaMensal > 0 ||
+                safe.metaAcumulado > 0
+            );
+        }
+
+        function aplicarConfigBackupSeguro(config = {}) {
+            const source = (config && typeof config === 'object') ? config : {};
+            if (typeof source.nome === 'string' && source.nome.trim()) appConfig.nome = source.nome.trim().toUpperCase();
+            if (typeof source.email === 'string' && source.email.trim()) appConfig.email = sanitizeEmail(source.email);
+            if (typeof source.moeda === 'string' && source.moeda.trim()) appConfig.moeda = source.moeda.trim();
+            if (Number.isFinite(Number(source.metaMensal)) && Number(source.metaMensal) >= 0) appConfig.metaMensal = Number(source.metaMensal);
+            if (Number.isFinite(Number(source.metaAcumulado)) && Number(source.metaAcumulado) >= 0) appConfig.metaAcumulado = Number(source.metaAcumulado);
+            if (typeof source.tipoMeta === 'string' && source.tipoMeta.trim()) appConfig.tipoMeta = source.tipoMeta;
+            if (typeof source.periodoMeta === 'string' && source.periodoMeta.trim()) appConfig.periodoMeta = source.periodoMeta;
+            if (typeof source.descMeta === 'string') appConfig.descMeta = source.descMeta;
+            if (typeof source.fotoPerfil === 'string' && source.fotoPerfil.trim()) appConfig.fotoPerfil = source.fotoPerfil;
+        }
+
+        function agendarSincronizacaoFirebase(scope, options = {}) {
+            const opts = options && typeof options === 'object' ? options : {};
+            const delay = Number.isFinite(Number(opts.delay)) ? Number(opts.delay) : 900;
+            const reason = opts.reason || 'manual';
+            const executor = typeof opts.executor === 'function' ? opts.executor : null;
+            const getFingerprint = typeof opts.getFingerprint === 'function' ? opts.getFingerprint : (() => opts.fingerprint || '');
+
+            if (!executor) return Promise.resolve(false);
+            if (!firebaseReady || !currentFirebaseUser?.uid) {
+                logSync(scope, 'warn', 'Sincronização ignorada: Firebase indisponível ou usuário não autenticado.', { reason });
+                return Promise.resolve(false);
+            }
+
+            clearTimeout(syncManager.timers[scope]);
+            if (typeof syncManager.pendingResolves[scope] === 'function') {
+                try { syncManager.pendingResolves[scope](false); } catch (e) {}
+                delete syncManager.pendingResolves[scope];
+            }
+
+            return new Promise((resolve) => {
+                syncManager.pendingResolves[scope] = resolve;
+                syncManager.timers[scope] = setTimeout(() => {
+                    delete syncManager.pendingResolves[scope];
+
+                    syncManager.queue = syncManager.queue.then(async () => {
+                        const fingerprint = String(getFingerprint() || '');
+                        if (fingerprint && (syncManager.lastFingerprint[scope] === fingerprint || syncManager.inflightFingerprint[scope] === fingerprint)) {
+                            logSync(scope, 'info', 'Gravação repetida detectada e ignorada.', { reason });
+                            resolve(false);
+                            return false;
+                        }
+
+                        syncManager.inflightFingerprint[scope] = fingerprint || null;
+                        logSync(scope, 'info', 'Sincronização enviada para a fila.', { reason });
+
+                        try {
+                            const result = await executor();
+                            if (fingerprint) syncManager.lastFingerprint[scope] = fingerprint;
+                            logSync(scope, 'info', 'Sincronização concluída com sucesso.', { reason });
+                            resolve(true);
+                            return result;
+                        } catch (error) {
+                            logSync(scope, 'error', 'Falha na sincronização.', error);
+                            resolve(false);
+                            return false;
+                        } finally {
+                            if (syncManager.inflightFingerprint[scope] === fingerprint) delete syncManager.inflightFingerprint[scope];
+                        }
+                    }).catch((queueError) => {
+                        logSync(scope, 'error', 'Falha interna na fila de sincronização.', queueError);
+                        resolve(false);
+                        return false;
+                    });
+                }, delay);
+            });
+        }
+
+        function solicitarSincronizacaoFinanceira(reason = 'financeiro-manual') {
+            const uid = currentFirebaseUser?.uid;
+            if (!uid) return Promise.resolve(false);
+
+            return agendarSincronizacaoFirebase('financeiro', {
+                delay: 900,
+                reason,
+                getFingerprint: () => gerarFingerprint({
+                    registros: serializarRegistrosFirebase(),
+                    learningMap: mergeLearningMapSeguro(lerLearningMapLocalSeguro(), learningMap || {})
+                }),
+                executor: () => salvarDadosFirebase(uid)
+            });
+        }
+
+        function solicitarSincronizacaoPerfil(reason = 'perfil-manual') {
+            const uid = currentFirebaseUser?.uid;
+            if (!uid) return Promise.resolve(false);
+
+            return agendarSincronizacaoFirebase('perfil', {
+                delay: 750,
+                reason,
+                getFingerprint: () => gerarFingerprint(extrairConfigSeguroParaPersistencia(appConfig)),
+                executor: () => salvarPerfilFirebase(uid)
+            });
+        }
+
+        function solicitarSincronizacaoCategorias(reason = 'categorias-manual') {
+            const uid = currentFirebaseUser?.uid;
+            if (!uid) return Promise.resolve(false);
+
+            return agendarSincronizacaoFirebase('categorias', {
+                delay: 700,
+                reason,
+                getFingerprint: () => gerarFingerprint(mergeCategoriasSeguro(snapshotCategoriasAtuais(), lerCategoriasLocalSeguro())),
+                executor: () => sincronizarCategoriasFirebaseSeguro(uid)
+            });
+        }
+
+function getFirebaseProfileRef(uid) {
             return firebaseDb.collection('usuarios').doc(uid).collection('perfil').doc('dados');
         }
 
@@ -3003,8 +3305,12 @@ window.themeCatalog = window.themeCatalog || {
             return merged;
         }
 
-        async function salvarCategoriasFirebase(uid) {
+        async function salvarCategoriasFirebase(uid, options = {}) {
             if (!firebaseReady || !uid) return;
+            const opts = options && typeof options === 'object' ? options : {};
+            if (opts.immediate === false) {
+                return solicitarSincronizacaoCategorias(opts.reason || 'categorias-save');
+            }
             return sincronizarCategoriasFirebaseSeguro(uid);
         }
 
@@ -3029,38 +3335,91 @@ window.themeCatalog = window.themeCatalog || {
         }
 
         async function salvarDadosFirebase(uid) {
-            if (!firebaseReady || !uid) return;
+            if (!firebaseReady || !uid) return false;
+
+            const registrosPayload = serializarRegistrosFirebase();
+            const learningPayload = mergeLearningMapSeguro(lerLearningMapLocalSeguro(), learningMap || {});
+            const possuiRegistros = registrosPossuemConteudo(registrosPayload);
+            const possuiLearning = learningMapPossuiConteudo(learningPayload);
+
+            if (!possuiRegistros && !possuiLearning) {
+                logSync('financeiro', 'warn', 'Payload vazio ignorado para evitar sobrescrita indevida na nuvem.');
+                return false;
+            }
+
             const payload = {
                 uid,
-                registros: serializarRegistrosFirebase(),
-                learningMap: JSON.parse(JSON.stringify(learningMap || {})),
-                totalRegistros: Array.isArray(registros) ? registros.length : 0,
+                registros: registrosPayload,
+                learningMap: safeClone(learningPayload, {}),
+                totalRegistros: Array.isArray(registrosPayload) ? registrosPayload.length : 0,
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
             };
+
             await getFirebaseFinanceRef(uid).set(payload, { merge: true });
+            return true;
         }
 
         async function carregarDadosFirebase(user) {
             if (!firebaseReady || !user) return false;
-            const snap = await getFirebaseFinanceRef(user.uid).get();
 
-            if (snap.exists) {
-                const data = snap.data() || {};
-                if (Array.isArray(data.registros)) {
-                    registros = data.registros;
-                    try { salvarDB(); } catch (e) { console.error('Falha ao espelhar registros locais:', e); }
-                }
-                if (data.learningMap && typeof data.learningMap === 'object') {
-                    learningMap = data.learningMap || {};
-                    try { localStorage.setItem('ziro_learning', JSON.stringify(learningMap)); } catch (e) {}
-                }
-                return true;
+            const localRegistros = serializarRegistrosFirebase();
+            const localLearning = mergeLearningMapSeguro(lerLearningMapLocalSeguro(), learningMap || {});
+            let cloudData = {};
+            let cloudExists = false;
+
+            try {
+                const snap = await getFirebaseFinanceRef(user.uid).get();
+                cloudExists = !!snap.exists;
+                cloudData = snap.exists ? (snap.data() || {}) : {};
+            } catch (e) {
+                logSync('financeiro', 'error', 'Falha ao ler dados financeiros do Firebase.', e);
+                return false;
             }
 
-            if ((Array.isArray(registros) && registros.length) || (learningMap && Object.keys(learningMap).length)) {
-                await salvarDadosFirebase(user.uid);
+            const cloudRegistros = Array.isArray(cloudData.registros) ? safeClone(cloudData.registros, []) : [];
+            const cloudLearning = (cloudData.learningMap && typeof cloudData.learningMap === 'object') ? safeClone(cloudData.learningMap, {}) : {};
+
+            const mergedRegistros = mergeRegistrosSeguro(localRegistros, cloudRegistros);
+            const mergedLearning = mergeLearningMapSeguro(localLearning, cloudLearning);
+
+            const localFingerprint = gerarFingerprint({ registros: localRegistros, learningMap: localLearning });
+            const cloudFingerprint = gerarFingerprint({ registros: cloudRegistros, learningMap: cloudLearning });
+            const mergedFingerprint = gerarFingerprint({ registros: mergedRegistros, learningMap: mergedLearning });
+
+            registros = mergedRegistros;
+            learningMap = mergedLearning;
+            persistirLearningMapLocalSeguro(mergedLearning);
+
+            try {
+                salvarDB({ syncFirebase: false, reason: 'espelho-local-financeiro' });
+            } catch (e) {
+                console.error('Falha ao espelhar registros locais:', e);
             }
-            return false;
+
+            const precisaSubirMerge = cloudExists && mergedFingerprint !== cloudFingerprint;
+            const nuvemVazia = !cloudExists || (!registrosPossuemConteudo(cloudRegistros) && !learningMapPossuiConteudo(cloudLearning));
+            const localPossuiConteudo = registrosPossuemConteudo(localRegistros) || learningMapPossuiConteudo(localLearning);
+
+            if ((nuvemVazia && localPossuiConteudo) || precisaSubirMerge) {
+                try {
+                    await salvarDadosFirebase(user.uid);
+                    logSync('financeiro', 'info', 'Merge financeiro consolidado na nuvem.', {
+                        origemLocal: localRegistros.length,
+                        origemNuvem: cloudRegistros.length,
+                        totalFinal: mergedRegistros.length
+                    });
+                } catch (e) {
+                    logSync('financeiro', 'error', 'Falha ao consolidar merge financeiro na nuvem.', e);
+                }
+            } else if (localFingerprint !== mergedFingerprint) {
+                logSync('financeiro', 'info', 'Merge aplicado localmente sem necessidade de nova gravação remota.', {
+                    origemLocal: localRegistros.length,
+                    origemNuvem: cloudRegistros.length,
+                    totalFinal: mergedRegistros.length
+                });
+            }
+
+            return cloudExists || localPossuiConteudo;
         }
 
 
@@ -3765,14 +4124,16 @@ async function processarRedirectGoogle() {
             renderizar();
         }
 
-        function salvarConfig() {
+        function salvarConfig(options = {}) {
+            const opts = options && typeof options === 'object' ? options : {};
+            const shouldSyncFirebase = opts.syncFirebase !== false;
             const configToSave = { ...appConfig, senhaHash: null, senhaSalt: null, authVersion: null, passwordUpdatedAt: null };
             localStorage.setItem('meucaixa_config', JSON.stringify(configToSave));
             carregarConfig();
             syncThemeSelector();
             renderizar();
-            if (currentFirebaseUser) {
-                salvarPerfilFirebase(currentFirebaseUser.uid).catch(err => console.error('Falha ao sincronizar config no Firebase:', err));
+            if (shouldSyncFirebase && currentFirebaseUser) {
+                solicitarSincronizacaoPerfil(opts.reason || 'salvar-config');
             }
         }
 
@@ -5969,49 +6330,151 @@ function exportarDadosCSV() {
         }
 
         // NOVA FUNÇÃO DE BACKUP COMPLETO EM JSON (INCLUI AS IMAGENS)
-        function exportarBackupCompleto() {
-            if(registros.length === 0) return showToast("Nenhum dado para fazer backup.", "error");
-            const backupData = JSON.stringify(registros);
-            const blob = new Blob([backupData], { type: 'application/json' }); 
-            const a = document.createElement('a'); 
-            a.href = URL.createObjectURL(blob); 
-            
-            let dataAtual = new Date();
-            let dataFormatada = dataAtual.toISOString().split('T')[0];
-            
-            a.download = `Backup_MeuCaixa_${dataFormatada}.json`; 
-            a.click();
-            closeAll(); showToast("Backup COMPLETO salvo!", "success"); 
+        function criarSnapshotBackupCompleto() {
+            return {
+                app: 'MeuCaixa - Comando de Ativos',
+                schemaVersion: 2,
+                exportedAt: new Date().toISOString(),
+                source: 'meucaixa_backup_completo',
+                data: {
+                    registros: serializarRegistrosFirebase(),
+                    categorias: mergeCategoriasSeguro(snapshotCategoriasAtuais(), lerCategoriasLocalSeguro()),
+                    learningMap: mergeLearningMapSeguro(lerLearningMapLocalSeguro(), learningMap || {}),
+                    config: extrairConfigSeguroParaPersistencia(appConfig)
+                }
+            };
         }
 
-        // NOVA FUNÇÃO DE IMPORTAÇÃO INTELIGENTE (Aceita JSON com imagens ou CSV antigo)
-        function importarDados(e) { 
+        function backupPossuiConteudo(payload) {
+            const data = payload?.data || payload || {};
+            return !!(
+                registrosPossuemConteudo(data.registros) ||
+                categoriasPossuemConteudo(data.categorias) ||
+                learningMapPossuiConteudo(data.learningMap) ||
+                possuiConfigUtil(data.config)
+            );
+        }
+
+        function normalizarBackupImportado(payload) {
+            if (Array.isArray(payload)) {
+                return {
+                    registros: payload,
+                    categorias: {},
+                    learningMap: {},
+                    config: {}
+                };
+            }
+
+            if (!payload || typeof payload !== 'object') {
+                return null;
+            }
+
+            const source = (payload.data && typeof payload.data === 'object') ? payload.data : payload;
+
+            return {
+                registros: Array.isArray(source.registros) ? source.registros : [],
+                categorias: (source.categorias && typeof source.categorias === 'object') ? source.categorias : {},
+                learningMap: (source.learningMap && typeof source.learningMap === 'object') ? source.learningMap : {},
+                config: (source.config && typeof source.config === 'object') ? source.config : {}
+            };
+        }
+
+        async function restaurarBackupSeguro(payload) {
+            const backup = normalizarBackupImportado(payload);
+            if (!backup) throw new Error('Formato de backup inválido.');
+
+            const registrosAntes = serializarRegistrosFirebase();
+            const categoriasAntes = mergeCategoriasSeguro(snapshotCategoriasAtuais(), lerCategoriasLocalSeguro());
+            const learningAntes = mergeLearningMapSeguro(lerLearningMapLocalSeguro(), learningMap || {});
+
+            const registrosMesclados = mergeRegistrosSeguro(registrosAntes, backup.registros);
+            const categoriasMescladas = mergeCategoriasSeguro(categoriasAntes, backup.categorias);
+            const learningMesclado = mergeLearningMapSeguro(learningAntes, backup.learningMap);
+
+            const fingerprintRegistrosAntes = gerarFingerprint(registrosAntes);
+            const fingerprintCategoriasAntes = gerarFingerprint(categoriasAntes);
+            const fingerprintLearningAntes = gerarFingerprint(learningAntes);
+
+            registros = registrosMesclados;
+            learningMap = learningMesclado;
+            persistirLearningMapLocalSeguro(learningMesclado);
+            aplicarCategoriasNoSistema(categoriasMescladas, { persistLocal: true, refreshUi: true });
+            aplicarConfigBackupSeguro(backup.config);
+
+            salvarDB({ syncFirebase: false, reason: 'restaurar-backup' });
+            salvarConfig({ syncFirebase: false, reason: 'restaurar-backup' });
+
+            if (currentFirebaseUser?.uid) {
+                solicitarSincronizacaoFinanceira('restaurar-backup');
+                solicitarSincronizacaoPerfil('restaurar-backup');
+                solicitarSincronizacaoCategorias('restaurar-backup');
+            }
+
+            const novosRegistros = Math.max(registrosMesclados.length - registrosAntes.length, 0);
+            const houveRegistrosNovos = gerarFingerprint(registrosMesclados) !== fingerprintRegistrosAntes;
+            const houveCategoriasNovas = gerarFingerprint(categoriasMescladas) !== fingerprintCategoriasAntes;
+            const houveLearningNovo = gerarFingerprint(learningMesclado) !== fingerprintLearningAntes;
+
+            if (!houveRegistrosNovos && !houveCategoriasNovas && !houveLearningNovo && !possuiConfigUtil(backup.config)) {
+                return {
+                    ok: true,
+                    message: 'Backup lido sem novidades. Nenhum dado foi duplicado.'
+                };
+            }
+
+            const partes = [];
+            if (houveRegistrosNovos) partes.push(`${novosRegistros} registro(s) novo(s)`);
+            if (houveCategoriasNovas) partes.push('categorias consolidadas');
+            if (houveLearningNovo) partes.push('aprendizado restaurado');
+            if (possuiConfigUtil(backup.config)) partes.push('configurações reaplicadas');
+
+            return {
+                ok: true,
+                message: `Backup restaurado com merge seguro: ${partes.join(' • ')}.`
+            };
+        }
+
+        function exportarBackupCompleto() {
+            const backupPayload = criarSnapshotBackupCompleto();
+            if (!backupPossuiConteudo(backupPayload)) return showToast("Nenhum dado disponível para exportar.", "error");
+
+            const backupData = JSON.stringify(backupPayload, null, 2);
+            const blob = new Blob([backupData], { type: 'application/json' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+
+            let dataAtual = new Date();
+            let dataFormatada = dataAtual.toISOString().split('T')[0];
+
+            a.download = `Backup_MeuCaixa_Completo_${dataFormatada}.json`;
+            a.click();
+            setTimeout(() => URL.revokeObjectURL(a.href), 1500);
+            closeAll(); showToast("Backup completo salvo com sucesso!", "success");
+        }
+
+        // IMPORTAÇÃO SEGURA (JSON novo, JSON antigo em array ou CSV legado)
+        function importarDados(e) {
             const f = e.target.files[0];
-            if(!f) return; 
-            const r = new FileReader(); 
-            r.onload = function(ev) { 
+            if(!f) return;
+            const r = new FileReader();
+            r.onload = async function(ev) {
                 try {
-                    // Tenta ler como JSON (Formato novo com as imagens embutidas)
-                    const novos = JSON.parse(ev.target.result);
-                    if(Array.isArray(novos) && novos.length > 0){ 
-                        registros = novos;
-                        salvarDB(); renderizar(); closeAll(); showToast("Backup Restaurado com Sucesso!", "success"); 
-                    } else {
-                        throw new Error("Formato inválido");
-                    }
+                    const parsed = JSON.parse(ev.target.result);
+                    const resultado = await restaurarBackupSeguro(parsed);
+                    renderizar(); closeAll(); showToast(resultado.message || "Backup restaurado com sucesso!", "success");
                 } catch (err) {
-                    // Fallback: Tenta ler como o arquivo CSV antigo
                     importarCSV(ev.target.result);
+                } finally {
+                    e.target.value = "";
                 }
             };
             r.readAsText(f);
-            e.target.value = ""; 
         }
 
         function importarCSV(texto) {
-            const lines = texto.split('\n');
+            const lines = texto.split('\\n');
             let novos = [];
-            for(let i=1; i<lines.length; i++){ 
+            for(let i=1; i<lines.length; i++){
                 const c = lines[i].split(',');
                 if(c.length>=5) {
                     let obj = { tipo: c[0], desc: c[1], valor: parseFloat(c[3]||c[2]), pago: parseFloat(c[4]||c[3]), data: (c[5]||c[4]).trim() };
@@ -6024,10 +6487,14 @@ function exportarDadosCSV() {
                     }
                     novos.push(obj);
                 }
-            } 
-            if(novos.length > 0){ 
-                registros = novos;
-                salvarDB(); renderizar(); closeAll(); showToast("Backup CSV antigo importado (Sem as imagens).", "success"); 
+            }
+            if(novos.length > 0){
+                const antes = serializarRegistrosFirebase();
+                const mesclados = mergeRegistrosSeguro(antes, novos);
+                const adicionados = Math.max(mesclados.length - antes.length, 0);
+                registros = mesclados;
+                salvarDB({ reason: 'importar-csv' });
+                renderizar(); closeAll(); showToast(`CSV importado com merge seguro: ${adicionados} registro(s) novo(s).`, "success");
             } else {
                 showToast("Erro ao ler o arquivo de backup.", "error");
             }
