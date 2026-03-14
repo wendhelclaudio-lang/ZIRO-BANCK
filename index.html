@@ -5989,6 +5989,140 @@ html[data-theme="light"] #modalGestaoMetas .meta-dashboard-card-simple{
   }
 }
 
+
+/* ===== Metas stability + readability fix v34 ===== */
+
+/* Modal de metas: tela cheia, mas realmente escondido quando fechado */
+#modalGestaoMetas{
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100dvh !important;
+  min-height: 100dvh !important;
+  padding: max(env(safe-area-inset-top), 10px) 10px 10px !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  border: none !important;
+  background: rgba(4, 10, 20, .90) !important;
+  transform: translateY(105%) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  overflow: hidden !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  transition: transform .34s cubic-bezier(.22,.61,.36,1), opacity .22s ease !important;
+  box-shadow: none !important;
+}
+
+#modalGestaoMetas.open{
+  transform: translateY(0) !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+html[data-theme="light"] #modalGestaoMetas{
+  background: rgba(241, 245, 249, .96) !important;
+}
+
+#modalGestaoMetas .meta-goals-shell-simple{
+  width: min(100%, 680px) !important;
+  max-height: calc(100dvh - max(env(safe-area-inset-top), 10px) - 10px) !important;
+  margin: 0 auto !important;
+  overflow: auto !important;
+  overscroll-behavior: contain !important;
+  scrollbar-width: thin !important;
+}
+
+#modalGestaoMetas .meta-progress-core{
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+#modalGestaoMetas .meta-progress-text{
+  line-height: .92 !important;
+}
+
+#modalGestaoMetas .meta-progress-caption{
+  max-width: 64px !important;
+  margin: 6px auto 0 !important;
+  font-size: .54rem !important;
+  line-height: 1.08 !important;
+  letter-spacing: .08em !important;
+  white-space: normal !important;
+  text-align: center !important;
+  text-wrap: balance !important;
+}
+
+/* Card de meta na home: mais legível no escuro */
+html:not([data-theme]) .meta-panel-home,
+html[data-theme="dark"] .meta-panel-home{
+  background: linear-gradient(180deg, rgba(8,17,31,.98), rgba(5,11,22,1)) !important;
+  border: 1px solid rgba(0,242,255,.14) !important;
+  box-shadow: 0 12px 26px rgba(0,0,0,.14) !important;
+}
+
+html:not([data-theme]) .meta-panel-home .meta-label-home,
+html[data-theme="dark"] .meta-panel-home .meta-label-home{
+  color: #f8fbff !important;
+}
+
+html:not([data-theme]) .meta-panel-home #lblTipoMetaApp,
+html[data-theme="dark"] .meta-panel-home #lblTipoMetaApp{
+  color: #f8fbff !important;
+  font-weight: 800 !important;
+}
+
+html:not([data-theme]) .meta-panel-home [id="metaProgressoDisplay"],
+html[data-theme="dark"] .meta-panel-home [id="metaProgressoDisplay"]{
+  color: #34d399 !important;
+  text-shadow: none !important;
+}
+
+html:not([data-theme]) .meta-panel-home #metaValorDisplay,
+html[data-theme="dark"] .meta-panel-home #metaValorDisplay{
+  color: #ffffff !important;
+}
+
+html:not([data-theme]) .meta-panel-home #metaFaltaDisplay,
+html[data-theme="dark"] .meta-panel-home #metaFaltaDisplay{
+  color: #dbe7f5 !important;
+}
+
+html:not([data-theme]) .meta-panel-home .meta-track-home,
+html[data-theme="dark"] .meta-panel-home .meta-track-home{
+  background: rgba(255,255,255,.09) !important;
+  border: 1px solid rgba(255,255,255,.05) !important;
+}
+
+html:not([data-theme]) .meta-panel-home div[style*="Objetivo Final"],
+html[data-theme="dark"] .meta-panel-home div[style*="Objetivo Final"]{
+  color: rgba(226,232,240,.88) !important;
+}
+
+/* Tema claro continua leve */
+html[data-theme="light"] #modalGestaoMetas .meta-progress-caption{
+  color: #64748b !important;
+}
+
+@media (max-width: 640px){
+  #modalGestaoMetas{
+    padding: max(env(safe-area-inset-top), 8px) 8px 8px !important;
+  }
+
+  #modalGestaoMetas .meta-goals-shell-simple{
+    max-height: calc(100dvh - max(env(safe-area-inset-top), 8px) - 8px) !important;
+  }
+
+  #modalGestaoMetas .meta-progress-caption{
+    max-width: 58px !important;
+    font-size: .50rem !important;
+  }
+}
+
 </style>
 
 <script>
@@ -7155,7 +7289,7 @@ html[data-theme="light"] #themeOptions .theme-btn[data-theme-option="dark"] .the
 <div class="meta-progress-ring meta-progress-ring-simple" id="metaProgressRing">
 <div class="meta-progress-core">
 <h3 class="meta-progress-text" id="txtGestaoProgresso">0.0%</h3>
-<span class="meta-progress-caption" id="txtDescricaoResumoMeta">já concluído</span>
+<span class="meta-progress-caption" id="txtDescricaoResumoMeta">concluído</span>
 </div>
 </div>
 </div>
@@ -12303,6 +12437,61 @@ function exportarDadosCSV() {
     setTimeout(aplicarMetaVisualV33, 120);
   });
   setTimeout(aplicarMetaVisualV33, 240);
+})();
+</script>
+
+
+<script>
+(function(){
+  function aplicarMetaFixV34(){
+    try{
+      const doc = document.documentElement;
+      const temaClaro = doc.getAttribute('data-theme') === 'light';
+      const txt = document.getElementById('txtGestaoProgresso');
+      const ring = document.getElementById('metaProgressRing');
+      const desc = document.getElementById('txtDescricaoResumoMeta');
+
+      const progresso = Math.max(
+        0,
+        Math.min(
+          parseFloat(String((txt?.textContent || '0')).replace('%','').replace(',', '.')) || 0,
+          100
+        )
+      );
+
+      if(desc){
+        desc.textContent = progresso >= 100 ? 'meta pronta' : 'concluído';
+      }
+
+      if(ring){
+        if(temaClaro){
+          ring.style.background =
+            'radial-gradient(circle at center, rgba(255,255,255,.99) 0 56%, transparent 57%), ' +
+            'conic-gradient(from 180deg, rgba(56,189,248,.95) 0% ' + progresso + '%, rgba(226,232,240,.52) ' + progresso + '% 100%)';
+        } else {
+          ring.style.background =
+            'radial-gradient(circle at center, rgba(5,11,22,.99) 0 56%, transparent 57%), ' +
+            'conic-gradient(from 180deg, rgba(34,211,238,.95) 0% ' + progresso + '%, rgba(255,255,255,.10) ' + progresso + '% 100%)';
+        }
+      }
+    } catch(e) {}
+  }
+
+  const originalAtualizarUIGestaoMetasV34 = window.atualizarUIGestaoMetas;
+  if(typeof originalAtualizarUIGestaoMetasV34 === 'function' && !window.__metaFixV34Bound){
+    window.atualizarUIGestaoMetas = function(){
+      const res = originalAtualizarUIGestaoMetasV34.apply(this, arguments);
+      setTimeout(aplicarMetaFixV34, 0);
+      return res;
+    };
+    window.__metaFixV34Bound = true;
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    setTimeout(aplicarMetaFixV34, 120);
+  });
+
+  setTimeout(aplicarMetaFixV34, 260);
 })();
 </script>
 
