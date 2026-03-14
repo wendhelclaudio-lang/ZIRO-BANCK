@@ -5082,6 +5082,134 @@ main{
   }
 }
 
+
+/* ===== Performance & scroll optimization patch v30 ===== */
+html, body{
+  background-attachment: scroll !important;
+  scroll-behavior: auto !important;
+}
+
+body{
+  background: var(--bg-gradient) !important;
+}
+
+header,
+.month-selector,
+.balance-card,
+.mini-card,
+.history-search-shell,
+.transaction-item,
+.top-action-btn,
+.system-close-btn,
+.history-search-icon,
+.icon-box,
+.fab,
+.modal,
+.modal-content,
+.sidebar,
+.sidebar-profile-card{
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+  transition: background-color .18s ease, color .18s ease, border-color .18s ease, opacity .18s ease !important;
+}
+
+header::before,
+header::after,
+.balance-card::before,
+.balance-card::after,
+.mini-card::before,
+.transaction-item::before,
+.history-search-shell::before,
+.history-search-shell::after,
+.fab::before{
+  content: none !important;
+  display: none !important;
+}
+
+.history-search-wrap{
+  position: relative !important;
+  top: auto !important;
+  z-index: auto !important;
+}
+
+header{
+  position: sticky !important;
+  top: 0 !important;
+  box-shadow: 0 8px 18px rgba(0,0,0,.12) !important;
+}
+
+.month-selector,
+.balance-card,
+.mini-card,
+.history-search-shell,
+.transaction-item,
+.top-action-btn,
+.fab{
+  box-shadow: 0 8px 18px rgba(0,0,0,.12) !important;
+}
+
+html[data-theme="light"] header,
+html[data-theme="light"] .month-selector,
+html[data-theme="light"] .balance-card,
+html[data-theme="light"] .mini-card,
+html[data-theme="light"] .history-search-shell,
+html[data-theme="light"] .transaction-item,
+html[data-theme="light"] .top-action-btn,
+html[data-theme="light"] .fab{
+  box-shadow: 0 8px 18px rgba(15,23,42,.07) !important;
+}
+
+.balance-card,
+.mini-card,
+.history-search-shell,
+.transaction-item{
+  background-image: none !important;
+}
+
+.transaction-item{
+  content-visibility: auto;
+  contain-intrinsic-size: 108px;
+  contain: layout paint style;
+}
+
+.mini-card,
+.balance-card,
+.history-search-shell{
+  contain: layout paint style;
+}
+
+.section-header,
+.date-group-header{
+  text-rendering: optimizeSpeed;
+}
+
+@media (max-width: 768px){
+  header{
+    box-shadow: 0 6px 14px rgba(0,0,0,.10) !important;
+  }
+
+  .month-selector,
+  .balance-card,
+  .mini-card,
+  .history-search-shell,
+  .transaction-item,
+  .top-action-btn,
+  .fab{
+    box-shadow: 0 6px 14px rgba(0,0,0,.10) !important;
+  }
+
+  html[data-theme="light"] .month-selector,
+  html[data-theme="light"] .balance-card,
+  html[data-theme="light"] .mini-card,
+  html[data-theme="light"] .history-search-shell,
+  html[data-theme="light"] .transaction-item,
+  html[data-theme="light"] .top-action-btn,
+  html[data-theme="light"] .fab{
+    box-shadow: 0 6px 14px rgba(15,23,42,.06) !important;
+  }
+}
+
 </style>
 
 <script>
