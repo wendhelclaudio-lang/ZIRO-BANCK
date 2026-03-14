@@ -5725,6 +5725,136 @@ html[data-theme="light"] #metaFaltaDisplay{
   }
 }
 
+
+/* ===== Ajuste focal: ações rápidas + cabeçalho de configuração v36 ===== */
+#modalGestaoMetas .meta-quick-actions-simple{
+  display:grid !important;
+  grid-template-columns:1fr 1fr !important;
+  gap:10px !important;
+  margin:12px 0 10px !important;
+}
+
+#modalGestaoMetas .meta-quick-actions-simple .btn-meta-quick{
+  min-height:52px !important;
+  padding:10px 12px !important;
+  border-radius:16px !important;
+  display:flex !important;
+  flex-direction:row !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:10px !important;
+  font-size:.86rem !important;
+  font-weight:800 !important;
+  letter-spacing:.03em !important;
+  text-transform:uppercase !important;
+  box-shadow:none !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+#modalGestaoMetas .meta-quick-actions-simple .btn-meta-quick i{
+  font-size:1.12rem !important;
+}
+
+#modalGestaoMetas .meta-quick-actions-simple .btn-meta-quick.deposit{
+  background:linear-gradient(180deg, rgba(16,185,129,.20), rgba(16,185,129,.10)) !important;
+  border:1px solid rgba(16,185,129,.32) !important;
+  color:#d1fae5 !important;
+}
+
+#modalGestaoMetas .meta-quick-actions-simple .btn-meta-quick.withdraw{
+  background:linear-gradient(180deg, rgba(239,68,68,.18), rgba(239,68,68,.08)) !important;
+  border:1px solid rgba(239,68,68,.28) !important;
+  color:#fecaca !important;
+}
+
+#modalGestaoMetas .meta-quick-actions-simple .btn-meta-quick.deposit i{
+  color:#34d399 !important;
+}
+
+#modalGestaoMetas .meta-quick-actions-simple .btn-meta-quick.withdraw i{
+  color:#f87171 !important;
+}
+
+#modalGestaoMetas .meta-section-title{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) auto !important;
+  align-items:center !important;
+  gap:12px !important;
+  margin:8px 0 10px !important;
+}
+
+#modalGestaoMetas .meta-section-title h4{
+  display:flex !important;
+  align-items:center !important;
+  gap:8px !important;
+  font-size:.9rem !important;
+  line-height:1.15 !important;
+  margin:0 !important;
+}
+
+#modalGestaoMetas .meta-section-title span{
+  font-size:.74rem !important;
+  line-height:1.2 !important;
+  text-align:right !important;
+}
+
+html[data-theme="light"] #modalGestaoMetas .meta-quick-actions-simple .btn-meta-quick.deposit{
+  background:linear-gradient(180deg, rgba(16,185,129,.14), rgba(16,185,129,.06)) !important;
+  border-color:rgba(16,185,129,.26) !important;
+  color:#047857 !important;
+}
+
+html[data-theme="light"] #modalGestaoMetas .meta-quick-actions-simple .btn-meta-quick.withdraw{
+  background:linear-gradient(180deg, rgba(239,68,68,.12), rgba(239,68,68,.05)) !important;
+  border-color:rgba(239,68,68,.22) !important;
+  color:#b91c1c !important;
+}
+
+html[data-theme="light"] #modalGestaoMetas .meta-quick-actions-simple .btn-meta-quick.deposit i{
+  color:#059669 !important;
+}
+
+html[data-theme="light"] #modalGestaoMetas .meta-quick-actions-simple .btn-meta-quick.withdraw i{
+  color:#dc2626 !important;
+}
+
+html[data-theme="light"] #modalGestaoMetas .meta-section-title h4{
+  color:#0f172a !important;
+}
+
+html[data-theme="light"] #modalGestaoMetas .meta-section-title span{
+  color:#64748b !important;
+}
+
+@media (max-width: 640px){
+  #modalGestaoMetas .meta-quick-actions-simple{
+    grid-template-columns:1fr 1fr !important;
+    gap:8px !important;
+  }
+
+  #modalGestaoMetas .meta-quick-actions-simple .btn-meta-quick{
+    min-height:48px !important;
+    padding:9px 10px !important;
+    font-size:.8rem !important;
+    gap:8px !important;
+  }
+
+  #modalGestaoMetas .meta-quick-actions-simple .btn-meta-quick i{
+    font-size:1rem !important;
+  }
+
+  #modalGestaoMetas .meta-section-title{
+    grid-template-columns:1fr !important;
+    gap:4px !important;
+  }
+
+  #modalGestaoMetas .meta-section-title span{
+    text-align:left !important;
+    font-size:.7rem !important;
+  }
+}
+
 </style>
 
 <script>
