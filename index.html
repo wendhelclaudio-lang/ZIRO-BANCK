@@ -5293,6 +5293,455 @@ header{
   box-shadow: 0 14px 28px rgba(105, 240, 230, .16), inset 0 1px 0 rgba(255,255,255,.42) !important;
 }
 
+
+/* ===== Goal management simplification + light theme fix v32 ===== */
+#modalGestaoMetas{
+  padding: 14px !important;
+  background: rgba(3, 7, 18, .74) !important;
+}
+
+#modalGestaoMetas .meta-goals-shell-simple{
+  width: min(100%, 680px) !important;
+  max-height: min(88vh, 860px) !important;
+  overflow: auto !important;
+  border-radius: 28px !important;
+  background:
+    radial-gradient(circle at top left, rgba(0,242,255,.10), transparent 34%),
+    linear-gradient(180deg, rgba(9,16,31,.98), rgba(5,11,22,1)) !important;
+  border: 1px solid rgba(255,255,255,.07) !important;
+  box-shadow: 0 18px 44px rgba(0,0,0,.28) !important;
+  scrollbar-width: thin;
+}
+
+#modalGestaoMetas .meta-goals-shell-simple::before{
+  opacity: .55 !important;
+}
+
+#modalGestaoMetas .meta-hero-simple{
+  min-height: auto !important;
+  padding: 18px 18px 68px !important;
+  background:
+    radial-gradient(circle at 16% 18%, rgba(0,242,255,.12), transparent 26%),
+    linear-gradient(180deg, rgba(8,15,29,.98), rgba(5,10,21,.92)) !important;
+}
+
+#modalGestaoMetas .meta-overline{
+  padding: 7px 12px !important;
+  font-size: .7rem !important;
+  letter-spacing: .08em !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+#modalGestaoMetas .meta-hero-simple h2{
+  margin: 12px 0 6px !important;
+  font-size: 1.18rem !important;
+  line-height: 1.12 !important;
+}
+
+#modalGestaoMetas .meta-hero-simple p{
+  max-width: 36ch !important;
+  font-size: .82rem !important;
+  line-height: 1.42 !important;
+  color: rgba(226,232,240,.74) !important;
+}
+
+#modalGestaoMetas .meta-close-btn{
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 14px !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+#modalGestaoMetas .meta-body-premium-simple{
+  margin-top: -40px !important;
+  padding: 0 14px 16px !important;
+}
+
+#modalGestaoMetas .meta-dashboard-card-simple{
+  padding: 16px !important;
+  border-radius: 22px !important;
+  box-shadow: 0 12px 28px rgba(0,0,0,.18) !important;
+}
+
+#modalGestaoMetas .meta-summary-top{
+  gap: 12px !important;
+}
+
+#modalGestaoMetas .meta-summary-head{
+  gap: 6px !important;
+}
+
+#modalGestaoMetas .meta-summary-head strong{
+  font-size: 1rem !important;
+  color: #f8fbff !important;
+}
+
+#modalGestaoMetas .meta-summary-head span{
+  font-size: .72rem !important;
+  color: rgba(203,213,225,.78) !important;
+}
+
+#modalGestaoMetas .meta-badge-motivational{
+  margin-bottom: 0 !important;
+  padding: 9px 14px !important;
+  font-size: .68rem !important;
+  letter-spacing: .07em !important;
+}
+
+#modalGestaoMetas .meta-progress-ring-simple{
+  width: 112px !important;
+  height: 112px !important;
+  box-shadow: inset 0 0 0 8px rgba(255,255,255,.03), 0 0 18px rgba(0,242,255,.08) !important;
+}
+
+#modalGestaoMetas .meta-progress-ring:before{
+  inset: 12px !important;
+}
+
+#modalGestaoMetas .meta-progress-text{
+  font-size: 2rem !important;
+  text-shadow: none !important;
+}
+
+#modalGestaoMetas .meta-progress-caption{
+  margin-top: 5px !important;
+  font-size: .64rem !important;
+  letter-spacing: .11em !important;
+}
+
+#modalGestaoMetas .meta-progress-track-glow{
+  height: 12px !important;
+  margin-top: 12px !important;
+  box-shadow: inset 0 2px 8px rgba(0,0,0,.22) !important;
+}
+
+#modalGestaoMetas .meta-progress-meta{
+  margin-top: 8px !important;
+  font-size: .7rem !important;
+}
+
+#modalGestaoMetas .meta-simple-grid{
+  gap: 10px !important;
+  margin-top: 14px !important;
+}
+
+#modalGestaoMetas .meta-simple-item,
+#modalGestaoMetas .meta-simple-chip,
+#modalGestaoMetas .meta-simple-tip,
+#modalGestaoMetas .meta-motion-card,
+#modalGestaoMetas .meta-field{
+  padding: 12px 13px !important;
+  border-radius: 16px !important;
+  background: rgba(255,255,255,.04) !important;
+  border: 1px solid rgba(255,255,255,.07) !important;
+  box-shadow: none !important;
+}
+
+#modalGestaoMetas .meta-simple-item span,
+#modalGestaoMetas .meta-simple-chip span{
+  font-size: .62rem !important;
+  margin-bottom: 5px !important;
+}
+
+#modalGestaoMetas .meta-simple-item strong,
+#modalGestaoMetas .meta-simple-chip strong{
+  font-size: .96rem !important;
+}
+
+#modalGestaoMetas .meta-simple-tip{
+  font-size: .78rem !important;
+  line-height: 1.38 !important;
+}
+
+#modalGestaoMetas .meta-simple-footer{
+  grid-template-columns: 170px minmax(0,1fr) !important;
+  gap: 10px !important;
+  margin-top: 12px !important;
+}
+
+#modalGestaoMetas .meta-quick-actions-simple{
+  gap: 10px !important;
+  margin-bottom: 12px !important;
+}
+
+#modalGestaoMetas .meta-quick-actions-simple .btn-meta-quick{
+  min-height: 60px !important;
+  border-radius: 16px !important;
+  font-size: .77rem !important;
+  padding: 12px 10px !important;
+  gap: 6px !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+#modalGestaoMetas .meta-quick-actions-simple .btn-meta-quick i{
+  font-size: 1.1rem !important;
+}
+
+#modalGestaoMetas .meta-motion-card{
+  margin-top: 12px !important;
+}
+
+#modalGestaoMetas .meta-section-title{
+  margin-bottom: 10px !important;
+}
+
+#modalGestaoMetas .meta-section-title h4{
+  font-size: .88rem !important;
+  color: #f8fbff !important;
+}
+
+#modalGestaoMetas .meta-section-title span{
+  font-size: .72rem !important;
+}
+
+#modalGestaoMetas .meta-config-grid,
+#modalGestaoMetas .meta-input-row{
+  gap: 10px !important;
+}
+
+#modalGestaoMetas .meta-field .label-mini{
+  margin-bottom: 8px !important;
+  font-size: .78rem !important;
+  color: #f8fbff !important;
+}
+
+#modalGestaoMetas .meta-field .label-mini i{
+  width: 24px !important;
+  height: 24px !important;
+  border-radius: 9px !important;
+}
+
+#modalGestaoMetas .meta-field input,
+#modalGestaoMetas .meta-field select{
+  min-height: 46px !important;
+  font-size: .95rem !important;
+}
+
+#modalGestaoMetas .meta-planner-strip{
+  display: none !important;
+}
+
+#modalGestaoMetas .meta-actions-stack{
+  gap: 10px !important;
+  margin-top: 12px !important;
+}
+
+#modalGestaoMetas .meta-actions-stack .btn-confirm,
+#modalGestaoMetas .meta-actions-stack .btn-delete{
+  min-height: 50px !important;
+  border-radius: 16px !important;
+  font-size: .82rem !important;
+}
+
+#modalGestaoMetas #valorMovimentacaoMeta{
+  font-size: 1.2rem !important;
+  margin-bottom: 12px !important;
+}
+
+#modalGestaoMetas .meta-goals-shell-simple,
+#modalGestaoMetas .meta-goals-shell-simple *{
+  color-scheme: dark;
+}
+
+/* Light theme readability */
+html[data-theme="light"] #modalGestaoMetas{
+  background: rgba(15,23,42,.18) !important;
+}
+
+html[data-theme="light"] #modalGestaoMetas .meta-goals-shell-simple{
+  background:
+    radial-gradient(circle at top left, rgba(14,165,233,.10), transparent 34%),
+    linear-gradient(180deg, rgba(255,255,255,.98), rgba(244,248,252,.98)) !important;
+  border-color: rgba(148,163,184,.18) !important;
+  box-shadow: 0 16px 36px rgba(15,23,42,.12) !important;
+}
+
+html[data-theme="light"] #modalGestaoMetas .meta-hero-simple{
+  background:
+    radial-gradient(circle at 14% 18%, rgba(14,165,233,.10), transparent 24%),
+    linear-gradient(180deg, rgba(248,251,255,.98), rgba(237,244,250,.96)) !important;
+  border-bottom: 1px solid rgba(148,163,184,.10) !important;
+}
+
+html[data-theme="light"] #modalGestaoMetas .meta-overline{
+  background: rgba(59,130,246,.08) !important;
+  border-color: rgba(59,130,246,.14) !important;
+  color: #0369a1 !important;
+}
+
+html[data-theme="light"] #modalGestaoMetas .meta-hero-simple h2,
+html[data-theme="light"] #modalGestaoMetas .meta-summary-head strong,
+html[data-theme="light"] #modalGestaoMetas .meta-section-title h4,
+html[data-theme="light"] #modalGestaoMetas .meta-field .label-mini,
+html[data-theme="light"] #modalGestaoMetas .meta-simple-item strong,
+html[data-theme="light"] #modalGestaoMetas .meta-simple-chip strong,
+html[data-theme="light"] #modalGestaoMetas .meta-progress-text{
+  color: #0f172a !important;
+}
+
+html[data-theme="light"] #modalGestaoMetas .meta-hero-simple p,
+html[data-theme="light"] #modalGestaoMetas .meta-summary-head span,
+html[data-theme="light"] #modalGestaoMetas .meta-section-title span,
+html[data-theme="light"] #modalGestaoMetas .meta-progress-caption,
+html[data-theme="light"] #modalGestaoMetas .meta-simple-item span,
+html[data-theme="light"] #modalGestaoMetas .meta-simple-chip span,
+html[data-theme="light"] #modalGestaoMetas .meta-simple-tip{
+  color: #64748b !important;
+}
+
+html[data-theme="light"] #modalGestaoMetas .meta-dashboard-card-simple{
+  background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(246,249,253,.98)) !important;
+  border-color: rgba(148,163,184,.14) !important;
+}
+
+html[data-theme="light"] #modalGestaoMetas .meta-progress-ring{
+  background:
+    radial-gradient(circle at center, rgba(255,255,255,.98) 0 54%, transparent 55%),
+    conic-gradient(from 180deg, rgba(226,232,240,.45), rgba(14,165,233,.9), rgba(16,185,129,.92), rgba(245,158,11,.85), rgba(226,232,240,.45)) !important;
+  box-shadow: inset 0 0 0 8px rgba(255,255,255,.65), 0 0 0 1px rgba(148,163,184,.10) !important;
+}
+
+html[data-theme="light"] #modalGestaoMetas .meta-progress-ring:before{
+  background: radial-gradient(circle, rgba(255,255,255,.98), rgba(244,248,252,.98)) !important;
+  border-color: rgba(148,163,184,.12) !important;
+  box-shadow: inset 0 0 16px rgba(148,163,184,.10) !important;
+}
+
+html[data-theme="light"] #modalGestaoMetas .meta-simple-item,
+html[data-theme="light"] #modalGestaoMetas .meta-simple-chip,
+html[data-theme="light"] #modalGestaoMetas .meta-simple-tip,
+html[data-theme="light"] #modalGestaoMetas .meta-motion-card,
+html[data-theme="light"] #modalGestaoMetas .meta-field{
+  background: rgba(255,255,255,.88) !important;
+  border-color: rgba(148,163,184,.14) !important;
+}
+
+html[data-theme="light"] #modalGestaoMetas .meta-field input,
+html[data-theme="light"] #modalGestaoMetas .meta-field select,
+html[data-theme="light"] #modalGestaoMetas #valorMovimentacaoMeta{
+  background: rgba(255,255,255,.96) !important;
+  color: #0f172a !important;
+  border-color: rgba(148,163,184,.14) !important;
+}
+
+html[data-theme="light"] #modalGestaoMetas .meta-close-btn{
+  background: rgba(255,255,255,.92) !important;
+  color: #0f172a !important;
+  border-color: rgba(148,163,184,.16) !important;
+}
+
+html[data-theme="light"] #modalGestaoMetas .meta-quick-actions-simple .btn-meta-quick.deposit{
+  background: linear-gradient(145deg, rgba(16,185,129,.12), rgba(16,185,129,.04)) !important;
+  border-color: rgba(16,185,129,.18) !important;
+  color: #047857 !important;
+}
+
+html[data-theme="light"] #modalGestaoMetas .meta-quick-actions-simple .btn-meta-quick.withdraw{
+  background: linear-gradient(145deg, rgba(239,68,68,.10), rgba(239,68,68,.03)) !important;
+  border-color: rgba(239,68,68,.16) !important;
+  color: #b91c1c !important;
+}
+
+html[data-theme="light"] #modalGestaoMetas .meta-goals-shell-simple,
+html[data-theme="light"] #modalGestaoMetas .meta-goals-shell-simple *{
+  color-scheme: light;
+}
+
+@media (max-width: 640px){
+  #modalGestaoMetas{
+    padding: 10px !important;
+  }
+
+  #modalGestaoMetas .meta-goals-shell-simple{
+    width: 100% !important;
+    max-height: 88vh !important;
+    border-radius: 24px !important;
+  }
+
+  #modalGestaoMetas .meta-hero-simple{
+    padding: 16px 14px 60px !important;
+  }
+
+  #modalGestaoMetas .meta-hero-simple h2{
+    font-size: 1.04rem !important;
+  }
+
+  #modalGestaoMetas .meta-hero-simple p{
+    font-size: .78rem !important;
+    max-width: 100% !important;
+  }
+
+  #modalGestaoMetas .meta-body-premium-simple{
+    margin-top: -34px !important;
+    padding: 0 10px 12px !important;
+  }
+
+  #modalGestaoMetas .meta-dashboard-card-simple{
+    padding: 14px !important;
+    border-radius: 20px !important;
+  }
+
+  #modalGestaoMetas .meta-summary-top{
+    grid-template-columns: 1fr auto !important;
+    align-items: center !important;
+  }
+
+  #modalGestaoMetas .meta-progress-ring-simple{
+    width: 96px !important;
+    height: 96px !important;
+  }
+
+  #modalGestaoMetas .meta-progress-text{
+    font-size: 1.6rem !important;
+  }
+
+  #modalGestaoMetas .meta-simple-grid{
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+
+  #modalGestaoMetas .meta-simple-item{
+    padding: 10px 11px !important;
+  }
+
+  #modalGestaoMetas .meta-simple-footer{
+    grid-template-columns: 1fr !important;
+  }
+
+  #modalGestaoMetas .meta-quick-actions-simple .btn-meta-quick{
+    min-height: 54px !important;
+    font-size: .74rem !important;
+  }
+
+  #modalGestaoMetas .meta-input-row,
+  #modalGestaoMetas .meta-config-grid{
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  #modalGestaoMetas .meta-field{
+    padding: 10px 11px !important;
+  }
+
+  #modalGestaoMetas .meta-field input,
+  #modalGestaoMetas .meta-field select{
+    min-height: 42px !important;
+    font-size: .9rem !important;
+  }
+
+  #modalGestaoMetas .meta-actions-stack .btn-confirm,
+  #modalGestaoMetas .meta-actions-stack .btn-delete{
+    min-height: 46px !important;
+    font-size: .78rem !important;
+  }
+}
+
 </style>
 
 <script>
@@ -6443,8 +6892,8 @@ html[data-theme="light"] #themeOptions .theme-btn[data-theme-option="dark"] .the
 <div class="meta-hero meta-hero-simple">
 <div class="meta-hero-copy">
 <div class="meta-overline"><i class="fa-solid fa-sparkles"></i> Gestão de Metas Premium</div>
-<h2>Gestão de metas, sem excessos.</h2>
-<p>Veja o progresso, o valor guardado e o próximo passo em um só lugar.</p>
+<h2>Sua meta, de forma simples.</h2>
+<p>Acompanhe o essencial e ajuste sua meta sem excesso de informação.</p>
 </div>
 <button aria-label="Fechar painel de metas" class="meta-close-btn" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
 </div>
@@ -6504,7 +6953,7 @@ html[data-theme="light"] #themeOptions .theme-btn[data-theme-option="dark"] .the
 </div>
 </div>
 <div class="meta-motion-card">
-<div class="meta-section-title"><h4><i class="fa-solid fa-sliders"></i> Configurações do objetivo</h4><span>Defina valor, ritmo e identidade da meta</span></div>
+<div class="meta-section-title"><h4><i class="fa-solid fa-sliders"></i> Configurações do objetivo</h4><span>Defina só o essencial</span></div>
 <div class="meta-config-grid single" style="margin-bottom: 14px;">
 <div class="meta-field">
 <span class="label-mini"><i class="fa-solid fa-bullseye"></i> O que você quer alcançar?</span>
@@ -6536,7 +6985,7 @@ html[data-theme="light"] #themeOptions .theme-btn[data-theme-option="dark"] .the
 <div class="meta-plan-chip"><span>Status visual</span><strong id="txtPreviewStatus">Preparando sua meta</strong><small id="txtPreviewStatusSub">Assim que salvar, o painel superior será atualizado.</small></div>
 </div>
 <div class="meta-actions-stack">
-<button class="btn-confirm" onclick="salvarConfiguracaoMeta()" style="background: linear-gradient(90deg, #00f2ff, #0284c7); color: #fff; font-weight: 800;">SALVAR E ATUALIZAR DASHBOARD</button>
+<button class="btn-confirm" onclick="salvarConfiguracaoMeta()" style="background: linear-gradient(90deg, #00f2ff, #0284c7); color: #fff; font-weight: 800;">SALVAR META</button>
 <button class="btn-delete" onclick="zerarMetaCompleta()" style="border-color: rgba(239, 68, 68, 0.3); color: var(--danger); font-weight: 800;">EXCLUIR META ATUAL</button>
 </div>
 </div></div>
