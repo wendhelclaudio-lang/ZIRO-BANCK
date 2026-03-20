@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-<title>MeuCaixa - Comando de Ativos • Layout Optimized v28</title><!-- auth-firebase-v4-google-redirect-fix -->
+<title>MeuCaixa - Comando de Ativos • Layout Optimized v39</title><!-- auth-firebase-v4-google-redirect-fix -->
 <link href="./manifest.json" rel="manifest"/>
 <meta content="yes" name="apple-mobile-web-app-capable"/>
 <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
@@ -7536,6 +7536,46 @@ html[data-theme="light"] #themeOptions .theme-btn[data-theme-option="dark"] .the
             } catch (e) {}
         }
 
+        function lerRegistrosExcluidosLocalSeguro() {
+            try {
+                const raw = localStorage.getItem('meucaixa_deleted_registros');
+                const parsed = JSON.parse(raw || '[]');
+                return Array.isArray(parsed) ? parsed.filter(Boolean) : [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function persistirRegistrosExcluidosLocalSeguro(lista) {
+            try {
+                const safeList = Array.isArray(lista) ? Array.from(new Set(lista.filter(Boolean))).slice(-500) : [];
+                if (safeList.length) localStorage.setItem('meucaixa_deleted_registros', JSON.stringify(safeList));
+                else localStorage.removeItem('meucaixa_deleted_registros');
+            } catch (e) {}
+        }
+
+        function registrarRegistroExcluidoSeguro(registro) {
+            try {
+                const chave = criarChaveRegistro(registro);
+                if (!chave) return;
+                const atuais = lerRegistrosExcluidosLocalSeguro();
+                atuais.push(chave);
+                persistirRegistrosExcluidosLocalSeguro(atuais);
+            } catch (e) {
+                console.error('Falha ao registrar exclusão local do registro:', e);
+            }
+        }
+
+        function limparRegistrosExcluidosSincronizados() {
+            persistirRegistrosExcluidosLocalSeguro([]);
+        }
+
+        function filtrarRegistrosExcluidosSeguro(lista) {
+            const removidos = new Set(lerRegistrosExcluidosLocalSeguro());
+            if (!removidos.size) return Array.isArray(lista) ? lista : [];
+            return (Array.isArray(lista) ? lista : []).filter((registro) => !removidos.has(criarChaveRegistro(registro)));
+        }
+
         function learningMapPossuiConteudo(map) {
             return !!(map && typeof map === 'object' && Object.keys(map).length);
         }
@@ -7840,12 +7880,14 @@ function getFirebaseProfileRef(uid) {
         async function salvarDadosFirebase(uid) {
             if (!firebaseReady || !uid) return false;
 
-            const registrosPayload = serializarRegistrosFirebase();
+            const registrosPayload = filtrarRegistrosExcluidosSeguro(serializarRegistrosFirebase());
             const learningPayload = mergeLearningMapSeguro(lerLearningMapLocalSeguro(), learningMap || {});
+            const exclusoesPendentes = lerRegistrosExcluidosLocalSeguro();
             const possuiRegistros = registrosPossuemConteudo(registrosPayload);
             const possuiLearning = learningMapPossuiConteudo(learningPayload);
+            const possuiExclusoesPendentes = exclusoesPendentes.length > 0;
 
-            if (!possuiRegistros && !possuiLearning) {
+            if (!possuiRegistros && !possuiLearning && !possuiExclusoesPendentes) {
                 logSync('financeiro', 'warn', 'Payload vazio ignorado para evitar sobrescrita indevida na nuvem.');
                 return false;
             }
@@ -7859,6 +7901,15 @@ function getFirebaseProfileRef(uid) {
             };
 
             await getFirebaseFinanceRef(uid).set(payload, { merge: true });
+
+            if (possuiExclusoesPendentes) {
+                limparRegistrosExcluidosSincronizados();
+                logSync('financeiro', 'info', 'Exclusões pendentes consolidadas na nuvem.', {
+                    removidos: exclusoesPendentes.length,
+                    totalRegistros: Array.isArray(registrosPayload) ? registrosPayload.length : 0
+                });
+            }
+
             return true;
         }
 
@@ -7879,13 +7930,15 @@ function getFirebaseProfileRef(uid) {
                 return false;
             }
 
-            const cloudRegistros = Array.isArray(cloudData.registros) ? safeClone(cloudData.registros, []) : [];
+            const cloudRegistrosOriginais = Array.isArray(cloudData.registros) ? safeClone(cloudData.registros, []) : [];
             const cloudLearning = (cloudData.learningMap && typeof cloudData.learningMap === 'object') ? safeClone(cloudData.learningMap, {}) : {};
+            const localRegistrosFiltrados = filtrarRegistrosExcluidosSeguro(localRegistros);
+            const cloudRegistros = filtrarRegistrosExcluidosSeguro(cloudRegistrosOriginais);
 
-            const mergedRegistros = mergeRegistrosSeguro(localRegistros, cloudRegistros);
+            const mergedRegistros = mergeRegistrosSeguro(localRegistrosFiltrados, cloudRegistros);
             const mergedLearning = mergeLearningMapSeguro(localLearning, cloudLearning);
 
-            const localFingerprint = gerarFingerprint({ registros: localRegistros, learningMap: localLearning });
+            const localFingerprint = gerarFingerprint({ registros: localRegistrosFiltrados, learningMap: localLearning });
             const cloudFingerprint = gerarFingerprint({ registros: cloudRegistros, learningMap: cloudLearning });
             const mergedFingerprint = gerarFingerprint({ registros: mergedRegistros, learningMap: mergedLearning });
 
@@ -9835,10 +9888,24 @@ async function processarRedirectGoogle() {
             showToast("Operação Salva com Sucesso!", "success");
         }
 
-        function excluirRegistro() { 
+        async function excluirRegistro() { 
             if(confirm("Excluir este registro permanentemente?")) { 
-                registros.splice(document.getElementById('editIndex').value, 1);
-                salvarDB(); 
+                const idxExcluir = Number(document.getElementById('editIndex')?.value);
+                const registroExcluido = Number.isInteger(idxExcluir) && idxExcluir >= 0 ? registros[idxExcluir] : null;
+                if (registroExcluido) registrarRegistroExcluidoSeguro(registroExcluido);
+
+                registros = registros.filter((_, idx) => idx !== idxExcluir);
+                salvarDB({ syncFirebase: false, reason: 'excluir-local' }); 
+
+                if (currentFirebaseUser?.uid) {
+                    try {
+                        await salvarDadosFirebase(currentFirebaseUser.uid);
+                    } catch (e) {
+                        console.error('Falha ao propagar exclusão para o Firebase:', e);
+                        solicitarSincronizacaoFinanceira('excluir-registro-fallback');
+                    }
+                }
+
                 renderizar(); 
                 closeAll(); 
                 showToast("Registro Excluído.", "success"); 
